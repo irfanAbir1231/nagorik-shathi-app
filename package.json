@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "^1.20.2",
+    "@swc/helpers": "^0.5.23",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
