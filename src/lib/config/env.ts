@@ -39,7 +39,9 @@ const optionalStr = z
 const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 
-  DATABASE_URL: nonEmpty.default('file:./data/accessai.db'),
+  DATABASE_URL: nonEmpty.default(
+    process.env.NEXT_PHASE === 'phase-production-build' ? 'https://build.invalid' : 'file:./data/accessai.db',
+  ),
   DATABASE_AUTH_TOKEN: optionalStr,
 
   JWT_SECRET: nonEmpty.default('dev-only-access-secret-change-me-0000000000000000'),
