@@ -24,7 +24,6 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || '.next',
   // BDS §4.7 / §12: the first screen must stay small on 2G. Keep the client bundle honest.
   productionBrowserSourceMaps: false,
-  serverExternalPackages: ['@libsql/client'],
   // Pin the trace root to this project. A lockfile in the parent directory makes
   // Next infer the wrong workspace root, which silently drags unrelated files
   // into the server trace.
