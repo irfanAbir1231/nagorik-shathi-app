@@ -46,7 +46,10 @@ import { env } from '../config/env';
  * even though this branch is never reached there (`DATABASE_URL` is never
  * `file:` in production).
  */
-const nodeRequire = createRequire(import.meta.url);
+// Resolve local-only SQLite dependencies from the project root. Next executes
+// route modules from `.next/server`, so resolving relative to this bundled
+// chunk cannot see the repository's node_modules during page-data collection.
+const nodeRequire = createRequire(`${process.cwd()}/package.json`);
 const LIBSQL_NODE_PACKAGE = ['@libsql', 'client'].join('/');
 
 export type Database = LibSQLDatabase<typeof schema>;
