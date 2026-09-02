@@ -40,7 +40,7 @@ const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 
   DATABASE_URL: nonEmpty.default(
-    process.env.NEXT_PHASE === 'phase-production-build' ? 'https://build.invalid' : 'file:./data/accessai.db',
+    process.env.NEXT_PHASE === 'phase-production-build' ? 'https://build.invalid' : 'file:./data/shebar-janala.db',
   ),
   DATABASE_AUTH_TOKEN: optionalStr,
 
@@ -244,7 +244,7 @@ const schema = z.object({
    * with no identifying agent, and rightly: an anonymous scraper cannot be asked
    * to stop.
    */
-  MAP_USER_AGENT: nonEmpty.default('AccessAI/1.0 (prototype; +https://github.com/i-am-mushfiq/AccessAI)'),
+  MAP_USER_AGENT: nonEmpty.default('Shebar Janala/1.0 (prototype)'),
   /** Overpass endpoint for real place lookups. Public instance by default. */
   OVERPASS_URL: nonEmpty.default('https://overpass-api.de/api/interpreter'),
   /** How long a cached Overpass result stays usable, in hours. */
@@ -256,7 +256,7 @@ const schema = z.object({
   SMTP_PORT: int(587),
   SMTP_USER: optionalStr,
   SMTP_PASSWORD: optionalStr,
-  SMTP_FROM: nonEmpty.default('AccessAI <no-reply@accessai.local>'),
+  SMTP_FROM: nonEmpty.default('Shebar Janala <no-reply@shebar-janala.local>'),
 
   S3_BUCKET: optionalStr,
   S3_REGION: optionalStr,
@@ -266,7 +266,7 @@ const schema = z.object({
   /** Public base URL for reading back what was written (an R2 bucket's r2.dev URL, or a custom domain). Falls back to S3_ENDPOINT/S3_BUCKET, which is not public on R2. */
   S3_PUBLIC_URL: optionalStr,
 
-  NEXT_PUBLIC_APP_NAME: nonEmpty.default('AccessAI'),
+  NEXT_PUBLIC_APP_NAME: nonEmpty.default('Shebar Janala'),
 
   RATE_LIMIT_WINDOW_MS: int(60_000),
   RATE_LIMIT_MAX_REQUESTS: int(120),

@@ -148,7 +148,7 @@ export async function requestOtp(rawPhone: string, purpose: OtpPurpose): Promise
  */
 async function sendSms(phone: string, code: string): Promise<void> {
   try {
-    await dispatchSms(phone, `Your AccessAI verification code is ${code}. It expires in 5 minutes.`);
+    await dispatchSms(phone, `Your Shebar Janala verification code is ${code}. It expires in 5 minutes.`);
   } catch (error) {
     if (error instanceof SmsDeliveryError) {
       throw new AuthError('INTERNAL', error.message, { phone, ...error.detail });

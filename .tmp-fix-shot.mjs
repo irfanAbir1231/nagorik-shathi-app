@@ -1,7 +1,7 @@
 import { chromium } from 'playwright-core';
 import fs from 'fs';
 const BASE = 'http://localhost:3001';
-const OUT = 'C:/Users/TL-77057/AppData/Local/Temp/accessai-shots';
+const OUT = 'C:/Users/TL-77057/AppData/Local/Temp/shebar-janala-shots';
 const browser = await chromium.launch({ headless: true });
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 860 }, deviceScaleFactor: 1 });
 const page = await ctx.newPage();

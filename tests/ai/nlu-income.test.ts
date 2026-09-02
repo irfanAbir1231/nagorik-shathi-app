@@ -70,6 +70,7 @@ describe('it refuses to invent an income', () => {
   it('ignores a sentence with an income keyword but no figure', () => {
     expect(income('আমার আয় খুব কম')).toBeNull();
     expect(income('I have no income')).toBeNull();
+    expect(income('আমার বয়স ৫৮। আয় খুব কম।')).toBeNull();
   });
 
   it('rejects an implausible figure rather than storing it', () => {

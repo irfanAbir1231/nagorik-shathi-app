@@ -48,7 +48,7 @@ async function findVerifiedReporter(phone: string) {
   return { userId: user.id, unionId: profile.residencyUnionId };
 }
 
-const MAIN_MENU = 'AccessAI\n1. Check my benefit status\n2. Report an issue\n3. My issue reports';
+const MAIN_MENU = 'Shebar Janala\n1. Check my benefit status\n2. Report an issue\n3. My issue reports';
 
 export async function handleUssdCallback(input: UssdCallbackInput): Promise<UssdResponse> {
   // The last * segment is always the latest thing the caller just typed;
@@ -105,7 +105,7 @@ export async function handleUssdCallback(input: UssdCallbackInput): Promise<Ussd
       await db.delete(ussdSessions).where(eq(ussdSessions.id, session.id));
       const reporter = await findVerifiedReporter(input.phone);
       if (!reporter) {
-        return respond('END', 'Your number is not linked to a residency-verified AccessAI account. Visit an AccessAI point or use the app to verify first.');
+        return respond('END', 'Your number is not linked to a residency-verified Shebar Janala account. Visit a Shebar Janala point or use the app to verify first.');
       }
       const category = (session.context as { category?: IssueCategory } | null)?.category ?? 'other';
       const [union] = await db.select().from(unionBoundaries).where(eq(unionBoundaries.id, reporter.unionId)).limit(1);
@@ -138,7 +138,7 @@ async function routeMenuChoice(input: UssdCallbackInput, choice: string, session
       const reporter = await findVerifiedReporter(input.phone);
       if (!reporter) {
         await db.delete(ussdSessions).where(eq(ussdSessions.id, sessionRowId));
-        return respond('END', 'Your number is not linked to a residency-verified AccessAI account. Visit an AccessAI point or use the app to verify first.');
+        return respond('END', 'Your number is not linked to a residency-verified Shebar Janala account. Visit a Shebar Janala point or use the app to verify first.');
       }
       await db.update(ussdSessions).set({ step: 'awaiting_issue_category', updatedAt: new Date() }).where(eq(ussdSessions.id, sessionRowId));
       const menu = CATEGORY_MENU.map((c, i) => `${i + 1}. ${c.replace(/_/g, ' ')}`).join('\n');
@@ -148,7 +148,7 @@ async function routeMenuChoice(input: UssdCallbackInput, choice: string, session
     case '3': {
       const reporter = await findVerifiedReporter(input.phone);
       await db.delete(ussdSessions).where(eq(ussdSessions.id, sessionRowId));
-      if (!reporter) return respond('END', 'Your number is not linked to a residency-verified AccessAI account.');
+      if (!reporter) return respond('END', 'Your number is not linked to a residency-verified Shebar Janala account.');
       const mine = await listMyIssues(reporter.userId, 3);
       if (mine.length === 0) return respond('END', 'You have not reported any issues yet.');
       return respond('END', mine.map((i) => `${i.title.slice(0, 30)}: ${i.status}`).join('\n'));

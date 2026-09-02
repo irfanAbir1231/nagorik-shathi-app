@@ -6,7 +6,7 @@ import type { NidVerificationStatus } from '@/lib/domain/enums';
  * National ID verification — Phase 1.
  *
  * No live government NID API (Porichoy or otherwise) is wired into this
- * build — AccessAI's own docs/OPEN-QUESTIONS.md already says so, and nothing
+ * build — Shebar Janala's own docs/OPEN-QUESTIONS.md already says so, and nothing
  * here pretends otherwise. `NID_PROVIDER` is a named integration seam in the
  * same spirit as `SMS_PROVIDER` in modules/auth/auth.service.ts: unset, the
  * number is only format-checked and the result is labelled

@@ -4,12 +4,14 @@ import {
   conversations, messages, aiLogs, userProfiles, users,
   type Conversation, type Message,
 } from '@/lib/db/schema';
-import { understand, type NluResult } from './nlu';
+import type { NluResult } from './nlu';
+import { confirmedProfile, inferCivicFrame, type CivicFrame } from './civic-frame';
 import { retrieve, opportunityIdsFrom, type RetrievedChunk } from '@/modules/knowledge/retrieval';
 import { listOpportunities, recordEvaluation, type EnrichedOpportunity } from '@/modules/opportunities/opportunity.service';
 import { toEligibilityProfile } from '@/modules/eligibility/profile-mapper';
 import { fieldLabel, type EligibilityProfile } from '@/modules/eligibility/engine';
 import { composeResponse } from './composer';
+import { assertNumericGrounding } from './grounding';
 import { getProvider } from './providers';
 import { PROMPTS } from '@/prompts';
 import { pickLocalised, type PlannedOpportunity, type ResponsePlan } from './response-plan';
@@ -48,6 +50,7 @@ export interface TurnResult {
   readonly assistantMessage: Message;
   readonly plan: ResponsePlan;
   readonly nlu: NluResult;
+  readonly civicFrame: CivicFrame;
   readonly profileUpdated: readonly string[];
   readonly engine: string;
   readonly degraded: boolean;
@@ -243,7 +246,14 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
   const [user] = await db.select().from(users).where(eq(users.id, input.userId)).limit(1);
   if (!user) throw new Error('User not found');
 
-  const nlu = understand(input.message, input.localeHint ?? (user.language as 'bn' | 'en'));
+  const provider = getProvider();
+  const civicFrame = await inferCivicFrame({
+    message: input.message,
+    fallbackLocale: input.localeHint ?? (user.language as 'bn' | 'en'),
+    provider,
+    ...(input.signal ? { signal: input.signal } : {}),
+  });
+  const nlu = civicFrame.nlu;
   const locale = nlu.locale;
 
   const conversation = await ensureConversation(input.userId, input.conversationId, locale);
@@ -254,8 +264,9 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
     .values({ conversationId: conversation.id, role: 'user', kind: 'text', content: input.message })
     .returning();
 
-  const detectedEvents = nlu.lifeEvents.map((e) => e.event);
-  const profileUpdated = await applyExtractedEntities(input.userId, nlu.entities.profile, detectedEvents);
+  const detectedEvents = civicFrame.lifeEvents;
+  const confirmedEvents = nlu.lifeEvents.map((event) => event.event);
+  const profileUpdated = await applyExtractedEntities(input.userId, confirmedProfile(civicFrame), confirmedEvents);
 
   const [profileRow] = await db.select().from(userProfiles).where(eq(userProfiles.userId, input.userId)).limit(1);
   const decryptedProfileRow = profileRow
@@ -273,7 +284,7 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
   } else {
     // Retrieval is scoped by the citizen's district and detected life events, so
     // an irrelevant or geographically unavailable programme cannot surface.
-    const retrieved = await retrieve(input.message, {
+    const retrieved = await retrieve(civicFrame.retrievalQuery, {
       district: profile.district ?? null,
       lifeEvents: detectedEvents.length > 0 ? detectedEvents : undefined,
       limit: 14,
@@ -357,19 +368,19 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
   }
 
   /* ---- render ---- */
-  const provider = getProvider();
   let text: string;
   let degraded = false;
-  let tokensIn = 0;
-  let tokensOut = 0;
-  let engineError: string | null = null;
+  let tokensIn = civicFrame.modelCall.tokensIn;
+  let tokensOut = civicFrame.modelCall.tokensOut;
+  let engineError: string | null = civicFrame.modelCall.error ?? null;
 
   if (provider.isLive && plan.kind !== 'greeting' && plan.kind !== 'out_of_scope') {
     try {
       const rendered = await renderWithModel(plan, input.message, history, profile, input.signal);
+      assertNumericGrounding(rendered.text, plan);
       text = rendered.text;
-      tokensIn = rendered.tokensIn;
-      tokensOut = rendered.tokensOut;
+      tokensIn += rendered.tokensIn;
+      tokensOut += rendered.tokensOut;
     } catch (error) {
       // A provider failure degrades to the deterministic composer rather than
       // failing the citizen's request. The UI shows the degraded badge.
@@ -398,6 +409,13 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
           missingField: plan.missingField ?? null,
           lifeEvents: plan.lifeEvents,
           ungrounded: plan.ungrounded,
+          civicFrame: {
+            version: civicFrame.version,
+            confirmedFacts: civicFrame.confirmedFacts,
+            proposedFacts: civicFrame.proposedFacts,
+            uncertainFacts: civicFrame.uncertainFacts,
+            modelCall: civicFrame.modelCall,
+          },
         },
       },
       tokens: tokensOut,
@@ -419,7 +437,12 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
     inputSummary: input.message.slice(0, 500),
     outputSummary: text.slice(0, 500),
     intents: [...plan.intents],
-    entities: nlu.entities.profile as unknown as Record<string, unknown>,
+    entities: {
+      confirmed: nlu.entities.profile,
+      proposed: civicFrame.proposedFacts,
+      uncertain: civicFrame.uncertainFacts,
+      frameVersion: civicFrame.version,
+    },
     retrievedChunkIds: plan.citations.map((c) => c.chunkId),
     citedOpportunityIds: plan.opportunities.map((o) => o.id),
     confidence: plan.overallConfidence,
@@ -447,6 +470,7 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
     assistantMessage: assistantMessage!,
     plan,
     nlu,
+    civicFrame,
     profileUpdated,
     engine: degraded ? 'simulated' : provider.engine,
     degraded,
@@ -545,7 +569,7 @@ async function renderWithModel(
 
   const historyBlock = history
     .slice(-4)
-    .map((m) => `${m.role === 'user' ? 'Citizen' : 'AccessAI'}: ${m.content.slice(0, 400)}`)
+    .map((m) => `${m.role === 'user' ? 'Citizen' : 'Shebar Janala'}: ${m.content.slice(0, 400)}`)
     .join('\n');
 
   const userPrompt =

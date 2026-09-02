@@ -115,7 +115,7 @@ export function detectDuplicateBeneficiaryEnrolment(
  * SJ-19's "ghost beneficiary" check: enrolled, but the NID hash behind the
  * enrolment has never been confirmed by anyone going through real NID
  * verification (modules/identity/nid.service.ts). This does not prove fraud
- * — a genuine beneficiary may simply not have an AccessAI account yet — but
+ * — a genuine beneficiary may simply not have a Shebar Janala account yet — but
  * it is the one honest, checkable signal available: "nobody has ever proven
  * this identity exists," surfaced for a human to follow up on, not acted on
  * automatically.

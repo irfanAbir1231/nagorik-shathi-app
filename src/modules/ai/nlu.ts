@@ -86,6 +86,22 @@ export function detectLifeEvents(text: string): LifeEventMatch[] {
     }
   }
 
+  // Citizens naturally insert time and context between the subject and event
+  // ("স্বামী গত বছর মারা গেছেন"). The curated keyword list cannot enumerate
+  // every such phrase, so these bounded contextual patterns preserve meaning
+  // without becoming an open-ended classifier.
+  const contextual: readonly { event: LifeEvent; pattern: RegExp; label: string; confidence: number }[] = [
+    { event: 'widowhood', pattern: /স্বামী.{0,28}(?:মারা|মৃত্যু)|husband.{0,32}(?:died|passed away)/, label: 'contextual widowhood phrase', confidence: 0.9 },
+    { event: 'crop_loss', pattern: /ফসল.{0,28}(?:নষ্ট|ক্ষতি)|crop.{0,32}(?:destroyed|lost|damage)/, label: 'contextual crop-loss phrase', confidence: 0.88 },
+  ];
+  for (const rule of contextual) {
+    if (!rule.pattern.test(haystack)) continue;
+    const existing = hits.get(rule.event);
+    if (!existing || existing.confidence < rule.confidence) {
+      hits.set(rule.event, { event: rule.event, matchedKeyword: rule.label, confidence: rule.confidence });
+    }
+  }
+
   return [...hits.values()].sort((a, b) => b.confidence - a.confidence);
 }
 
@@ -204,9 +220,9 @@ export function extractEntities(text: string): ExtractedEntities {
 
   /* ---- age ---- */
   const agePatterns = [
-    /(?:বয়স|boyos|age)[^\d]{0,12}(\d{1,3})/,
+    /(?:বয়স|বয়স|boyos|age)[^\d]{0,12}(\d{1,3})/,
     /(\d{1,3})\s*(?:বছর|bochor|years? old|yrs?)/,
-    /(?:i am|আমার বয়স)\s*(\d{1,3})/,
+    /(?:i am|আমার বয়স|আমার বয়স)\s*(\d{1,3})/,
   ];
   for (const pattern of agePatterns) {
     const match = haystack.match(pattern);
@@ -235,9 +251,26 @@ export function extractEntities(text: string): ExtractedEntities {
    * the disambiguation it was written and tested for — including refusing to
    * guess when two bare numbers appear with no currency or scale evidence.
    */
-  const keyword = /আয়|ইনকাম|income|বেতন|salary|earn|রোজগার/.exec(haystack);
+  const keyword = /আয়|আয়|ইনকাম|income|বেতন|salary|earn|রোজগার/.exec(haystack);
   if (keyword) {
-    const from = Math.max(0, keyword.index - 30);
+    // Prefer an explicit monthly anchor when it occurs immediately before the
+    // income word. This keeps an earlier age or household count out of the
+    // amount parser (for example "বয়স ৫৮, মাসে ৫ হাজার টাকা আয়").
+    const monthlyAnchor = Math.max(
+      haystack.lastIndexOf('মাসে', keyword.index),
+      haystack.lastIndexOf('per month', keyword.index),
+      haystack.lastIndexOf('monthly', keyword.index),
+    );
+    const initialFrom = monthlyAnchor >= 0 && keyword.index - monthlyAnchor <= 45
+      ? monthlyAnchor
+      : Math.max(0, keyword.index - 30);
+    const sentenceBoundary = Math.max(
+      haystack.lastIndexOf('।', keyword.index),
+      haystack.lastIndexOf('.', keyword.index),
+      haystack.lastIndexOf('?', keyword.index),
+      haystack.lastIndexOf('!', keyword.index),
+    );
+    const from = Math.max(initialFrom, sentenceBoundary + 1);
     const window = haystack.slice(from, keyword.index + keyword[0].length + 50);
     const amount = parseAmount(window);
     if (amount !== null && amount >= 0 && amount <= 10_000_000) {
@@ -250,7 +283,8 @@ export function extractEntities(text: string): ExtractedEntities {
   }
 
   /* ---- gender ---- */
-  if (/\b(?:মহিলা|নারী|মেয়ে|woman|female|আমি একজন মহিলা|স্ত্রী)\b/.test(haystack) || /বিধবা|widow/.test(haystack)) {
+  const widowhoodPhrase = /বিধবা|widow|স্বামী.{0,28}(?:মারা|মৃত্যু)|husband.{0,32}(?:died|passed away)/;
+  if (/\b(?:মহিলা|নারী|মেয়ে|woman|female|আমি একজন মহিলা|স্ত্রী)\b/.test(haystack) || widowhoodPhrase.test(haystack)) {
     profile.gender = 'female';
     fields.push('gender');
   } else if (/\b(?:পুরুষ|ছেলে|man|male)\b/.test(haystack)) {
@@ -259,7 +293,7 @@ export function extractEntities(text: string): ExtractedEntities {
   }
 
   /* ---- marital status ---- */
-  if (/বিধবা|widow|স্বামী মারা|husband died|husband passed/.test(haystack)) {
+  if (widowhoodPhrase.test(haystack)) {
     profile.maritalStatus = 'widowed';
     fields.push('maritalStatus');
   } else if (/তালাক|ডিভোর্স|divorce/.test(haystack)) {

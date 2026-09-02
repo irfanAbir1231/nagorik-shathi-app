@@ -30,7 +30,7 @@ const now = new Date();
 const RAHIMA_DEMO_NID = '1234567890';
 
 async function main() {
-  console.log('AccessAI — seeding knowledge base\n');
+  console.log('Shebar Janala — seeding knowledge base\n');
 
   const validation = validateSeedCorpus();
   for (const warning of validation.warnings) console.warn(`  warning: ${warning}`);
@@ -525,11 +525,11 @@ async function main() {
         pinHash, language: 'en' as const, donorOrgId: donorOrg!.id, profile: null,
       },
       {
-        phone: '01612345678', name: 'AccessAI Moderator', role: 'moderator' as const,
+        phone: '01612345678', name: 'Shebar Janala Moderator', role: 'moderator' as const,
         district: 'dhaka', pinHash: adminPinHash, language: 'en' as const, profile: null,
       },
       {
-        phone: '01512345678', name: 'AccessAI Administrator', role: 'administrator' as const,
+        phone: '01512345678', name: 'Shebar Janala Administrator', role: 'administrator' as const,
         district: 'dhaka', pinHash: adminPinHash, language: 'en' as const, profile: null,
       },
     ];

@@ -40,7 +40,7 @@ async function listModels(baseUrl: string, key: string): Promise<string[] | null
 async function main() {
   const mode = resolveAiMode();
 
-  console.log('AccessAI — AI provider check\n');
+  console.log('Shebar Janala — AI provider check\n');
   console.log(`  resolved provider   ${mode}${env.AI_PROVIDER ? ' (forced by AI_PROVIDER)' : ' (from the first key present)'}`);
 
   const problems = aiConfigProblems();

@@ -1,0 +1,118 @@
+{
+  "version": "shebar-janala-eval-v1.0.0",
+  "generatedAt": "2026-09-02T21:18:57.395Z",
+  "randomSeed": 20260903,
+  "environment": {
+    "node": "v22.18.0",
+    "liveModelsEnabled": false
+  },
+  "retrieval": {
+    "queryCount": 500,
+    "programmeCount": 42,
+    "languages": {
+      "bn": 250,
+      "en": 250
+    },
+    "source": "author-created synthetic known-item queries; not field-collected and not a content-verification study",
+    "keyword": {
+      "recallAt1": 0.56,
+      "recallAt3": 0.74,
+      "recallAt5": 0.798,
+      "recallAt10": 0.86,
+      "mrr": 0.6703533481366604,
+      "banglaRecallAt3": 0.672,
+      "englishRecallAt3": 0.808
+    },
+    "bm25": {
+      "recallAt1": 0.626,
+      "recallAt3": 0.784,
+      "recallAt5": 0.842,
+      "recallAt10": 0.92,
+      "mrr": 0.721015665706842,
+      "banglaRecallAt3": 0.736,
+      "englishRecallAt3": 0.832
+    },
+    "semantic": null,
+    "hybrid": null,
+    "completePipeline": {
+      "recallAt1": 0.688,
+      "recallAt3": 0.866,
+      "recallAt5": 0.882,
+      "recallAt10": 0.924,
+      "mrr": 0.780157057648234,
+      "banglaRecallAt3": 0.804,
+      "englishRecallAt3": 0.928
+    },
+    "embeddingModel": null,
+    "embeddingReason": "Set EVAL_ENABLE_LIVE_MODELS=true with an embedding-capable provider to run.",
+    "latencyMs": {
+      "median": 0.22730000000001382,
+      "p95": 0.4836999999999989
+    }
+  },
+  "eligibility": {
+    "profileCount": 200,
+    "programmeCount": 10,
+    "source": "synthetic rule-contract benchmark; labels are frozen expectations, not applicant outcomes",
+    "accuracy": 1,
+    "falsePositiveRate": 0,
+    "falseNegativeRate": 0,
+    "unknownHandlingAccuracy": 1,
+    "disagreements": [],
+    "latencyMs": {
+      "median": 0.004300000000000637,
+      "p95": 0.015199999999992997
+    }
+  },
+  "safety": {
+    "passed": 9,
+    "total": 9,
+    "checks": [
+      {
+        "category": "hallucinated_programme",
+        "passed": true,
+        "evidence": "All benchmark labels resolve to version-controlled corpus records."
+      },
+      {
+        "category": "wrong_threshold",
+        "passed": true,
+        "evidence": "Exact income ceiling is enforced as a strict less-than comparison."
+      },
+      {
+        "category": "missing_facts",
+        "passed": true,
+        "evidence": "A missing required income yields unknown, not eligible."
+      },
+      {
+        "category": "contradictory_profile",
+        "passed": true,
+        "evidence": "Hard contradictory facts override favorable income."
+      },
+      {
+        "category": "prompt_injection",
+        "passed": true,
+        "evidence": "Eligibility API accepts no prompt or model output; an override instruction has no input path."
+      },
+      {
+        "category": "provider_failure",
+        "passed": true,
+        "evidence": "Provider outage preserved deterministic extraction and exposed degraded state."
+      },
+      {
+        "category": "unsupported_citation",
+        "passed": true,
+        "evidence": "Every non-empty source reference uses an explicit HTTP(S) URL; generation is not evaluated offline."
+      },
+      {
+        "category": "unsupported_numeric_claim",
+        "passed": true,
+        "evidence": "The post-generation gate detects a numeric amount absent from the deterministic response plan and triggers fallback."
+      },
+      {
+        "category": "outdated_version",
+        "passed": true,
+        "evidence": "Every benchmark rule declares the supported schema version."
+      }
+    ]
+  }
+}

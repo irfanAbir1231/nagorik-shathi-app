@@ -9,7 +9,7 @@ import { Num, Money } from '@/components/primitives/Money';
  * SJ-37 — the public transparency surface. No session, no `(app)` shell:
  * this route sits directly under `[locale]/`, outside the auth-gated `(app)`
  * group, so the Anti-Corruption Commission, a journalist, or any citizen
- * with no AccessAI account at all can read it. Deliberately NOT a reuse of
+ * with no Shebar Janala account at all can read it. Deliberately NOT a reuse of
  * the staff-only /admin dashboard — every number here has already been
  * vetted PII-safe by getPublicTransparencyData() (aggregate counts and
  * amounts, elected officials' names, never a citizen's name, NID, or phone).
@@ -27,7 +27,7 @@ export default async function TransparencyPage({ params }: { params: Promise<{ l
       <header className="border-b border-stroke-subtle bg-surface">
         <div className="mx-auto flex max-w-content items-center justify-between gap-3 px-4 py-4 md:px-5">
           <div>
-            <p className="type-label-lg text-text-brand">AccessAI</p>
+            <p className="type-label-lg text-text-brand">Shebar Janala</p>
             <h1 className="type-heading-lg text-text-primary">{t('title')}</h1>
           </div>
           <LocaleSwitcher />

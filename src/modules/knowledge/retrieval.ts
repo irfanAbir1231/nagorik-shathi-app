@@ -3,7 +3,8 @@ import { db } from '@/lib/db/client';
 import { documentChunks, opportunities, documents } from '@/lib/db/schema';
 import { tokenize } from './tokenizer';
 import { hasEmbeddingProvider } from '@/lib/config/env';
-import { getProvider } from '@/modules/ai/providers';
+import { getEmbeddingProvider } from '@/modules/ai/providers';
+import { bm25Scores, cosineSimilarity, reciprocalRankFusion } from './ranking';
 
 /**
  * Hybrid retrieval — PRD §26.
@@ -28,9 +29,6 @@ import { getProvider } from '@/modules/ai/providers';
  * computed in process — correct for a corpus of this size (hundreds of chunks),
  * and interface-compatible with a pgvector swap. See docs/DEVIATIONS.md §3.
  */
-
-const BM25_K1 = 1.5;
-const BM25_B = 0.75;
 
 export interface RetrievalFilters {
   readonly categories?: readonly string[];
@@ -127,62 +125,6 @@ async function loadCandidates(filters: RetrievalFilters): Promise<CandidateRow[]
   return rows as CandidateRow[];
 }
 
-function bm25(
-  queryTokens: readonly string[],
-  candidates: readonly CandidateRow[],
-): Map<string, number> {
-  const scores = new Map<string, number>();
-  if (queryTokens.length === 0 || candidates.length === 0) return scores;
-
-  const documentCount = candidates.length;
-  const averageLength =
-    candidates.reduce((sum, c) => sum + Math.max(1, c.tokenCount), 0) / documentCount;
-
-  // Document frequency per query term.
-  const documentFrequency = new Map<string, number>();
-  for (const token of new Set(queryTokens)) {
-    let count = 0;
-    for (const candidate of candidates) {
-      if ((candidate.termFrequencies?.[token] ?? 0) > 0) count += 1;
-    }
-    documentFrequency.set(token, count);
-  }
-
-  for (const candidate of candidates) {
-    const length = Math.max(1, candidate.tokenCount);
-    let score = 0;
-    for (const token of queryTokens) {
-      const tf = candidate.termFrequencies?.[token] ?? 0;
-      if (tf === 0) continue;
-      const df = documentFrequency.get(token) ?? 0;
-      // Standard BM25 IDF with the +0.5 smoothing that keeps it positive.
-      const idf = Math.log(1 + (documentCount - df + 0.5) / (df + 0.5));
-      const numerator = tf * (BM25_K1 + 1);
-      const denominator = tf + BM25_K1 * (1 - BM25_B + BM25_B * (length / averageLength));
-      score += idf * (numerator / denominator);
-    }
-    if (score > 0) scores.set(candidate.chunkId, score);
-  }
-
-  return scores;
-}
-
-function cosine(a: readonly number[], b: readonly number[]): number {
-  let dot = 0;
-  let normA = 0;
-  let normB = 0;
-  const length = Math.min(a.length, b.length);
-  for (let i = 0; i < length; i += 1) {
-    const x = a[i]!;
-    const y = b[i]!;
-    dot += x * y;
-    normA += x * x;
-    normB += y * y;
-  }
-  if (normA === 0 || normB === 0) return 0;
-  return dot / (Math.sqrt(normA) * Math.sqrt(normB));
-}
-
 async function semanticScores(
   query: string,
   candidates: readonly CandidateRow[],
@@ -191,15 +133,15 @@ async function semanticScores(
   const embeddable = candidates.filter((c) => Array.isArray(c.embedding) && c.embedding.length > 0);
   if (!hasEmbeddingProvider || embeddable.length === 0) return scores;
 
-  const provider = getProvider();
-  if (!provider.embed) return scores;
+  const provider = getEmbeddingProvider();
+  if (!provider?.embed) return scores;
 
   try {
     const result = await provider.embed([query]);
     const queryVector = result?.vectors[0];
     if (!queryVector) return scores;
     for (const candidate of embeddable) {
-      scores.set(candidate.chunkId, cosine(queryVector, candidate.embedding!));
+      scores.set(candidate.chunkId, cosineSimilarity(queryVector, candidate.embedding!));
     }
   } catch {
     // A failed embedding call degrades to lexical-only retrieval rather than
@@ -213,24 +155,6 @@ async function semanticScores(
  * Reciprocal Rank Fusion. Rank-based, so the two channels' incomparable score
  * scales do not need an arbitrary normalisation constant.
  */
-function fuse(
-  lexical: Map<string, number>,
-  semantic: Map<string, number>,
-  k = 60,
-): Map<string, number> {
-  const fused = new Map<string, number>();
-  const add = (ranked: [string, number][], weight: number) => {
-    ranked
-      .sort((a, b) => b[1] - a[1])
-      .forEach(([id], index) => {
-        fused.set(id, (fused.get(id) ?? 0) + weight / (k + index + 1));
-      });
-  };
-  add([...lexical.entries()], 1);
-  add([...semantic.entries()], 1);
-  return fused;
-}
-
 export interface RetrieveOptions extends RetrievalFilters {
   readonly limit?: number;
   /** Max chunks per programme, so one verbose record cannot crowd out others. */
@@ -244,7 +168,10 @@ export async function retrieve(query: string, options: RetrieveOptions = {}): Pr
   const candidates = await loadCandidates(filters);
   if (candidates.length === 0) return [];
 
-  const lexical = bm25(queryTokens, candidates);
+  const lexical = bm25Scores(
+    queryTokens,
+    candidates.map((candidate) => ({ id: candidate.chunkId, ...candidate })),
+  );
   const semantic = await semanticScores(query, candidates);
 
   // With no lexical or semantic signal at all, returning the highest-ranked
@@ -252,7 +179,7 @@ export async function retrieve(query: string, options: RetrieveOptions = {}): Pr
   // nothing so the caller reports "no verified information".
   if (lexical.size === 0 && semantic.size === 0) return [];
 
-  const fused = fuse(lexical, semantic);
+  const fused = reciprocalRankFusion(lexical, semantic);
   const byId = new Map(candidates.map((c) => [c.chunkId, c]));
 
   const ranked = [...fused.entries()]
@@ -307,8 +234,8 @@ export function opportunityIdsFrom(chunks: readonly RetrievedChunk[]): string[] 
  * "rebuild embeddings" action and the daily job (PRD §45, §64).
  */
 export async function backfillEmbeddings(batchSize = 64): Promise<{ processed: number; skipped: boolean }> {
-  const provider = getProvider();
-  if (!provider.embed || !hasEmbeddingProvider) return { processed: 0, skipped: true };
+  const provider = getEmbeddingProvider();
+  if (!provider?.embed || !hasEmbeddingProvider) return { processed: 0, skipped: true };
 
   const pending = await db
     .select({

@@ -19,7 +19,7 @@ export default defineConfig({
   out: './drizzle',
   dialect: hasAuthToken ? 'turso' : 'sqlite',
   dbCredentials: {
-    url: process.env.DATABASE_URL ?? 'file:./data/accessai.db',
+    url: process.env.DATABASE_URL ?? 'file:./data/shebar-janala.db',
     ...(hasAuthToken ? { authToken: process.env.DATABASE_AUTH_TOKEN } : {}),
   },
   verbose: true,

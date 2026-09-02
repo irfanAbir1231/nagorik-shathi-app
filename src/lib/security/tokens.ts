@@ -18,8 +18,8 @@ import type { UserRole } from '@/lib/domain/enums';
 const accessSecret = new TextEncoder().encode(env.JWT_SECRET);
 const refreshSecret = new TextEncoder().encode(env.JWT_REFRESH_SECRET);
 
-const ISSUER = 'accessai';
-const AUDIENCE = 'accessai-web';
+const ISSUER = 'shebar-janala';
+const AUDIENCE = 'shebar-janala-web';
 
 export interface AccessTokenClaims extends JWTPayload {
   readonly sub: string;
@@ -84,8 +84,8 @@ export async function verifyRefreshToken(token: string): Promise<RefreshTokenCla
 }
 
 export const COOKIE_NAMES = {
-  access: 'accessai_at',
-  refresh: 'accessai_rt',
+  access: 'shebar-janala_at',
+  refresh: 'shebar-janala_rt',
 } as const;
 
 /** Parsed TTL in seconds, for cookie `maxAge`. */

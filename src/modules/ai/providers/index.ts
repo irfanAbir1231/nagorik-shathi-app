@@ -272,6 +272,7 @@ class SimulatedProvider implements LlmProvider {
 /* ------------------------------------------------------------ registry */
 
 let cached: LlmProvider | null = null;
+let embeddingCached: LlmProvider | null = null;
 
 export function getProvider(): LlmProvider {
   if (cached) return cached;
@@ -282,6 +283,17 @@ export function getProvider(): LlmProvider {
     : mode === 'deepseek' ? new DeepSeekProvider()
     : new SimulatedProvider();
   return cached;
+}
+
+/**
+ * Embeddings are a separate inference concern from response generation.
+ * A deployment may use Anthropic or DeepSeek for prose while using OpenAI's
+ * embedding endpoint for retrieval, so this must not depend on AI_MODE.
+ */
+export function getEmbeddingProvider(): LlmProvider | null {
+  if (!env.OPENAI_API_KEY) return null;
+  embeddingCached ??= new OpenAiProvider();
+  return embeddingCached;
 }
 
 /** For tests: force a specific provider. */

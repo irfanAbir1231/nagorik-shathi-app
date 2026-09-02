@@ -46,7 +46,7 @@ interface PreferencesContextValue extends Preferences {
 
 const PreferencesContext = createContext<PreferencesContextValue | null>(null);
 
-const STORAGE_KEY = 'accessai.preferences';
+const STORAGE_KEY = 'shebar-janala.preferences';
 
 function readStored(): Partial<Preferences> {
   if (typeof window === 'undefined') return {};

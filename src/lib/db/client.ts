@@ -59,7 +59,7 @@ const construct = constructUntyped as (
 declare global {
   // Reuse across hot reloads; otherwise dev opens a new handle per request.
   // eslint-disable-next-line no-var
-  var __accessai_db__: { db: Database; client: Client } | undefined;
+  var __shebar_janala_db__: { db: Database; client: Client } | undefined;
 }
 
 function ensureLocalDirectory(url: string): void {
@@ -97,9 +97,9 @@ function create(): { db: Database; client: Client } {
   return { db, client };
 }
 
-const instance = globalThis.__accessai_db__ ?? create();
+const instance = globalThis.__shebar_janala_db__ ?? create();
 if (process.env.NODE_ENV !== 'production') {
-  globalThis.__accessai_db__ = instance;
+  globalThis.__shebar_janala_db__ = instance;
 }
 
 export const db = instance.db;

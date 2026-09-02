@@ -4,7 +4,7 @@ import { getPublicTransparencyData } from '@/modules/oversight/oversight.service
 /**
  * GET /api/v1/public/transparency — SJ-37. Deliberately NO session guard: this
  * is the one route in the app meant for the Anti-Corruption Commission,
- * journalists, or any citizen with no AccessAI account at all. Every field
+ * journalists, or any citizen with no Shebar Janala account at all. Every field
  * `getPublicTransparencyData` returns has already been vetted as PII-safe —
  * see the doc comment on that function.
  */

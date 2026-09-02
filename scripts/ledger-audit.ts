@@ -48,7 +48,7 @@ function report(label: string, result: { intact: boolean; checked: number; broke
 }
 
 async function main() {
-  console.log('AccessAI — independent ledger audit');
+  console.log('Shebar Janala — independent ledger audit');
   console.log(`Run at: ${new Date().toISOString()}`);
 
   const ledger = await verifyLedgerChain();

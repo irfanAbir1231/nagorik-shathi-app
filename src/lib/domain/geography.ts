@@ -158,7 +158,7 @@ export function matchDistrict(input: string): DistrictRecord | undefined {
   // Partial containment, longest match first, so "coxsbazar" beats "cox".
   const candidates = DISTRICTS.filter((d) => {
     const en = d.en.toLowerCase().replace(/[^a-z]/g, '');
-    return (en.length >= 4 && normalised.includes(en)) || d.bn.includes(input.trim());
+    return (en.length >= 4 && normalised.includes(en)) || normalised.includes(d.bn);
   });
   return candidates.sort((a, b) => b.en.length - a.en.length)[0];
 }

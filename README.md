@@ -1,11 +1,11 @@
-# AccessAI
+# Shebar Janala
 
-**Bangladesh's AI Opportunity Intelligence Platform** — a working prototype.
+**A safety-constrained civic AI system that turns ordinary Bangla or English life situations into verifiable public-service actions.**
 
 A citizen describes what happened in their life. A deterministic rule engine decides what they
 qualify for. An explanation layer tells them why, in Bangla or English, with its sources shown.
 
-Built to the PRD v3.0 (`docs/product/AccessAI.pdf`) for product behaviour and the Bhorosha Design System v1.0
+Built from the legacy PRD v3.0 for product behaviour and the Bhorosha Design System v1.0
 (`bhorosha-design-system.md`) for everything the citizen sees.
 
 ---
@@ -16,8 +16,8 @@ Everything below is copy-pasteable. **Node 20.9+** and **git** are the only prer
 database server, no Redis, no Docker, no API keys.
 
 ```bash
-git clone https://github.com/i-am-mushfiq/AccessAI.git
-cd AccessAI
+git clone <new-repository-url>
+cd Shebar-Janala
 
 npm install
 cp .env.example .env.local     # every value has a working default
@@ -28,7 +28,7 @@ npm run dev                    # http://localhost:3000
 Then open **http://localhost:3000** — it redirects to `/bn`. Windows users: use Git Bash, or
 substitute `copy .env.example .env.local` for the `cp`.
 
-`.env.local` needs **no editing** to run. The database is a single file at `data/accessai.db`, so
+`.env.local` needs **no editing** to run. The database is a single file at `data/shebar-janala.db`, so
 `rm -rf data/ && npm run setup` is a full reset.
 
 ### Verify it end to end
@@ -37,9 +37,11 @@ Four commands, each of which either passes or tells you exactly what is wrong:
 
 ```bash
 npm run typecheck     # strict TS, noUncheckedIndexedAccess — expect zero output
-npm test              # 685 tests: engine, retrieval, voice, geo, formatting, tokens, a11y
+npm test              # full unit/component suite (current count is reported by Vitest)
 npm run build:verify  # production build + lint, safe to run with `npm run dev` up
 npm run ai:check      # reports which AI provider is live, or "simulated"
+npm run eval          # fixed 500-query + 200-profile reproducible evaluation
+npm run demo:ai       # inspectable Bangla pipeline, rule trace, attack, fallback
 ```
 
 > `build:verify` rather than `build` on purpose. `next dev` and `next build` both
@@ -47,6 +49,10 @@ npm run ai:check      # reports which AI provider is live, or "simulated"
 > which every page fails with `Cannot find module './vendor-chunks/zod.js'` until
 > you delete the directory. `build:verify` writes to `.next-verify` instead. Use
 > plain `npm run build` for a real deploy, with nothing else running.
+
+The core technical design and measured limitations are documented in
+[`docs/technical/AI-SYSTEM-SPEC.md`](docs/technical/AI-SYSTEM-SPEC.md) and
+[`evaluation/README.md`](evaluation/README.md).
 
 Then walk the product itself. Sign in as **Rahima** (`01712345678` / `1234`) and:
 
@@ -134,8 +140,8 @@ This matters more than the feature list, so it is stated first.
   administrator lifts the same answer well above that — you can watch it happen.
   PRD **Part 7 (Knowledge Base & Data Pipeline) is missing from the source document**;
   the ingestion, provenance, and verification model here was authored to fill that gap.
-- **The AI engine is "Simulated" until you supply a key.** With no `ANTHROPIC_API_KEY` or
-  `OPENAI_API_KEY`, responses come from a deterministic composer. The eligibility decisions,
+- **The AI engine is "Simulated" until you supply a key.** With no `ANTHROPIC_API_KEY`,
+  `OPENAI_API_KEY`, or `DEEPSEEK_API_KEY`, responses come from a deterministic composer. The eligibility decisions,
   programmes, reasons, and citations are *identical* either way — only the prose is less fluent.
   The UI says so on every screen and in every logged response. Nothing is faked silently.
 - **The *sample* service locations have invented street addresses and no phone numbers.** Among the
@@ -153,9 +159,9 @@ alongside the sample records and **labelled separately** — a real hospital nev
 measured from the citizen's actual position when they share it, and the screen says which reference
 it used.
 
-**Not built** — see [docs/technical/EXTERNAL.md](docs/technical/EXTERNAL.md) for exactly what each needs:
-SMS delivery, email delivery, vector embeddings, OCR, and voice-OTP callback.
-Each degrades to a stated, usable fallback rather than a broken control.
+**Credential-dependent integrations** — see [docs/technical/EXTERNAL.md](docs/technical/EXTERNAL.md)
+for exactly what each needs: SMS delivery, email delivery, semantic embedding inference, OCR, and
+voice-OTP callback. Each degrades to a stated, usable fallback rather than a broken control.
 
 ---
 
@@ -166,7 +172,9 @@ npm run dev          # dev server
 npm run build        # production build (stop the dev server first — see build:verify)
 npm start            # serve the build
 npm run typecheck    # tsc --noEmit (strict, noUncheckedIndexedAccess)
-npm test             # 685 tests: engine, voice, geo, confidence, formatting, tokens, a11y
+npm test             # full unit/component suite (current count is reported by Vitest)
+npm run eval         # frozen retrieval, eligibility, and safety benchmarks
+npm run demo:ai      # inspectable Bangla AI → retrieval → rules demonstration
 npm run test:a11y    # just the accessibility contracts
 npm run ai:check     # which AI provider is live, and whether it answers
 npm run voice:check  # which speech provider is live, end to end
@@ -198,7 +206,7 @@ Drizzle      (the only layer that knows the SQL dialect)
 ```
 citizen message
    ↓
-NLU                 deterministic: locale, intent, life events, entity extraction
+Civic fact frame    deterministic NLU + constrained model proposals with evidence spans
    ↓
 profile update      only fields the citizen actually stated; never overwrites
    ↓
@@ -246,7 +254,7 @@ src/
     knowledge/                retrieval.ts (hybrid), tokenizer.ts (bn+en)
     opportunities/ recommendation/ citizen/ auth/ admin/
   lib/
-    db/schema.ts              32 tables
+    db/schema.ts              47 application tables
     db/seed/                  the corpus + integrity validation
     domain/                   enums, geography (64 districts), rules (AST)
     format/                   numerals (Bangla, lakh/crore), dates
@@ -316,11 +324,14 @@ The contrast suite found a real error in the design system document — see
 | Document | Contents |
 |---|---|
 | [docs/technical/ARCHITECTURE.md](docs/technical/ARCHITECTURE.md) | Layers, data models, request lifecycle, state management |
+| [docs/technical/AI-SYSTEM-SPEC.md](docs/technical/AI-SYSTEM-SPEC.md) | AI artifacts, controlled fact frame, retrieval, safety boundaries, and measured behavior |
 | [docs/technical/API.md](docs/technical/API.md) | All 28 endpoints, envelope, error codes |
 | [docs/technical/DEVIATIONS.md](docs/technical/DEVIATIONS.md) | Every departure from the PRD or the design system, with reasons |
 | [docs/technical/EXTERNAL.md](docs/technical/EXTERNAL.md) | External services: why needed, mandatory or not, fallback |
 | [docs/technical/KNOWLEDGE-PIPELINE.md](docs/technical/KNOWLEDGE-PIPELINE.md) | The missing PRD Part 7, authored |
 | [docs/technical/TESTING.md](docs/technical/TESTING.md) | Strategy, what is covered, what is not |
+| [evaluation/README.md](evaluation/README.md) | Reproducible benchmark methodology, datasets, commands, and limitations |
+| [docs/competition/DEMO-RUNBOOK.md](docs/competition/DEMO-RUNBOOK.md) | Focused live demonstration script and fallback proof |
 | [docs/product/OPEN-QUESTIONS.md](docs/product/OPEN-QUESTIONS.md) | What still needs a decision from you |
 
 ---

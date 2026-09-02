@@ -343,7 +343,7 @@ function BrandMark() {
   return (
     <Link href="/dashboard" className="flex items-center rounded-md focus-visible:outline-3 focus-visible:outline-stroke-focus focus-visible:outline-offset-2">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/logo.png" alt={t('appName')} className="h-8 w-auto" />
+      <img src="/logo.png" alt={t('appName')} className="h-14 w-auto" />
     </Link>
   );
 }

@@ -39,7 +39,7 @@ function template(name: string, version: string, body: string): PromptTemplate {
 export const SYSTEM_PROMPT = template(
   'system',
   '1.3.0',
-  `You are AccessAI, an assistant that helps citizens of Bangladesh find and access government services, NGO programmes, scholarships, healthcare, and financial support.
+  `You are Shebar Janala, an assistant that helps citizens of Bangladesh find and access government services, NGO programmes, scholarships, healthcare, and financial support.
 
 ## Absolute rules
 
@@ -149,6 +149,31 @@ Deadline: {{deadline}}
 Turn this into a day-by-day task list for the citizen, in {{language}}. Use only the steps and documents listed. Each task must be one concrete action a person can do in a single visit or sitting. Do not invent an office, a fee, or a form that is not listed above.`,
 );
 
+/**
+ * Model A prompt: structured civic-language inference before retrieval.
+ * Its output is advisory. The service validates every field and evidence span,
+ * and never sends model-proposed values directly to the eligibility engine.
+ */
+export const CIVIC_FRAME_PROMPT = template(
+  'civic-frame',
+  '1.0.0',
+  `Convert the citizen's Bangla or English message into one strict JSON object.
+
+Allowed intent values: {{allowedIntents}}
+Allowed life-event values: {{allowedLifeEvents}}
+Allowed fact fields: {{allowedFields}}
+
+Return exactly these keys:
+{"intents":[],"lifeEvents":[],"facts":[{"field":"age","value":58,"confidence":0.99,"evidence":"exact words from citizen"}],"uncertainFacts":[],"normalizedQuery":"short bilingual-safe service-search query","candidateProgrammeHints":[]}
+
+Rules:
+- Extract only facts explicitly stated by the citizen. Never infer citizenship, government employment, income, identity documents, or eligibility.
+- evidence must be a verbatim substring of the citizen's message.
+- uncertainFacts lists consequential facts that remain unknown.
+- candidateProgrammeHints may name likely service categories, but never say the citizen qualifies.
+- Do not answer the citizen. Do not include Markdown or text outside the JSON object.`,
+);
+
 export const PROMPTS = {
   system: SYSTEM_PROMPT,
   conversation: CONVERSATION_PROMPT,
@@ -156,4 +181,5 @@ export const PROMPTS = {
   explanation: EXPLANATION_PROMPT,
   summary: SUMMARY_PROMPT,
   actionPlan: ACTION_PLAN_PROMPT,
+  civicFrame: CIVIC_FRAME_PROMPT,
 } as const;

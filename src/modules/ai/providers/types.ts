@@ -3,7 +3,7 @@ import type { AiEngine } from '@/lib/domain/enums';
 /**
  * The provider contract.
  *
- * Exactly one seam between AccessAI and any language model. Services depend on
+ * Exactly one seam between Shebar Janala and any language model. Services depend on
  * this interface only, so the deterministic engine and a hosted model are
  * interchangeable — and, critically, the engine that served a response is
  * always known and is reported to the citizen (never silently swapped).

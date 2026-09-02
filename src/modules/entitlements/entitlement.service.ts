@@ -116,7 +116,7 @@ export async function checkMyEntitlementStatus(userId: string): Promise<Entitlem
 }
 
 /**
- * SJ-23 — the USSD path. A caller with no AccessAI account keys in their own
+ * SJ-23 — the USSD path. A caller with no Shebar Janala account keys in their own
  * NID; this hashes it with the exact same function `enrollBeneficiary` and
  * NID verification use, so it matches a beneficiary record regardless of
  * whether that person ever created an account.

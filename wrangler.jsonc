@@ -1,7 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"main": ".open-next/worker.js",
-	"name": "accessai",
+	"name": "shebar-janala",
 	"compatibility_date": "2026-08-20",
 	"compatibility_flags": [
 		"nodejs_compat",
@@ -16,7 +16,7 @@
 			// Self-reference service binding, the service name must match the worker name
 			// see https://opennext.js.org/cloudflare/caching
 			"binding": "WORKER_SELF_REFERENCE",
-			"service": "accessai"
+			"service": "shebar-janala"
 		}
 	],
 	"r2_buckets": [
@@ -27,7 +27,7 @@
 			// Create the bucket before deploying
 			// You can change the bucket name if you want
 			// See https://developers.cloudflare.com/workers/wrangler/commands/#r2-bucket-create
-			"bucket_name": "accessai-opennext-cache"
+			"bucket_name": "shebar-janala-opennext-cache"
 		}
 	],
 	"images": {

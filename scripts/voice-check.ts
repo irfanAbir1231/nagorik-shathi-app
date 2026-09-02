@@ -72,7 +72,7 @@ async function listModels(baseUrl: string, key: string): Promise<string[] | null
 async function main() {
   const capabilities = describeVoiceCapabilities();
 
-  console.log('AccessAI — voice check\n');
+  console.log('Shebar Janala — voice check\n');
   console.log(`  VOICE_MODE          ${env.VOICE_MODE}${capabilities.mode !== env.VOICE_MODE ? `  → reported as "${capabilities.mode}" (no STT key)` : ''}`);
   console.log(`  navigation          always available (deterministic, no key needed)`);
   console.log('');

@@ -31,7 +31,7 @@ const FORMAT_TAG = 'v1';
  * with no .env. Never reachable in production — `assertProductionSafety()`
  * refuses to boot without a real `FIELD_ENCRYPTION_KEY`.
  */
-const DEV_FALLBACK_KEY = createHash('sha256').update('accessai-dev-only-field-key-do-not-use-in-prod').digest();
+const DEV_FALLBACK_KEY = createHash('sha256').update('shebar-janala-dev-only-field-key-do-not-use-in-prod').digest();
 
 function resolveKey(): Buffer {
   if (!env.FIELD_ENCRYPTION_KEY) return DEV_FALLBACK_KEY;

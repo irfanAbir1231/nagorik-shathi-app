@@ -15,7 +15,7 @@ import { handleUssdCallback } from '@/modules/ussd/ussd.service';
  * calls, so there is nothing to authenticate that the underlying function
  * does not already enforce itself (residency verification before an issue
  * can be filed, etc.). No session is required either: a real USSD caller
- * has no AccessAI account to log into, and the simulator should not require
+ * has no Shebar Janala account to log into, and the simulator should not require
  * one a real caller wouldn't have.
  *
  * Returns JSON, not the raw `CON`/`END`-prefixed plain text the real

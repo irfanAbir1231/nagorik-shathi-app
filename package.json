@@ -1,8 +1,8 @@
 {
-  "name": "accessai",
+  "name": "shebar-janala",
   "version": "1.0.0",
   "private": true,
-  "description": "AccessAI — Bangladesh's AI Opportunity Intelligence Platform",
+  "description": "Shebar Janala — Bangladesh's AI Opportunity Intelligence Platform",
   "engines": {
     "node": ">=20.9.0"
   },
@@ -21,6 +21,8 @@
     "osm:clear": "tsx scripts/clear-osm-cache.ts",
     "voice:bangla": "tsx scripts/voice-bangla-probe.ts",
     "ledger:audit": "tsx scripts/ledger-audit.ts",
+    "eval": "tsx evaluation/run.ts",
+    "demo:ai": "tsx scripts/demo-civic-pipeline.ts",
     "setup": "npm run db:push && npm run db:seed",
     "test": "vitest run",
     "test:watch": "vitest",

@@ -245,7 +245,7 @@ export const organizations = sqliteTable(
     lng: real('lng'),
     officeHours: text('office_hours'),
     officeHoursBn: text('office_hours_bn'),
-    /** Distinct from verificationStatus: does AccessAI vouch for the entity. */
+    /** Distinct from verificationStatus: does Shebar Janala vouch for the entity. */
     verified: integer('verified', { mode: 'boolean' }).notNull().default(false),
     verificationStatus: text('verification_status', { enum: VERIFICATION_STATUSES })
       .notNull().default('unverified_sample'),
@@ -893,7 +893,7 @@ export const escalations = sqliteTable(
  * hash (never the raw number), so `checkMyEntitlementStatus` can match a
  * citizen to their own enrolment without a second identity system. `userId`
  * is nullable because a beneficiary can be enrolled before they ever create
- * an AccessAI account.
+ * a Shebar Janala account.
  */
 export const beneficiaries = sqliteTable(
   'beneficiaries',

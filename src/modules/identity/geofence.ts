@@ -6,7 +6,7 @@ import type { UnionBoundary } from '@/lib/db/schema';
  * Union/ward geofencing — Phase 1.
  *
  * A real boundary check, not the district-level approximation the rest of
- * AccessAI uses for "nearby" distance ordering (lib/domain/geography.ts).
+ * Shebar Janala uses for "nearby" distance ordering (lib/domain/geography.ts).
  * This is the one requirement that structurally needs polygon precision, so
  * it gets its own small, dependency-free point-in-polygon test rather than
  * reusing the haversine-distance helper.
