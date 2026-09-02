@@ -95,7 +95,7 @@ async function main() {
     } else {
       reciprocalRanks.push(1 / (firstHitIndex + 1));
       for (const k of K_VALUES) {
-        if (firstHitIndex < k) hitsAtK[k] += 1;
+        if (firstHitIndex < k) hitsAtK[k] = (hitsAtK[k] ?? 0) + 1;
       }
       if (firstHitIndex < 3) {
         if (item.language === 'bn') bnHits += 1;
@@ -114,8 +114,9 @@ async function main() {
   console.log('Channel: BM25 lexical only unless an embedding key is configured.');
   console.log('');
   for (const k of K_VALUES) {
-    const pct = ((hitsAtK[k] / n) * 100).toFixed(1);
-    console.log(`  Recall@${String(k).padEnd(2)}  ${String(hitsAtK[k]).padStart(2)}/${n}   ${pct}%`);
+    const hits = hitsAtK[k] ?? 0;
+    const pct = ((hits / n) * 100).toFixed(1);
+    console.log(`  Recall@${String(k).padEnd(2)}  ${String(hits).padStart(2)}/${n}   ${pct}%`);
   }
   console.log(`  MRR       ${mrr.toFixed(3)}`);
   console.log('');
