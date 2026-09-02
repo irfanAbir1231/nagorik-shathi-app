@@ -567,12 +567,11 @@ A weak signing secret is a total-compromise defect, so it is an error rather tha
 
 ---
 
-## 11. Optional native dependency
+## 11. No native dependencies
 
-`@node-rs/argon2` is an **optional** dependency. Present → Argon2id. Absent (common on Windows
-without prebuilt binaries) → scrypt at N=2^15. Both hashes are self-describing, so an installation
-can gain Argon2 later without invalidating credentials, and a host that *loses* the module fails
-closed rather than silently accepting a password it cannot verify.
+Secret hashing uses scrypt from Node core exclusively (N=2^15) — see [DEVIATIONS.md](DEVIATIONS.md)
+§11. An earlier build used `@node-rs/argon2` when present, but that native dependency cannot run on
+Cloudflare Workers at all, so it was dropped rather than left as a trap for local dev.
 
 The first build also fetches the Inter and Noto Sans Bengali font files through `next/font`, so it
 needs network access **once**; after that the cache makes builds offline.

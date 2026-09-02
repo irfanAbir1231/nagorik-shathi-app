@@ -1,12 +1,12 @@
 import type { NextRequest } from 'next/server';
-import { desc, eq, sql, and, inArray } from 'drizzle-orm';
+import { desc, eq, sql, and } from 'drizzle-orm';
 import { db } from '@/lib/db/client';
-import { opportunities, organizations, eligibilityRules, documents, documentChunks } from '@/lib/db/schema';
+import { opportunities, organizations, eligibilityRules } from '@/lib/db/schema';
 import { ok, readJson, handle, fail, ERROR_CODES } from '@/lib/http/response';
 import { requireStaff } from '@/lib/http/session';
 import { upsertOpportunitySchema, parseQuery } from '@/lib/validation/schemas';
 import { recordAudit } from '@/modules/admin/admin.service';
-import { chunkText, termFrequencies, estimateTokens } from '@/modules/knowledge/tokenizer';
+import { indexOpportunity } from '@/modules/opportunities/opportunity.service';
 import { z } from 'zod';
 
 const listSchema = z.object({
@@ -123,83 +123,6 @@ export async function POST(request: NextRequest) {
 
     return ok({ opportunity: created }, { status: 201 });
   }, 'admin/programs:post');
-}
-
-/**
- * Regenerates the retrieval document and chunks for a programme.
- *
- * Called on create and on update, because a programme whose text has changed but
- * whose index has not will be retrieved for the old wording and cited with the
- * new — a subtle way to produce an answer that does not match its own source.
- */
-export async function indexOpportunity(opportunityId: string): Promise<number> {
-  const [row] = await db
-    .select({ opportunity: opportunities, organizationName: organizations.name })
-    .from(opportunities)
-    .innerJoin(organizations, eq(opportunities.organizationId, organizations.id))
-    .where(eq(opportunities.id, opportunityId))
-    .limit(1);
-  if (!row) return 0;
-
-  const o = row.opportunity;
-
-  const existing = await db
-    .select({ id: documents.id })
-    .from(documents)
-    .where(eq(documents.opportunityId, opportunityId));
-  if (existing.length > 0) {
-    await db.delete(documentChunks).where(inArray(documentChunks.documentId, existing.map((d) => d.id)));
-    await db.delete(documents).where(eq(documents.opportunityId, opportunityId));
-  }
-
-  const bodyEn = [
-    `# ${o.title}`,
-    o.summary,
-    o.description,
-    `## Benefits\n${o.benefits}`,
-    `## How to apply\n${o.applicationProcess.map((s) => `${s.step}. ${s.en}`).join('\n')}`,
-  ].join('\n\n');
-  const bodyBn = [
-    `# ${o.titleBn}`,
-    o.summaryBn,
-    o.descriptionBn,
-    `## সুবিধা\n${o.benefitsBn}`,
-    `## আবেদনের ধাপ\n${o.applicationProcess.map((s) => `${s.step}. ${s.bn}`).join('\n')}`,
-  ].join('\n\n');
-
-  const [document] = await db
-    .insert(documents)
-    .values({
-      opportunityId,
-      organizationId: o.organizationId,
-      title: o.title,
-      titleBn: o.titleBn,
-      sourceType: 'manual_entry',
-      sourceUrl: o.sourceUrl,
-      publisher: row.organizationName,
-      retrievedAt: new Date(),
-      textContent: `${bodyEn}\n\n---\n\n${bodyBn}`,
-      embeddingStatus: 'pending',
-      verificationStatus: o.verificationStatus,
-      licenseNote: 'Authored summary maintained in the AccessAI admin portal.',
-    })
-    .returning();
-
-  const chunks = [...chunkText(bodyEn), ...chunkText(bodyBn)];
-  if (chunks.length > 0) {
-    await db.insert(documentChunks).values(
-      chunks.map((content, index) => ({
-        documentId: document!.id,
-        opportunityId,
-        chunkIndex: index,
-        content,
-        tokenCount: estimateTokens(content),
-        termFrequencies: termFrequencies(content),
-        metadata: { slug: o.slug, category: o.category, title: o.title, titleBn: o.titleBn },
-      })),
-    );
-  }
-  return chunks.length;
 }
 
 export const dynamic = 'force-dynamic';

@@ -261,6 +261,8 @@ const schema = z.object({
   S3_ACCESS_KEY: optionalStr,
   S3_SECRET_KEY: optionalStr,
   S3_ENDPOINT: optionalStr,
+  /** Public base URL for reading back what was written (an R2 bucket's r2.dev URL, or a custom domain). Falls back to S3_ENDPOINT/S3_BUCKET, which is not public on R2. */
+  S3_PUBLIC_URL: optionalStr,
 
   NEXT_PUBLIC_APP_NAME: nonEmpty.default('AccessAI'),
 

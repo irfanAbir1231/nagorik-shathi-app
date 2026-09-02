@@ -16,17 +16,16 @@ const scrypt = promisify(scryptCb) as (
 /**
  * Secret hashing for PINs and refresh tokens.
  *
- * PRD §48 and §121 specify Argon2id. `@node-rs/argon2` is declared as an
- * OPTIONAL dependency: when present it is used, and when it is not (a common
- * situation on Windows without prebuilt binaries) this module falls back to
- * scrypt from Node's core crypto at deliberately high cost parameters.
+ * PRD §48 and §121 specify Argon2id, which this deliberately does not use:
+ * Argon2's cost comes from native code, and this app's deployment target
+ * (Cloudflare Workers) cannot run native code at all, ever — not a matter of
+ * configuration or a missing prebuilt binary, but the isolate has no way to
+ * execute compiled code full stop. Any credential created with it locally
+ * would then permanently fail to verify once deployed. scrypt, from Node's
+ * core crypto, is memory-hard, works identically in dev and in Workers
+ * (`nodejs_compat`), and needs no native module — see docs/DEVIATIONS.md.
  *
- * Both paths are memory-hard and both produce a self-describing string, so the
- * stored value records which algorithm made it and verification routes itself
- * correctly. That means an installation can gain Argon2 later without
- * invalidating existing credentials.
- *
- * Format: `algorithm$params$salt$digest`
+ * Format: `scrypt$N.r.p$salt$digest`
  */
 
 const SCRYPT_PARAMS = {
@@ -38,28 +37,7 @@ const SCRYPT_PARAMS = {
   keyLength: 64,
 } as const;
 
-type Argon2Module = {
-  hash: (password: string, options?: Record<string, unknown>) => Promise<string>;
-  verify: (hashed: string, password: string) => Promise<boolean>;
-};
-
-let argon2Promise: Promise<Argon2Module | null> | null = null;
-
-async function loadArgon2(): Promise<Argon2Module | null> {
-  if (argon2Promise === null) {
-    argon2Promise = import('@node-rs/argon2')
-      .then((m) => m as unknown as Argon2Module)
-      .catch(() => null);
-  }
-  return argon2Promise;
-}
-
 export async function hashSecret(secret: string): Promise<string> {
-  const argon2 = await loadArgon2();
-  if (argon2) {
-    // The library embeds its own parameters and salt in the returned string.
-    return argon2.hash(secret);
-  }
   const salt = randomBytes(16);
   const derived = (await scrypt(secret, salt, SCRYPT_PARAMS.keyLength, {
     N: SCRYPT_PARAMS.N,
@@ -71,18 +49,6 @@ export async function hashSecret(secret: string): Promise<string> {
 }
 
 export async function verifySecret(secret: string, stored: string): Promise<boolean> {
-  if (stored.startsWith('$argon2')) {
-    const argon2 = await loadArgon2();
-    if (!argon2) {
-      // The credential was made with Argon2 but the module is now missing.
-      // Failing closed is correct: silently accepting would be a security hole.
-      throw new Error(
-        'This credential was created with Argon2 but @node-rs/argon2 is not installed. Reinstall it to sign in.',
-      );
-    }
-    return argon2.verify(stored, secret).catch(() => false);
-  }
-
   const parts = stored.split('$');
   if (parts.length !== 4 || parts[0] !== 'scrypt') return false;
   const [, paramsRaw, saltRaw, digestRaw] = parts as [string, string, string, string];

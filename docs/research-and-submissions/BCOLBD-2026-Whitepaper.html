@@ -1,0 +1,1404 @@
+<title>AccessAI Whitepaper</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+  :root {
+    --paper: #FBFAF6;
+    --card: #F4F3EC;
+    --ink: #16211C;
+    --muted: #58635C;
+    --rule: #D5D7CB;
+    --rule-strong: #A9AEA1;
+    --brand: #14532D;
+    --brand-mid: #2F6B45;
+    --brand-wash: #ECF1EC;
+    --signal: #8A5A08;
+    --signal-wash: #FAF2E1;
+    --stop: #8C2F1F;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #101310;
+      --card: #171B16;
+      --ink: #E6EAE3;
+      --muted: #9BA69C;
+      --rule: #2B312B;
+      --rule-strong: #4A524A;
+      --brand: #8FCBA3;
+      --brand-mid: #A8D8B7;
+      --brand-wash: #16201A;
+      --signal: #DFB365;
+      --signal-wash: #221C10;
+      --stop: #E8927F;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #101310;
+    --card: #171B16;
+    --ink: #E6EAE3;
+    --muted: #9BA69C;
+    --rule: #2B312B;
+    --rule-strong: #4A524A;
+    --brand: #8FCBA3;
+    --brand-mid: #A8D8B7;
+    --brand-wash: #16201A;
+    --signal: #DFB365;
+    --signal-wash: #221C10;
+    --stop: #E8927F;
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.32;
+    -webkit-font-smoothing: antialiased;
+  }
+  .doc { max-width: 46rem; margin: 0 auto; padding: 3.5rem 1.75rem 6rem; }
+
+  h1, h2, h3, h4 { font-weight: 700; text-wrap: balance; margin: 0; }
+  h1 { font-size: 26pt; line-height: 1.1; letter-spacing: -0.4px; color: var(--brand); }
+  h2 {
+    font-size: 14pt; color: var(--brand); margin-top: 1.6em; padding-top: 0.5em;
+    border-top: 1.5px solid var(--rule-strong); break-after: avoid;
+  }
+  h3 { font-size: 11.5pt; margin-top: 1.15em; break-after: avoid; }
+  h4 { font-size: 11pt; margin-top: 1em; color: var(--brand-mid); break-after: avoid; }
+  p, ul, ol { margin: 0.45em 0; }
+  ul, ol { padding-left: 1.15rem; }
+  li { margin: 0.15em 0; }
+  strong { font-weight: 700; }
+  a { color: var(--brand-mid); }
+
+  .eyebrow {
+    font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.1px;
+    color: var(--muted); font-weight: 700;
+  }
+  .lede { font-size: 12pt; color: var(--muted); margin-top: 0.4em; }
+  .rule-hair { border: 0; border-top: 1px solid var(--rule); margin: 1.1em 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 9.5pt; line-height: 1.22; margin: 0.6em 0; }
+  thead { display: table-header-group; }
+  tr { break-inside: auto; }
+  caption {
+    caption-side: top; text-align: left; font-size: 8.5pt; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); padding-bottom: 0.35em;
+  }
+  th, td { text-align: left; vertical-align: top; padding: 0.22em 0.45em 0.22em 0; border-bottom: 1px solid var(--rule); }
+  thead th { border-bottom: 1.5px solid var(--rule-strong); color: var(--brand); }
+  tbody tr:last-child td { border-bottom: 1.5px solid var(--rule-strong); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .tw { overflow-x: auto; }
+
+  figure { margin: 1em 0; break-inside: avoid; }
+  figure svg { display: block; width: 100%; max-width: 100%; height: auto; color: var(--ink); }
+  figcaption { font-size: 9pt; color: var(--muted); margin-top: 0.35em; }
+  figcaption b { color: var(--ink); }
+
+  .chip {
+    display: inline-block; font-size: 8pt; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.6px; padding: 0.1em 0.4em; border: 1px solid currentColor; border-radius: 2px;
+    vertical-align: 1.5px; white-space: nowrap;
+  }
+  .c-impl { color: var(--brand-mid); }
+  .c-part { color: var(--signal); }
+  .c-prop { color: var(--muted); }
+  .c-no { color: var(--stop); }
+
+  .note {
+    background: var(--card); border-left: 3px solid var(--brand-mid);
+    padding: 0.55em 0.75em; margin: 0.8em 0; font-size: 10pt; break-inside: avoid;
+  }
+  .note.warn { border-left-color: var(--signal); background: var(--signal-wash); }
+  .note p { margin: 0.25em 0; }
+  .note .eyebrow { display: block; margin-bottom: 0.2em; }
+
+  .cover { padding-bottom: 0.5em; }
+  .cover .band { height: 6px; background: var(--brand); margin-bottom: 1.4em; }
+  .kv { font-size: 10pt; }
+  .kv td { border: 0; padding: 0.18em 0.6em 0.18em 0; }
+  .kv td:first-child { color: var(--muted); white-space: nowrap; width: 9.5rem; }
+  .fill { color: var(--signal); font-weight: 700; }
+
+  code, .mono { font-family: Consolas, "DejaVu Sans Mono", monospace; font-size: 9.5pt; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.4rem; }
+  .tight li { margin: 0.05em 0; }
+  .refs { font-size: 9pt; columns: 2; column-gap: 1.4rem; }
+  .refs li { break-inside: avoid; }
+
+  @media print {
+    :root {
+      --paper: #FFFFFF; --card: #F3F3EC; --ink: #14201B; --muted: #4C544E;
+      --rule: #C9CBBF; --rule-strong: #8E948A; --brand: #12441F; --brand-mid: #2A5F3C;
+      --brand-wash: #EEF2EC; --signal: #7A4E06; --signal-wash: #F8F1E2; --stop: #7E2A1B;
+    }
+    @page { size: A4; margin: 15mm 15mm 14mm; }
+    body { font-size: 11pt; line-height: 1.22; }
+    .doc { max-width: none; padding: 0; }
+    h2 { margin-top: 1em; padding-top: 0.35em; }
+    h3 { margin-top: 0.9em; }
+    table { font-size: 9pt; line-height: 1.18; margin: 0.5em 0; }
+    figure { margin: 0.7em 0; }
+    .note { margin: 0.6em 0; }
+  }
+</style>
+
+<div class="doc">
+
+<!-- ============================== COVER ============================== -->
+<header class="cover">
+  <div class="band"></div>
+  <div class="eyebrow">Blockchain Olympiad Bangladesh 2026 · Artificial Intelligence and Blockchain categories</div>
+  <h1>AccessAI and the Bhorosha Trust Registry</h1>
+  <p class="lede">Verifiable entitlement guidance for Bangladeshi citizens: a deterministic eligibility
+  engine that already works, an AI layer that lets people who cannot read or type use it, and a
+  multi-issuer attestation ledger that makes the rules it applies provable rather than merely asserted.</p>
+
+  <hr class="rule-hair">
+  <table class="kv">
+    <tr><td>Project name</td><td><strong>AccessAI</strong> — public-service discovery and eligibility platform for Bangladesh.
+      Proposed consortium component: <strong>Bhorosha Trust Registry (BTR)</strong>.</td></tr>
+    <tr><td>Categories entered</td><td>Artificial Intelligence <em>and</em> Blockchain</td></tr>
+    <tr><td>Working prototype</td><td>Next.js 15 modular monolith · 32 tables · 51 API handlers · 685 automated tests · bn-BD / en-BD parity · runs with no external service and no API key</td></tr>
+    <tr><td>Repository</td><td><span class="mono">github.com/i-am-mushfiq/AccessAI</span> · branch <span class="mono">feature/openstreetmap-nearby</span></td></tr>
+    <tr><td>Document version</td><td>1.0 · 18 August 2026</td></tr>
+  </table>
+
+  <hr class="rule-hair">
+  <div class="eyebrow">Team</div>
+  <table class="kv">
+    <tr><td>Team name</td><td class="fill">⟨team name⟩</td></tr>
+    <tr><td>Institution</td><td class="fill">⟨institution / department⟩</td></tr>
+    <tr><td>Team leader</td><td class="fill">⟨full name⟩</td><td class="fill">⟨programme, year⟩</td><td><span class="mono">mushfiqur.mushfique@paynext.com.bd</span></td></tr>
+    <tr><td>Member 2</td><td class="fill">⟨full name⟩</td><td class="fill">⟨role: AI / data⟩</td><td class="fill">⟨email · phone⟩</td></tr>
+    <tr><td>Member 3</td><td class="fill">⟨full name⟩</td><td class="fill">⟨role: blockchain⟩</td><td class="fill">⟨email · phone⟩</td></tr>
+    <tr><td>Mentor / advisor</td><td class="fill">⟨name, affiliation⟩</td></tr>
+  </table>
+  <div class="note warn">
+    <span class="eyebrow">Before submission</span>
+    <p>Every field marked in amber is mandatory under the BCOLBD 2026 rules and must be completed by the
+    team. Nothing else in this document is a placeholder: all implementation claims are drawn from the
+    repository, and all proposed work is labelled as proposed.</p>
+  </div>
+</header>
+
+<!-- ============================== ABSTRACT ============================== -->
+<h2>1 · Abstract</h2>
+<p>Bangladesh operates a large portfolio of social protection, education, health and livelihood
+programmes, but a citizen's ability to obtain one depends on knowing it exists, knowing whether they
+qualify, and being able to prove it. AccessAI is a working bilingual, voice-accessible platform in
+which a citizen describes a life event in ordinary Bangla and receives a deterministic, fully traced
+eligibility decision with cited evidence, an action plan and nearby offices. Language models render
+explanations; they never decide. Two limits are structural rather than incidental. First, the people
+who most need the system cannot read or type, and free-text understanding is currently pattern-based,
+so reach is capped by perception, not by rules — a genuine machine-learning problem. Second, the
+platform's own database is the only witness to what a programme's rule was and who verified it, so no
+ministry, NGO, auditor or citizen can check the operator's claim — a genuine multi-party trust
+problem. We propose an AI layer for Bangla speech, information extraction and circular-to-rule
+document intelligence, and a permissioned, token-free attestation ledger on which issuing
+organisations sign programme-rule versions and the platform anchors decision digests. Because
+eligibility is a pure function of committed inputs, an anchored decision is independently
+recomputable. No personal data, and no cryptoasset, is placed on-chain.</p>
+
+<!-- ============================== PROBLEM ============================== -->
+<h2>2 · Problem and context</h2>
+
+<h3>2.1 Who experiences the problem, and what exactly goes wrong</h3>
+<p>The primary subject is a low-income citizen with limited formal literacy and a shared or
+low-specification phone: a widow in Rangpur, a flood-affected farmer in Kurigram, an elderly person or a
+person with a disability in a union outside a district town. Their difficulty is not one missing web page but
+a chain of four failures, and fixing only one changes nothing:</p>
+<ol class="tight">
+  <li><strong>Discovery.</strong> Programme rules live in circulars, ministry sites, notice boards and
+  the working memory of local officials. There is no single place where "what am I entitled to, given
+  what has just happened to me" is answerable.</li>
+  <li><strong>Interpretation.</strong> Eligibility is conjunctive and numeric — age bands, income
+  ceilings, land holding, district coverage, household composition. A citizen cannot evaluate it from
+  prose, and neither can a helpful neighbour.</li>
+  <li><strong>Proof.</strong> Even correct advice is unusable if the citizen cannot show that it was
+  correct. Documents are re-collected for every programme, and a determination made at one office does
+  not travel to the next.</li>
+  <li><strong>Accountability.</strong> When advice is wrong — a stale threshold, a superseded circular
+  — nobody can establish afterwards what the rule was at the moment the advice was given, or who
+  asserted it.</li>
+</ol>
+
+<h3>2.2 Why the problem persists</h3>
+<p>Three mechanisms keep it in place. <em>Information asymmetry with a channel mismatch:</em> the
+authoritative text is written for administrators, in a register and medium the beneficiary cannot use, while
+the citizen's only high-bandwidth channel is speech. <em>Institutional fragmentation:</em> the rules are
+owned by many separate bodies — Social Services, Women Affairs, Agricultural Extension, Youth Development,
+BMET, the National Legal Aid Services Organisation, and NGOs such as BRAC and BLAST — none with authority
+over the others' rules, and none an accepted custodian of a combined registry. <em>Verification cost:</em>
+confirming that a threshold is current is skilled human work, and without a process that makes it cheap and
+attributable any corpus decays into confident staleness.</p>
+
+<h3>2.3 Who else is affected, and what it costs</h3>
+<p>Field officers and Union Digital Centre operators absorb the interpretation burden as unpaid advisory
+work; programme administrators face inclusion and exclusion errors they cannot attribute to a cause; and
+development partners financing social protection cannot separate "the benefit did not reach people" from
+"people did not know about it". For a household the economic consequence is asymmetric: an unclaimed monthly
+allowance compounds over years, while a wasted trip to a district office costs a day's wage plus fare against
+a monthly income of a few thousand taka. The social consequence matters most for adoption — a citizen told
+"no" by a system that cannot explain itself experiences the state as having refused them.</p>
+
+<h3>2.4 Evidence position</h3>
+<div class="note">
+  <span class="eyebrow">Evidence discipline</span>
+  <p>This document deliberately asserts no numeric prevalence figure it cannot source. The
+  qualitative claims above are grounded in named public frameworks — the National Social Security
+  Strategy (2015), which itself identifies fragmentation across programmes and administering
+  ministries as a core weakness; the a2i service ecosystem, the 333 national call centre and the
+  Union Digital Centre network as the state's existing citizen-navigation channels; and BBS household
+  survey instrumentation as the sampling frame any prevalence claim must come from. Section 20 lists
+  the six measurements this project must produce before it is entitled to claim an impact number, and
+  the baseline study is scheduled in Phase 2 rather than asserted now (Table 13).</p>
+</div>
+
+<h3>2.5 Why current solutions are insufficient</h3>
+<p>The strongest existing alternatives are not other apps but a human helpline, a human operator and a
+general-purpose chatbot, and each fails on a different axis (Table 11). The 333 helpline and a UDC operator
+answer intelligibly over a channel citizens actually have, but neither leaves a written, traceable
+determination nor scales to per-citizen numeric evaluation across dozens of programmes. A general assistant
+is fluent in Bangla and useless here for one reason: it produces a plausible income threshold, and a
+plausible threshold is indistinguishable from a correct one to the person acting on it. Government portals
+hold the authoritative text but require the citizen to know what to look for. What is missing is a system
+that is <em>simultaneously</em> conversational, deterministic in its determinations, and externally
+verifiable in the rules it applies.</p>
+
+<!-- ============================== EXISTING SYSTEM ============================== -->
+<h2>3 · The existing system, and where it stops</h2>
+
+<h3>3.1 What is built today</h3>
+<p>AccessAI exists as a working modular monolith: one Next.js 15 application (React 19, TypeScript
+strict) over Drizzle ORM and libSQL, with 32 tables, 31 route files exposing 51 handlers under
+<span class="mono">/api/v1</span>, and 685 automated tests including 28 assertions that compute WCAG
+contrast ratios from the declared design tokens. It starts with two commands and needs no database
+server, no cache, and no API key. A feature discovery pass over the implementation catalogued 219
+distinct capabilities across 19 domains, of which 201 are fully implemented in the default
+configuration, 11 are built but gated on an optional credential, and 7 are deliberately unbuilt with
+a stated fallback.</p>
+
+<p>The citizen journey is complete end to end: sign in by phone, OTP and PIN; describe a situation in
+Bangla, English or Banglish by typing or speaking; receive ranked programmes with a per-condition
+eligibility verdict; save them, generate an action plan from the programme's own recorded application
+steps, tick tasks, and follow deadlines on a timeline; and find real nearby offices on an
+OpenStreetMap view. Staff surfaces are equally real: moderators author programmes and publish
+versioned rules, administrators verify records, and every staff mutation writes an append-only audit
+row.</p>
+
+<figure>
+  <svg viewBox="0 0 720 300" role="img" aria-label="Current architecture: a layered Next.js monolith on the left, and the fixed order of the conversation pipeline on the right, with the language model confined to the final rendering step.">
+    <defs>
+      <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g font-family="Calibri, Carlito, Arial, sans-serif" font-size="11" fill="currentColor">
+      <text x="0" y="12" font-size="10" font-weight="700" letter-spacing="0.8">APPLICATION LAYERS</text>
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="0" y="24" width="250" height="34"/><rect x="0" y="62" width="250" height="34"/>
+        <rect x="0" y="100" width="250" height="34"/><rect x="0" y="138" width="250" height="34"/>
+        <rect x="0" y="176" width="250" height="34"/>
+      </g>
+      <text x="10" y="45">Server / client components · bn · en</text>
+      <text x="10" y="83">Middleware: locale, session, RBAC</text>
+      <text x="10" y="121">Route handlers — parse, guard, wrap</text>
+      <text x="10" y="159">Services — all business logic</text>
+      <text x="10" y="197">Drizzle ORM → libSQL (32 tables)</text>
+      <line x1="125" y1="172" x2="125" y2="176" stroke="currentColor" marker-end="url(#a1)"/>
+      <text x="0" y="232" font-size="10" fill="currentColor" opacity="0.75">No business logic imports the framework:</text>
+      <text x="0" y="246" font-size="10" fill="currentColor" opacity="0.75">the engine is a pure, testable function.</text>
+
+      <text x="300" y="12" font-size="10" font-weight="700" letter-spacing="0.8">ONE CONVERSATION TURN — FIXED ORDER</text>
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="300" y="24" width="420" height="26"/><rect x="300" y="56" width="420" height="26"/>
+        <rect x="300" y="88" width="420" height="26"/><rect x="300" y="120" width="420" height="26"/>
+        <rect x="300" y="152" width="420" height="26"/>
+      </g>
+      <text x="310" y="41">Deterministic NLU — locale, 13 intents, 15 life events, entities</text>
+      <text x="310" y="73">Retrieval — metadata pre-filter, then BM25 (+ optional vectors, RRF)</text>
+      <text x="310" y="105">Rule engine — 3-valued verdict + per-condition trace. No model.</text>
+      <text x="310" y="137">Ranking 40/15/15/10/10/10 · confidence · ResponsePlan</text>
+      <g stroke="#2F6B45" fill="none" stroke-width="1.6"><rect x="300" y="184" width="420" height="26"/></g>
+      <text x="310" y="201" fill="#2F6B45" font-weight="700">Render only — LLM, or the deterministic composer</text>
+      <g stroke="currentColor" stroke-width="1" marker-end="url(#a1)">
+        <line x1="510" y1="50" x2="510" y2="55"/><line x1="510" y1="82" x2="510" y2="87"/>
+        <line x1="510" y1="114" x2="510" y2="119"/><line x1="510" y1="146" x2="510" y2="151"/>
+        <line x1="510" y1="178" x2="510" y2="183"/>
+      </g>
+      <text x="300" y="232" font-size="10" opacity="0.75">Every fact the model may state is enumerated before it is called.</text>
+      <text x="300" y="246" font-size="10" opacity="0.75">If retrieval returns nothing, the model is not called at all.</text>
+      <line x1="252" y1="155" x2="296" y2="120" stroke="currentColor" stroke-width="1" marker-end="url(#a1)"/>
+    </g>
+  </svg>
+  <figcaption><b>Figure 1 · Current architecture, as implemented.</b> The ordering is the architecture:
+  understanding, retrieval, decision, ranking and citation are all deterministic and complete before
+  any language model is invoked, which is what makes the model's output auditable and its absence
+  survivable.</figcaption>
+</figure>
+
+<h3>3.2 The parts that carry the trust claim</h3>
+<p>Four implemented mechanisms matter for everything proposed later, because the AI and blockchain
+layers attach to them rather than replacing them.</p>
+<ul>
+  <li><strong>Three-valued eligibility.</strong> The engine returns <span class="mono">eligible</span>,
+  <span class="mono">partially_eligible</span>, <span class="mono">not_eligible</span> or
+  <span class="mono">unknown</span>. A missing field yields <span class="mono">unknown</span>, never
+  <span class="mono">false</span>, because treating absent data as failure silently denies people
+  entitlements; a hard statutory bar still decides immediately, so a man is not asked pointless
+  questions about a women-only allowance. Reasons are ordered by rule weight, so the citizen is told
+  the deciding fact first. Rules are a validated JSON AST over 12 comparators with soft conditions,
+  weights and declared <span class="mono">requiredFields</span>.</li>
+  <li><strong>Replayable decisions.</strong> Every evaluation is stored with a full per-condition
+  trace, the citizen's <em>profile snapshot</em>, and the <em>rule version</em> used. A decision shown
+  in March is still explainable in June after both the income and the rule have changed.</li>
+  <li><strong>Provenance and verification states.</strong> Records carry
+  <span class="mono">verificationStatus</span>, source URL and note, last-verified date, verifier and review
+  interval inline. A record is never born verified; verifying and editing cannot be one request; and editing
+  a substantive field on a verified record revokes verification and re-indexes it. Confidence is capped by
+  state — 65% unverified, 45% outdated, 25% disputed — and when the cap binds it is the first reason the
+  citizen is shown.</li>
+  <li><strong>Grounding observability.</strong> Every turn writes an AI log row — engine, model, prompt
+  version, retrieved chunk ids, cited programme ids, confidence, tokens, latency, and a
+  <span class="mono">groundingFailure</span> flag set when a recommendation had no citation behind it. The
+  failure mode is queryable, not merely hoped absent.</li>
+</ul>
+
+<div class="tw">
+<table>
+  <caption>Table 1 · Implementation status of the current system (source: repository)</caption>
+  <thead><tr><th style="width:29%">Capability</th><th style="width:13%">Status</th><th>Precise position today</th></tr></thead>
+  <tbody>
+    <tr><td>Deterministic eligibility engine, traces, what-if view</td><td><span class="chip c-impl">Implemented</span></td><td>Pure function of (profile, rule AST); 28 unit tests; no I/O, no clock, no model.</td></tr>
+    <tr><td>Hybrid retrieval</td><td><span class="chip c-part">Partial</span></td><td>BM25 over 158 bilingual chunks with metadata pre-filtering is live; the semantic channel is implemented and RRF-fused but contributes nothing without an embedding key — it is not faked.</td></tr>
+    <tr><td>Grounded response generation</td><td><span class="chip c-impl">Implemented</span></td><td>Anthropic / OpenAI / DeepSeek adapters render a fixed ResponsePlan; with no key a deterministic composer produces the same facts and the UI says so.</td></tr>
+    <tr><td>Understanding: intent, life event, entity extraction</td><td><span class="chip c-impl">Implemented</span></td><td>Deterministic keyword lexicons and conservative regular expressions — not model-backed, by design.</td></tr>
+    <tr><td>Voice: navigation, dictation, read-aloud, spoken confirmation</td><td><span class="chip c-part">Partial</span></td><td>Command routing is deterministic and offline. Browser recognition is Chromium-only; the server path needs a speech key, otherwise the microphone is disabled with a stated reason.</td></tr>
+    <tr><td>Corpus governance: versioned rules, review queue, separation of duties, audit log, staleness job</td><td><span class="chip c-impl">Implemented</span></td><td>Workflow and enforcement are complete; the corpus it governs is authored sample data.</td></tr>
+    <tr><td>Real service locations and map; security controls</td><td><span class="chip c-impl">Implemented</span></td><td>OpenStreetMap tiles proxied server-side so the CSP stays at <span class="mono">img-src 'self'</span>, Overpass cached per ~5.5 km cell, sample and real records badged separately. Refresh rotation with reuse detection, token-bucket limits, RBAC, Zod at every boundary; production refuses to boot with a dev secret or OTP echo on.</td></tr>
+    <tr><td>SMS and email delivery, document capture, OCR, automated ingestion, streaming</td><td><span class="chip c-no">Not built</span></td><td>Each degrades to a stated fallback rather than a broken control; the fetcher is unbuilt deliberately (§3.3).</td></tr>
+    <tr><td>Any blockchain component</td><td><span class="chip c-no">Not built</span></td><td>Nothing in the repository touches a ledger. Everything in §§9–12 is proposed.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>3.3 Where the existing architecture is genuinely insufficient</h3>
+<p>The prototype is not weak in the places the next two sections address; it is complete in a way
+that makes its two real ceilings visible. Neither can be lifted by writing more of the same kind of
+code.</p>
+
+<div class="tw">
+<table>
+  <caption>Table 2 · The two ceilings, and why more conventional engineering does not lift them</caption>
+  <thead><tr><th style="width:22%">Ceiling</th><th style="width:34%">What actually happens today</th><th>Why it is not a coding gap</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Perception and recall</strong> — the reach ceiling</td>
+      <td>Extraction is regex-based and deliberately conservative: an ambiguous value is not extracted, so recall is low on real speech — dialect, code-mixing, relational phrasing ("my husband's land"), local units (bigha, katha), and disfluency. Bangla stemming is shallow by choice, so lexical retrieval misses paraphrase. With no speech key and a non-Chromium browser, nothing can be heard at all.</td>
+      <td>Each extra pattern raises recall on the phrasing you thought of and cannot generalise to the one you did not. Recognition and paraphrase matching are irreducibly statistical over open-ended input — a machine-learning problem, not an unwritten <span class="mono">if</span>.</td>
+    </tr>
+    <tr>
+      <td><strong>Attestation</strong> — the trust ceiling</td>
+      <td>The corpus is 42 programmes structured after real schemes whose thresholds are unverified; every record says so and confidence is capped at 65%. Lifting that cap is a single database write by one administrator of one operator. Provenance, verification and the audit log all live in the operator's own database.</td>
+      <td>The mechanism is right and the custody is wrong: a log its own subject can rewrite is not evidence for that subject. No ministry can accept an operator's assertion of its rule, and no citizen or auditor can check it. A longer, signed or replicated log kept by the same operator does not change who is trusted.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Two further limits are honest context rather than technology gaps: the corpus is not yet verified
+against current circulars, which is verification labour and institutional authority rather than code;
+and the automated source fetcher is deliberately unbuilt, because a crawler that parses a threshold
+out of a PDF straight into a live corpus is one error away from telling a widow she qualifies for an
+allowance she does not. The safe order — fetch, checksum, diff, human review, publish — is exactly
+where document intelligence belongs (§7.4), and every stage of it except the extraction already
+exists.</p>
+
+<!-- ============================== PROPOSED SOLUTION ============================== -->
+<h2 class="pb">4 · Proposed solution and central thesis</h2>
+<p>We keep the existing system as the core and add exactly two layers, each attached to one of the
+two ceilings.</p>
+<ol>
+  <li><strong>An AI layer that widens the input channel</strong> — Bangla speech recognition adapted
+  to this domain and to regional speech, learned information extraction with per-field provenance and
+  calibrated confidence, semantic retrieval, and document intelligence that turns circulars into
+  <em>proposed</em> rule versions for human verification. Every one of these produces a
+  <em>proposal</em> that a deterministic component or a person then confirms.</li>
+  <li><strong>A verification layer that moves custody of the trust claim off the operator</strong> —
+  the Bhorosha Trust Registry: a permissioned, token-free ledger on which each issuing organisation
+  signs an attestation binding a programme version and its rule AST to a content hash, and on which
+  the platform periodically anchors Merkle roots over decision digests. Consumers verify signatures;
+  they do not trust the operator's database.</li>
+</ol>
+
+<p class="lede" style="font-size:11.5pt;color:var(--ink)"><strong>The thesis.</strong> The one
+catastrophic failure mode is confidently wrong advice about an entitlement, and it has two independent
+causes needing different technologies: the system misunderstood the citizen, or the rule it applied was not
+what the issuing authority said. AI raises the ceiling on reach; the ledger raises the floor on
+accountability. They are joined by a property the existing code already has — because eligibility is a
+pure function of a profile snapshot and a rule AST, and both can be hash-committed, <strong>an anchored
+decision is independently recomputable by a third party</strong>. That property dies the moment a model
+decides anything, so "rules decide, AI explains" is not a slogan here: it is the precondition that makes the
+blockchain layer meaningful.</p>
+
+<figure>
+  <svg viewBox="0 0 720 330" role="img" aria-label="System context: citizens and operators use the AccessAI application; AI services supply speech, embeddings and document extraction; issuing organisations sign attestations onto the Bhorosha Trust Registry; other consumers and a regulator read from it.">
+    <defs>
+      <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+      </marker>
+      <marker id="a2g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#2F6B45"/>
+      </marker>
+    </defs>
+    <g font-family="Calibri, Carlito, Arial, sans-serif" font-size="10.5" fill="currentColor">
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="0" y="96" width="132" height="30"/><rect x="0" y="134" width="132" height="30"/><rect x="0" y="172" width="132" height="30"/>
+        <rect x="248" y="20" width="224" height="30"/>
+        <rect x="248" y="252" width="224" height="30"/>
+        <rect x="588" y="96" width="132" height="30"/><rect x="588" y="134" width="132" height="30"/><rect x="588" y="172" width="132" height="30"/>
+      </g>
+      <text x="8" y="115">Citizen (voice, Bangla)</text>
+      <text x="8" y="153">UDC operator · caseworker</text>
+      <text x="8" y="191">Moderator · administrator</text>
+      <text x="256" y="39">AI services — ASR · TTS · embeddings · extraction · LLM render</text>
+      <text x="256" y="271">OpenStreetMap · SMS gateway · NID check · MyGov / 333 · G2P payout</text>
+      <text x="596" y="115">Issuers: DSS · DWA · DAE</text>
+      <text x="596" y="153">NGO issuers · consumers</text>
+      <text x="596" y="191">Regulator (read-only)</text>
+
+      <g stroke="#2F6B45" fill="none" stroke-width="1.4">
+        <rect x="248" y="104" width="224" height="90"/>
+        <rect x="508" y="104" width="60" height="90"/>
+      </g>
+      <text x="360" y="132" text-anchor="middle" font-weight="700" fill="#2F6B45">AccessAI</text>
+      <text x="360" y="150" text-anchor="middle" font-size="10">rule engine · corpus · plans</text>
+      <text x="360" y="166" text-anchor="middle" font-size="10">confidence · audit</text>
+      <text x="360" y="182" text-anchor="middle" font-size="9.5" opacity="0.8">off-chain, holds all PII</text>
+      <text x="538" y="140" text-anchor="middle" font-weight="700" fill="#2F6B45" font-size="10">BTR</text>
+      <text x="538" y="155" text-anchor="middle" font-size="9.5" fill="#2F6B45">ledger</text>
+
+      <g stroke="currentColor" stroke-width="1">
+        <line x1="132" y1="111" x2="244" y2="130" marker-end="url(#a2)"/>
+        <line x1="132" y1="149" x2="244" y2="145" marker-end="url(#a2)"/>
+        <line x1="132" y1="187" x2="244" y2="165" marker-end="url(#a2)"/>
+        <line x1="360" y1="100" x2="360" y2="56" marker-end="url(#a2)"/>
+        <line x1="330" y1="56" x2="330" y2="100" marker-end="url(#a2)"/>
+        <line x1="360" y1="198" x2="360" y2="248" marker-end="url(#a2)"/>
+      </g>
+      <text x="370" y="80" font-size="9.5">audio, text</text>
+      <text x="222" y="80" font-size="9.5" text-anchor="end">transcript, prose</text>
+      <text x="370" y="222" font-size="9.5">places, delivery, verification</text>
+
+      <g stroke="#2F6B45" stroke-width="1.4">
+        <line x1="476" y1="140" x2="504" y2="140" marker-end="url(#a2g)"/>
+        <line x1="504" y1="160" x2="476" y2="160" marker-end="url(#a2g)"/>
+        <line x1="584" y1="111" x2="572" y2="130" marker-end="url(#a2g)"/>
+        <line x1="572" y1="150" x2="584" y2="150" marker-end="url(#a2g)"/>
+        <line x1="584" y1="187" x2="572" y2="170" marker-end="url(#a2g)"/>
+      </g>
+      <text x="490" y="132" font-size="9" fill="#2F6B45">anchor</text>
+      <text x="490" y="176" font-size="9" fill="#2F6B45">verify</text>
+      <text x="580" y="104" font-size="9" fill="#2F6B45" text-anchor="end">sign</text>
+      <text x="580" y="206" font-size="9" fill="#2F6B45" text-anchor="end">audit</text>
+      <text x="0" y="316" font-size="9.5" opacity="0.75">Green marks the proposed verification path. Everything black exists today or is a conventional integration.</text>
+    </g>
+  </svg>
+  <figcaption><b>Figure 2 · System context.</b> The application keeps all personal data and remains the
+  operational system of record; the ledger holds only signed statements about rules and digests of
+  decisions, and is written by organisations that do not report to one another.</figcaption>
+</figure>
+
+<!-- ============================== WHY AI ============================== -->
+<h2>5 · Why AI, and where it is refused</h2>
+
+<h3>5.1 The test we apply</h3>
+<p>A component earns the AI label here only if it maps an <em>open-ended, high-variance input</em> to a
+<em>bounded, checkable output</em>, and only if a deterministic implementation would fail by construction
+rather than for want of effort. By that test the current intent classifier, ranker, confidence scorer and
+voice command router are <strong>not</strong> AI and are not presented as such: each is a published formula
+or lexicon, and better for being one.</p>
+
+<div class="tw">
+<table>
+  <caption>Table 3 · Proposed AI capabilities — necessity, data, evaluation, failure handling, cost</caption>
+  <thead><tr><th style="width:13%">Capability</th><th style="width:25%">Problem, and why rules cannot solve it</th><th style="width:16%">Data required</th><th style="width:25%">Evaluation · failure · oversight</th><th>Cost (assumptions stated)</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>A1 · Domain-adapted Bangla ASR</strong> <span class="chip c-part">Partial</span></td>
+      <td>A citizen who cannot read a Bangla paragraph cannot use a text product, and generic models degrade on regional speech, noise and code-mixing. Mapping an acoustic signal to text is irreducibly statistical — no rule set turns spoken Bangla into a district code — so the deterministic alternative is to exclude the primary user.</td>
+      <td>OpenSLR SLR53 Bengali and Common Voice bn for adaptation; a consented in-domain evaluation set spanning districts, ages and genders; consented corrections from the shipped confirm-what-we-heard step.</td>
+      <td>WER and CER <em>per district, gender and age band</em>, plus slot- and command-level accuracy — a 20% WER preserving the numbers is usable, a 5% WER mangling them is not. A misheard command becomes a wrong action, so the transcript is displayed, consequential actions are read back, and confirmation precedes any state change.</td>
+      <td>Self-hosted <span class="mono">whisper.cpp</span> (large-v3) or a hosted OpenAI-compatible endpoint. Assumed USD 0.001–0.006 per audio minute; a three-turn session is under 90 s of audio.</td>
+    </tr>
+    <tr>
+      <td><strong>A2 · Learned slot extraction with provenance</strong> <span class="chip c-prop">Proposed</span></td>
+      <td>The verdict is only as good as the profile, and regex extraction is high-precision, low-recall: relational phrasing, household composition, land in bigha or katha and occupation nuance are dropped, so the verdict stays <span class="mono">unknown</span>. The space of phrasings is open, and only a model emits a calibrated confidence.</td>
+      <td>Citizen utterances annotated to the 34 profile fields, from consented transcripts plus synthetic augmentation over dialect and unit variants; a test set stratified by field and district.</td>
+      <td>Per-field precision, recall and abstention, with a <strong>precision floor of 0.98 on income, age and land</strong>; a model that cannot abstain is rejected. No value writes to the profile unconfirmed — "we heard ৳4,000 a month — is that right?" — and each field records <span class="mono">user_confirmed</span> or <span class="mono">model_proposed</span>. A positive verdict may use only confirmed fields.</td>
+      <td>A ≈300M-parameter encoder runs on CPU in milliseconds per utterance — hosting cost only.</td>
+    </tr>
+    <tr>
+      <td><strong>A3 · Multilingual semantic retrieval</strong> <span class="chip c-part">Built, dormant</span></td>
+      <td>A citizen writes <span class="mono">স্বামী মারা গেছে</span>; the record says <span class="mono">বিধবা</span>, and BM25 scores that pair near zero. Lexical overlap is the wrong similarity function for cross-register paraphrase, and a synonym table does not transfer to unseen phrasing.</td>
+      <td>None to run; ≈300 labelled queries across both languages to evaluate and tune fusion.</td>
+      <td>Recall@10 and nDCG@10 as an increment over BM25-only; ships only if recall rises without lowering precision@3. A wrong retrieval is bounded — the metadata pre-filter still excludes wrong-district and expired records, and the engine still decides.</td>
+      <td>One embedding call per new chunk and per query; a few US cents for a full re-index at this corpus size.</td>
+    </tr>
+    <tr>
+      <td><strong>A4 · Circular-to-rule document intelligence</strong> <span class="chip c-prop">Proposed</span></td>
+      <td>The dominant operating cost — and the reason 42 records remain unverified — is human transcription of circulars into structured rules. Circular layout, table structure and Bangla print are unparseable by template, but the output is a closed grammar: a model may propose while a validator, a smoke test and a person dispose. That asymmetry is what makes AI safe here.</td>
+      <td>Circular and gazette PDFs with source URLs; the existing rule AST schema as the output grammar; ≈150 human-authored (document → rule) pairs as exemplars and evaluation set.</td>
+      <td>Field-level exact match on thresholds, amounts, dates and districts — and the decisive gate: the draft must pass the <em>existing</em> smoke test and match the human-authored rule's verdicts on a golden profile set. A wrong threshold cannot reach a citizen: extraction writes a <span class="mono">knowledge_reviews</span> row with a <span class="mono">proposedPatch</span>, applied only after a moderator checks it against the source and an administrator verifies.</td>
+      <td>≈10k–40k input tokens per circular — a few US cents against hours of skilled transcription. The largest cost reduction available to the project.</td>
+    </tr>
+    <tr>
+      <td><strong>A5 · Material-change triage</strong> <span class="chip c-prop">Proposed</span></td>
+      <td>Re-fetching a source yields a diff; most are formatting, a few move an income ceiling. Diff size does not correlate with eligibility impact, so this is semantic classification — and here the output is only a queue order.</td>
+      <td>Version pairs from the <span class="mono">documents</span> table, labelled material or immaterial by reviewers.</td>
+      <td>Precision and recall on the labelled set; operationally, reviewer minutes per material change caught. A mis-triaged change waits, but the fixed-interval staleness job runs underneath and an aged record drops to a 45% ceiling automatically. No corpus write access.</td>
+      <td>Negligible — one short classification per re-fetch.</td>
+    </tr>
+    <tr>
+      <td><strong>A6 · Grounded prose rendering</strong> <span class="chip c-impl">Implemented</span></td>
+      <td>A correct verdict in bureaucratic Bangla is not an answer for someone with a basic education, and fluency decides whether advice is acted on. Generation over a fixed fact set is the one task where a model clearly beats a template — and the shipped composer remains the fallback proving it is not load-bearing.</td>
+      <td>None beyond the ResponsePlan: no training, and no field in the prompt the decision did not use.</td>
+      <td>Automated grounding checks, the <span class="mono">groundingFailure</span> rate on the admin dashboard, and human review of a sampled 1% of turns. The model cannot introduce a programme, threshold or amount, and is not called when retrieval is empty.</td>
+      <td>Measured: ≈1,500 in / 700 out tokens per turn ≈ USD 0.00065 ≈ ৳0.08, assuming USD 0.15 / 0.60 per million tokens and ৳120 = USD 1.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>5.2 What we refuse to build, and why</h3>
+<ul class="tight">
+  <li><strong>No model in the eligibility decision.</strong> Not as a fallback, not as a tie-breaker. A deterministic rule over a hallucinated income yields a deterministic wrong answer carrying a confidence number — the precise trust failure the platform exists to prevent — and it would destroy the recomputability property the ledger layer depends on (§4).</li>
+  <li><strong>No approval-likelihood prediction for an individual.</strong> There is no outcome dataset, because the platform does not submit applications; a score trained on nothing would discourage exactly the marginal applicant who most needs to apply. The ranker's "similar user success" factor therefore returns a neutral value and declares itself unavailable, and we propose keeping it so rather than fabricating a signal.</li>
+  <li><strong>No fraud or risk scoring of citizens.</strong> The platform advises; it does not adjudicate. Scoring a citizen's honesty from their phrasing imports a discriminatory failure mode with no offsetting benefit. Abuse control stays rate limiting, lockout and audit.</li>
+  <li><strong>No agentic auto-application.</strong> No tool-calling agent files a claim on a citizen's behalf. An autonomous action whose failure the citizen cannot see is not a service to a low-literacy user.</li>
+  <li><strong>Automation labelled honestly.</strong> One planned improvement — choosing which missing field to ask about next by expected reduction in decision uncertainty across the candidate set — is decision-theoretic optimisation over the rule ASTs, not machine learning, and is described as such.</li>
+</ul>
+
+<!-- ============================== WHY BLOCKCHAIN ============================== -->
+<h2>6 · Why blockchain, and where it is refused</h2>
+
+<h3>6.1 The necessity test</h3>
+<p>We apply four conditions and require <em>all four</em>: (i) several mutually independent parties must
+write to the same state; (ii) no single party is an accepted custodian of it; (iii) readers must be able
+to detect tampering, omission or reordering without trusting the host; and (iv) the state is small and
+non-personal. One condition met is not a use case.</p>
+
+<div class="tw">
+<table>
+  <caption>Table 4 · Necessity test applied to every candidate component, including the negatives</caption>
+  <thead><tr><th style="width:19%">Candidate</th><th style="width:27%">Trust problem — who does not trust whom</th><th style="width:27%">Is a conventional database sufficient?</th><th>Verdict</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>B1 · Multi-issuer programme-rule attestation registry</strong></td>
+      <td>More than a dozen independent bodies own the rules the platform applies, yet today a private operator asserts what each body's rule is. The ministry cannot accept that; the citizen cannot check it; another consumer application cannot reuse it; and the operator has a standing incentive to quietly correct a record after a complaint.</td>
+      <td>No. A database requires choosing an owner, and that choice <em>is</em> the unsolved problem: whoever hosts it can alter another body's rule and the others have no proof. Even signed rows in one operator's database leave that operator able to withhold, reorder or roll back — non-equivocation is precisely what a single host cannot self-certify.</td>
+      <td><span class="chip c-impl">Justified</span> — all four conditions met.</td>
+    </tr>
+    <tr>
+      <td><strong>B2 · Decision anchoring</strong> — Merkle roots over evaluation digests</td>
+      <td>A citizen acted on advice; months later the outcome is disputed. Whether the stored decision is the one actually given is attested only by the platform itself.</td>
+      <td>Partly. An append-only transparency log in the Certificate Transparency style gives tamper-evidence without a chain, and is cheaper.</td>
+      <td><span class="chip c-part">Adjunct only</span> — it rides the B1 ledger at negligible marginal cost and inherits its independent witnesses. We would not stand up a network for this alone.</td>
+    </tr>
+    <tr>
+      <td><strong>B3 · Credential status registry</strong> for reusable determinations</td>
+      <td>A determination made at one office — income band checked, disability assessed — is re-collected at the next, and verifiers must check validity and revocation without calling an issuer who may be offline.</td>
+      <td>No, once there are several issuers and many verifiers: the status list must be readable by parties who trust none of the hosts, and revocation timing must be non-repudiable.</td>
+      <td><span class="chip c-impl">Justified</span> — Phase 4, conditional on a real issuer adopting credentials.</td>
+    </tr>
+    <tr><td><strong>B4</strong> · Citizen profiles, conversations, transcripts, AI logs</td><td>None between parties — the citizen and the operator are the only ones involved.</td><td>Yes, and it is the only lawful option: special-category data, erasure rights, high volume.</td><td><span class="chip c-no">No blockchain</span></td></tr>
+    <tr><td><strong>B5</strong> · Programme text, circulars, corpus content; map data, notifications, sessions</td><td>Integrity matters for corpus text; shared writes do not. The rest has no multi-party dimension at all.</td><td>Yes — hold it off-chain and commit only a content hash. Kilobytes of prose replicated on every node is cost without benefit.</td><td><span class="chip c-no">Hash only, or nothing</span></td></tr>
+    <tr><td><strong>B6</strong> · Benefit disbursement and payments</td><td>Real, but already solved: allowances are disbursed through banks and mobile financial services under Bangladesh Bank supervision.</td><td>Yes. Inserting a ledger into a working G2P rail adds regulatory exposure and reconciliation risk with no citizen benefit.</td><td><span class="chip c-no">No blockchain</span></td></tr>
+    <tr><td><strong>B7</strong> · Any token, coin or on-chain incentive</td><td>None. Participants are institutions bound by a charter, not anonymous validators needing crypto-economic incentives.</td><td>Not applicable. Cryptoasset transactions are not authorised in Bangladesh under the prevailing Bangladesh Bank / BFIU position, so a token would make the project unlawful for the very partners it needs.</td><td><span class="chip c-no">Refused</span></td></tr>
+    <tr><td><strong>B8</strong> · On-chain identity or key custody for citizens</td><td>None that outweighs the harm.</td><td>Yes. Making a widow with limited literacy the custodian of a private key creates irreversible loss of access — a documented failure mode, not a hypothetical one.</td><td><span class="chip c-no">Refused</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>6.2 The strongest counter-argument, and our answer</h3>
+<p>The best objection is not "blockchain is unnecessary" but a specific alternative: <em>let each
+ministry publish a digitally signed rule file on its own website, using the licensed certifying
+authorities that already operate under Bangladesh's ICT Act, and have consumers verify the signature —
+no ledger required.</em> That alternative is strong, and it supplies something we do adopt: identity. It
+does not supply three things, and each is where a citizen is actually harmed.</p>
+<ol class="tight">
+  <li><strong>Non-equivocation.</strong> A signed file on a web server can be replaced, and one issuer
+  can serve version A to one consumer and A′ to another. Both verify correctly. Only a shared, ordered,
+  append-only log makes divergence detectable.</li>
+  <li><strong>Proof of absence.</strong> To act on a rule you must know it has not been superseded. A
+  file offers no way to prove no later version exists; an ordered registry does.</li>
+  <li><strong>A namespace with no custodian.</strong> Fifteen bodies publishing in fifteen formats at
+  fifteen URLs is the fragmentation we started with, relocated. Someone must hold the index — and who
+  that is has been the political blocker all along.</li>
+</ol>
+<p>The honest position, stated plainly: <strong>if one institution is willing to host the registry and
+every other issuer accepts its custody, a signed-record database with an append-only Merkle log is
+sufficient and cheaper, and we would recommend it.</strong> The ledger earns its place precisely because
+that acceptance does not exist across ministries and NGOs, and because a shared log lets them
+participate without conceding custody to a peer or to a startup. We therefore specify a
+<em>permissioned</em> network of named institutional members with no token — the minimum machinery that
+satisfies the requirement rather than the maximum the category name permits.</p>
+
+<h3>6.3 What the ledger changes for a citizen, concretely</h3>
+<p>The coupling to existing code is deliberately small. Today the 65% ceiling is lifted by one row edit
+inside the operator's database; under this proposal it lifts only when the client verifies an attestation
+signed by the organisation that owns the programme, and the confidence panel names the signer and the date.
+The screen the citizen already sees stops reporting an internal claim and starts reporting a checkable one.
+Second, the decision receipt carries a short code with which a UDC operator, caseworker or auditor can prove
+— with no personal data leaving the citizen's hands — that this decision, over this rule version,
+existed then and has not been altered since.</p>
+
+<!-- ============================== SOLUTION ARCHITECTURE ============================== -->
+<h2 class="pb">7 · Solution architecture</h2>
+<p>The proposed system is the existing application plus two side-cars. Nothing in the current request path
+is replaced, and every addition fails safe: without the AI layer the product degrades to what it does today,
+and with the ledger unreachable it serves the last verified attestation from cache and lowers its stated
+confidence rather than blocking a citizen.</p>
+
+<figure>
+  <svg viewBox="0 0 720 372" role="img" aria-label="Proposed architecture in four bands: the existing experience and application core; a proposal-only AI layer; a verification layer holding the attestation ledger and anchor service; and the external ecosystem of issuers, consumers and auditors.">
+    <defs>
+      <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker>
+      <marker id="a3g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2F6B45"/></marker>
+    </defs>
+    <g font-family="Calibri, Carlito, Arial, sans-serif" font-size="10.5" fill="currentColor">
+      <text x="0" y="11" font-size="9.5" font-weight="700" letter-spacing="0.8">EXISTS TODAY</text>
+      <g stroke="currentColor" fill="none" stroke-width="1"><rect x="0" y="18" width="720" height="30"/></g>
+      <text x="10" y="37">Experience — Bangla / English UI · voice navigation · read-aloud · action plans · timeline · nearby offices · admin portal</text>
+      <g stroke="currentColor" fill="none" stroke-width="1.4"><rect x="0" y="56" width="720" height="56"/></g>
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="10" y="66" width="164" height="36"/><rect x="184" y="66" width="164" height="36"/>
+        <rect x="358" y="66" width="164" height="36"/><rect x="532" y="66" width="178" height="36"/>
+      </g>
+      <text x="18" y="82" font-size="10">Deterministic NLU</text><text x="18" y="96" font-size="9.5" opacity="0.8">intents · life events</text>
+      <text x="192" y="82" font-size="10">Retrieval (BM25 + vec)</text><text x="192" y="96" font-size="9.5" opacity="0.8">metadata pre-filter</text>
+      <text x="366" y="82" font-size="10">Rule engine</text><text x="366" y="96" font-size="9.5" opacity="0.8">3-valued · traced · pure</text>
+      <text x="540" y="82" font-size="10">Corpus + governance</text><text x="540" y="96" font-size="9.5" opacity="0.8">versions · audit · reviews</text>
+
+      <text x="0" y="132" font-size="9.5" font-weight="700" letter-spacing="0.8">PROPOSED · AI LAYER — PROPOSES, NEVER DECIDES</text>
+      <g stroke="currentColor" fill="none" stroke-width="1" stroke-dasharray="4 3"><rect x="0" y="140" width="720" height="52"/></g>
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="10" y="150" width="164" height="32"/><rect x="184" y="150" width="164" height="32"/>
+        <rect x="358" y="150" width="164" height="32"/><rect x="532" y="150" width="178" height="32"/>
+      </g>
+      <text x="18" y="170" font-size="10">A1 Bangla ASR / TTS</text><text x="192" y="170" font-size="10">A2 Slot extraction</text>
+      <text x="366" y="170" font-size="10">A3 Embeddings</text><text x="540" y="170" font-size="10">A4 Circular → rule draft</text>
+      <g stroke="currentColor" stroke-width="1" marker-end="url(#a3)">
+        <line x1="92" y1="146" x2="92" y2="108"/><line x1="266" y1="146" x2="266" y2="108"/>
+        <line x1="440" y1="146" x2="440" y2="108"/><line x1="620" y1="146" x2="620" y2="108"/>
+      </g>
+      <text x="100" y="130" font-size="9">transcript</text><text x="274" y="130" font-size="9">confirmed fields</text>
+      <text x="448" y="130" font-size="9">candidates</text><text x="628" y="130" font-size="9">proposed patch</text>
+
+      <text x="0" y="212" font-size="9.5" font-weight="700" letter-spacing="0.8" fill="#2F6B45">PROPOSED · VERIFICATION LAYER</text>
+      <g stroke="#2F6B45" fill="none" stroke-width="1.4"><rect x="0" y="220" width="720" height="56"/></g>
+      <g stroke="#2F6B45" fill="none" stroke-width="1">
+        <rect x="10" y="230" width="222" height="36"/><rect x="242" y="230" width="222" height="36"/><rect x="474" y="230" width="236" height="36"/>
+      </g>
+      <text x="18" y="246" font-size="10" fill="#2F6B45">Attestation client</text><text x="18" y="260" font-size="9.5" fill="#2F6B45" opacity="0.85">verify issuer signature · cache</text>
+      <text x="250" y="246" font-size="10" fill="#2F6B45">Anchor service</text><text x="250" y="260" font-size="9.5" fill="#2F6B45" opacity="0.85">hourly Merkle root of digests</text>
+      <text x="482" y="246" font-size="10" fill="#2F6B45">BTR chaincode — permissioned</text><text x="482" y="260" font-size="9.5" fill="#2F6B45" opacity="0.85">versions · attestations · status · governance</text>
+      <g stroke="#2F6B45" stroke-width="1.2" marker-end="url(#a3g)">
+        <line x1="120" y1="226" x2="120" y2="116"/><line x1="352" y1="226" x2="352" y2="116"/>
+      </g>
+      <text x="128" y="210" font-size="9" fill="#2F6B45">ceiling lift only on valid signature</text>
+      <text x="360" y="210" font-size="9" fill="#2F6B45">decision digest</text>
+
+      <text x="0" y="296" font-size="9.5" font-weight="700" letter-spacing="0.8">ECOSYSTEM</text>
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="0" y="304" width="176" height="30"/><rect x="186" y="304" width="176" height="30"/>
+        <rect x="372" y="304" width="164" height="30"/><rect x="546" y="304" width="174" height="30"/>
+      </g>
+      <text x="8" y="323" font-size="10">Issuers: DSS · DWA · DAE · NGOs</text>
+      <text x="194" y="323" font-size="10">Consumers: UDC · MyGov · apps</text>
+      <text x="380" y="323" font-size="10">Auditor / regulator</text>
+      <text x="554" y="323" font-size="10">Public-chain anchor (daily)</text>
+      <g stroke="#2F6B45" stroke-width="1.2" marker-end="url(#a3g)">
+        <line x1="88" y1="300" x2="88" y2="280"/><line x1="274" y1="280" x2="274" y2="300"/>
+        <line x1="454" y1="280" x2="454" y2="300"/><line x1="633" y1="280" x2="633" y2="300"/>
+      </g>
+      <text x="0" y="356" font-size="9.5" opacity="0.75">Dashed = model-backed and advisory. Green = verifiable path. Solid black = implemented today.</text>
+    </g>
+  </svg>
+  <figcaption><b>Figure 3 · Proposed architecture as an evolution, not a replacement.</b> The AI layer only
+  ever hands a <em>proposal</em> into the existing deterministic core; the verification layer only ever
+  handles hashes, signatures and digests. Remove either band and the product still runs — with less
+  reach, or with a lower stated confidence.</figcaption>
+</figure>
+
+<figure>
+  <svg viewBox="0 0 720 250" role="img" aria-label="Data flow for one conversation turn: speech to transcript to confirmed fields to retrieval to the rule engine to a response plan to rendered prose, with a decision digest branching into an hourly Merkle batch and a ledger anchor, and an attestation check feeding the confidence ceiling.">
+    <defs>
+      <marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker>
+      <marker id="a4g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2F6B45"/></marker>
+    </defs>
+    <g font-family="Calibri, Carlito, Arial, sans-serif" font-size="10" fill="currentColor">
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="0" y="44" width="96" height="34"/><rect x="124" y="44" width="96" height="34"/>
+        <rect x="248" y="44" width="104" height="34"/><rect x="380" y="44" width="96" height="34"/>
+        <rect x="504" y="44" width="96" height="34"/><rect x="628" y="44" width="92" height="34"/>
+      </g>
+      <text x="48" y="60" text-anchor="middle">Citizen</text><text x="48" y="72" text-anchor="middle" font-size="9">speech / text</text>
+      <text x="172" y="60" text-anchor="middle">ASR + confirm</text><text x="172" y="72" text-anchor="middle" font-size="9">transcript shown</text>
+      <text x="300" y="60" text-anchor="middle">Extraction</text><text x="300" y="72" text-anchor="middle" font-size="9">per-field consent</text>
+      <text x="428" y="60" text-anchor="middle">Retrieval</text><text x="428" y="72" text-anchor="middle" font-size="9">filter → BM25 + vec</text>
+      <text x="552" y="60" text-anchor="middle">Rule engine</text><text x="552" y="72" text-anchor="middle" font-size="9">verdict + trace</text>
+      <text x="674" y="60" text-anchor="middle">Plan → prose</text><text x="674" y="72" text-anchor="middle" font-size="9">LLM or composer</text>
+      <g stroke="currentColor" stroke-width="1" marker-end="url(#a4)">
+        <line x1="96" y1="61" x2="120" y2="61"/><line x1="220" y1="61" x2="244" y2="61"/>
+        <line x1="352" y1="61" x2="376" y2="61"/><line x1="476" y1="61" x2="500" y2="61"/>
+        <line x1="600" y1="61" x2="624" y2="61"/>
+      </g>
+      <path d="M 674 78 L 674 100 L 48 100 L 48 82" fill="none" stroke="currentColor" stroke-width="1" marker-end="url(#a4)"/>
+      <text x="360" y="114" text-anchor="middle" font-size="9.5">reply in the citizen's language, ending in one next step</text>
+
+      <g stroke="currentColor" fill="none" stroke-width="1"><rect x="470" y="140" width="130" height="30"/></g>
+      <text x="535" y="159" text-anchor="middle" font-size="9.5">evaluation + snapshot</text>
+      <line x1="552" y1="78" x2="552" y2="136" stroke="currentColor" stroke-width="1" marker-end="url(#a4)"/>
+      <text x="558" y="100" font-size="9">stored off-chain</text>
+
+      <g stroke="#2F6B45" fill="none" stroke-width="1.2">
+        <rect x="470" y="186" width="130" height="30"/><rect x="628" y="186" width="92" height="30"/>
+        <rect x="248" y="186" width="176" height="30"/>
+      </g>
+      <text x="535" y="205" text-anchor="middle" font-size="9.5" fill="#2F6B45">hourly Merkle root</text>
+      <text x="674" y="205" text-anchor="middle" font-size="9.5" fill="#2F6B45">BTR anchor tx</text>
+      <text x="336" y="199" text-anchor="middle" font-size="9.5" fill="#2F6B45">attestation check → ceiling</text>
+      <text x="336" y="211" text-anchor="middle" font-size="9" fill="#2F6B45">rule hash must match signed hash</text>
+      <g stroke="#2F6B45" stroke-width="1.2" marker-end="url(#a4g)">
+        <line x1="535" y1="170" x2="535" y2="182"/><line x1="600" y1="201" x2="624" y2="201"/>
+        <line x1="424" y1="196" x2="466" y2="196"/>
+      </g>
+      <path d="M 300 186 L 300 82" fill="none" stroke="#2F6B45" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#a4g)"/>
+      <text x="0" y="240" font-size="9.5" opacity="0.75">No personal data crosses into the green path: only salted digests, content hashes and signatures.</text>
+    </g>
+  </svg>
+  <figcaption><b>Figure 4 · Data flow for one turn.</b> Two independent gates sit on the citizen's side —
+  the transcript is shown before it is used, and each extracted field is confirmed before it enters the
+  profile. Two verifiable artefacts leave on the ledger side: a signed rule-version check that
+  determines the confidence ceiling, and a batched digest of the decision.</figcaption>
+</figure>
+
+<figure>
+  <svg viewBox="0 0 720 230" role="img" aria-label="Trust model comparison: today every party must trust the operator's database, whereas with the registry the citizen's client and other consumers verify issuer signatures directly and the operator is trusted only for service delivery.">
+    <defs>
+      <marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker>
+      <marker id="a5g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2F6B45"/></marker>
+    </defs>
+    <g font-family="Calibri, Carlito, Arial, sans-serif" font-size="10" fill="currentColor">
+      <text x="0" y="12" font-size="9.5" font-weight="700" letter-spacing="0.8">TODAY — ONE TRUSTED PARTY</text>
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="0" y="24" width="104" height="26"/><rect x="0" y="62" width="104" height="26"/><rect x="0" y="100" width="104" height="26"/>
+        <rect x="196" y="62" width="120" height="26"/>
+      </g>
+      <text x="8" y="41">Citizen</text><text x="8" y="79">Ministry / NGO</text><text x="8" y="117">Auditor</text>
+      <text x="204" y="79">Operator database</text>
+      <g stroke="currentColor" stroke-width="1" marker-end="url(#a5)">
+        <line x1="104" y1="37" x2="192" y2="70"/><line x1="104" y1="75" x2="192" y2="75"/><line x1="104" y1="113" x2="192" y2="82"/>
+      </g>
+      <text x="120" y="140" font-size="9.5">"must trust" on every edge · rewrite is undetectable</text>
+      <text x="0" y="164" font-size="9.5" opacity="0.8">A ministry cannot let a startup speak for its rule,</text>
+      <text x="0" y="177" font-size="9.5" opacity="0.8">so the corpus stays unverified and capped at 65%.</text>
+
+      <line x1="352" y1="10" x2="352" y2="200" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+
+      <text x="384" y="12" font-size="9.5" font-weight="700" letter-spacing="0.8" fill="#2F6B45">WITH THE REGISTRY — VERIFY, DO NOT TRUST</text>
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="384" y="24" width="104" height="26"/><rect x="384" y="100" width="104" height="26"/>
+        <rect x="384" y="62" width="104" height="26"/>
+      </g>
+      <text x="392" y="41">Citizen client</text><text x="392" y="79">Operator</text><text x="392" y="117">Other consumers</text>
+      <g stroke="#2F6B45" fill="none" stroke-width="1.4"><rect x="556" y="62" width="120" height="26"/></g>
+      <text x="564" y="79" fill="#2F6B45">BTR — shared log</text>
+      <g stroke="currentColor" fill="none" stroke-width="1"><rect x="556" y="150" width="120" height="26"/></g>
+      <text x="564" y="167">Issuing bodies</text>
+      <g stroke="#2F6B45" stroke-width="1.2" marker-end="url(#a5g)">
+        <line x1="488" y1="37" x2="552" y2="70"/><line x1="488" y1="75" x2="552" y2="75"/><line x1="488" y1="113" x2="552" y2="82"/>
+        <line x1="616" y1="146" x2="616" y2="92"/>
+      </g>
+      <text x="500" y="30" font-size="9" fill="#2F6B45">verifies signature</text>
+      <text x="624" y="120" font-size="9" fill="#2F6B45">signs own rule</text>
+      <text x="384" y="200" font-size="9.5" opacity="0.85">The operator is still trusted for service delivery and PII —</text>
+      <text x="384" y="213" font-size="9.5" opacity="0.85">but no longer for <tspan font-style="italic">what the rule says</tspan>. That edge is removed.</text>
+    </g>
+  </svg>
+  <figcaption><b>Figure 5 · Trust model, before and after.</b> The registry does not make the platform
+  trustless — it removes exactly one edge, the one where a private operator asserts a public body's rule,
+  and replaces it with a signature anyone can check.</figcaption>
+</figure>
+
+<!-- ============================== AI ARCHITECTURE ============================== -->
+<h2>8 · AI architecture</h2>
+
+<h3>8.1 Model selection, with reasons</h3>
+<div class="tw">
+<table>
+  <caption>Table 5 · Model families, deployment and rationale</caption>
+  <thead><tr><th style="width:14%">Stage</th><th style="width:30%">Model family and deployment</th><th>Why this family</th></tr></thead>
+  <tbody>
+    <tr><td>A1 ASR and TTS</td><td>Whisper-family encoder–decoder (large-v3) adapted with LoRA on Bangla speech, with keyword-biased decoding through the implemented purpose-specific prompt; a Piper-class bn-BD voice behind the implemented <span class="mono">/voice/speak</span> route. Self-hosted in country, or any OpenAI-compatible endpoint — the adapter targets one API shape, so the choice is configuration.</td><td>A strong multilingual baseline with a permissive licence, a viable CPU path, and adaptation that is cheap relative to training; in-country hosting also answers the residency question a foreign API cannot. Server synthesis matters because most Android devices lack a bn-BD voice, so the browser stays silent or reads Bangla with an English voice — worse than nothing, since it sounds like success. Strong ETags over (model, locale, text) make repeats free.</td></tr>
+    <tr><td>A2 Extraction</td><td>BanglaBERT / XLM-R token classification with a span-and-slot head and a per-field abstention threshold; CPU inference beside the application.</td><td>An encoder is the right size for a closed-label task — small, fast, fine-tunable on a few thousand examples, and it yields per-span probabilities that can be calibrated. A generative model would be larger and less calibratable.</td></tr>
+    <tr><td>A3 Embeddings</td><td>Multilingual sentence embeddings with genuine Bangla coverage (LaBSE or multilingual-E5 class), fused with BM25 by Reciprocal Rank Fusion — already implemented, with the producing model recorded per chunk.</td><td>RRF rather than a weighted sum, because BM25 and cosine are on incomparable scales and any fixed weighting is arbitrary. Recording the model per chunk makes migration incremental instead of a full rebuild.</td></tr>
+    <tr><td>A4 Document intelligence, A6 rendering</td><td>Bangla OCR plus a layout model for tables, then an LLM with <em>schema-constrained decoding</em> against the rule AST JSON Schema, run in batch off the citizen path. Rendering uses the three implemented adapters with a 45-second abort and automatic fallback to the composer.</td><td>Constrained decoding makes malformed output impossible by construction, leaving only semantic correctness for the smoke test and the reviewer. Reasoning modes are disabled and any reasoning content discarded before logging: there is nothing to reason about once the facts are fixed, and rejected hypotheses phrased as statements must never sit beside a benefits decision.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<figure>
+  <svg viewBox="0 0 720 258" role="img" aria-label="Two AI pipelines: a citizen-facing inference lane where every model output passes a confirmation or deterministic gate, and a corpus lane where a circular becomes a proposed rule that must pass validation, a smoke test and two human approvals before publication.">
+    <defs>
+      <marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker>
+    </defs>
+    <g font-family="Calibri, Carlito, Arial, sans-serif" font-size="10" fill="currentColor">
+      <text x="0" y="11" font-size="9.5" font-weight="700" letter-spacing="0.8">LANE 1 · CITIZEN INFERENCE — EVERY MODEL OUTPUT MEETS A GATE</text>
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="0" y="20" width="92" height="32"/><rect x="120" y="20" width="92" height="32"/>
+        <rect x="240" y="20" width="104" height="32"/><rect x="372" y="20" width="104" height="32"/>
+        <rect x="504" y="20" width="100" height="32"/><rect x="632" y="20" width="88" height="32"/>
+      </g>
+      <text x="46" y="40" text-anchor="middle">audio</text>
+      <text x="166" y="36" text-anchor="middle">ASR</text><text x="166" y="48" text-anchor="middle" font-size="9">model</text>
+      <text x="292" y="36" text-anchor="middle">show transcript</text><text x="292" y="48" text-anchor="middle" font-size="9">gate</text>
+      <text x="424" y="36" text-anchor="middle">extract slots</text><text x="424" y="48" text-anchor="middle" font-size="9">model + abstain</text>
+      <text x="554" y="36" text-anchor="middle">confirm field</text><text x="554" y="48" text-anchor="middle" font-size="9">gate</text>
+      <text x="676" y="36" text-anchor="middle">rule engine</text><text x="676" y="48" text-anchor="middle" font-size="9">deterministic</text>
+      <g stroke="currentColor" stroke-width="1" marker-end="url(#a6)">
+        <line x1="92" y1="36" x2="116" y2="36"/><line x1="212" y1="36" x2="236" y2="36"/>
+        <line x1="344" y1="36" x2="368" y2="36"/><line x1="476" y1="36" x2="500" y2="36"/><line x1="604" y1="36" x2="628" y2="36"/>
+      </g>
+      <text x="0" y="72" font-size="9.5" opacity="0.8">Low confidence or a rejected confirmation ends the lane in <tspan font-style="italic">unknown</tspan> — never in a guess.</text>
+
+      <text x="0" y="106" font-size="9.5" font-weight="700" letter-spacing="0.8">LANE 2 · CORPUS — WHERE THE LEVERAGE IS, AND WHERE THE GATES ARE STRICTEST</text>
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="0" y="116" width="100" height="32"/><rect x="128" y="116" width="100" height="32"/>
+        <rect x="256" y="116" width="112" height="32"/><rect x="396" y="116" width="112" height="32"/>
+        <rect x="536" y="116" width="80" height="32"/><rect x="640" y="116" width="80" height="32"/>
+      </g>
+      <text x="50" y="132" text-anchor="middle">circular PDF</text><text x="50" y="144" text-anchor="middle" font-size="9">+ checksum</text>
+      <text x="178" y="132" text-anchor="middle">OCR + layout</text><text x="178" y="144" text-anchor="middle" font-size="9">model</text>
+      <text x="312" y="132" text-anchor="middle">rule draft</text><text x="312" y="144" text-anchor="middle" font-size="9">schema-constrained</text>
+      <text x="452" y="132" text-anchor="middle">validate + smoke test</text><text x="452" y="144" text-anchor="middle" font-size="9">deterministic gate</text>
+      <text x="576" y="132" text-anchor="middle">review</text><text x="576" y="144" text-anchor="middle" font-size="9">moderator</text>
+      <text x="680" y="132" text-anchor="middle">verify</text><text x="680" y="144" text-anchor="middle" font-size="9">administrator</text>
+      <g stroke="currentColor" stroke-width="1" marker-end="url(#a6)">
+        <line x1="100" y1="132" x2="124" y2="132"/><line x1="228" y1="132" x2="252" y2="132"/>
+        <line x1="368" y1="132" x2="392" y2="132"/><line x1="508" y1="132" x2="532" y2="132"/><line x1="616" y1="132" x2="636" y2="132"/>
+      </g>
+      <g stroke="#2F6B45" fill="none" stroke-width="1.4"><rect x="536" y="176" width="184" height="30"/></g>
+      <text x="628" y="195" text-anchor="middle" font-size="10" fill="#2F6B45">issuer signs attestation → BTR</text>
+      <line x1="680" y1="148" x2="680" y2="172" stroke="#2F6B45" stroke-width="1.2" marker-end="url(#a6)"/>
+      <path d="M 452 148 L 452 164 L 312 164 L 312 152" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#a6)"/>
+      <text x="330" y="178" font-size="9" opacity="0.85">failed test → back to draft, never to a citizen</text>
+      <text x="0" y="232" font-size="9.5" opacity="0.8">Lane 2 turns skilled transcription into skilled review. The model never writes to the live corpus;</text>
+      <text x="0" y="245" font-size="9.5" opacity="0.8">it writes a proposed patch that two people, in two separate steps, must accept.</text>
+    </g>
+  </svg>
+  <figcaption><b>Figure 6 · The two AI pipelines.</b> Data → processing → model → decision → action, with
+  the crucial property that no arrow runs from a model directly to a citizen-visible fact: every path
+  passes a deterministic validator, a citizen confirmation, or a two-person human gate.</figcaption>
+</figure>
+
+<h3>8.2 Data, consent, residency and infrastructure</h3>
+<p>Public corpora are used under their licences; synthetic augmentation over dialect, units and disfluency
+covers the long tail at no privacy cost; citizen-derived data is used only where the citizen has opted in
+per purpose. Audio is never retained — it is transcribed inside the request handler and discarded, because
+speech about widowhood, income and illness is sensitive text plus a biometric identifier plus, often, other
+people audible in the room. A hosted rendering prompt carries only the fields the decision used, and the
+in-country self-hosted path exists so that a deployment which cannot accept cross-border transfer has an
+option other than switching the feature off. The pilot needs two application instances, one inference host
+for ASR, TTS and the extraction encoder, and libSQL with a documented migration to PostgreSQL and pgvector.
+The deterministic path answers in well under a second; live rendering measured 5.5 s server-side for a
+~700-token Bangla reply against a 3-second target, which is why streaming is a named Phase 2 item rather
+than a claim. The batch corpus lane is queued and never contends with a citizen request.</p>
+
+<p>Three properties then hold jointly: model output is always a proposal; every proposal meets a
+deterministic or human gate; and every gate failure has a defined destination —
+<span class="mono">unknown</span> for a field, the draft queue for a rule, the composer for prose — so no
+model failure produces silence or an unverifiable assertion.</p>
+
+<!-- ============================== BLOCKCHAIN ARCHITECTURE ============================== -->
+<h2 class="pb">9 · Blockchain architecture</h2>
+
+<h3>9.1 Network, consensus and why not something heavier</h3>
+<p>The Bhorosha Trust Registry is a <strong>permissioned consortium ledger on Hyperledger Fabric</strong>,
+chosen for four properties rather than familiarity. Membership Service Providers map one-to-one onto real
+organisations, so an identity on the network <em>is</em> an institution rather than an anonymous address.
+<strong>Endorsement policies</strong> express multi-party approval natively, so "valid when the owning
+department endorses it and one independent reviewer co-endorses" is configuration, not application code.
+Channels isolate a body's drafts before publication. And Fabric has <strong>no native token and no
+gas</strong> — which matters, because a cryptoasset would put the project outside what Bangladesh Bank and
+the BFIU permit and make institutional participation impossible.</p>
+
+<p>Ordering uses <strong>Raft</strong> across orderer nodes contributed by at least three distinct
+organisations. This is crash-fault-tolerant, not Byzantine-fault-tolerant, and we state the trade-off
+rather than obscuring it: among named, contractually bound public bodies the realistic threat is one
+compromised or careless member, which endorsement policies already contain, not a coalition rewriting
+history. Two mitigations cover the residual case. Ordering is spread across organisations, so no single
+member can censor; and the ledger head is <strong>anchored daily as one Merkle root transaction to a public
+chain</strong>, so even a colluding consortium cannot rewrite published history without the divergence
+being externally detectable. That anchor is the only place a public network appears, costs one small
+transaction per day, and is what makes the permissioned choice defensible rather than merely convenient. A
+public-only design was rejected in the other direction: attestation content is institutional, membership
+must be gated, and fees paid in a cryptoasset are not a lawful operating expense for a Bangladeshi public
+body.</p>
+
+<h3>9.2 What is on the ledger</h3>
+<div class="tw">
+<table>
+  <caption>Table 6 · On-chain state model — four record types, all bounded and non-personal</caption>
+  <thead><tr><th style="width:19%">Record</th><th style="width:34%">Fields (indicative)</th><th style="width:13%">Written by</th><th>Purpose, and size</th></tr></thead>
+  <tbody>
+    <tr><td><strong>ProgrammeVersion</strong></td><td><span class="mono">programmeId</span>, <span class="mono">version</span>, <span class="mono">contentHash</span> (SHA-256 over canonicalised citizen-visible fields), <span class="mono">ruleHash</span> (over the rule AST), <span class="mono">issuerOrg</span>, <span class="mono">effectiveFrom</span>, <span class="mono">supersedes</span>, <span class="mono">sourceUri</span></td><td>Issuing organisation, or the operator on its behalf with co-endorsement</td><td>Binds a version identifier to exact content, so any consumer can detect substitution. ≈300 bytes.</td></tr>
+    <tr><td><strong>Attestation</strong></td><td><span class="mono">programmeVersionRef</span>, <span class="mono">attesterDid</span>, <span class="mono">statement</span> (<span class="mono">is_current_rule</span> | <span class="mono">withdrawn</span> | <span class="mono">disputed</span>), <span class="mono">reviewIntervalDays</span>, <span class="mono">validFrom</span>/<span class="mono">validTo</span>, <span class="mono">signature</span></td><td>Issuing organisation only</td><td>The claim that carries legal and practical weight, and the sole thing that lifts a confidence ceiling. ≈250 bytes.</td></tr>
+    <tr><td><strong>DecisionAnchor</strong></td><td><span class="mono">merkleRoot</span> over a batch of per-decision digests, <span class="mono">batchStart</span>/<span class="mono">batchEnd</span>, <span class="mono">count</span>, <span class="mono">engineVersion</span></td><td>Operator (any consumer application may anchor its own)</td><td>Makes a decision receipt provable without publishing the decision. One record per hour, ≈120 bytes, <em>independent of user volume</em>.</td></tr>
+    <tr><td><strong>CredentialStatus</strong></td><td>Status-list identifier, compressed bitstring index, issuer DID, list version</td><td>Credential issuers (Phase 4)</td><td>Revocation and validity for reusable determinations without contacting the issuer. Kilobytes per list, no per-citizen record.</td></tr>
+    <tr><td><strong>GovernanceRecord</strong></td><td>Membership change, chaincode version, endorsement-policy change, approving organisations, charter clause reference</td><td>Consortium, per charter thresholds</td><td>Makes the network's own rule changes as auditable as the data it holds. Rare.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Each per-decision digest is computed as
+<span class="mono">HMAC(k_citizen, ruleHash ‖ contentHash ‖ profileSnapshotHash ‖ outcome ‖ timestamp)</span>.
+The keyed construction is not decoration: a plain hash over a small, low-entropy profile space is
+brute-forceable, so a per-citizen key held off-chain — and released only in the citizen's own receipt —
+is what prevents the anchor from becoming a re-identification oracle. This is the kind of detail where
+a naive design leaks exactly the population it was meant to protect.</p>
+
+<figure>
+  <svg viewBox="0 0 720 262" role="img" aria-label="Blockchain transaction flow: an issuer signs a rule version in the console, the chaincode validates schema and hashes, two organisations endorse, Raft ordering commits the block, and the application reads the attestation to lift its confidence ceiling, with a daily Merkle root anchored to a public chain.">
+    <defs>
+      <marker id="a7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker>
+    </defs>
+    <g font-family="Calibri, Carlito, Arial, sans-serif" font-size="10" fill="currentColor">
+      <g stroke="currentColor" fill="none" stroke-width="1">
+        <rect x="0" y="30" width="112" height="40"/><rect x="140" y="30" width="120" height="40"/>
+        <rect x="288" y="30" width="120" height="40"/><rect x="436" y="30" width="120" height="40"/>
+        <rect x="584" y="30" width="136" height="40"/>
+      </g>
+      <text x="56" y="48" text-anchor="middle">Issuer officer</text><text x="56" y="61" text-anchor="middle" font-size="9">HSM key · signing console</text>
+      <text x="200" y="48" text-anchor="middle">Transaction proposal</text><text x="200" y="61" text-anchor="middle" font-size="9">version + hashes + sig</text>
+      <text x="348" y="44" text-anchor="middle">Chaincode checks</text><text x="348" y="56" text-anchor="middle" font-size="9">schema · hash format</text><text x="348" y="67" text-anchor="middle" font-size="9">issuer owns programme</text>
+      <text x="496" y="44" text-anchor="middle">Endorsement</text><text x="496" y="56" text-anchor="middle" font-size="9">owner org + 1 reviewer</text><text x="496" y="67" text-anchor="middle" font-size="9">policy, not code</text>
+      <text x="652" y="44" text-anchor="middle">Ordering (Raft)</text><text x="652" y="56" text-anchor="middle" font-size="9">3+ orgs · commit</text><text x="652" y="67" text-anchor="middle" font-size="9">state updated</text>
+      <g stroke="currentColor" stroke-width="1" marker-end="url(#a7)">
+        <line x1="112" y1="50" x2="136" y2="50"/><line x1="260" y1="50" x2="284" y2="50"/>
+        <line x1="408" y1="50" x2="432" y2="50"/><line x1="556" y1="50" x2="580" y2="50"/>
+      </g>
+      <path d="M 348 70 L 348 92 L 200 92 L 200 74" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#a7)"/>
+      <text x="212" y="106" font-size="9">rejected: wrong owner, malformed hash, or no matching content</text>
+
+      <g stroke="#2F6B45" fill="none" stroke-width="1.4">
+        <rect x="436" y="140" width="284" height="42"/><rect x="140" y="140" width="264" height="42"/>
+      </g>
+      <text x="578" y="157" text-anchor="middle" font-size="10" fill="#2F6B45">Committed registry state</text>
+      <text x="578" y="171" text-anchor="middle" font-size="9" fill="#2F6B45">queryable by every consumer, no login to the operator</text>
+      <text x="272" y="157" text-anchor="middle" font-size="10" fill="#2F6B45">AccessAI attestation client</text>
+      <text x="272" y="171" text-anchor="middle" font-size="9" fill="#2F6B45">verify → lift ceiling → name the signer on screen</text>
+      <g stroke="#2F6B45" stroke-width="1.2" marker-end="url(#a7)">
+        <line x1="652" y1="74" x2="652" y2="136"/><line x1="432" y1="161" x2="408" y2="161"/>
+      </g>
+      <g stroke="currentColor" fill="none" stroke-width="1"><rect x="0" y="140" width="112" height="42"/></g>
+      <text x="56" y="157" text-anchor="middle" font-size="10">Citizen screen</text><text x="56" y="171" text-anchor="middle" font-size="9">"verified by DSS, 12 Mar"</text>
+      <line x1="136" y1="161" x2="116" y2="161" stroke="#2F6B45" stroke-width="1.2" marker-end="url(#a7)"/>
+
+      <g stroke="currentColor" fill="none" stroke-width="1" stroke-dasharray="4 3"><rect x="436" y="204" width="284" height="30"/></g>
+      <text x="578" y="223" text-anchor="middle" font-size="9.5">daily: one Merkle root → public chain (external non-repudiation)</text>
+      <line x1="578" y1="186" x2="578" y2="200" stroke="currentColor" stroke-width="1" marker-end="url(#a7)"/>
+      <text x="0" y="252" font-size="9.5" opacity="0.75">No citizen key, no citizen transaction, no personal field crosses this boundary.</text>
+    </g>
+  </svg>
+  <figcaption><b>Figure 7 · Blockchain flow.</b> Actor → transaction → contract validation → multi-party
+  endorsement → ordering → committed state → application effect. The single application effect that matters
+  is the last hop: a confidence ceiling that now rests on a signature the citizen's own client checked.</figcaption>
+</figure>
+
+<h3>9.3 Identity, permissions and legacy integration</h3>
+<p><strong>Organisations, not people, hold on-chain identity.</strong> Each member has a Fabric MSP identity
+and a published DID (<span class="mono">did:web</span> under the organisation's own domain, so discovery
+needs no new infrastructure and revocation is under the organisation's control). Staff act through the
+signing console under role-based authority; the organisation's signing key lives in an HSM or a cloud KMS,
+never in the application. <strong>Citizens have no keys and sign nothing</strong> (§6.1, B8).</p>
+<p>The practical objection — "ministries will not run nodes" — is met by separating three things usually
+conflated. <em>Key custody</em> always stays with the organisation. <em>Node operation</em> may be delegated
+to a technical operator such as the Bangladesh Computer Council under a service agreement, so a body can be
+a full issuer without running infrastructure. <em>Attestation authoring</em> happens through a web console,
+a CSV upload, or a signed-document workflow mirroring how these bodies already approve papers. Legacy
+integration is deliberately undemanding: consumers read the registry through a REST gateway with webhooks,
+so MyGov or a UDC operator tool integrates with no blockchain client, and where a body cannot sign yet the
+platform runs exactly as today with the honest 65% ceiling. Adoption is incremental per organisation, not
+all-or-nothing.</p>
+
+<h3>9.4 Errors, reversals and disputes</h3>
+<p>Immutability is a property to design around, not a slogan. Nothing is ever deleted or edited on the
+ledger; correction is by <em>append</em>. A wrong attestation is corrected by the issuer publishing a
+<span class="mono">withdrawn</span> statement and a superseding version, which changes the answer the client
+computes from that moment forward while leaving the record of the error intact — which is the point, since
+the error is exactly what an auditor needs to see. A citizen's dispute enters the existing feedback and
+moderation queue, and a substantiated dispute becomes a <span class="mono">disputed</span> attestation that
+drops the confidence ceiling to 25% while remaining visible. Because no value, entitlement or payment is
+represented on-chain, there is no financial transaction to reverse: the ledger records <em>claims about
+rules</em>, and the authoritative operational state — profiles, decisions, plans — stays in the off-chain
+database where it can be corrected, and erased, normally.</p>
+
+<!-- ============================== ON/OFF CHAIN ============================== -->
+<h2>10 · On-chain / off-chain design</h2>
+<p>The placement rule is a single sentence: <strong>data goes on-chain only if a party who does not trust
+the host must be able to verify it, and only if it is small, non-personal and stable.</strong> Everything
+else stays off-chain. Applied honestly, that leaves the ledger holding a few hundred bytes per record and
+the database holding the entire product.</p>
+
+<div class="tw">
+<table>
+  <caption>Table 7 · Placement of every significant data class, with the reason</caption>
+  <thead><tr><th style="width:26%">Data</th><th style="width:14%">Placement</th><th>Why it belongs there</th></tr></thead>
+  <tbody>
+    <tr><td>Programme version identity, content hash, rule hash</td><td><strong>On-chain</strong></td><td>The object of the multi-party dispute: consumers must detect substitution without asking the operator.</td></tr>
+    <tr><td>Issuer attestation and signature</td><td><strong>On-chain</strong></td><td>It is the trust claim itself, and must be independently checkable and non-repudiable.</td></tr>
+    <tr><td>Hourly Merkle root of decision digests</td><td><strong>On-chain</strong></td><td>Fixed, tiny, volume-independent, and the only way a receipt proves order in time to a third party.</td></tr>
+    <tr><td>Credential status lists (Phase 4)</td><td><strong>On-chain</strong></td><td>Must be readable by verifiers who trust no host; contains no identifiers, only positions in a bitstring.</td></tr>
+    <tr><td>Consortium membership and chaincode governance events</td><td><strong>On-chain</strong></td><td>A network whose own rules change privately cannot make claims about transparency.</td></tr>
+    <tr><td>Programme text, benefits, application steps, circular PDFs</td><td>Off-chain</td><td>Kilobytes of frequently edited bilingual prose. The hash suffices for integrity; replicating the text on every node buys nothing.</td></tr>
+    <tr><td>Citizen profile (34 fields incl. income, disability, marital status, pregnancy, medical conditions); conversations, transcripts, audio, AI logs; phone numbers, PIN hashes, sessions, OTPs</td><td>Off-chain <span class="chip c-no">Never on-chain</span></td><td>Special-category personal data and credentials about identifiable people. Immutability is directly incompatible with erasure; re-identification from a small profile space is trivial; and a hashed phone list would be an enumerable directory of the country's poorest households. Audio is not even stored off-chain — it is discarded in the handler.</td></tr>
+    <tr><td>Eligibility evaluations, traces, profile snapshots</td><td>Off-chain (digest only on-chain)</td><td>The evidence a citizen needs must stay readable, correctable and deletable; the ledger needs only enough to prove it was not altered.</td></tr>
+    <tr><td>Nearby places, map tiles, notifications, analytics</td><td>Off-chain</td><td>No multi-party trust dimension.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============================== PRIVACY & SECURITY ============================== -->
+<h2>11 · Privacy and security</h2>
+
+<h3>11.1 What is already enforced</h3>
+<p>Authentication is phone, OTP and PIN, because much of the target population has no email address:
+Argon2id with a self-describing scrypt fallback, 15-minute access and 30-day refresh tokens, both
+<span class="mono">httpOnly</span>, with rotation and reuse detection that revokes a whole session family
+when an already-rotated token appears. Authorisation is checked twice — at the edge and again in every
+mutation handler, because a 15-minute token can outlive a demotion — and a suspended account is treated as
+signed out while its token is still valid. Token-bucket limits are 10/min for auth, 20/min for AI, 120/min
+otherwise; every boundary input is schema-parsed; health data persists only on explicit opt-in; every staff
+mutation writes an append-only audit row with actor, role, before and after; and a production boot is
+refused if a signing secret is still the shipped development value or OTP echo is on.</p>
+
+<h3>11.2 New risks introduced by the two layers, and the controls</h3>
+<div class="tw">
+<table>
+  <caption>Table 8 · Threats introduced by the AI and ledger layers, and their controls</caption>
+  <thead><tr><th style="width:20%">Threat</th><th style="width:33%">Concrete failure it would produce</th><th>Control</th></tr></thead>
+  <tbody>
+    <tr><td>Indirect prompt injection from ingested documents</td><td>A crafted circular instructs the extraction or rendering model to state a false threshold or emit profile data — the primary vector in a retrieval system over third-party documents, not user-typed injection.</td><td>Retrieved content is never instruction: it arrives in a fixed slot the prompt marks as data. Extraction is schema-constrained, so prose cannot become a field; rendering can only restate plan contents; two human gates stand between any document and publication.</td></tr>
+    <tr><td>Training-data and feedback poisoning</td><td>Coordinated false corrections shift the extraction model, or feedback is used to bend a rule.</td><td>Feedback never auto-changes a rule — already enforced. Training candidates are sampled and reviewed, contributions rate-limited per account, and each model version pinned to its dataset revision so a regression is attributable and revertible.</td></tr>
+    <tr><td>Leakage through prose or cache</td><td>A reply mentions another citizen's fact, or a cache returns one citizen's answer to another.</td><td>Prompts carry only the current citizen's decision-relevant fields; personalised generations are never cached. Caching is limited to deterministic sub-layers — embeddings, retrieval sets keyed on normalised query plus filters, read-aloud audio keyed on text.</td></tr>
+    <tr><td>Re-identification from on-chain digests</td><td>An adversary brute-forces a digest over a small profile space and learns a named person was found eligible for a disability allowance.</td><td>Digests are keyed per citizen (§9.2), the key held off-chain and disclosed only in that citizen's receipt; anchors publish Merkle roots over batches, so no individual digest is published.</td></tr>
+    <tr><td>Chaincode defect or malicious upgrade</td><td>A logic error lets one organisation attest to another's programme, or an upgrade silently changes validation.</td><td>Five record types, no arithmetic on value, no external calls; endorsement policy binds programme ownership; upgrades need the charter supermajority, an on-chain record, and independent audit.</td></tr>
+    <tr><td>Key compromise at an issuer</td><td>A stolen organisational key signs a false attestation.</td><td>HSM or KMS custody with role separation; short validity windows so a forgery expires; two-organisation endorsement so one key is insufficient; revocation and supersession available immediately as an append.</td></tr>
+    <tr><td>Insider threat at the operator</td><td>An administrator lifts a confidence ceiling on unverified content, or edits a decision after a complaint.</td><td>The ceiling now needs an external signature the operator cannot produce; hourly anchoring makes a later edit detectable; verify and edit stay separate; the audit log is append-only.</td></tr>
+    <tr><td>Wallet-drain abuse of paid inference</td><td>Cheap account creation drives cost through the AI and speech endpoints.</td><td>The AI scope is limited to 20 requests per minute per identity; audio uploads are size- and format-bounded; the composer answers when a provider is unavailable, so an outage degrades rather than fails.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>11.3 Data protection posture</h3>
+<p>The lawful basis is consent, captured per purpose and per field, with health data off by default and a
+working deletion path. Minimisation is structural rather than promised: the prompt carries only the fields
+the decision used, and the ledger carries no personal data at all. Bangladesh's data protection regime is
+still consolidating — successive drafts of a Personal Data Protection Act have circulated, and the Cyber
+Security Act 2023 governs adjacent obligations — so the design takes the stricter plausible outcome:
+in-country processing available for every model, cross-border transfer only under a data processing
+agreement with retention disabled, and a documented impact assessment before any real-citizen deployment.
+One item stays unresolved rather than assumed away: a retention period for conversations and evaluations,
+and whether an audit entry naming a staff member survives that person's own deletion request — a genuine
+tension between accountability and erasure for an operator and a regulator to settle, not an engineering
+choice.</p>
+
+<!-- ============================== GOVERNANCE ============================== -->
+<h2>12 · Governance</h2>
+<p>Governance is the part of a consortium design that fails quietly, so it is specified as a charter with
+named thresholds rather than as principles — and nothing in it implies that decentralisation removes legal
+responsibility.</p>
+
+<div class="tw">
+<table>
+  <caption>Table 9 · Governance model across the four domains</caption>
+  <thead><tr><th style="width:14%">Domain</th><th style="width:23%">Question</th><th>Answer under the proposed charter</th></tr></thead>
+  <tbody>
+    <tr><td rowspan="3"><strong>Network membership</strong></td><td>Who may join, and in what class?</td><td>Three classes. <em>Issuers</em> — public bodies and licensed NGOs owning programme rules; they alone may attest. <em>Consumers</em> — applications and operator networks with read access and the right to anchor their own decisions. <em>Technical operators</em> — hosts with no attestation rights. Admission needs a two-thirds vote of issuers, on evidence of legal mandate.</td></tr>
+    <tr><td>Who validates and operates nodes?</td><td>Endorsing peers are run by issuers or their delegated operators; ordering spans at least three organisations. Key custody never transfers with node operation (§9.3).</td></tr>
+    <tr><td>Who may be suspended — or leave?</td><td>Two-thirds vote suspends an issuer for signing outside its mandate or a key failure; suspension blocks new attestations and leaves history intact, since deletion would destroy the audit value. Any member may leave on notice, existing attestations valid until their windows expire — otherwise departure silently invalidates advice already given.</td></tr>
+    <tr><td rowspan="3"><strong>Business rules</strong></td><td>Who sets vocabulary and review intervals?</td><td>A standards committee of issuers, ratified by two-thirds. Defaults inherit the implemented model: 180-day intervals, five verification states, published ceilings.</td></tr>
+    <tr><td>Who resolves disputes, and who may override?</td><td>A panel of three — an issuer not party to it, a consumer, an independent member — within a published SLA, executing its ruling as an append: withdraw, supersede, or mark disputed. Nobody overrides on-chain. Off-chain a caseworker may record a manual determination, flagged as such, because real circumstances outrun any rule set and a system that cannot say "a human decided this" gets worked around.</td></tr>
+    <tr><td>How are programmes and partners added?</td><td>An issuer registers versions inside its own mandate without a vote; a new mandate boundary goes through admission.</td></tr>
+    <tr><td rowspan="3"><strong>Technology</strong></td><td>Who owns the infrastructure?</td><td>No single party: peers and orderers are contributed by members, and a neutral operator — the Bangladesh Computer Council is the natural in-country candidate — may run nodes under contract for those who cannot.</td></tr>
+    <tr><td>How is software upgraded?</td><td>Chaincode upgrades need an independent security review, two-thirds endorsement, a notice period and an on-chain record. Application releases are the operator's business, not the consortium's.</td></tr>
+    <tr><td>Keys, recovery, security ownership?</td><td>Each member holds its keys in an HSM or KMS with documented rotation and a break-glass path, and owns its keys and nodes; the operator owns the application, citizen data and the anchor service; the consortium owns chaincode review and incident coordination, with a named contact per member. A lost registry rebuilds from members' signed attestations.</td></tr>
+    <tr><td rowspan="2"><strong>Regulatory</strong></td><td>How does oversight coexist with a ledger?</td><td>A regulator or auditor holds a <em>read-only</em> node: full visibility of attestations and anchors, no write or endorsement rights, no access to citizen data — which is off-chain and reachable only through the lawful-request process. Stronger than a status quo where the regulator sees only what an operator exports.</td></tr>
+    <tr><td>Where does legal responsibility sit?</td><td>Where it sits today. The operator is data controller for citizen data; each issuer is accountable for its own attestations; the consortium is a coordination body, not a shield, and no participant may cite decentralisation as a defence.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============================== MARKET & PARTNERS ============================== -->
+<h2 class="pb">13 · Market and partners</h2>
+<p>Users and payers are different people here, which is the defining commercial fact. Citizens use the
+platform and pay nothing; institutions pay for two things they cannot produce alone — a channel that reaches
+low-literacy citizens, and evidence that guidance given in their name was correct. A partner appears below
+only if the system fails in a specific way without them.</p>
+
+<div class="tw">
+<table>
+  <caption>Table 10 · Ecosystem participants, their necessity, and their incentive</caption>
+  <thead><tr><th style="width:16%">Participant</th><th style="width:24%">Why they are necessary</th><th style="width:20%">What they contribute</th><th>What they receive</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Issuing departments</strong> — DSS, DWA, DAE, DYD, BMET, NLASO</td><td>Without at least one, the corpus stays unverified and the 65% ceiling never lifts. Only they may say what their rule is.</td><td>Attestations over their own programme versions, and the authoritative source documents.</td><td>Fewer ineligible walk-ins and mis-targeted applications, plus a public record that their rule was published and current — which protects them when a complaint reaches a minister. Start with one department, not fifteen.</td></tr>
+    <tr><td><strong>a2i / ICT Division</strong></td><td>The only realistic convenor of a cross-ministry registry, and owner of the citizen-service channels this must not duplicate.</td><td>Convening authority, MyGov and 333 integration, the UDC relationship.</td><td>A verifiable, reusable rules layer beneath its existing services instead of another siloed app. Risk to us: it may build this in-house (§18).</td></tr>
+    <tr><td><strong>Union Digital Centre operators</strong></td><td>The distribution answer to a problem defined by citizens not finding things online. Assisted use reaches the target population on day one; a website does not.</td><td>Presence in every union, established trust, assisted-use capacity.</td><td>A faster, defensible answer at the counter and a receipt to hand over. Fee-per-session is already their model, and this shortens the session.</td></tr>
+    <tr><td><strong>NGOs</strong> — BRAC, BLAST and peers</td><td>They can attest and issue credentials without a state mandate, which makes a Phase 3 pilot possible before any ministry signs.</td><td>Early issuer participation, caseworker workflows, field validation of whether advice becomes a claim.</td><td>Caseworker productivity, verifiable records for donor reporting, referral pathways into their own services.</td></tr>
+    <tr><td><strong>Development partners</strong> financing social protection</td><td>They fund the verification labour, which is the real cost and which no citizen can pay.</td><td>Programme funding tied to measurable coverage outcomes.</td><td>Attributable evidence on the awareness-versus-eligibility question their portfolios cannot currently separate.</td></tr>
+    <tr><td><strong>Regulators</strong> — data protection authority; Bangladesh Bank / BFIU on the payments boundary</td><td>Their position determines what is lawful, and read-only oversight is what makes the network credible to ministries.</td><td>Supervision and guidance on residency, consent and the cryptoasset boundary.</td><td>Better visibility than the status quo, at no cost, with no scope for the platform to hide behind decentralisation.</td></tr>
+    <tr><td><strong>Service providers</strong> — BCC or a licensed host; SMS and MFS operators; OpenStreetMap</td><td>In-country hosting makes the residency position real and lets issuers skip node operation; OTP delivery is on the critical path for every account; OSM already powers nearby services.</td><td>Node hosting; message delivery with a BTRC-registered masking sender ID; place data under the ODbL.</td><td>Cost-recovered infrastructure mandates and standard commercial terms — with one deliberate limit: no referral revenue from financial products, because paying for a recommendation would corrupt the advice.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============================== COMPETITION ============================== -->
+<h2>14 · Competition and alternatives</h2>
+<p>The relevant competitors are Bangladeshi and mostly human. Naming only "government portals, Google and
+ChatGPT" would be the analysis a local jury discounts within thirty seconds.</p>
+
+<div class="tw">
+<table>
+  <caption>Table 11 · Competitive matrix against the alternatives citizens actually use</caption>
+  <thead><tr><th style="width:17%">Alternative</th><th style="width:22%">What it does well</th><th style="width:27%">Where it fails for this citizen</th><th>What we add that scaling it cannot</th></tr></thead>
+  <tbody>
+    <tr><td><strong>333 national call centre</strong> (human)</td><td>Voice-first, reaches anyone with a phone, institutionally trusted, no literacy requirement.</td><td>An agent cannot evaluate a dozen conjunctive numeric rules per caller, leave a written traced determination, or be audited afterwards. Capacity scales linearly with staff.</td><td>Per-condition evaluation with a stored, replayable trace and an anchored receipt. We treat 333 as a channel to integrate with, not an opponent.</td></tr>
+    <tr><td><strong>UDC operator</strong> (human, assisted)</td><td>Physical trust, local knowledge, already the population's real interface to the state.</td><td>Knowledge is uneven between unions and undocumented; advice is unattributable; the operator carries the interpretation burden unpaid.</td><td>The same operator holding a verified corpus and a defensible verdict. This is a distribution partnership, and our primary v1 surface.</td></tr>
+    <tr><td><strong>National Portal / MyGov</strong></td><td>Authoritative text and forms; the state's own channel.</td><td>Requires the citizen to know what to look for; organised by administrative structure rather than by what happened to a person; no eligibility evaluation.</td><td>Life-event entry, deterministic evaluation, and a rules layer they could consume rather than rebuild.</td></tr>
+    <tr><td><strong>General assistants</strong> (ChatGPT and similar)</td><td>Fluent Bangla, zero marginal cost, already installed, genuinely useful for orientation.</td><td>Produces plausible thresholds — and a plausible threshold is indistinguishable from a correct one to the person acting on it. No citation, no verification state, no trace, no way to tell stale from current.</td><td>A verdict no model authored, a rule hash signed by the issuing body, and a confidence figure that <em>falls</em> when evidence is weak. This comparison is won on provenance, not fluency.</td></tr>
+    <tr><td><strong>Conventional centralised software</strong> — the strongest non-blockchain build</td><td>Cheaper, simpler, faster to ship. Everything in §3 is exactly this, and it works.</td><td>Cannot make a ministry's rule checkable by anyone outside the operator, so the corpus stays uncertified and the platform remains a private opinion about public entitlements.</td><td>Only the attestation layer changes this, and only because custody moves. If an accepted custodian appears, we would recommend the cheaper build (§6.2).</td></tr>
+    <tr><td><strong>Existing blockchain credential projects</strong> (education, land, supply chain)</td><td>Prove the pattern works in the region; several are live.</td><td>They anchor documents already issued to one holder. None address multi-issuer rule provenance, and none sit under an eligibility engine.</td><td>The object of attestation is the rule, not the certificate — which is what makes a decision recomputable rather than merely stored. Scholarship aggregators, by contrast, serve the segment we deliberately deprioritise (§16).</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============================== BUSINESS MODEL ============================== -->
+<h2>15 · Business model, revenue and distribution</h2>
+<p><strong>Who pays.</strong> Never the citizen, for anything in the guidance path. Four institutional
+payers, in the order they become available: NGOs and development-partner projects (licence plus
+deployment); government departments (service contract for registry operation and integrations); consumer
+applications (metered read access to the attestation API); and donor-funded verification programmes,
+paying for corpus verification as a public good. The chain from technology to revenue is short and every
+link is testable: <em>AI widens the channel → more citizens reach a correct determination → an
+institution's cost per assisted citizen falls and targeting improves → it pays for the tooling and the
+evidence; the ledger makes guidance attributable → a department can lend its name to it → a service
+contract becomes possible at all.</em> Without the ledger the last link does not close, which is the
+commercial argument for it.</p>
+
+<div class="tw">
+<table>
+  <caption>Table 12 · Cost structure and unit economics, with every assumption stated</caption>
+  <thead><tr><th style="width:25%">Item</th><th style="width:18%">Basis</th><th>Figure and assumption</th></tr></thead>
+  <tbody>
+    <tr><td>LLM rendering per turn</td><td>Measured tokens (≈1,500 in / 700 out)</td><td>≈ USD 0.00065 ≈ ৳0.08, assuming USD 0.15 / 0.60 per million input / output tokens and ৳120 = USD 1. Both assumptions must be re-checked at contract time.</td></tr>
+    <tr><td>Speech per voice session</td><td>≤90 s audio over ~3 turns</td><td>USD 0.0015–0.009 hosted; effectively zero self-hosted beyond the inference host.</td></tr>
+    <tr><td>Deterministic path</td><td>Measured</td><td>Sub-second, no external call. Roughly 60% of turns reach no model at all — greetings, clarifications and empty-retrieval cases never do.</td></tr>
+    <tr><td>Cost per assisted citizen journey</td><td>3 voice + 2 text turns</td><td><strong>≈ ৳0.5–1.5.</strong> Inference is not this product's dominant cost.</td></tr>
+    <tr><td>Corpus verification</td><td>The real cost centre</td><td>Skilled review time per programme version, recurring at the review interval. Document intelligence (A4) is the lever that converts transcription into review; cost per programme must be measured in Phase 2 before any coverage promise is made.</td></tr>
+    <tr><td>Ledger operation</td><td>Volume-independent by design</td><td>Hundreds of programme versions and attestations per year, 24 decision anchors per day regardless of user count, one public anchor per day. Cost is four to six modest VMs, not transactions — <strong>the ledger does not scale with users</strong>, which is the point of anchoring batches rather than decisions.</td></tr>
+    <tr><td>Scaling economics</td><td>—</td><td>Marginal cost per citizen is near zero and inference-bound; fixed cost is verification and node operation. Adding a district costs nothing; adding a ministry's programmes costs verification labour. The business scales with <em>institutions</em>, not users.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>Value distribution, and the absence of a token.</strong> No cryptoasset is issued, so there is no
+token valuation, distribution schedule or sale — a deliberate position: a token would be unlawful for our
+intended partners under the prevailing Bangladesh Bank and BFIU stance, and the network needs no
+crypto-economic incentive when its participants are institutions bound by a charter. Value is distributed as
+capability rather than as an asset — issuers gain a published record of their own rules, consumers gain
+reusable verified data, operators gain paid infrastructure mandates — and the operating company's equity
+value rests on the platform, the verified corpus and the contracts, which a conventional investor can
+underwrite. Two available revenue lines are refused: selling or brokering citizen data, and referral fees
+from financial-product providers. Both would monetise the advice itself.</p>
+
+<p><strong>Distribution.</strong> Assisted use through UDC operators and NGO caseworkers first, because the
+target population is defined by not finding things online; then SMS-led re-engagement once a masking sender
+ID is in place; then direct app use for those who can. Each institutional channel doubles as a trust
+transfer, which matters more than reach for this audience.</p>
+
+<!-- ============================== ROADMAP ============================== -->
+<h2>16 · Implementation roadmap</h2>
+<div class="tw">
+<table>
+  <caption>Table 13 · Four phases, with dependencies, milestones and gates</caption>
+  <thead><tr><th style="width:14%">Phase</th><th style="width:22%">Scope</th><th style="width:19%">Dependencies</th><th style="width:22%">Business milestone</th><th>Success criterion / exit gate</th></tr></thead>
+  <tbody>
+    <tr><td><strong>1 · Foundation</strong> <span class="chip c-impl">Done</span></td><td>Everything in §3: engine, corpus governance, retrieval, voice navigation, plans, timeline, maps, admin, 685 tests.</td><td>None. Runs with no credentials.</td><td>A demonstrable product rather than a specification.</td><td>Met. A reviewer can clone, seed, and watch a verification round trip change a confidence score.</td></tr>
+    <tr><td><strong>2 · AI enhancement</strong> <span class="chip c-part">Next</span></td><td>A1 speech in production with in-country hosting; A2 extraction with per-field provenance and confirmation; A3 embeddings enabled; A4 document intelligence over ten real circulars; response streaming; the field baseline study.</td><td>Annotation of ≈2,000 utterances; ten circulars with cited sources; one GPU-optional inference host; consent flows for training data.</td><td>Ten programmes genuinely verified against current circulars. One NGO deployment with real caseworkers.</td><td>Slot precision ≥0.98 on income, age and land; ASR slot accuracy reported per district; A4 drafts pass the existing smoke test and cut reviewer time per programme by half — measured, not asserted.</td></tr>
+    <tr><td><strong>3 · Attestation pilot</strong> <span class="chip c-prop">Proposed</span></td><td>BTR chaincode (five record types); signing console with HSM-backed keys; attestation client wired to the confidence ceiling; hourly decision anchoring; receipt verification for operators; read-only auditor node.</td><td>Two willing issuers — realistically one NGO and one department; three node hosts; a signed charter v1; a chaincode security review.</td><td>The first programme whose confidence ceiling is lifted by an external signature rather than an internal edit.</td><td>An independent party verifies a rule attestation and a decision receipt without any access to the operator's database; a deliberate tamper attempt on a stored decision is detected by the anchor.</td></tr>
+    <tr><td><strong>4 · Ecosystem</strong> <span class="chip c-prop">Proposed</span></td><td>More issuers; credential issuance and status lists with selective disclosure; the attestation API opened to third-party consumers; MyGov / 333 integration; upazila-level coverage.</td><td>Charter admission process exercised at least twice; a real issuer adopting credentials; regulatory clearance on cross-organisation credentials.</td><td>A second consumer application reading the registry — the point at which it stops being one company's database.</td><td>Two or more independent consumers in production; a citizen reusing one determination across two programmes without re-collecting documents.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Two scope decisions shape the plan. Depth precedes breadth: one life event, one district and ten
+genuinely verified programmes beat 42 unverified ones, so Phase 2 is gated on verification rather than
+feature count. And the study-abroad segment stays deprioritised — it needs a separate editorial pipeline for
+foreign institutions, serves the users with the least need, and invites the one comparison against a general
+assistant that we do not clearly win.</p>
+
+<!-- ============================== PROTOTYPE REALITY ============================== -->
+<h2>17 · Prototype reality: what exists, what would be demonstrated</h2>
+<p>The repository contains no blockchain code: nothing in sections 9 to 12 is implemented, and this paper
+does not present it as such. What the prototype does contain is strong evidence for the half of the thesis it
+can demonstrate — including the verification round trip, the exact mechanism the ledger takes over.</p>
+
+<div class="tw">
+<table>
+  <caption>Table 14 · Demonstration scope for a competition prototype</caption>
+  <thead><tr><th style="width:23%">Element</th><th style="width:15%">Status</th><th>What is shown, and what is honestly simulated</th></tr></thead>
+  <tbody>
+    <tr><td>Deterministic eligibility with per-condition trace, in Bangla</td><td><span class="chip c-impl">Real</span></td><td>A Bangla sentence about widowhood yields a detected life event, five programmes, one eligible verdict, cited sources, and a reply ending in a next step.</td></tr>
+    <tr><td>The verification round trip</td><td><span class="chip c-impl">Real</span></td><td>An administrator marks a record verified and the same query's confidence rises above the 65% ceiling. This is the trust model working today — and the hook the attestation layer replaces.</td></tr>
+    <tr><td>Voice in Bangla, including the browsers that have no recogniser</td><td><span class="chip c-impl">Real</span></td><td>Server transcription with a domain vocabulary prompt; 33 realistic Bangla utterances resolve through the same matcher a spoken transcript uses; audio is discarded in the handler.</td></tr>
+    <tr><td>AI inference to demonstrate</td><td><span class="chip c-part">Partly new</span></td><td>Three things: live Bangla ASR on unscripted speech with the transcript shown; embeddings enabled so <span class="mono">স্বামী মারা গেছে</span> retrieves the widow allowance where BM25 alone fails, shown side by side; and one real circular PDF converted by A4 into a proposed rule that passes the existing smoke test and appears in the review queue — never published automatically.</td></tr>
+    <tr><td><strong>Minimum on-chain transactions</strong></td><td><span class="chip c-prop">To build</span></td><td>Four, on a Fabric test network with two organisation identities: (1) <span class="mono">registerProgrammeVersion</span> with content and rule hashes; (2) <span class="mono">attest</span> signed by the owning organisation, with a rejection shown when a <em>different</em> organisation attempts it; (3) <span class="mono">anchorDecisionBatch</span> with a Merkle root; (4) <span class="mono">verifyReceipt</span> proving one decision's inclusion. The persuasive moment is the negative case and the tamper case: an unauthorised attestation is refused by policy, and a decision edited in the database fails verification against the anchor.</td></tr>
+    <tr><td>Appropriately simulated</td><td><span class="chip c-prop">Simulated</span></td><td>Real ministry membership and legal mandate; HSM key custody (software keys in the demo, clearly labelled); the public-chain anchor (shown as a testnet transaction); credential issuance by an actual authority. Simulating these is legitimate because they are institutional facts, not code — and each is named here rather than glossed.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============================== RISKS ============================== -->
+<h2>18 · Risks and mitigations</h2>
+<div class="tw">
+<table>
+  <caption>Table 15 · Risk register — likelihood and impact on a low / medium / high scale</caption>
+  <thead><tr><th style="width:18%">Risk</th><th style="width:5%">L</th><th style="width:5%">I</th><th style="width:38%">Mitigation</th><th>Residual</th></tr></thead>
+  <tbody>
+    <tr><td><strong>No issuer signs</strong> — ministries decline and the registry has one member.</td><td>High</td><td>High</td><td>Start with an NGO issuer needing no state mandate; incremental per-organisation adoption; delegated node operation; the product stays fully functional with the honest 65% ceiling, so nothing is blocked on a signature.</td><td><strong>Material.</strong> The central adoption risk; no engineering choice removes it. Phase 3 is gated on two signed issuers rather than assuming them.</td></tr>
+    <tr><td><strong>a2i builds it in-house</strong> after a partnership discussion.</td><td>Med</td><td>High</td><td>Position the registry as public infrastructure the state may host; keep the defensible asset in the verified corpus, engine and evaluation harness; publish the chaincode interface.</td><td>Accepted — if the state runs a verifiable rules registry, the citizen outcome is achieved.</td></tr>
+    <tr><td><strong>Wrong advice reaches a citizen</strong> from an unverified threshold.</td><td>Med</td><td>High</td><td><span class="mono">unknown</span> instead of a guess; the 65% ceiling stated as the first reason; every claim cited; one-tap reporting into moderation; a non-authoritative disclaimer on every determination.</td><td>Reduced but real — hence the corpus must not be presented as authoritative until verified. A deployment gate, not a code gate.</td></tr>
+    <tr><td><strong>ASR quality on regional speech</strong> stays unusable on the dialects that need it most.</td><td>Med</td><td>High</td><td>WER reported per district, not as a mean; typed and assisted modes fully equivalent; the confirm-what-we-heard gate retained; per-district accuracy as a release criterion.</td><td>Possible for specific dialects; the assisted channel is the fallback, which is why it is the primary v1 surface.</td></tr>
+    <tr><td><strong>Extraction writes a wrong field</strong>, corrupting later decisions.</td><td>Med</td><td>High</td><td>Per-field confirmation before any write; provenance per field; positive verdicts use only confirmed fields; abstention preferred over a guess; columns already nullable.</td><td>Low after controls — the failure becomes a missing field, which the engine handles correctly.</td></tr>
+    <tr><td><strong>Indirect prompt injection</strong> through an ingested circular.</td><td>Med</td><td>Med</td><td>Retrieved text is data, never instruction; schema-constrained extraction; two human gates; grounding-failure rate on the dashboard.</td><td>Low — the blast radius is a rejected draft, not a live rule.</td></tr>
+    <tr><td><strong>Chaincode defect or key compromise.</strong></td><td>Low</td><td>High</td><td>Minimal contract surface; ownership enforced by policy; HSM custody; short validity; review before each upgrade; append-only revocation.</td><td>Low, and detectable — the property that matters, since an invisible compromise is unbounded.</td></tr>
+    <tr><td><strong>Privacy or regulatory breach</strong> involving disability and income data.</td><td>Low</td><td>High</td><td>No personal data on-chain, ever; keyed digests; in-country processing available; consent per purpose; minimised prompts; an impact assessment before real-citizen deployment.</td><td>Low, with the erasure-versus-audit tension in §11.3 still needing a regulator's answer.</td></tr>
+    <tr><td><strong>Consortium capture</strong> by one large member.</td><td>Med</td><td>Med</td><td>Two-thirds thresholds; attestation limited to mandate holders; ordering across three organisations; on-chain governance events; a dispute panel excluding parties to the dispute.</td><td>Medium — governance risk is political, managed rather than eliminated.</td></tr>
+    <tr><td><strong>Funding gap</strong> before the first institutional contract.</td><td>High</td><td>Med</td><td>Costs are dominated by grant-fundable verification labour scoped per programme; near-zero marginal cost; Phase 2 needs a small team and no ledger spend.</td><td>Material for the operating company; the roadmap does not stall, since each phase is independently useful.</td></tr>
+    <tr><td><strong>The premise is wrong</strong> — the barrier is application difficulty, not discovery.</td><td>Med</td><td>High</td><td>The Phase 2 baseline study measures failure stage directly (§20); the product already addresses adjacent barriers — document checklists, task tracking, nearby offices.</td><td>Honest exposure — better measured in Phase 2 than claimed now.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============================== FEASIBILITY ============================== -->
+<h2>19 · Feasibility</h2>
+<div class="tw">
+<table>
+  <caption>Table 16 · Feasibility assessment across six dimensions</caption>
+  <thead><tr><th style="width:15%">Dimension</th><th style="width:14%">Verdict</th><th>Basis</th></tr></thead>
+  <tbody>
+    <tr><td>Technical</td><td>Demonstrated</td><td>The hard part is built and tested; the additions are a well-understood inference layer and a five-record chaincode — deliberately the smallest ledger that satisfies §6.1.</td></tr>
+    <tr><td>AI</td><td>Achievable, with a measurement caveat</td><td>Whisper-family adaptation, encoder slot filling and schema-constrained extraction are established, with public Bangla corpora available. Per-dialect accuracy is not yet evidenced, which is why release criteria are per district rather than a mean.</td></tr>
+    <tr><td>Blockchain</td><td>Achievable technically; gated institutionally</td><td>Volume is trivial and user-independent; Fabric with Raft and delegated node operation is a standard deployment. The binding constraint is a willing issuer — not throughput, latency or cost — and it is named as the top risk.</td></tr>
+    <tr><td>Commercial</td><td>Plausible, unproven</td><td>Payers exist with legible incentives, but no contract is signed and no price validated. Marginal cost per citizen is measured and low; the decisive cost is verification labour, which Phase 2 must quantify.</td></tr>
+    <tr><td>Regulatory</td><td>Workable as designed</td><td>No cryptoasset and no payment rail, so the Bangladesh Bank / BFIU boundary is avoided by construction; no personal data on-chain, so the erasure conflict does not arise; read-only regulator access is designed in. The unsettled item is the data protection statute, and the design takes the stricter reading.</td></tr>
+    <tr><td>Operational</td><td>Conditional</td><td>The software is maintainable by a small team — one deployable application, no external service needed to run. What needs an institutional home is verification: a named reviewer with authority to assert that a government threshold is current. Until that exists, the platform should not be presented to real citizens.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============================== IMPACT ============================== -->
+<h2>20 · Expected impact and how it will be measured</h2>
+<p>We publish no projected number of citizens reached: the platform cannot observe outcomes it does not
+mediate, so any "successful application" figure would be self-reported at an unknown response rate. Six
+measurements are instead committed to in Phase 2, each instrumentable with what is already logged:</p>
+<ol class="tight">
+  <li><strong>Failure-stage baseline.</strong> Structured interviews with applicants and rejected applicants
+  at a Union Digital Centre, reporting where the process breaks — unaware, aware but ineligible, or eligible
+  but defeated by the process. This decides whether the premise holds.</li>
+  <li><strong>Determination accuracy.</strong> Agreement between the engine's verdict and a caseworker's
+  independent determination on the same profile, per programme.</li>
+  <li><strong>Unknown-rate reduction.</strong> The share of evaluations returning <span class="mono">unknown</span>
+  before and after learned extraction — the direct measure of whether the AI layer widened the channel.</li>
+  <li><strong>Reviewer minutes per verified programme version</strong>, before and after document intelligence.</li>
+  <li><strong>Assisted-session duration</strong> at a UDC counter, against the operator's current baseline.</li>
+  <li><strong>Verification coverage and freshness</strong> — the share of the corpus with a valid attestation
+  and the median age of the attestation, published continuously rather than claimed once.</li>
+</ol>
+<p>The impact we do claim is structural: a citizen today receives advice whose basis nobody can check, and
+after Phase 3 receives advice carrying a signature from the body that owns the rule. That change is
+verifiable on the screen, and it is the one this project exists to make.</p>
+
+<!-- ============================== CONCLUSION ============================== -->
+<h2>21 · Conclusion</h2>
+<p>The problem is not that Bangladeshi citizens lack a website. It is that entitlement knowledge is
+fragmented across institutions, written in a register its intended beneficiaries cannot read, and
+unattributable when it turns out to be wrong. AccessAI already answers the middle of that: a working, tested,
+bilingual system in which rules decide, a language model only explains, and every determination is traced,
+cited and replayable. The two things it cannot do alone are what this proposal adds. AI opens the channel to
+citizens who speak rather than type, and lifts the verification bottleneck that decides whether the corpus is
+ever true. A permissioned, token-free attestation ledger moves the trust claim out of the operator's database
+into signatures from the bodies that own the rules — and because eligibility is a pure function of
+hash-committed inputs, an anchored decision becomes independently recomputable rather than merely stored.
+Neither technology is here because a category asked for it: statistical perception cannot be written as
+rules, and non-equivocation cannot be self-certified by the party under scrutiny. Where a conventional
+alternative would suffice, this paper says so and recommends it.</p>
+
+<!-- ============================== REFERENCES ============================== -->
+<h2>22 · References and appendices</h2>
+
+<h4>Policy and institutional sources</h4>
+<ol class="tight refs">
+  <li>General Economics Division, Planning Commission, Government of Bangladesh. <em>National Social Security Strategy (NSSS) of Bangladesh</em>, 2015.</li>
+  <li>Aspire to Innovate (a2i), ICT Division. Union Digital Centre programme and the 333 national call centre — service descriptions.</li>
+  <li>Bangladesh Bureau of Statistics. <em>Household Income and Expenditure Survey</em>, 2022 — sampling frame for any prevalence claim.</li>
+  <li>Bangladesh Bank / Bangladesh Financial Intelligence Unit. Public notices on unauthorised cryptocurrency transactions, under the Foreign Exchange Regulation Act 1947 and the Money Laundering Prevention Act 2012.</li>
+  <li>Cyber Security Act 2023 (Bangladesh); Information and Communication Technology Act 2006, including the Controller of Certifying Authorities regime; successive drafts of the Personal Data Protection Act (status to be confirmed at submission).</li>
+  <li>Bangladesh Telecommunication Regulatory Commission — masking sender-ID registration requirements for A2P SMS.</li>
+</ol>
+<h4>Technical sources</h4>
+<ol class="tight refs" start="7">
+  <li>Robertson, S. and Zaragoza, H. <em>The Probabilistic Relevance Framework: BM25 and Beyond</em>, 2009.</li>
+  <li>Cormack, G., Clarke, C. and Buettcher, S. <em>Reciprocal Rank Fusion Outperforms Condorcet and Individual Rank Learning Methods</em>, SIGIR 2009.</li>
+  <li>Radford, A. et al. <em>Robust Speech Recognition via Large-Scale Weak Supervision</em> (Whisper), 2022.</li>
+  <li>Kjartansson, O. et al. <em>Crowd-Sourced Speech Corpora for Javanese, Sundanese, Sinhala, Nepali, and Bangladeshi Bengali</em>, SLTU 2018 (OpenSLR SLR53).</li>
+  <li>Bhattacharjee, A. et al. <em>BanglaBERT: Language Model Pretraining and Benchmarks for Low-Resource Language Understanding in Bangla</em>, NAACL 2022.</li>
+  <li>Feng, F. et al. <em>Language-Agnostic BERT Sentence Embedding</em> (LaBSE), ACL 2022.</li>
+  <li>Hyperledger Fabric documentation — membership service providers, endorsement policies, Raft ordering, chaincode lifecycle.</li>
+  <li>Laurie, B., Langley, A. and Kasper, E. <em>Certificate Transparency</em>, RFC 6962 — the append-only-log alternative assessed in §6.2.</li>
+  <li>W3C. <em>Verifiable Credentials Data Model 2.0</em>; <em>Decentralized Identifiers (DIDs) v1.0</em>; Bitstring Status List.</li>
+  <li>IETF. <em>Selective Disclosure for JWTs (SD-JWT)</em> — the mechanism for proving an income band without disclosing an income.</li>
+  <li>W3C. <em>Web Content Accessibility Guidelines 2.2</em>.</li>
+  <li>OpenStreetMap Foundation. Tile Usage Policy; Open Database Licence (ODbL) attribution requirements.</li>
+</ol>
+
+<h4>Appendix A · Repository evidence for every implementation claim</h4>
+<p style="font-size:9.5pt">Three-valued engine, traces and statutory bars —
+<span class="mono">src/modules/eligibility/engine.ts</span>, <span class="mono">tests/eligibility/engine.test.ts</span>.
+Facts fixed before generation, and no model call on empty retrieval —
+<span class="mono">src/modules/ai/response-plan.ts</span>, <span class="mono">conversation.service.ts</span>,
+<span class="mono">composer.ts</span>. Confidence weights and the 65 / 75 / 100 / 45 / 25 ceilings —
+<span class="mono">src/modules/ai/confidence.ts</span>, <span class="mono">tests/ai/confidence.test.ts</span>.
+Hybrid retrieval, BM25 parameters, RRF, metadata pre-filter —
+<span class="mono">src/modules/knowledge/retrieval.ts</span>, <span class="mono">tokenizer.ts</span>.
+Ranking weights and the neutral similar-user factor — <span class="mono">src/modules/recommendation/ranker.ts</span>.
+Deterministic understanding and conservative extraction — <span class="mono">src/modules/ai/nlu.ts</span>,
+<span class="mono">tests/ai/nlu-income.test.ts</span>. Verification workflow, separation of duties, versioned
+rules, audit log and staleness — <span class="mono">src/modules/admin/admin.service.ts</span>,
+<span class="mono">src/lib/db/schema.ts</span>, <span class="mono">docs/KNOWLEDGE-PIPELINE.md</span>.
+Replayable decisions with profile snapshot and rule version, and the grounding-failure flag — the
+<span class="mono">eligibility_evaluations</span> and <span class="mono">ai_logs</span> tables.
+Voice — <span class="mono">src/modules/voice/*</span>, <span class="mono">src/app/api/v1/voice/*</span>,
+<span class="mono">npm run voice:bangla</span>. Security controls —
+<span class="mono">src/modules/auth/auth.service.ts</span>, <span class="mono">src/lib/http/rate-limit.ts</span>,
+<span class="mono">src/lib/config/env.ts</span>. Map and real places —
+<span class="mono">src/modules/places/*</span>, <span class="mono">docs/EXTERNAL.md</span> §7.
+Known deviations, open institutional questions and unbuilt items —
+<span class="mono">docs/DEVIATIONS.md</span>, <span class="mono">docs/OPEN-QUESTIONS.md</span>,
+<span class="mono">docs/TESTING.md</span>.</p>
+
+</div>

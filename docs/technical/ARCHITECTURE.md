@@ -318,9 +318,9 @@ layer, so no component has to remember to check.
 
 ## 8. Security
 
-- **Argon2id** via optional `@node-rs/argon2`, falling back to scrypt at N=2^15. Both hashes are
-  self-describing, so an installation can gain Argon2 later without invalidating credentials, and a
-  host that *loses* the module fails closed rather than silently accepting.
+- **scrypt** from Node core at N=2^15 for all secret hashing (PINs, refresh tokens). Not Argon2id
+  (PRD §48/§121): that needs native code, which Cloudflare Workers — this app's deployment target —
+  cannot run at all. See [DEVIATIONS.md](DEVIATIONS.md) §11.
 - **Refresh-token rotation with reuse detection.** Presenting an already-rotated refresh token
   revokes the entire session family — the standard response to a stolen token, since the legitimate
   holder can sign in again but the thief cannot keep the family alive.

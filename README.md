@@ -5,7 +5,7 @@
 A citizen describes what happened in their life. A deterministic rule engine decides what they
 qualify for. An explanation layer tells them why, in Bangla or English, with its sources shown.
 
-Built to the PRD v3.0 (`AccessAI.pdf`) for product behaviour and the Bhorosha Design System v1.0
+Built to the PRD v3.0 (`docs/product/AccessAI.pdf`) for product behaviour and the Bhorosha Design System v1.0
 (`bhorosha-design-system.md`) for everything the citizen sees.
 
 ---
@@ -76,7 +76,6 @@ test those flows without a phone.
 
 | Symptom | Cause and fix |
 |---|---|
-| `npm install` fails on `argon2` | Expected and harmless — it is an optional dependency. Auth falls back to scrypt (see [DEVIATIONS.md](docs/DEVIATIONS.md) §11). |
 | Build hangs on first run | `next/font` is fetching Inter / Noto Sans Bengali once. It needs network access **once**, then caches. |
 | `EADDRINUSE` on 3000 | Another dev server is already running. `npm run dev -- -p 3001`, or kill the old one. |
 | `Cannot find module './vendor-chunks/*.js'` | `npm run build` ran while `npm run dev` was up; the production build replaced the dev server's chunks. Stop the server, `rm -rf .next`, start it again. Use **`npm run build:verify`** next time — it builds into `.next-verify` and leaves the dev server alone. |
@@ -154,7 +153,7 @@ alongside the sample records and **labelled separately** — a real hospital nev
 measured from the citizen's actual position when they share it, and the screen says which reference
 it used.
 
-**Not built** — see [docs/EXTERNAL.md](docs/EXTERNAL.md) for exactly what each needs:
+**Not built** — see [docs/technical/EXTERNAL.md](docs/technical/EXTERNAL.md) for exactly what each needs:
 SMS delivery, email delivery, vector embeddings, OCR, and voice-OTP callback.
 Each degrades to a stated, usable fallback rather than a broken control.
 
@@ -184,7 +183,7 @@ npm run osm:clear    # empty the OpenStreetMap place cache and re-query next req
 A **modular monolith** in one Next.js app. PRD §37 specifies NestJS + PostgreSQL + Redis;
 this prototype runs on Next route handlers + libSQL with zero external services so the whole
 system starts with two commands. Business logic lives in framework-free services, so the move
-to NestJS is a controller swap — see [docs/DEVIATIONS.md](docs/DEVIATIONS.md) §1.
+to NestJS is a controller swap — see [docs/technical/DEVIATIONS.md](docs/technical/DEVIATIONS.md) §1.
 
 ```
 Route handler (thin adapter: parse, guard, serialise)
@@ -252,7 +251,7 @@ src/
     domain/                   enums, geography (64 districts), rules (AST)
     format/                   numerals (Bangla, lakh/crore), dates
     http/                     response envelope, session, RBAC, rate limit
-    security/                 hash (Argon2→scrypt), tokens (JWT)
+    security/                 hash (scrypt), tokens (JWT)
     validation/               Zod schemas
   messages/catalog.ts         ONE bilingual catalogue; bn/en projected from it
   prompts/                    versioned prompt templates
@@ -308,7 +307,7 @@ Enforced rather than intended:
 behaviour tests holding the primitives to their accessibility contracts — label association, the
 reserved helper slot, OTP paste and backspace, digits surviving a rejection, pattern-by-option-count.
 The contrast suite found a real error in the design system document — see
-[docs/DEVIATIONS.md](docs/DEVIATIONS.md) §10.
+[docs/technical/DEVIATIONS.md](docs/technical/DEVIATIONS.md) §10.
 
 ---
 
@@ -316,13 +315,13 @@ The contrast suite found a real error in the design system document — see
 
 | Document | Contents |
 |---|---|
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Layers, data models, request lifecycle, state management |
-| [docs/API.md](docs/API.md) | All 28 endpoints, envelope, error codes |
-| [docs/DEVIATIONS.md](docs/DEVIATIONS.md) | Every departure from the PRD or the design system, with reasons |
-| [docs/EXTERNAL.md](docs/EXTERNAL.md) | External services: why needed, mandatory or not, fallback |
-| [docs/KNOWLEDGE-PIPELINE.md](docs/KNOWLEDGE-PIPELINE.md) | The missing PRD Part 7, authored |
-| [docs/TESTING.md](docs/TESTING.md) | Strategy, what is covered, what is not |
-| [docs/OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) | What still needs a decision from you |
+| [docs/technical/ARCHITECTURE.md](docs/technical/ARCHITECTURE.md) | Layers, data models, request lifecycle, state management |
+| [docs/technical/API.md](docs/technical/API.md) | All 28 endpoints, envelope, error codes |
+| [docs/technical/DEVIATIONS.md](docs/technical/DEVIATIONS.md) | Every departure from the PRD or the design system, with reasons |
+| [docs/technical/EXTERNAL.md](docs/technical/EXTERNAL.md) | External services: why needed, mandatory or not, fallback |
+| [docs/technical/KNOWLEDGE-PIPELINE.md](docs/technical/KNOWLEDGE-PIPELINE.md) | The missing PRD Part 7, authored |
+| [docs/technical/TESTING.md](docs/technical/TESTING.md) | Strategy, what is covered, what is not |
+| [docs/product/OPEN-QUESTIONS.md](docs/product/OPEN-QUESTIONS.md) | What still needs a decision from you |
 
 ---
 

@@ -6,13 +6,21 @@ import { defineConfig } from 'drizzle-kit';
  * external services. See docs/DEVIATIONS.md §1 — the schema, repositories,
  * and services are dialect-agnostic; only this file and src/lib/db/client.ts
  * change when moving to Postgres.
+ *
+ * `dialect: 'turso'` is a distinct value from `'sqlite'` in drizzle-kit —
+ * only it accepts `authToken` in dbCredentials. A local `file:` URL has no
+ * token, so the dialect switches based on whether one is set, rather than
+ * needing a second config file for the hosted case.
  */
+const hasAuthToken = Boolean(process.env.DATABASE_AUTH_TOKEN);
+
 export default defineConfig({
   schema: './src/lib/db/schema.ts',
   out: './drizzle',
-  dialect: 'sqlite',
+  dialect: hasAuthToken ? 'turso' : 'sqlite',
   dbCredentials: {
     url: process.env.DATABASE_URL ?? 'file:./data/accessai.db',
+    ...(hasAuthToken ? { authToken: process.env.DATABASE_AUTH_TOKEN } : {}),
   },
   verbose: true,
   strict: true,

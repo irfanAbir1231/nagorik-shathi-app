@@ -6,7 +6,7 @@ import { ok, readJson, handle, fail, ERROR_CODES } from '@/lib/http/response';
 import { requireStaff, canDeleteProgrammes, canApproveChanges } from '@/lib/http/session';
 import { upsertOpportunitySchema } from '@/lib/validation/schemas';
 import { recordAudit } from '@/modules/admin/admin.service';
-import { indexOpportunity } from '../route';
+import { indexOpportunity } from '@/modules/opportunities/opportunity.service';
 import { z } from 'zod';
 
 const patchSchema = upsertOpportunitySchema.partial().extend({

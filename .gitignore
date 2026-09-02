@@ -32,3 +32,11 @@ Thumbs.db
 # Test output
 coverage/
 .vitest/
+
+# OpenNext
+.open-next
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example

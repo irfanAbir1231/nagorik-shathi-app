@@ -213,16 +213,16 @@ Both bounds are asserted in `tests/tokens/contrast.test.ts`, including that `gre
 
 ---
 
-## 11. Argon2id → scrypt fallback
+## 11. Argon2id → scrypt, permanently
 
-**PRD §48 / §121** specify Argon2. `@node-rs/argon2` is declared an **optional** dependency: when
-present it is used; when absent (common on Windows without prebuilt binaries) the code falls back to
-scrypt from Node core at N=2^15 (~32 MB per hash).
-
-Both paths produce a self-describing string recording which algorithm made it, so verification
-routes itself correctly and an installation can gain Argon2 later **without invalidating existing
-credentials**. A credential made with Argon2 on a host that later loses the module **fails closed**
-with an explanatory error rather than silently accepting.
+**PRD §48 / §121** specify Argon2. An earlier build of this app used `@node-rs/argon2` when present,
+falling back to scrypt from Node core (N=2^15, ~32 MB per hash) only when absent. That fallback is
+now the only path: Argon2's cost comes from native code, and this app's deployment target
+(Cloudflare Workers) cannot execute native code at all — not a missing prebuilt binary, but no
+ability to run compiled code in the isolate, full stop. A credential hashed with Argon2 on any other
+host would permanently fail to verify once the app runs on Workers, so keeping the Argon2 path meant
+local dev and production could silently drift onto incompatible hash formats. scrypt is equally
+memory-hard and needs no native module, so it runs identically everywhere this app does.
 
 ---
 

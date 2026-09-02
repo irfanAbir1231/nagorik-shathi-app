@@ -6,12 +6,13 @@ import {
   // Aliased: `documents` is used as a local name for REQUIRED documents in this
   // module, and the two are different things — one is what the citizen must
   // bring, the other is the indexed source text.
-  documents as sourceDocuments,
+  documents as sourceDocuments, documentChunks,
   type Opportunity, type Organization, type RequiredDocument,
 } from '@/lib/db/schema';
 import { evaluateEligibility, type EligibilityProfile, type EvaluationResult } from '@/modules/eligibility/engine';
 import { rank, type RankingInput, type RankedResult } from '@/modules/recommendation/ranker';
 import { scoreConfidence, type ConfidenceBreakdown } from '@/modules/ai/confidence';
+import { chunkText, termFrequencies, estimateTokens } from '@/modules/knowledge/tokenizer';
 import type { OpportunityCategory, EligibilityOutcome } from '@/lib/domain/enums';
 import type { RuleSet } from '@/lib/domain/rules';
 import type { RetrievedChunk } from '@/modules/knowledge/retrieval';
@@ -443,4 +444,85 @@ export async function countByCategory(): Promise<Record<string, number>> {
     .where(inArray(opportunities.status, ['open', 'rolling']))
     .groupBy(opportunities.category);
   return Object.fromEntries(rows.map((r) => [r.category, Number(r.n)]));
+}
+
+/**
+ * Regenerates the retrieval document and chunks for a programme.
+ *
+ * Called on create and on update, because a programme whose text has changed but
+ * whose index has not will be retrieved for the old wording and cited with the
+ * new — a subtle way to produce an answer that does not match its own source.
+ *
+ * Lives here rather than in the admin/programs route handlers because a
+ * Next.js route.ts file may only export HTTP method handlers and a fixed
+ * set of config constants — any other export fails the production build.
+ */
+export async function indexOpportunity(opportunityId: string): Promise<number> {
+  const [row] = await db
+    .select({ opportunity: opportunities, organizationName: organizations.name })
+    .from(opportunities)
+    .innerJoin(organizations, eq(opportunities.organizationId, organizations.id))
+    .where(eq(opportunities.id, opportunityId))
+    .limit(1);
+  if (!row) return 0;
+
+  const o = row.opportunity;
+
+  const existing = await db
+    .select({ id: sourceDocuments.id })
+    .from(sourceDocuments)
+    .where(eq(sourceDocuments.opportunityId, opportunityId));
+  if (existing.length > 0) {
+    await db.delete(documentChunks).where(inArray(documentChunks.documentId, existing.map((d) => d.id)));
+    await db.delete(sourceDocuments).where(eq(sourceDocuments.opportunityId, opportunityId));
+  }
+
+  const bodyEn = [
+    `# ${o.title}`,
+    o.summary,
+    o.description,
+    `## Benefits\n${o.benefits}`,
+    `## How to apply\n${o.applicationProcess.map((s) => `${s.step}. ${s.en}`).join('\n')}`,
+  ].join('\n\n');
+  const bodyBn = [
+    `# ${o.titleBn}`,
+    o.summaryBn,
+    o.descriptionBn,
+    `## সুবিধা\n${o.benefitsBn}`,
+    `## আবেদনের ধাপ\n${o.applicationProcess.map((s) => `${s.step}. ${s.bn}`).join('\n')}`,
+  ].join('\n\n');
+
+  const [document] = await db
+    .insert(sourceDocuments)
+    .values({
+      opportunityId,
+      organizationId: o.organizationId,
+      title: o.title,
+      titleBn: o.titleBn,
+      sourceType: 'manual_entry',
+      sourceUrl: o.sourceUrl,
+      publisher: row.organizationName,
+      retrievedAt: new Date(),
+      textContent: `${bodyEn}\n\n---\n\n${bodyBn}`,
+      embeddingStatus: 'pending',
+      verificationStatus: o.verificationStatus,
+      licenseNote: 'Authored summary maintained in the AccessAI admin portal.',
+    })
+    .returning();
+
+  const chunks = [...chunkText(bodyEn), ...chunkText(bodyBn)];
+  if (chunks.length > 0) {
+    await db.insert(documentChunks).values(
+      chunks.map((content, index) => ({
+        documentId: document!.id,
+        opportunityId,
+        chunkIndex: index,
+        content,
+        tokenCount: estimateTokens(content),
+        termFrequencies: termFrequencies(content),
+        metadata: { slug: o.slug, category: o.category, title: o.title, titleBn: o.titleBn },
+      })),
+    );
+  }
+  return chunks.length;
 }

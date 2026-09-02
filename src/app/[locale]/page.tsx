@@ -84,15 +84,8 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
       {/* ---------------------------------------------------------- header */}
       <header className="sticky top-0 z-appbar border-b border-stroke-subtle bg-surface/95 backdrop-blur">
         <div className="mx-auto flex h-appbar max-w-content items-center justify-between gap-3 px-4 md:px-5">
-          <span className="flex items-center gap-2">
-            <span
-              aria-hidden="true"
-              className="flex h-9 w-9 items-center justify-center rounded-md bg-ramp-green-600 type-label-lg text-white"
-            >
-              অ
-            </span>
-            <span className="type-heading-sm text-text-primary">{tc('appName')}</span>
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt={tc('appName')} className="h-8 w-auto" />
           <div className="flex items-center gap-2">
             <LocaleSwitcher compact />
             <Link

@@ -30,6 +30,25 @@ const nextConfig: NextConfig = {
   // into the server trace.
   outputFileTracingRoot: __dirname,
   /**
+   * `@libsql/client/web` statically imports both its WebSocket and HTTP
+   * transports (only one runs, chosen by URL scheme at request time), and
+   * the WebSocket one depends on `@libsql/isomorphic-ws`, which ships a
+   * `workerd`-conditioned build (`web.mjs`/`web.cjs`) alongside its default
+   * Node one. Next's own file trace resolves under Node's conditions only,
+   * so it never copies the workerd files into the standalone output — and
+   * when the Cloudflare build later re-resolves the same import under the
+   * `workerd` condition, those files are missing. Force-including them here
+   * is enough: the WebSocket transport is never actually reached (Turso is
+   * always addressed over HTTPS in this app), so the files only need to be
+   * present for the bundler, not correct for the runtime.
+   */
+  outputFileTracingIncludes: {
+    '**/*': [
+      './node_modules/@libsql/isomorphic-ws/web.mjs',
+      './node_modules/@libsql/isomorphic-ws/web.cjs',
+    ],
+  },
+  /**
    * Typed routes are OFF deliberately, not by omission.
    *
    * next-intl owns navigation through `createNavigation`, and its typed-pathname
@@ -71,3 +90,19 @@ const nextConfig: NextConfig = {
 };
 
 export default withNextIntl(nextConfig);
+
+/**
+ * Opt-in, not automatic: this spins up a local `workerd` process that
+ * emulates Cloudflare bindings (R2, KV, ...) for `next dev`, and that
+ * process holds a lock on `.open-next/` for as long as the dev server runs.
+ * Making it unconditional (as the `opennextjs-cloudflare` scaffolding tool
+ * does by default) means a `next dev` left running from an earlier session
+ * silently blocks every later `opennextjs-cloudflare build` with an EPERM on
+ * `.open-next/assets` — exactly the "verification step fights the dev
+ * server" failure this project has already been burned by once (see
+ * `distDir` above). Nothing in this app reads a Cloudflare binding yet, so
+ * default dev has no need for the emulation either.
+ */
+if (process.env.CF_DEV_BINDINGS === 'true') {
+  import('@opennextjs/cloudflare').then((m) => m.initOpenNextCloudflareForDev());
+}

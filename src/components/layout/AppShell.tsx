@@ -341,14 +341,9 @@ export function AppShell({
 function BrandMark() {
   const t = useTranslations('common');
   return (
-    <Link href="/dashboard" className="flex items-center gap-2 rounded-md focus-visible:outline-3 focus-visible:outline-stroke-focus focus-visible:outline-offset-2">
-      <span
-        aria-hidden="true"
-        className="flex h-9 w-9 items-center justify-center rounded-md bg-ramp-green-600 type-label-lg text-white"
-      >
-        অ
-      </span>
-      <span className="type-heading-sm text-text-primary">{t('appName')}</span>
+    <Link href="/dashboard" className="flex items-center rounded-md focus-visible:outline-3 focus-visible:outline-stroke-focus focus-visible:outline-offset-2">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo.png" alt={t('appName')} className="h-8 w-auto" />
     </Link>
   );
 }
