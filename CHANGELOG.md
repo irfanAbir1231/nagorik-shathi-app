@@ -62,3 +62,10 @@ All timestamps use Bangladesh Standard Time (Asia/Dhaka, UTC+06:00).
 - Replaced `public/logo.png` byte-for-byte with the owner-supplied root `Logo_Shebar_Janala.png` and increased its two header render heights to preserve legibility with the source artwork's transparent vertical padding.
 - Used the image-editing workflow to derive a square, transparent doorway/path mark from the supplied logo for `src/app/icon.png` and `src/app/apple-icon.png`, removing the former brand mark from browser and device icon surfaces.
 - Verified the supplied logo and both derived icon files decode as PNG images with transparent corners; the wide source is 1690×931 and the square icon is 1254×1254.
+
+### 03:27:12 +06:00 — GitHub publication
+
+- Created commit `468b133` (`Rebrand as Shebar Janala and harden civic AI`) from the verified `main` branch.
+- Configured `origin` as `https://github.com/i-am-mushfiq/ShebarJanala.git` after confirming the destination contained no existing refs.
+- Published `main` and configured it to track `origin/main`.
+- Kept the separately supplied, untracked presentation, survey, whitepaper, and `docs/Shebar Janala.png` artifacts outside the commit and push.
