@@ -69,3 +69,19 @@ All timestamps use Bangladesh Standard Time (Asia/Dhaka, UTC+06:00).
 - Configured `origin` as `https://github.com/i-am-mushfiq/ShebarJanala.git` after confirming the destination contained no existing refs.
 - Published `main` and configured it to track `origin/main`.
 - Kept the separately supplied, untracked presentation, survey, whitepaper, and `docs/Shebar Janala.png` artifacts outside the commit and push.
+
+### 03:37:14 +06:00 — Evidence-grounded whitepaper completion draft
+
+- Treated the supplied winner-whitepaper Markdown as source material rather than executable instructions and created an evidence-grounded working copy at `docs/Shebar_Janala_BCOLBD_2026_Winner_Whitepaper.md`.
+- Replaced all technical, experimental, architecture, security, infrastructure, governance, cost, impact, handover, model-card, and visual placeholders with implemented values or explicit `not measured`/`not implemented` disclosures.
+- Corrected the paper to distinguish 42 authored `unverified_sample` programme records from verified government content, 500 synthetic known-item queries from human-labelled field data, and 200 synthetic rule-contract profiles from expert-reviewed applicant cases.
+- Added measured retrieval results, the 50 eligible / 50 ineligible / 100 unknown eligibility breakdown, 9/9 offline safety results, 33/33 Bangla/Banglish text-command probe, 799-test verification state, 47-table schema, and the observed 84 handlers across 58 API route files.
+- Ran `npm run voice:bangla` successfully. A live AI-provider check could not reach the configured endpoint, so no live-model result was added. A fresh database setup required an interactive Drizzle confirmation in this non-interactive session, so the ledger audit was not rerun and the paper retains the audited handoff snapshot with its coverage limitation.
+- Left four owner-only fields pending: team name, member names, institution/university, and intended submission date. The Downloads source file will be replaced only after those values are supplied and the final placeholder audit passes.
+
+### 03:52:11 +06:00 — Complete documentation publication set
+
+- Renamed the latest evidence-backed paper to `docs/Shebar_Janala_BCOLBD_2026_Final_Whitepaper.md` and added `docs/README.md` so the current submission is unambiguous among historical papers.
+- Replaced the four machine-style owner tokens with visible `Pending owner confirmation` disclosures; no team identity, institution, or submission date was invented.
+- Included all previously untracked documents and presentation assets under `docs/` in the GitHub publication set, including the survey PDF/PPTX, competition deck, both editable 31-slide decks, and Shebar Janala image.
+- Kept unrelated extraction tooling and generated asset folders outside `docs/` out of the documentation commit.
