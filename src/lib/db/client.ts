@@ -46,10 +46,7 @@ import { env } from '../config/env';
  * even though this branch is never reached there (`DATABASE_URL` is never
  * `file:` in production).
  */
-// Resolve local-only SQLite dependencies from the project root. Next executes
-// route modules from `.next/server`, so resolving relative to this bundled
-// chunk cannot see the repository's node_modules during page-data collection.
-const nodeRequire = createRequire(`${process.cwd()}/package.json`);
+const nodeRequire = createRequire(import.meta.url);
 const LIBSQL_NODE_PACKAGE = ['@libsql', 'client'].join('/');
 
 export type Database = LibSQLDatabase<typeof schema>;
@@ -83,7 +80,12 @@ function create(): { db: Database; client: Client } {
     url: env.DATABASE_URL,
     ...(env.DATABASE_AUTH_TOKEN ? { authToken: env.DATABASE_AUTH_TOKEN } : {}),
   };
-  const client: Client = env.DATABASE_URL.startsWith('file:')
+  // Next evaluates route modules during production build/page-data collection.
+  // That phase cannot resolve the local-only native package from a bundled
+  // server chunk; no database query is executed during collection, so use the
+  // edge-safe client there. Normal local development still uses SQLite.
+  const isNextBuild = process.env.NEXT_PHASE === 'phase-production-build';
+  const client: Client = env.DATABASE_URL.startsWith('file:') && !isNextBuild
     ? (nodeRequire(LIBSQL_NODE_PACKAGE).createClient as typeof createWebClient)(config)
     : createWebClient(config);
 
