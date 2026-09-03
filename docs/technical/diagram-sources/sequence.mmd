@@ -1,0 +1,80 @@
+%% Shebar Janala / Nagorik Sathi - end-to-end sequence with every actor
+%% Timings, thresholds and outcomes are the values the code enforces.
+sequenceDiagram
+  autonumber
+
+  actor CIT as Citizen
+  participant GW as USSD gateway
+  participant APP as App and guards
+  participant AUTH as Auth and identity
+  participant CORE as Deterministic core
+  participant LLM as DeepSeek
+  participant DB as Turso
+  participant LED as Hash chains
+  actor STAFF as Staff and officers
+
+  rect rgb(234, 244, 238)
+  Note over CIT,AUTH: Registration and identity
+  CIT->>APP: phone number
+  APP->>AUTH: request one-time code
+  AUTH->>DB: OTP hash, 5 min, 5 tries
+  Note over AUTH: SMS provider, or demo outbox
+  CIT->>APP: code and new PIN
+  APP->>AUTH: verify, hash PIN with scrypt
+  AUTH->>DB: user, profile, settings, session
+  AUTH-->>CIT: access 15 min, refresh 30 days
+  CIT->>APP: national ID and location
+  APP->>AUTH: digit check, then geofence
+  AUTH->>DB: simulated_verified, union
+  end
+
+  rect rgb(240, 240, 248)
+  Note over CIT,LLM: One question, one decision
+  CIT->>APP: question in Bangla
+  APP->>CORE: intent, life event, entities
+  CORE->>DB: BM25 over 158 chunks
+  CORE->>CORE: rules over profile snapshot
+  CORE->>DB: evaluation and rule version
+  CORE->>LLM: fixed plan, 7 profile fields
+  LLM-->>CORE: prose for that plan
+  Note over CORE,LLM: no key or failure: composer answers, marked degraded
+  CORE->>DB: message, ai_logs, grounding flag
+  APP-->>CIT: verdict, trace, citations, confidence 65
+  CIT->>APP: save it, make an action plan
+  APP->>DB: saved status, tasks, timeline
+  end
+
+  rect rgb(249, 237, 237)
+  Note over CIT,STAFF: Money, flags, escalation
+  STAFF->>APP: post a union allocation
+  APP->>DB: allocation row
+  APP->>LED: append to the money chain
+  CIT->>APP: flag the allocation
+  APP->>DB: flag row, recount for the union
+  alt 2 or more flags and ratio at least 0.5
+    APP->>DB: escalation, state pending
+    APP->>STAFF: notify the upazila officer
+    STAFF->>APP: acknowledge, resolve or dismiss
+    APP->>DB: status history
+  else below the threshold
+    APP-->>CIT: flag kept, no escalation
+  end
+  Note over APP,DB: no timeout, and the latch never re-notifies
+  end
+
+  rect rgb(240, 240, 248)
+  Note over GW,STAFF: Phone-only channel, then oversight
+  CIT->>GW: dial the USSD code
+  GW->>APP: callback, shared secret
+  APP->>DB: menu session, status or issue
+  APP-->>GW: plain-text CON or END
+  GW-->>CIT: menu on the handset
+  STAFF->>APP: open oversight
+  APP->>CORE: run 5 detectors
+  CORE->>DB: allocations, benefits, escalations
+  APP-->>STAFF: outliers, duplicates, overpayments
+  STAFF->>LED: run the verifier
+  LED-->>STAFF: chains recomputed, breaks named
+  end
+
+  Note over CIT,STAFF: Nothing here reconciles eligibility against enrolment (D-01)

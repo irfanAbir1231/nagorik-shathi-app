@@ -1,0 +1,87 @@
+%% Shebar Janala / Nagorik Sathi - full system architecture
+%% Figures are taken from the running tree: 47 tables, 58 route files,
+%% 84 handlers, 19 modules, 158 retrieval chunks, 42 programme records.
+%% Red nodes are gaps that carry an issue ID from Section 13.
+%% Layers are joined layer-to-layer. The ~~~ links are invisible and exist
+%% only to hold each layer on one row.
+flowchart TB
+
+  subgraph ACCESS["1. Access channels"]
+    direction LR
+    WEB["Bilingual web<br/>bn and en"]
+    PHONE["Feature phone<br/>USSD menu"]
+    PUB["Anonymous pages<br/>landing, transparency"]
+    WEB ~~~ PHONE ~~~ PUB
+  end
+
+  subgraph WORKER["2. Cloudflare Worker, one instance, OpenNext"]
+    direction LR
+    ASSETS["Static assets"]
+    IMAGES["Images binding"]
+    NOCACHE["No R2 cache"]
+    ASSETS ~~~ IMAGES ~~~ NOCACHE
+  end
+
+  subgraph APP["3. Next.js 15, React 19, 19 modules"]
+    direction LR
+    MW["Middleware<br/>locale, guards"]
+    API["58 route files<br/>84 handlers"]
+    AUTHZ["Authorisation<br/>role, union scope"]
+    STALE["Token guards skip<br/>the live user"]
+    MW ~~~ API ~~~ AUTHZ ~~~ STALE
+  end
+
+  subgraph RETR["4. Retrieval, 158 bilingual chunks"]
+    direction LR
+    TOK["Tokenizer<br/>bn and en"]
+    BM25["BM25<br/>k1 1.5, b 0.75"]
+    EMB["Embeddings<br/>dormant, no key"]
+    RRF["RRF fusion<br/>k = 60"]
+    TOK ~~~ BM25 ~~~ EMB ~~~ RRF
+  end
+
+  subgraph CORE["5. Deterministic core, no model on these paths"]
+    direction LR
+    NLU["NLU<br/>keyword, regex"]
+    ELIG["Eligibility<br/>13 comparators<br/>4 outcomes"]
+    RANK["Ranker<br/>6 factors"]
+    COMP["Composer<br/>bilingual"]
+    CONF["Confidence<br/>65 / 45 / 25"]
+    NLU ~~~ ELIG ~~~ RANK ~~~ COMP ~~~ CONF
+  end
+
+  subgraph GOV["6. Governance"]
+    direction LR
+    ESC["Escalation<br/>2 flags, ratio 0.5"]
+    ANOM["5 detectors"]
+    CHAIN["Two SHA-256 chains<br/>money and audit"]
+    SINGLE["Append assumes<br/>one writer"]
+    JOBS["6 jobs, only on<br/>a staff click"]
+    ESC ~~~ ANOM ~~~ CHAIN ~~~ SINGLE ~~~ JOBS
+  end
+
+  TABLES["7. libSQL / Turso, 47 application tables<br/>users, profiles, settings, sessions<br/>opportunities, rules, documents, chunks, edges<br/>evaluations, saved, plans, tasks, timeline<br/>conversations, messages, ai_logs, search_queries<br/>issues, allocations, flags, escalations<br/>beneficiaries, entitlements, disbursements<br/>ledger_entries, audit_log, job_runs, analytics_daily"]
+
+  subgraph EXT["8. External, optional, every one key-gated"]
+    direction LR
+    LLM["DeepSeek<br/>v4-flash, 30 s"]
+    VOICE["Speech<br/>STT and TTS"]
+    OSM["Overpass<br/>tile proxy"]
+    SMS["SMS<br/>demo outbox"]
+    NIDX["NID provider<br/>not implemented"]
+    LLM ~~~ VOICE ~~~ OSM ~~~ SMS ~~~ NIDX
+  end
+
+  ACCESS --> WORKER --> APP
+  APP --> RETR
+  RETR -->|"ranked chunks"| CORE
+  APP --> GOV
+  CORE ~~~ GOV
+  CORE --> TABLES
+  GOV --> TABLES
+  CORE -.->|"plan as prose, else degraded"| EXT
+  GOV -.->|"escalation notices"| EXT
+  APP -.->|"voice, maps, one-time codes"| EXT
+
+  classDef gap fill:#F9EDED,stroke:#8B2020,color:#6B1919;
+  class NOCACHE,STALE,SINGLE,NIDX,EMB,JOBS gap;
