@@ -69,6 +69,10 @@ export async function generateMetadata({
     },
     description: landing('heroBody'),
     applicationName: t('appName'),
+    icons: {
+      icon: '/icon.png',
+      apple: '/apple-icon.png',
+    },
     formatDetection: { telephone: true, address: false, email: false },
     alternates: {
       languages: {

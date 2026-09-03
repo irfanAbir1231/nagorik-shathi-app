@@ -19,17 +19,6 @@
 			"service": "shebar-janala"
 		}
 	],
-	"r2_buckets": [
-		// Use R2 incremental cache
-		// See https://opennext.js.org/cloudflare/caching
-		{
-			"binding": "NEXT_INC_CACHE_R2_BUCKET",
-			// Create the bucket before deploying
-			// You can change the bucket name if you want
-			// See https://developers.cloudflare.com/workers/wrangler/commands/#r2-bucket-create
-			"bucket_name": "shebar-janala-opennext-cache"
-		}
-	],
 	"images": {
 		// Enable image optimization
 		// see https://opennext.js.org/cloudflare/howtos/image
@@ -40,7 +29,11 @@
 	// this project. Actual secrets (DATABASE_URL, JWT_SECRET, ...) are set via
 	// `wrangler secret put`, not here — this file is committed to git.
 	"vars": {
-		"OTP_DEV_ECHO": "true",
+		"AI_PROVIDER": "deepseek",
+		"DEEPSEEK_MODEL": "deepseek-v4-flash",
+		"DEEPSEEK_BASE_URL": "https://api.deepseek.com/v1",
+		"DEEPSEEK_THINKING": "disabled",
+		"OTP_DEV_ECHO": "false",
 		"SMS_PROVIDER": "demo",
 		"VISION_MODERATION_PROVIDER": "demo"
 	}

@@ -35,6 +35,9 @@ import type { AppLocale } from '@/i18n/routing';
 
 export type AuthMode = 'login' | 'register' | 'reset';
 
+const RAHIMA_DEMO_PHONE = '01712345678';
+const RAHIMA_DEMO_PIN = '1234';
+
 type Step = 'phone' | 'code' | 'details';
 
 interface OtpState {
@@ -155,6 +158,27 @@ export function AuthFlow({ mode, nextPath }: { readonly mode: AuthMode; readonly
     }
   };
 
+  const signInAsRahima = async () => {
+    setPhone(RAHIMA_DEMO_PHONE);
+    setPin(RAHIMA_DEMO_PIN);
+    setUseCodeInstead(false);
+    setBusy(true);
+    setFormError(null);
+    setFieldErrors({});
+    try {
+      await api.post(
+        '/auth/login',
+        { phone: RAHIMA_DEMO_PHONE, pin: RAHIMA_DEMO_PIN },
+        { retryOnUnauthenticated: false },
+      );
+      router.replace(destination);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setBusy(false);
+    }
+  };
+
   /* ------------------------------------------------------- step: code */
 
   const submitCode = async () => {
@@ -229,6 +253,34 @@ export function AuthFlow({ mode, nextPath }: { readonly mode: AuthMode; readonly
           total={totalSteps}
           label={locale === 'bn' ? `ধাপ ${currentStep} / ${totalSteps}` : `Step ${currentStep} of ${totalSteps}`}
         />
+      ) : null}
+
+      {(mode === 'login' || mode === 'register') && step === 'phone' ? (
+        <Banner
+          tone="info"
+          statusWord={locale === 'bn' ? 'ডেমো হিসাব' : 'Demo account'}
+          className="mt-5"
+          actions={
+            <Button
+              type="button"
+              variant="secondary"
+              fullWidth={false}
+              loading={busy}
+              loadingLabel={locale === 'bn' ? 'রহিমার হিসাবে ঢুকছে…' : 'Signing in as Rahima…'}
+              onClick={() => void signInAsRahima()}
+            >
+              {locale === 'bn' ? 'রহিমা খাতুন হিসাবে ঢুকুন' : 'Sign in as Rahima Khatun'}
+            </Button>
+          }
+        >
+          <span>
+            {locale === 'bn' ? 'মোবাইল' : 'Phone'}:{' '}
+            <strong dir="ltr" className="tabular">{RAHIMA_DEMO_PHONE}</strong>
+            {' · '}
+            {locale === 'bn' ? 'পিন' : 'PIN'}:{' '}
+            <strong dir="ltr" className="tabular">{RAHIMA_DEMO_PIN}</strong>
+          </span>
+        </Banner>
       ) : null}
 
       {formError ? (
