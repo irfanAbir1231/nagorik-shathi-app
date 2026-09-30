@@ -54,13 +54,33 @@ function landUnitIn(clause: string): NumberCandidate['landUnit'] {
   return null;
 }
 
+/**
+ * Banglish number words that are also ordinary English words ("at" = 8,
+ * "sat" = 7, "tin" = 3, "char" = 4). Read as numbers only when a Banglish
+ * classifier or unit follows ("tin ta baccha", "char hajar"); otherwise "call
+ * me at…" becomes an 8.
+ */
+const ENGLISH_COLLISIONS = new Set(['at', 'sat', 'tin', 'char']);
+const BANGLISH_CLASSIFIER = /^(?:ta|ti|jon|bochor|bochorer|hajar|lakh|lac|taka|tk|mash|mas|din|bigha|katha|shotok|decimal)\b/;
+
+function isCollision(run: { tokens: string[] }, clause: string): boolean {
+  // Every token must be a collision word ("sat at" forms one run, read as 78).
+  if (run.tokens.length === 0 || !run.tokens.every((t) => ENGLISH_COLLISIONS.has(t))) return false;
+  const last = run.tokens[run.tokens.length - 1]!;
+  const after = clause.split(new RegExp(`\\b${last}\\b`)).pop()?.trim() ?? '';
+  return !BANGLISH_CLASSIFIER.test(after);
+}
+
 export function findNumberCandidates(message: string): NumberCandidate[] {
-  const normalised = toLatinDigits(message.toLowerCase()).replace(/[‌‍]/g, '');
+  // South Asian digit grouping ("1,20,000", "৳4,500") must be joined BEFORE
+  // splitting clauses on commas — the previous version split the number itself.
+  const normalised = toLatinDigits(message.toLowerCase()).replace(/[‌‍]/g, '').replace(/(\d),(?=\d)/g, '$1');
   const out: NumberCandidate[] = [];
   for (const rawClause of normalised.split(CLAUSE_SPLIT)) {
     const clause = rawClause.trim();
     if (!clause) continue;
     for (const run of extractNumbers(clause.replace(LONE_ARTICLE, ' '))) {
+      if (isCollision(run, clause)) continue;
       if (out.length >= MAX_NUMBER_CANDIDATES) return out;
       out.push({
         index: out.length,
@@ -72,6 +92,19 @@ export function findNumberCandidates(message: string): NumberCandidate[] {
     }
   }
   return out;
+}
+
+/**
+ * The message split into clauses AS WRITTEN (original case and script), for
+ * span pinning. Splits on sentence and clause punctuation only — not on "and",
+ * which would cut "my husband died and I have three children" mid-thought.
+ */
+export function clausesOf(message: string): string[] {
+  return message
+    .split(/[,،;!?\n।]+|\.(?=\s|$)/)
+    .map((clause) => clause.trim())
+    .filter((clause) => clause.length > 1)
+    .slice(0, 8);
 }
 
 /** District names mentioned anywhere in the message, deduplicated. */

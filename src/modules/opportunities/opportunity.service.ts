@@ -9,7 +9,7 @@ import {
   documents as sourceDocuments, documentChunks,
   type Opportunity, type Organization, type RequiredDocument,
 } from '@/lib/db/schema';
-import { evaluateEligibility, type EligibilityProfile, type EvaluationResult } from '@/modules/eligibility/engine';
+import { ENGINE_VERSION, evaluateEligibility, type EligibilityProfile, type EvaluationResult } from '@/modules/eligibility/engine';
 import { rank, type RankingInput, type RankedResult } from '@/modules/recommendation/ranker';
 import { scoreConfidence, type ConfidenceBreakdown } from '@/modules/ai/confidence';
 import { chunkText, termFrequencies, estimateTokens } from '@/modules/knowledge/tokenizer';
@@ -214,6 +214,7 @@ export async function listOpportunities(options: {
           missingFields: [], ruleCoverage: 0, score: 0,
           trace: { kind: 'all', id: 'no-rules', state: 'unknown', children: [] },
           ruleVersion: 0,
+          engineVersion: ENGINE_VERSION,
         };
     return { opportunity, organization, evaluation, documents: documents.get(opportunity.id) ?? [] };
   });
@@ -315,6 +316,7 @@ export async function getOpportunityBySlug(
         missingFields: [], ruleCoverage: 0, score: 0,
         trace: { kind: 'all', id: 'no-rules', state: 'unknown', children: [] },
         ruleVersion: 0,
+        engineVersion: ENGINE_VERSION,
       };
 
   const docs = documents.get(row.opportunity.id) ?? [];
@@ -370,6 +372,8 @@ export async function recordEvaluation(
       missingFields: evaluation.missingFields,
       ruleCoverage: evaluation.ruleCoverage,
       score: evaluation.score,
+      // Replay needs the semantics as well as the rule version.
+      engineVersion: evaluation.engineVersion,
     },
     profileSnapshot: profile as unknown as Record<string, unknown>,
     ruleVersion: evaluation.ruleVersion,

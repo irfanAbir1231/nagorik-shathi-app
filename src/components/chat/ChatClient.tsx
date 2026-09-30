@@ -14,7 +14,7 @@ import { IconButton } from '@/components/primitives/IconButton';
 import { Card } from '@/components/primitives/Card';
 import { Banner } from '@/components/primitives/Banner';
 import { Spinner } from '@/components/primitives/Spinner';
-import { ConfidenceMeter, Badge } from '@/components/primitives/Chip';
+import { Badge } from '@/components/primitives/Chip';
 import { OpportunityCard, type OpportunityCardData } from '@/components/opportunity/OpportunityCard';
 import { AiEngineNotice } from './AiEngineNotice';
 import { EvidencePanel, DecisionTrace, type ConditionView, type PlanEvidenceView } from './EvidencePanel';
@@ -313,11 +313,13 @@ export function ChatClient({
           </Card>
         ) : null}
 
-        {messages.map((message) => (
+        {/* `system` rows are the citizen's fact confirmations — records, not dialogue. */}
+        {messages.filter((message) => message.role !== 'system').map((message) => (
           <MessageBubble
             key={message.id}
             message={message}
             locale={locale}
+            conversationId={conversationId}
             onFeedback={(kind) => feedback.mutate({ messageId: message.id, kind })}
           />
         ))}
@@ -455,14 +457,15 @@ export function ChatClient({
 function MessageBubble({
   message,
   locale,
+  conversationId,
   onFeedback,
 }: {
   readonly message: ChatMessage;
   readonly locale: 'bn' | 'en';
+  readonly conversationId: string | null;
   readonly onFeedback: (kind: string) => void;
 }) {
   const t = useTranslations('chat');
-  const tt = useTranslations('trust');
   const tc = useTranslations('common');
   const [showSources, setShowSources] = useState(false);
   const toast = useToast();
@@ -503,15 +506,10 @@ function MessageBubble({
           ))}
         </div>
 
-        {typeof message.confidence === 'number' && message.confidence > 0 ? (
-          <ConfidenceMeter
-            value={message.confidence}
-            label={tt('confidence')}
-            bandLabel={
-              message.confidence >= 80 ? tt('high') : message.confidence >= 55 ? tt('medium') : tt('low')
-            }
-          />
-        ) : null}
+        {/* No message-level percentage (audit defect 8): the number measured
+            the programme records, not this answer. What the answer rests on is
+            shown instead — the evidence panel, and each card's "why" list and
+            verification badge. */}
 
         <div className="flex flex-wrap items-center gap-2">
           {message.aiEngine === 'simulated' ? (
@@ -572,7 +570,7 @@ function MessageBubble({
           </ul>
         ) : null}
 
-        {plan?.evidence ? <EvidencePanel evidence={plan.evidence} locale={locale} /> : null}
+        {plan?.evidence ? <EvidencePanel evidence={plan.evidence} locale={locale} conversationId={conversationId} /> : null}
 
         {plan?.renderPath === 'model_verified' ? (
           <p className="type-caption text-text-secondary">{t('verifiedByChecker')}</p>

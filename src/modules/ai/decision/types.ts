@@ -68,15 +68,21 @@ export interface DecisionRequest {
 export interface DecisionResult {
   readonly answers: Readonly<Record<string, Answer>>;
   /** Engine that answered; `mock` never reaches a citizen outside tests. */
-  readonly engine: 'jev' | 'mock';
+  readonly engine: DecisionEngine;
   /** The VERSIONED model id that answered (the API reports it even for aliases). */
   readonly model: string;
   readonly latencyMs: number;
   readonly usage: { readonly inputTokens: number; readonly outputTokens: number };
 }
 
+/**
+ * `jev` — TypeSafe System One; `llm_typed` — a generative model answering the
+ * SAME typed questions (the fallback); `mock` — tests only.
+ */
+export type DecisionEngine = 'jev' | 'llm_typed' | 'mock';
+
 export interface DecisionModel {
-  readonly engine: 'jev' | 'mock';
+  readonly engine: DecisionEngine;
   /** The model id requested. The answering id is on each result. */
   readonly model: string;
   decide(request: DecisionRequest): Promise<DecisionResult>;

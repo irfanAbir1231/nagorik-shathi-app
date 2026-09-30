@@ -9,10 +9,14 @@ import { inferCivicFrame, type CivicFrame } from './civic-frame';
 import { retrieve, retrieveByLifeEvents, opportunityIdsFrom, type RetrievedChunk } from '@/modules/knowledge/retrieval';
 import { listOpportunities, recordEvaluation, type EnrichedOpportunity } from '@/modules/opportunities/opportunity.service';
 import { toEligibilityProfile } from '@/modules/eligibility/profile-mapper';
-import { fieldLabel, type ConditionTrace, type EligibilityProfile } from '@/modules/eligibility/engine';
+import { ENGINE_VERSION, fieldLabel, type ConditionTrace, type EligibilityProfile } from '@/modules/eligibility/engine';
 import { renderTurn, type RenderPath } from './render';
 import { getProvider } from './providers';
 import { getDecisionModel } from './decision/jev';
+import { LlmTypedDecisionModel } from './decision/llm-typed';
+import { redactPii, REDACTION_VERSION } from './redact';
+import { STAGE_BUDGET_MS, TurnBudget } from './budget';
+import { encryptField } from '@/lib/security/field-encryption';
 import { env, resolveSemanticEngine } from '@/lib/config/env';
 import { judgeRelevance, RELEVANCE_VERSION } from './relevance';
 import type { Judgment } from './semantic-frame';
@@ -22,7 +26,9 @@ import {
   isPlaceholderReason,
   type DecisionStatus, type PlanEvidence, type PlanFact, type PlannedCondition, type PlannedOpportunity, type ResponsePlan,
 } from './response-plan';
-import { buildLedger, type ConversationFact, type Ledger } from './evidence';
+import { buildLedger, foldConversationFacts, type ConversationFact, type FactDecision, type Ledger } from './evidence';
+
+export type { FactDecision } from './evidence';
 import { factLabel, valueLabel } from './fact-labels';
 import { VERIFIER_VERSION } from './verifier';
 import type { EvidenceFact } from './semantic-frame';
@@ -97,32 +103,56 @@ async function ensureConversation(
 }
 
 async function loadHistory(conversationId: string): Promise<Message[]> {
+  // System rows record the citizen's fact confirmations/rejections; they are
+  // not part of the dialogue the model sees.
   const rows = await db
     .select()
     .from(messages)
-    .where(eq(messages.conversationId, conversationId))
+    .where(and(eq(messages.conversationId, conversationId), sql`${messages.role} != 'system'`))
     .orderBy(desc(messages.createdAt))
     .limit(MAX_HISTORY_MESSAGES);
   return rows.reverse();
 }
 
+
 /**
  * Every fact stated earlier in THIS conversation, oldest first, read back from
- * the assistant messages that recorded them. Reading all turns (not the last
- * eight) means a fact does not silently expire mid-conversation.
+ * the assistant messages that recorded them — minus the facts the citizen has
+ * since REJECTED — plus the fields whose conflict the citizen was asked about.
+ * Reading all turns (not the last eight) means a fact does not silently expire
+ * mid-conversation.
  */
-async function loadConversationFacts(conversationId: string): Promise<ConversationFact[]> {
+async function loadConversationFacts(conversationId: string): Promise<{ facts: ConversationFact[]; conflictAsked: Set<string> }> {
   const rows = await db
-    .select({ payload: messages.payload })
+    .select({ role: messages.role, payload: messages.payload })
     .from(messages)
-    .where(and(eq(messages.conversationId, conversationId), eq(messages.role, 'assistant')))
+    .where(and(eq(messages.conversationId, conversationId), sql`${messages.role} != 'user'`))
     .orderBy(asc(messages.createdAt));
-  const out: ConversationFact[] = [];
-  for (const row of rows) {
-    const facts = (row.payload as { evidenceFacts?: unknown } | null)?.evidenceFacts;
-    if (Array.isArray(facts)) out.push(...(facts as ConversationFact[]));
-  }
-  return out;
+  return foldConversationFacts(rows);
+}
+
+/**
+ * Records the citizen's confirmation or rejection of ONE fact (per-fact
+ * confirmation; the old single "save everything" button confirmed uncertain
+ * and wrong facts in one tap — audit 2026-09-30, defect 4). A confirmation is
+ * saved to the profile by the client through the profile API; this row is the
+ * conversation's record of either decision. Ownership is checked here.
+ */
+export async function recordFactDecision(userId: string, conversationId: string, decision: FactDecision): Promise<boolean> {
+  const [conversation] = await db
+    .select({ id: conversations.id })
+    .from(conversations)
+    .where(and(eq(conversations.id, conversationId), eq(conversations.userId, userId)))
+    .limit(1);
+  if (!conversation) return false;
+  await db.insert(messages).values({
+    conversationId,
+    role: 'system',
+    kind: 'system',
+    content: `fact ${decision.decision}: ${decision.field}`,
+    payload: { factDecision: decision },
+  });
+  return true;
 }
 
 /* ------------------------------------------------------------- planning */
@@ -301,17 +331,28 @@ const SAVEABLE_FIELDS = new Set([
   'hasBusiness', 'monthlyIncome', 'age', 'householdSize', 'dependents', 'landOwnershipDecimals', 'cgpa', 'district',
 ]);
 
+/** The profile-API patch that saves one fact, or undefined if it is not saveable. */
+function saveFor(field: string, value: unknown): Record<string, unknown> | undefined {
+  return SAVEABLE_FIELDS.has(field) ? { [PROFILE_FIELD[field] ?? field]: value } : undefined;
+}
+
 function planEvidence(frame: CivicFrame, ledger: Ledger): PlanEvidence {
   const facts: PlanFact[] = [];
   for (const [field, p] of Object.entries(ledger.provenance)) {
     if (field === 'annualIncome' || field === 'division' || field === 'lifeEvents' || field === 'medicalConditions') continue;
-    facts.push({ field, value: p.value, status: 'accepted', method: p.method, probability: p.probability, source: p.source, label: factLabel(field, p.value) });
+    const fromChat = p.source === 'this_message' || p.source === 'earlier_message';
+    const save = fromChat ? saveFor(field, p.value) : undefined;
+    facts.push({ field, value: p.value, status: 'accepted', method: p.method, probability: p.probability, source: p.source, label: factLabel(field, p.value), ...(p.evidence && fromChat ? { evidence: p.evidence } : {}), ...(save ? { save } : {}) });
   }
   for (const f of ledger.pending) {
-    facts.push({ field: f.field, value: f.value, status: 'needs_confirmation', method: f.method, probability: f.probability, source: 'this_message', label: factLabel(f.field, f.value) });
+    const save = saveFor(f.field, f.value);
+    facts.push({ field: f.field, value: f.value, status: 'needs_confirmation', method: f.method, probability: f.probability, source: 'this_message', label: factLabel(f.field, f.value), evidence: f.evidence, ...(save ? { save } : {}) });
   }
+  // Conflicting facts ARE saveable: saving the chat value is how the citizen
+  // resolves the conflict in favour of what they said (defect 3).
   for (const c of ledger.conflicts) {
-    facts.push({ field: c.field, value: c.conversationValue, status: 'conflict', method: 'conversation', probability: null, source: c.conversationSource, label: factLabel(c.field, c.conversationValue) });
+    const save = saveFor(c.field, c.conversationValue);
+    facts.push({ field: c.field, value: c.conversationValue, status: 'conflict', method: 'conversation', probability: null, source: c.conversationSource, label: factLabel(c.field, c.conversationValue), profileLabel: factLabel(c.field, c.profileValue), ...(save ? { save } : {}) });
   }
   const saveable: Record<string, unknown> = {};
   for (const f of ledger.saveable) {
@@ -334,12 +375,21 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
 
   const provider = getProvider();
   const decisionModel = getDecisionModel();
+  // The same typed questions, answered by the generative provider: the
+  // fallback when Jev fails, and the primary engine when Jev is not configured.
+  const fallbackModel = provider.isLive ? new LlmTypedDecisionModel(provider) : null;
+  const budget = new TurnBudget(input.signal);
+  // Identifiers are removed before ANY text leaves the server. The citizen's
+  // own conversation record keeps the original message.
+  const redacted = redactPii(input.message);
   const civicFrame = await inferCivicFrame({
-    message: input.message,
+    message: redacted.text,
     fallbackLocale: input.localeHint ?? (user.language as 'bn' | 'en'),
     provider,
     decisionModel,
+    fallbackModel,
     engine: resolveSemanticEngine(),
+    budget,
     ...(input.signal ? { signal: input.signal } : {}),
   });
   const nlu = civicFrame.nlu;
@@ -347,7 +397,7 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
 
   const conversation = await ensureConversation(input.userId, input.conversationId, locale);
   const history = await loadHistory(conversation.id);
-  const earlierFacts = await loadConversationFacts(conversation.id);
+  const { facts: earlierFacts, conflictAsked } = await loadConversationFacts(conversation.id);
 
   const [userMessage] = await db
     .insert(messages)
@@ -361,7 +411,7 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
   const storedProfile = toEligibilityProfile({ user, profile: decryptedProfileRow });
 
   const currentFacts: EvidenceFact[] = [...civicFrame.evidence];
-  const ledger = buildLedger({ profile: storedProfile, earlier: earlierFacts, current: currentFacts, currentMessageId: userMessage!.id });
+  const ledger = buildLedger({ profile: storedProfile, earlier: earlierFacts, current: currentFacts, currentMessageId: userMessage!.id, conflictAsked });
   const profile: EligibilityProfile = ledger.profile;
   const injectionFlagged = civicFrame.semantic.injection.flagged;
 
@@ -403,7 +453,7 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
 
     // Optional: Jev re-orders what BM25 found. Fails open (BM25 order stands).
     if (env.JEV_RERANK && decisionModel && effective.length > 0) {
-      const relevance = await judgeRelevance(input.message, effective, decisionModel, input.signal);
+      const relevance = await judgeRelevance(redacted.text, effective, decisionModel, budget.stage(STAGE_BUDGET_MS.relevance));
       relevanceJudgments = relevance.judgments;
       relevanceError = relevance.error;
       for (const [id, score] of relevance.scores) retrievalScores.set(id, score);
@@ -462,12 +512,15 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
   /* ---- render ---- */
   const rendered = await renderTurn({
     plan,
-    message: input.message,
+    message: redacted.text,
     history,
     profile,
     provider,
-    decisionModel,
+    // Jev verifies when configured (and a Jev failure fails CLOSED); without
+    // Jev, the typed-LLM engine verifies rather than no one.
+    decisionModel: decisionModel ?? fallbackModel,
     injectionFlagged,
+    budget,
     ...(input.signal ? { signal: input.signal } : {}),
   });
   const { text, renderPath, verification } = rendered;
@@ -528,7 +581,8 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
     model: modelWrote ? provider.model : 'deterministic-composer-v1',
     promptTemplate: PROMPTS.system.name,
     promptVersion: PROMPTS.system.version,
-    inputSummary: input.message.slice(0, 500),
+    // Redacted: identifiers never reach the log.
+    inputSummary: redacted.text.slice(0, 500),
     outputSummary: text.slice(0, 500),
     intents: [...plan.intents],
     entities: {
@@ -539,16 +593,28 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
       questionSetVersion: civicFrame.semantic.questionSetVersion,
       policyVersion: civicFrame.semantic.policyVersion,
       decisionCall: civicFrame.decisionCall,
-      judgments: civicFrame.semantic.judgments,
-      facts: currentFacts,
-      injection: civicFrame.semantic.injection,
-      situation: civicFrame.semantic.situation,
-      ledger: { conflicts: ledger.conflicts, pending: ledger.pending, superseded: ledger.superseded },
+      fallbackTrail: civicFrame.fallbackTrail,
+      redaction: { version: REDACTION_VERSION, counts: redacted.counts },
+      // Structure in the clear (what was asked, with what certainty, and what
+      // happened) so the log can be monitored without reading anyone's facts.
+      factSummary: currentFacts.map((f) => ({ field: f.field, status: f.status, method: f.method, probability: f.probability })),
+      injection: { flagged: civicFrame.semantic.injection.flagged, probability: civicFrame.semantic.injection.probability },
+      // VALUES are sensitive (marital status, income, disability…): encrypted
+      // with the field-encryption key, readable only by an administrator with
+      // the key — never in plain text in ai_logs (audit improvement 11).
+      sealed: encryptField(JSON.stringify({
+        facts: currentFacts,
+        judgments: civicFrame.semantic.judgments,
+        situation: civicFrame.semantic.situation,
+        ledger: { conflicts: ledger.conflicts, pending: ledger.pending, superseded: ledger.superseded },
+        proposed: civicFrame.proposedFacts,
+        verificationJudgments: verification?.judgments ?? [],
+      })),
+      engineVersion: ENGINE_VERSION,
       decisions: plan.opportunities.map((o) => ({ id: o.id, outcome: o.outcome, status: o.decisionStatus, reviewReasons: o.reviewReasons, evidenceStrength: o.evidenceStrength })),
       renderPath,
       relevance: env.JEV_RERANK ? { version: RELEVANCE_VERSION, judgments: relevanceJudgments, error: relevanceError } : null,
-      verification: verification ? { version: VERIFIER_VERSION, ...verification } : null,
-      proposed: civicFrame.proposedFacts,
+      verification: verification ? { version: VERIFIER_VERSION, verdict: verification.verdict, reasonCount: verification.reasons.length, model: verification.model, latencyMs: verification.latencyMs, errorKind: verification.errorKind ?? null } : null,
       uncertain: civicFrame.uncertainFacts,
     },
     retrievedChunkIds: plan.citations.map((c) => c.chunkId),

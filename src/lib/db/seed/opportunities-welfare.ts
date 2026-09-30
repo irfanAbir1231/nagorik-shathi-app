@@ -7,10 +7,13 @@ import {
 /**
  * Social protection and welfare programmes.
  *
- * Every record is authored sample data (`unverified_sample`). Structure,
- * eligibility shape, and administering body reflect real Bangladeshi
- * programmes; exact thresholds and amounts MUST be re-verified against the
- * current circular before this is shown to citizens as fact. The UI marks all
+ * Records are authored sample data (`unverified_sample`) unless they carry a
+ * `sourceCheck`: five flagship allowances were desk-checked against public
+ * FY2026-27 budget sources on 2026-09-30 and are `pending_review` (or
+ * `disputed` where the sources conflict) — see ./VERIFICATION.md. Only their
+ * AMOUNTS were checked; eligibility thresholds everywhere remain sample data,
+ * and nothing here is `verified` until an administrator checks the official
+ * circular. The UI marks all
  * of these with a visible "sample data" badge and the confidence scorer
  * penalises them — see docs/DEVIATIONS.md §2.
  */
@@ -32,8 +35,13 @@ export const SEED_WELFARE: readonly SeedOpportunity[] = [
       'A monthly allowance paid directly to your account, with no repayment and no service charge.',
       'সরাসরি আপনার হিসাবে মাসিক ভাতা — ফেরত দিতে হবে না, কোনো সার্ভিস চার্জ নেই।',
     ],
-    benefitAmount: 600,
+    benefitAmount: 700,
     benefitPeriod: 'monthly',
+    sourceNote: [
+      'FY2026-27: ৳700 a month (Budget speech, 11 June 2026; also reported as approved). ৳1,000 reported for citizens over 90. Not yet checked against the DSS circular.',
+      '২০২৬-২৭ অর্থবছর: মাসে ৳৭০০ (বাজেট বক্তৃতা, ১১ জুন ২০২৬)। ৯০ বছরের বেশি বয়সীদের জন্য ৳১,০০০ বলে প্রতিবেদন। সমাজসেবা অধিদফতরের পরিপত্রের সঙ্গে এখনো মেলানো হয়নি।',
+    ],
+    sourceCheck: { status: 'pending_review', checkedOn: '2026-09-30', sources: ['https://www.bssnews.net/national-budget-2026-2027/394911', 'https://bdnews24.com/bangladesh/18677f7d11cc'] },
     lifeEvents: ['old_age'],
     tags: ['allowance', 'elderly', 'safety-net', 'monthly-cash'],
     sourceUrl: 'https://dss.gov.bd',
@@ -111,8 +119,13 @@ export const SEED_WELFARE: readonly SeedOpportunity[] = [
       'A monthly cash allowance paid to your own account, alongside priority access to VGD food support and skills training.',
       'নিজের হিসাবে মাসিক ভাতা, সঙ্গে ভিজিডি খাদ্য সহায়তা ও দক্ষতা প্রশিক্ষণে অগ্রাধিকার।',
     ],
-    benefitAmount: 550,
+    benefitAmount: 700,
     benefitPeriod: 'monthly',
+    sourceNote: [
+      'FY2026-27: ৳700 a month, up from ৳650 (Budget speech, 11 June 2026; also reported as approved). Not yet checked against the DSS circular.',
+      '২০২৬-২৭ অর্থবছর: মাসে ৳৭০০, আগে ছিল ৳৬৫০ (বাজেট বক্তৃতা, ১১ জুন ২০২৬)। সমাজসেবা অধিদফতরের পরিপত্রের সঙ্গে এখনো মেলানো হয়নি।',
+    ],
+    sourceCheck: { status: 'pending_review', checkedOn: '2026-09-30', sources: ['https://www.bssnews.net/national-budget-2026-2027/394911', 'https://bdnews24.com/bangladesh/18677f7d11cc'] },
     lifeEvents: ['widowhood', 'divorce'],
     tags: ['allowance', 'women', 'widow', 'safety-net'],
     sourceUrl: 'https://dss.gov.bd',
@@ -177,8 +190,13 @@ export const SEED_WELFARE: readonly SeedOpportunity[] = [
       'A monthly allowance with no repayment, plus a Suborno Nagorik card that unlocks transport concessions and priority health services.',
       'ফেরতযোগ্য নয় এমন মাসিক ভাতা, সঙ্গে সুবর্ণ নাগরিক কার্ড — যা পরিবহন ছাড় ও স্বাস্থ্যসেবায় অগ্রাধিকার দেয়।',
     ],
-    benefitAmount: 850,
+    benefitAmount: 900,
     benefitPeriod: 'monthly',
+    sourceNote: [
+      'Sources conflict for FY2026-27: the budget speech (11 June 2026) proposes ৳1,000 a month; a report updated August 2026 says most recipients still receive ৳900. Recorded at ৳900 until an administrator checks the DSS circular.',
+      '২০২৬-২৭ অর্থবছরের জন্য তথ্যসূত্রে গরমিল: বাজেট বক্তৃতায় (১১ জুন ২০২৬) মাসে ৳১,০০০ প্রস্তাব; আগস্ট ২০২৬-এর প্রতিবেদনে বেশিরভাগ ভাতাভোগী এখনো ৳৯০০ পান। সমাজসেবা অধিদফতরের পরিপত্র না দেখা পর্যন্ত ৳৯০০ রাখা হয়েছে।',
+    ],
+    sourceCheck: { status: 'disputed', checkedOn: '2026-09-30', sources: ['https://www.bssnews.net/national-budget-2026-2027/394911', 'https://bdnews24.com/bangladesh/18677f7d11cc', 'https://en.prothomalo.com/bangladesh/local-news/n02hkynwt2'] },
     lifeEvents: ['disability_onset'],
     tags: ['allowance', 'disability', 'suborno-nagorik', 'safety-net'],
     sourceUrl: 'https://dss.gov.bd',
@@ -268,8 +286,13 @@ export const SEED_WELFARE: readonly SeedOpportunity[] = [
       'A monthly allowance for 36 months, plus free nutrition counselling and child-health awareness sessions.',
       '৩৬ মাস ধরে মাসিক ভাতা, সঙ্গে বিনামূল্যে পুষ্টি পরামর্শ ও শিশুস্বাস্থ্য সচেতনতা সেশন।',
     ],
-    benefitAmount: 800,
+    benefitAmount: 850,
     benefitPeriod: 'monthly',
+    sourceNote: [
+      'Reported as the Mother and Child Benefit Programme at ৳850 a month (FY2025-26 onward; FY2026-27 budget speech). The programme name and conditions here have not been checked against the current DWA guidelines.',
+      'মা ও শিশু সহায়তা কর্মসূচি হিসেবে মাসে ৳৮৫০ (২০২৫-২৬ থেকে; ২০২৬-২৭ বাজেট বক্তৃতা)। কর্মসূচির নাম ও শর্ত মহিলা বিষয়ক অধিদপ্তরের বর্তমান নির্দেশিকার সঙ্গে মেলানো হয়নি।',
+    ],
+    sourceCheck: { status: 'pending_review', checkedOn: '2026-09-30', sources: ['https://www.bssnews.net/national-budget-2026-2027/394911', 'https://bdnews24.com/bangladesh/18677f7d11cc', 'https://en.prothomalo.com/bangladesh/local-news/n02hkynwt2'] },
     lifeEvents: ['pregnancy'],
     tags: ['allowance', 'women', 'maternal-health', 'nutrition'],
     sourceUrl: 'https://dwa.gov.bd',
@@ -408,19 +431,24 @@ export const SEED_WELFARE: readonly SeedOpportunity[] = [
       'ক্যান্সার, কিডনি, লিভার সিরোসিস, স্ট্রোক ও জন্মগত হৃদরোগীদের এককালীন আর্থিক সহায়তা',
     ],
     summary: [
-      'A one-time grant of ৳50,000 towards treatment for six specified serious illnesses.',
-      'নির্দিষ্ট ছয়টি জটিল রোগের চিকিৎসার জন্য এককালীন ৫০,০০০ টাকা অনুদান।',
+      'A one-time grant of ৳1,00,000 towards treatment for six specified serious illnesses.',
+      'নির্দিষ্ট ছয়টি জটিল রোগের চিকিৎসার জন্য এককালীন ১,০০,০০০ টাকা অনুদান।',
     ],
     description: [
       'This is a one-time, non-repayable grant paid directly to the patient\'s account, intended to help with the cost of treatment for cancer, kidney failure, liver cirrhosis, stroke-related paralysis, thalassaemia, or congenital heart disease. A specialist\'s certificate naming the diagnosis is essential — a general practitioner\'s note is not sufficient. The grant can be received once, and does not affect any allowance you already receive.',
       'এটি এককালীন, ফেরত দিতে হয় না এমন অনুদান, যা সরাসরি রোগীর হিসাবে দেওয়া হয় এবং ক্যান্সার, কিডনি বিকল, লিভার সিরোসিস, স্ট্রোকজনিত পক্ষাঘাত, থ্যালাসেমিয়া বা জন্মগত হৃদরোগের চিকিৎসার খরচে সহায়তা করে। রোগ নির্ণয় উল্লেখ করে বিশেষজ্ঞ চিকিৎসকের সনদ অপরিহার্য — সাধারণ চিকিৎসকের কাগজ যথেষ্ট নয়। অনুদান একবারই পাওয়া যায় এবং আপনার চলমান কোনো ভাতা এতে প্রভাবিত হয় না।',
     ],
     benefits: [
-      'A single payment of ৳50,000 into your own account, with no repayment obligation.',
-      'নিজের হিসাবে এককালীন ৫০,০০০ টাকা — ফেরত দেওয়ার বাধ্যবাধকতা নেই।',
+      'A single payment of ৳1,00,000 into your own account, with no repayment obligation.',
+      'নিজের হিসাবে এককালীন ১,০০,০০০ টাকা — ফেরত দেওয়ার বাধ্যবাধকতা নেই।',
     ],
-    benefitAmount: 50000,
+    benefitAmount: 100000,
     benefitPeriod: 'one_time',
+    sourceNote: [
+      'FY2026-27 budget speech (11 June 2026): one-time assistance raised from ৳50,000 to ৳1,00,000, 65,000 beneficiaries. Single source; not yet checked against the DSS circular.',
+      '২০২৬-২৭ বাজেট বক্তৃতা (১১ জুন ২০২৬): এককালীন সহায়তা ৳৫০,০০০ থেকে ৳১,০০,০০০, ৬৫,০০০ জন। একটিমাত্র সূত্র; সমাজসেবা অধিদফতরের পরিপত্রের সঙ্গে এখনো মেলানো হয়নি।',
+    ],
+    sourceCheck: { status: 'pending_review', checkedOn: '2026-09-30', sources: ['https://www.bssnews.net/national-budget-2026-2027/394911'] },
     lifeEvents: ['serious_medical_need'],
     tags: ['medical-grant', 'one-time', 'cancer', 'kidney', 'heart'],
     sourceUrl: 'https://dss.gov.bd',

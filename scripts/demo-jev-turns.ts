@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import './load-env';
-import { eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { db } from '../src/lib/db/client';
 import { users, userProfiles, aiLogs } from '../src/lib/db/schema';
 import { runTurn } from '../src/modules/ai/conversation.service';
@@ -65,8 +65,10 @@ async function main() {
     console.log(`   reply: ${r.assistantMessage.content.replace(/\n+/g, ' / ').slice(0, 420)}\n`);
   }
 
-  const [log] = await db.select().from(aiLogs).orderBy(aiLogs.createdAt).limit(1);
+  const [log] = await db.select().from(aiLogs).orderBy(desc(aiLogs.createdAt)).limit(1);
   console.log(`ai_logs rows carry: ${Object.keys((log?.entities ?? {}) as object).join(', ')}`);
+  const entities = (log?.entities ?? {}) as Record<string, unknown>;
+  console.log(`extracted values in plain text: ${'facts' in entities || 'judgments' in entities ? 'YES' : 'no'} · sealed block: ${typeof entities.sealed === 'string' ? 'yes' : 'no'}`);
 }
 
 main().catch((error) => {

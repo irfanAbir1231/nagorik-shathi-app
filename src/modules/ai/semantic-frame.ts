@@ -1,12 +1,12 @@
 import type { LifeEvent } from '@/lib/domain/enums';
 import type { NluResult } from './nlu';
-import { findNumberCandidates, findPlaceCandidates, toDecimals, type NumberCandidate } from './candidates';
+import { clausesOf, findNumberCandidates, findPlaceCandidates, toDecimals, type NumberCandidate } from './candidates';
 import {
   buildTurnQuestions, isLifeEvent, QUESTION_SET_VERSION, type NumberRole,
 } from './decision/questions';
 import {
-  FIELD_THRESHOLDS, PATTERN_POLICY, POLICY_VERSION, ROUTING_THRESHOLDS, statusFor,
-  type EvidenceField, type Thresholds,
+  PATTERN_POLICY, POLICY_VERSION, ROUTING_THRESHOLDS, statusFor, thresholdsFor,
+  type EvidenceField, type ThresholdEngine, type Thresholds,
 } from './decision/policy';
 import { answerProbability, type Answer, type DecisionModel } from './decision/types';
 
@@ -15,11 +15,13 @@ import { answerProbability, type Answer, type DecisionModel } from './decision/t
  *
  * Output is evidence with provenance, never a verdict. Each fact records what
  * was asked, what was answered, with what probability, under which threshold,
- * and therefore what status it has. The eligibility engine only ever sees
- * `accepted` facts; `needs_confirmation` facts become a question to the citizen.
+ * which clause of the message it rests on, and therefore what status it has.
+ * The eligibility engine only ever sees `accepted` facts; `needs_confirmation`
+ * facts become a question to the citizen.
  */
 
 export type FactValue = string | number | boolean;
+export type FactMethod = 'jev' | 'llm_typed' | 'pattern';
 
 export interface EvidenceFact {
   readonly field: EvidenceField;
@@ -27,13 +29,15 @@ export interface EvidenceFact {
   readonly status: 'accepted' | 'needs_confirmation';
   /** Model probability for the answer; null when no probabilistic model was involved. */
   readonly probability: number | null;
-  readonly method: 'jev' | 'pattern';
+  readonly method: FactMethod;
   /** Which question produced it — the single producer for this field. */
   readonly questionId: string;
   /** The option or role the model chose ("widowed", "writer_age", "yes"). */
   readonly answer: string;
-  /** What in the message this rests on: the number span, or the message itself. */
+  /** What in the message this rests on: the clause, the number span, or (if no clause could be identified) the message. */
   readonly evidence: string;
+  /** How the evidence span was identified. */
+  readonly span?: { readonly kind: 'clause' | 'number' | 'message'; readonly probability: number | null };
   readonly thresholds: Thresholds | null;
   readonly note?: string;
 }
@@ -49,7 +53,7 @@ export interface Judgment {
 }
 
 export interface SemanticFrame {
-  readonly engine: 'jev' | 'pattern';
+  readonly engine: FactMethod;
   readonly model: string;
   readonly questionSetVersion: string;
   readonly policyVersion: string;
@@ -78,21 +82,28 @@ function judgmentOf(id: string, answer: Answer): Judgment {
   };
 }
 
+interface FactContext {
+  readonly engine: ThresholdEngine;
+  readonly method: FactMethod;
+}
+
 function fact(
+  ctx: FactContext,
   field: EvidenceField,
   value: FactValue,
   probability: number,
   questionId: string,
   answer: string,
   evidence: string,
+  span: EvidenceFact['span'],
   note?: string,
 ): EvidenceFact | null {
-  const thresholds = FIELD_THRESHOLDS[field];
+  const thresholds = thresholdsFor(ctx.engine, field);
   const status = statusFor(probability, thresholds);
   if (!status) return null;
   return {
-    field, value, status, probability, method: 'jev', questionId, answer,
-    evidence: evidence.slice(0, EVIDENCE_EXCERPT), thresholds, ...(note ? { note } : {}),
+    field, value, status, probability, method: ctx.method, questionId, answer,
+    evidence: evidence.slice(0, EVIDENCE_EXCERPT), ...(span ? { span } : {}), thresholds, ...(note ? { note } : {}),
   };
 }
 
@@ -132,7 +143,12 @@ function valueForRole(hit: RoleHit): { value: number; note?: string } | null {
   }
 }
 
-function numberFacts(hits: readonly RoleHit[], noIncome: number): EvidenceFact[] {
+function numberFacts(
+  ctx: FactContext,
+  hits: readonly RoleHit[],
+  noIncome: number,
+  noIncomeSpan: { evidence: string; span: NonNullable<EvidenceFact['span']> },
+): EvidenceFact[] {
   const out: EvidenceFact[] = [];
   const byField = new Map<EvidenceField, RoleHit[]>();
   for (const hit of hits) {
@@ -152,27 +168,27 @@ function numberFacts(hits: readonly RoleHit[], noIncome: number): EvidenceFact[]
     // unconfirmed.
     const rival = sorted.slice(1).find((h) => {
       const r = valueForRole(h);
-      return r !== null && r.value !== resolved.value && h.probability >= FIELD_THRESHOLDS[field].confirm;
+      return r !== null && r.value !== resolved.value && h.probability >= thresholdsFor(ctx.engine, field).confirm;
     });
     // A stated figure and a stated absence of income contradict each other.
-    const incomeClash = field === 'monthlyIncome' && noIncome >= FIELD_THRESHOLDS.monthlyIncome.confirm;
-    const probability = rival || incomeClash ? Math.min(best.probability, FIELD_THRESHOLDS[field].accept - 1e-6) : best.probability;
+    const incomeClash = field === 'monthlyIncome' && noIncome >= thresholdsFor(ctx.engine, 'monthlyIncome').confirm;
+    const probability = rival || incomeClash ? Math.min(best.probability, thresholdsFor(ctx.engine, field).accept - 1e-6) : best.probability;
     const note = rival
       ? `Two different numbers were read as ${field}.`
       : incomeClash ? 'A figure and "no income" were both stated.' : resolved.note;
 
-    const f = fact(field, resolved.value, probability, `number_${best.candidate.index}`, best.role, `${best.candidate.surface} — "${best.candidate.clause}"`, note);
+    const f = fact(ctx, field, resolved.value, probability, `number_${best.candidate.index}`, best.role, `${best.candidate.surface} — "${best.candidate.clause}"`, { kind: 'number', probability: best.probability }, note);
     if (f) out.push(f);
   }
 
   if (!byField.has('monthlyIncome') && noIncome > 0) {
-    const f = fact('monthlyIncome', 0, noIncome, 'no_income', 'yes', 'Stated that they have no income.');
+    const f = fact(ctx, 'monthlyIncome', 0, noIncome, 'no_income', 'yes', noIncomeSpan.evidence, noIncomeSpan.span, 'Stated that they have no income.');
     if (f) out.push(f);
   }
   return out;
 }
 
-/* ------------------------------------------------------------------ Jev */
+/* ------------------------------------------------------ decision model */
 
 const CHOICE_FIELDS: readonly [questionId: string, field: EvidenceField][] = [
   ['marital_status', 'maritalStatus'],
@@ -181,13 +197,21 @@ const CHOICE_FIELDS: readonly [questionId: string, field: EvidenceField][] = [
   ['education', 'education'],
 ];
 
-const NOUL_FIELDS: readonly [questionId: string, field: EvidenceField][] = [
+/** Three-way self-facts: yes → true, an explicit denial → false, else nothing. */
+const FLAG_FIELDS: readonly [questionId: string, field: EvidenceField][] = [
   ['has_disability', 'hasDisability'],
   ['is_pregnant', 'isPregnant'],
   ['is_student', 'isStudent'],
   ['has_business', 'hasBusiness'],
 ];
 
+const HELD_FOR_INJECTION = 'Held for confirmation: this message also contained instructions to the system.';
+
+/**
+ * Interprets one message with a decision model — Jev, or the typed-LLM
+ * fallback, which answers the same questions under the same contract. The
+ * model's engine selects its thresholds and is recorded on every fact.
+ */
 export async function interpretWithDecisionModel(
   message: string,
   model: DecisionModel,
@@ -195,27 +219,46 @@ export async function interpretWithDecisionModel(
 ): Promise<SemanticFrame> {
   const numbers = findNumberCandidates(message);
   const places = findPlaceCandidates(message);
-  const set = buildTurnQuestions(numbers, places);
+  const clauses = clausesOf(message);
+  const set = buildTurnQuestions(numbers, places, clauses);
+  const method: FactMethod = model.engine === 'llm_typed' ? 'llm_typed' : 'jev';
+  const ctx: FactContext = { engine: method === 'llm_typed' ? 'llm_typed' : 'jev', method };
 
   const result = await model.decide({ state: { message }, questions: set.questions, ...(signal ? { signal } : {}) });
   const a = result.answers;
   const judgments = Object.entries(a).map(([id, answer]) => judgmentOf(id, answer));
   const excerpt = message.slice(0, EVIDENCE_EXCERPT);
-  const facts: EvidenceFact[] = [];
+
+  /** The clause a self-fact rests on, if the span question identified one. */
+  const spanFor = (questionId: string): { evidence: string; span: NonNullable<EvidenceFact['span']> } => {
+    if (clauses.length <= 1) return { evidence: clauses[0] ?? excerpt, span: { kind: 'clause', probability: null } };
+    const s = a[`span_${questionId}`];
+    if (s?.type === 'choice' && s.choice !== 'none') {
+      const p = answerProbability(s);
+      const index = Number(s.choice.replace('clause_', ''));
+      if (p >= 0.5 && clauses[index]) return { evidence: clauses[index]!, span: { kind: 'clause', probability: p } };
+    }
+    return { evidence: excerpt, span: { kind: 'message', probability: null } };
+  };
+
+  let facts: EvidenceFact[] = [];
 
   for (const [questionId, field] of CHOICE_FIELDS) {
     const answer = a[questionId];
     if (answer?.type !== 'choice' || answer.choice === 'not_stated') continue;
-    const f = fact(field, answer.choice, answerProbability(answer), questionId, answer.choice, excerpt);
+    const { evidence, span } = spanFor(questionId);
+    const f = fact(ctx, field, answer.choice, answerProbability(answer), questionId, answer.choice, evidence, span);
     if (f) facts.push(f);
   }
 
-  // A Noul measures "does the message SAY this is true of the writer". A low
-  // value means "not said", never "false" — silence is not evidence.
-  for (const [questionId, field] of NOUL_FIELDS) {
+  // "not_stated" produces nothing: silence is never evidence of "no". Only an
+  // explicit denial by the writer produces a `false` fact.
+  for (const [questionId, field] of FLAG_FIELDS) {
     const answer = a[questionId];
-    if (answer?.type !== 'noul') continue;
-    const f = fact(field, true, answer.noul, questionId, 'yes', excerpt);
+    if (answer?.type !== 'choice' || answer.choice === 'not_stated') continue;
+    const { evidence, span } = spanFor(questionId);
+    const f = fact(ctx, field, answer.choice === 'yes', answerProbability(answer), questionId, answer.choice, evidence, span,
+      answer.choice === 'no' ? 'Stated explicitly by the writer.' : undefined);
     if (f) facts.push(f);
   }
 
@@ -225,13 +268,14 @@ export async function interpretWithDecisionModel(
     if (answer?.type !== 'choice') return [];
     return [{ candidate, role: answer.choice as NumberRole, probability: answerProbability(answer) }];
   });
-  facts.push(...numberFacts(hits, noIncome));
+  facts.push(...numberFacts(ctx, hits, noIncome, spanFor('no_income')));
 
   const residence = a.residence;
   if (residence?.type === 'choice' && residence.choice !== 'none') {
     const place = places.find((p) => p.code === residence.choice);
     if (place) {
-      const f = fact('district', place.code, answerProbability(residence), 'residence', place.code, `${place.surface} — "${excerpt}"`);
+      const clause = clauses.find((c) => c.toLowerCase().includes(place.surface)) ?? excerpt;
+      const f = fact(ctx, 'district', place.code, answerProbability(residence), 'residence', place.code, clause, { kind: 'clause', probability: null });
       if (f) facts.push(f);
     }
   }
@@ -251,16 +295,23 @@ export async function interpretWithDecisionModel(
     : null;
 
   const injectionP = a.instruction_injection?.type === 'noul' ? a.instruction_injection.noul : null;
+  const injectionFlagged = (injectionP ?? 0) >= ROUTING_THRESHOLDS.injection;
+  // A message that tries to instruct the system cannot be trusted to state
+  // facts either (an injection may also steer the interpreter), so nothing it
+  // says is used until the citizen confirms it.
+  if (injectionFlagged) {
+    facts = facts.map((f) => (f.status === 'accepted' ? { ...f, status: 'needs_confirmation' as const, note: HELD_FOR_INJECTION } : f));
+  }
 
   return {
-    engine: 'jev',
+    engine: method,
     model: result.model,
     questionSetVersion: QUESTION_SET_VERSION,
     policyVersion: POLICY_VERSION,
     messageKind,
     situation: { event: situationEvent, probability: situationP },
     facts,
-    injection: { flagged: (injectionP ?? 0) >= ROUTING_THRESHOLDS.injection, probability: injectionP },
+    injection: { flagged: injectionFlagged, probability: injectionP },
     judgments,
     usage: { inputTokens: result.usage.inputTokens, outputTokens: result.usage.outputTokens, latencyMs: result.latencyMs },
   };

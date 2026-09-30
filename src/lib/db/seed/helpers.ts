@@ -280,6 +280,17 @@ export interface SeedOpportunity {
   readonly coverage?: readonly string[];
   readonly sourceUrl?: string;
   readonly sourceNote?: Bilingual;
+  /**
+   * Result of a desk check of this record against public sources. It never
+   * sets `verified`: that assertion belongs to an administrator comparing the
+   * record with the official circular in the admin portal (which records who
+   * verified and when). See src/lib/db/seed/VERIFICATION.md.
+   */
+  readonly sourceCheck?: {
+    readonly status: 'pending_review' | 'disputed';
+    readonly checkedOn: string;
+    readonly sources: readonly string[];
+  };
   readonly applyUrl?: string;
   readonly processingTime?: Bilingual;
   readonly renewalMonths?: number;

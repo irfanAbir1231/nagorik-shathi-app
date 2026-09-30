@@ -72,10 +72,14 @@ export async function postJson(
   let lastError: unknown;
 
   for (let attempt = 0; attempt <= retries; attempt += 1) {
+    // A cancelled caller (turn deadline, client gone) must not be retried: the
+    // previous version created a fresh controller whose listener never fired,
+    // so a retry after cancellation ran to its own full timeout.
+    if (options.signal?.aborted) throw new DOMException('The operation was aborted.', 'AbortError');
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     const onAbort = () => controller.abort();
-    options.signal?.addEventListener('abort', onAbort);
+    options.signal?.addEventListener('abort', onAbort, { once: true });
 
     try {
       const response = await fetch(url, {
@@ -98,6 +102,7 @@ export async function postJson(
       return await response.json();
     } catch (error) {
       lastError = error;
+      if (options.signal?.aborted) break;
       const retryable = error instanceof ProviderError ? error.retryable : true;
       if (!retryable || attempt === retries) break;
       await new Promise((resolve) => setTimeout(resolve, 400 * 2 ** attempt));

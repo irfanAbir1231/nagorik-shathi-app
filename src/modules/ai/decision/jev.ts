@@ -58,7 +58,7 @@ export class JevDecisionModel implements DecisionModel {
     this.model = options.model ?? env.JEV_MODEL;
     this.baseUrl = (options.baseUrl ?? env.JEV_BASE_URL).replace(/\/+$/, '');
     this.timeoutMs = options.timeoutMs ?? env.JEV_TIMEOUT_MS;
-    this.retries = options.retries ?? 2;
+    this.retries = options.retries ?? 1;
     this.fetchImpl = options.fetchImpl ?? fetch;
   }
 

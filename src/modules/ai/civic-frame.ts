@@ -7,6 +7,7 @@ import { PROMPTS } from '@/prompts';
 import { understand, type NluResult } from './nlu';
 import type { LlmProvider } from './providers/types';
 import { DecisionModelError, type DecisionErrorKind, type DecisionModel } from './decision/types';
+import { STAGE_BUDGET_MS, withDeadline, type TurnBudget } from './budget';
 import {
   acceptedProfile, interpretWithDecisionModel, interpretWithPatterns,
   type EvidenceFact, type SemanticFrame,
@@ -17,17 +18,20 @@ import {
  *
  * Three engines, one output contract:
  *
- *   jev      Typed probabilistic judgments (TypeSafe System One). Facts carry a
- *            probability and are accepted, held for confirmation, or dropped by
- *            `decision/policy.ts`. The preferred engine when configured.
- *   llm      The earlier generative "civic frame" (Model A). Kept for the
- *            ablation and for deployments without Jev. Its proposals are logged
- *            but never used; its facts come from the pattern extractor.
- *   pattern  Keyword patterns only. No probability exists, so every
- *            rights-relevant fact is held for citizen confirmation.
+ *   jev        Typed probabilistic judgments (TypeSafe System One). Facts carry a
+ *              probability and are accepted, held for confirmation, or dropped
+ *              by `decision/policy.ts`. The preferred engine when configured.
+ *   llm_typed  A generative LLM answering the SAME typed questions under the
+ *              same contract — the fallback for Jev, and the primary engine
+ *              when no Jev key is configured (audit 2026-09-30 §1).
+ *   llm        The earlier free-form "civic frame". Ablation only: its
+ *              proposals are logged but never used.
+ *   pattern    Keyword patterns only. No probability exists, so every
+ *              rights-relevant fact is held for citizen confirmation.
  *
- * Failure policy for this stage: any Jev failure degrades to `pattern` for the
- * turn (facts held for confirmation, never trusted), and says so.
+ * Failure policy for this stage: Jev → typed LLM → patterns held for
+ * confirmation. Every step down is recorded in `fallbackTrail`, and the turn
+ * is marked degraded.
  *
  * Invariant: no engine's output is an eligibility decision. The rule engine
  * receives only ACCEPTED facts, via the evidence ledger.
@@ -57,6 +61,7 @@ export interface CivicFrameModelCall {
 }
 
 export interface DecisionCall {
+  readonly engine?: 'jev' | 'llm_typed';
   readonly attempted: boolean;
   readonly ok: boolean;
   readonly model: string;
@@ -91,6 +96,8 @@ export interface CivicFrame {
   readonly nlu: NluResult;
   readonly modelCall: CivicFrameModelCall;
   readonly decisionCall: DecisionCall;
+  /** Every engine tried before the one that answered, and why each failed. */
+  readonly fallbackTrail: readonly DecisionCall[];
 }
 
 const factValueSchema = z.union([z.string(), z.number(), z.boolean(), z.array(z.string())]);
@@ -134,11 +141,14 @@ export async function inferCivicFrame(input: {
   readonly fallbackLocale?: 'bn' | 'en';
   readonly provider: LlmProvider;
   readonly decisionModel?: DecisionModel | null;
+  /** The typed-LLM engine: the fallback for Jev, or the primary when `engine` is `llm_typed`. */
+  readonly fallbackModel?: DecisionModel | null;
   readonly engine?: SemanticEngine;
   readonly signal?: AbortSignal;
+  readonly budget?: TurnBudget;
 }): Promise<CivicFrame> {
   const nlu = understand(input.message, input.fallbackLocale);
-  const requested: SemanticEngine = input.engine ?? (input.decisionModel ? 'jev' : input.provider.isLive ? 'llm' : 'pattern');
+  const requested: SemanticEngine = input.engine ?? (input.decisionModel ? 'jev' : input.fallbackModel ? 'llm_typed' : input.provider.isLive ? 'llm' : 'pattern');
   const keywordEvents = nlu.lifeEvents.map((event) => event.event);
   const baseCall: CivicFrameModelCall = {
     attempted: false,
@@ -154,7 +164,7 @@ export async function inferCivicFrame(input: {
   const assemble = (
     semantic: SemanticFrame,
     engine: SemanticEngine,
-    extra: Partial<Pick<CivicFrame, 'proposedFacts' | 'normalizedQuery' | 'retrievalQuery' | 'candidateProgrammeHints' | 'modelCall' | 'decisionCall' | 'degraded' | 'intents' | 'lifeEvents'>> = {},
+    extra: Partial<Pick<CivicFrame, 'proposedFacts' | 'normalizedQuery' | 'retrievalQuery' | 'candidateProgrammeHints' | 'modelCall' | 'decisionCall' | 'fallbackTrail' | 'degraded' | 'intents' | 'lifeEvents'>> = {},
   ): CivicFrame => {
     const known = new Set(semantic.facts.filter((f) => f.status === 'accepted').map((f) => f.field as RuleField));
     const normalizedQuery = input.message.trim();
@@ -185,45 +195,54 @@ export async function inferCivicFrame(input: {
       nlu: { ...nlu, isGreeting, isOutOfScope },
       modelCall: baseCall,
       decisionCall: NO_DECISION_CALL,
+      fallbackTrail: [],
       ...extra,
     };
   };
 
   const patternFrame = () => interpretWithPatterns(input.message, nlu);
 
-  /* ---------------------------------------------------------------- jev */
-  if (requested === 'jev') {
-    if (!input.decisionModel) {
-      return assemble(patternFrame(), 'pattern', {
-        degraded: true,
-        decisionCall: { ...NO_DECISION_CALL, attempted: true, errorKind: 'unconfigured', error: 'No decision model is configured.' },
-      });
-    }
-    try {
-      const semantic = await interpretWithDecisionModel(input.message, input.decisionModel, input.signal);
-      return assemble(semantic, 'jev', {
-        decisionCall: {
+  /* ------------------------------------------- decision-model chain */
+  // Jev → typed LLM → patterns held for confirmation. Each model gets its own
+  // deadline; a failure is recorded and the next engine is tried. The chain
+  // never makes a fact MORE trusted on the way down: the typed LLM uses its own
+  // validated thresholds, and patterns are never accepted unconfirmed.
+  if (requested === 'jev' || requested === 'llm_typed') {
+    const chain: { engine: 'jev' | 'llm_typed'; model: DecisionModel | null | undefined; budgetMs: number }[] = [
+      ...(requested === 'jev' ? [{ engine: 'jev' as const, model: input.decisionModel, budgetMs: STAGE_BUDGET_MS.understandingJev }] : []),
+      { engine: 'llm_typed' as const, model: input.fallbackModel, budgetMs: STAGE_BUDGET_MS.understandingLlm },
+    ];
+    const trail: DecisionCall[] = [];
+    for (const step of chain) {
+      if (!step.model) {
+        trail.push({ ...NO_DECISION_CALL, engine: step.engine, attempted: true, errorKind: 'unconfigured', error: `No ${step.engine} model is configured.` });
+        continue;
+      }
+      try {
+        const signal = input.budget ? input.budget.stage(step.budgetMs) : withDeadline(input.signal, step.budgetMs);
+        const semantic = await interpretWithDecisionModel(input.message, step.model, signal);
+        const call: DecisionCall = {
+          engine: step.engine,
           attempted: true,
           ok: true,
           model: semantic.model,
           latencyMs: semantic.usage.latencyMs,
           inputTokens: semantic.usage.inputTokens,
           outputTokens: semantic.usage.outputTokens,
-        },
-      });
-    } catch (error) {
-      const kind: DecisionErrorKind = error instanceof DecisionModelError ? error.kind : 'malformed_response';
-      return assemble(patternFrame(), 'pattern', {
-        degraded: true,
-        decisionCall: {
+        };
+        return assemble(semantic, step.engine, { degraded: trail.some((t) => t.attempted && t.errorKind !== 'unconfigured') || step.engine !== requested, decisionCall: call, fallbackTrail: trail });
+      } catch (error) {
+        trail.push({
           ...NO_DECISION_CALL,
+          engine: step.engine,
           attempted: true,
-          model: input.decisionModel.model,
-          errorKind: kind,
+          model: step.model.model,
+          errorKind: error instanceof DecisionModelError ? error.kind : 'malformed_response',
           error: error instanceof Error ? error.message : String(error),
-        },
-      });
+        });
+      }
     }
+    return assemble(patternFrame(), 'pattern', { degraded: true, decisionCall: trail[0] ?? NO_DECISION_CALL, fallbackTrail: trail });
   }
 
   /* ------------------------------------------------------------ pattern */

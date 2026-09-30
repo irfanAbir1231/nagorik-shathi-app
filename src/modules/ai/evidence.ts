@@ -23,6 +23,13 @@ import type { EvidenceFact, FactValue } from './semantic-frame';
  *    becomes unknown and the citizen is asked. Code never picks a side.
  *  • A later UNCERTAIN statement that disagrees with an accepted one suspends
  *    the field until the citizen confirms.
+ *  • A conflict the citizen has been ASKED about is resolved by their answer:
+ *    if they re-state the conversation value after the question, it is used
+ *    for this conversation (and offered for saving); if they state the profile
+ *    value, there is no conflict. (Before, re-affirming re-created the
+ *    conflict forever — audit 2026-09-30, defect 3.)
+ *  • A fact the citizen REJECTED is removed before this function sees it (see
+ *    `loadConversationFacts`).
  */
 
 export type ProvenanceSource = 'this_message' | 'earlier_message' | 'profile' | 'account';
@@ -31,7 +38,7 @@ export interface Provenance {
   readonly field: string;
   readonly value: FactValue | readonly string[];
   readonly source: ProvenanceSource;
-  readonly method: 'jev' | 'pattern' | 'form' | 'account';
+  readonly method: 'jev' | 'llm_typed' | 'pattern' | 'form' | 'account';
   readonly probability: number | null;
   readonly evidence?: string;
   readonly messageId?: string;
@@ -48,6 +55,34 @@ export interface Conflict {
 /** A fact as persisted in an assistant message's payload. */
 export interface ConversationFact extends EvidenceFact {
   readonly messageId?: string;
+}
+
+/** A citizen's decision about one fact, recorded as a `system` message. */
+export interface FactDecision {
+  readonly field: string;
+  readonly value: string | number | boolean;
+  readonly decision: 'confirm' | 'reject';
+}
+
+/**
+ * Folds a conversation's stored rows, oldest first, into the facts said so far
+ * and the fields the assistant has already asked about as a conflict. A
+ * citizen's rejection removes what was said BEFORE it; a later statement counts.
+ */
+export function foldConversationFacts(rows: readonly { role: string; payload: unknown }[]): { facts: ConversationFact[]; conflictAsked: Set<string> } {
+  let facts: ConversationFact[] = [];
+  const conflictAsked = new Set<string>();
+  for (const row of rows) {
+    const payload = row.payload as { evidenceFacts?: unknown; factDecision?: FactDecision; plan?: { clarificationKind?: string; missingField?: string } } | null;
+    if (row.role === 'system' && payload?.factDecision?.decision === 'reject') {
+      const { field, value } = payload.factDecision;
+      facts = facts.filter((f) => !(f.field === field && String(f.value) === String(value)));
+      continue;
+    }
+    if (Array.isArray(payload?.evidenceFacts)) facts.push(...(payload.evidenceFacts as ConversationFact[]));
+    if (payload?.plan?.clarificationKind === 'conflict' && payload.plan.missingField) conflictAsked.add(payload.plan.missingField);
+  }
+  return { facts, conflictAsked };
 }
 
 export interface Ledger {
@@ -77,6 +112,8 @@ export function buildLedger(input: {
   readonly earlier: readonly ConversationFact[];
   readonly current: readonly EvidenceFact[];
   readonly currentMessageId?: string;
+  /** Fields for which an earlier turn asked the citizen to resolve a conflict. */
+  readonly conflictAsked?: ReadonlySet<string>;
 }): Ledger {
   const profile: Record<string, unknown> = { ...input.profile };
   const provenance: Record<string, Provenance> = {};
@@ -139,9 +176,23 @@ export function buildLedger(input: {
         provenance[field] = { ...provenance[field]!, note: 'Also stated in this conversation.' };
         continue;
       }
-      conflicts.push({ field, profileValue: stored as FactValue, conversationValue: fact.value, conversationSource: source });
-      delete profile[field];
-      delete provenance[field];
+      // Asked, then answered in THIS message: the citizen chose the
+      // conversation value. Use it here; the profile is only changed if they
+      // save it.
+      const resolvedByAnswer = source === 'this_message' && (input.conflictAsked?.has(field) ?? false);
+      if (!resolvedByAnswer) {
+        conflicts.push({ field, profileValue: stored as FactValue, conversationValue: fact.value, conversationSource: source });
+        delete profile[field];
+        delete provenance[field];
+        continue;
+      }
+      profile[field] = fact.value;
+      provenance[field] = {
+        field, value: fact.value, source, method: fact.method, probability: fact.probability, evidence: fact.evidence,
+        ...(fact.messageId ? { messageId: fact.messageId } : {}),
+        note: `You confirmed this when asked; your profile still says "${String(stored)}".`,
+      };
+      saveable.push(fact);
       continue;
     }
 

@@ -1,0 +1,21 @@
+{
+  "description": "Format for the INDEPENDENT split: real, consented, anonymised citizen messages, labelled by two annotators and adjudicated (see PROTOCOL.md). Save a real set as field-set.json in this directory — it is git-ignored. This example contains no real data.",
+  "collectedBy": "who collected the messages, and under what consent",
+  "anonymisedBy": "who removed identifiers, and how",
+  "annotators": ["annotator A (not a system designer)", "annotator B (not a system designer)"],
+  "agreement": { "cohensKappaByField": { "maritalStatus": null }, "computedWith": "agreement.ts", "beforeAdjudication": true },
+  "cases": [
+    {
+      "id": "field-0001",
+      "lang": "bn",
+      "register": "colloquial",
+      "category": "plain",
+      "text": "EXAMPLE ONLY — replace with a real anonymised message",
+      "facts": { "maritalStatus": "widowed", "gender": "female" },
+      "skip": [],
+      "situation": ["widowhood"],
+      "kind": "situation",
+      "injection": false
+    }
+  ]
+}

@@ -27,7 +27,7 @@ import type { RuleField } from '@/lib/domain/rules';
  * that a threshold tuned on a Noul does not transfer to a Choice.
  */
 
-export const POLICY_VERSION = 'evidence-policy@1.1.0';
+export const POLICY_VERSION = 'evidence-policy@1.2.0';
 
 /**
  * Risk classes by the harm of a WRONG accepted fact.
@@ -91,20 +91,56 @@ export const FIELD_THRESHOLDS: Record<EvidenceField, Thresholds> = {
 
 /**
  * Evidence for the 0.90 / 0.50 thresholds (evaluation/results/jev-latest.md, jev-1.13.0,
- * 109 labelled cases, author-labelled, single annotator):
- *   at 0.90 — 148 facts accepted, precision 99.3% (95% Wilson lower bound 96.3%),
- *             coverage 91.9% of gold facts, 1 false assertion;
- *   the point estimate would allow 0.75 (98.1%), but NO threshold's lower bound
- *   reaches the 97% target on a sample this size, so the data does not justify
- *   lowering the threshold. Mid-range answers (0.6–0.8) were right only 1 time in
- *   13, which is why that band is "confirm", never "accept".
+ * turn-understanding@2.0.0, semantic-cases@2.0.0 — 116 cases, author-labelled,
+ * single annotator):
+ *   at 0.90 — 163 facts accepted, precision 99.4% (95% Wilson lower bound 96.6%),
+ *             coverage 93.1% of gold facts, 1 false assertion;
+ *   the point estimate would allow 0.72 (0.80 on the clean split), but NO
+ *   threshold's lower bound reaches the 97% target on either split, so the data
+ *   does not justify lowering the threshold. Mid-range answers (0.5–0.8) were
+ *   right 4 times in 23, which is why that band is "confirm", never "accept".
+ *   (Question set 1.0.0, 109 cases: 148 accepted, 99.3%, lower bound 96.3%.)
  * Re-run on a larger, independently labelled set before changing these values.
  */
 export const FIELD_THRESHOLD_SOURCE: ThresholdSource = {
   source: 'calibration',
-  run: 'jev-ablation@1.0.0 on turn-understanding@1.0.0 (see evaluation/results/jev-latest.md)',
+  run: 'jev-ablation@1.1.0 on turn-understanding@2.0.0 (see evaluation/results/jev-latest.md)',
   note: 'Conservative default retained: lowering it is not supported at the 95% lower bound on this sample.',
 };
+
+/**
+ * Thresholds are PER ENGINE: the vendor documents that thresholds do not
+ * transfer across question types, and they do not transfer across models
+ * either. The typed-LLM fallback's thresholds were measured on that engine
+ * (jev-ablation@1.1.0, same 116 cases):
+ *   at 0.90 — 146 accepted, precision 99.3% (lower bound 96.2%), coverage 83.3%,
+ *             1 false assertion;
+ *   0.91 reaches the 97% target at the lower bound on ALL cases (129 accepted,
+ *   0 false assertions, coverage 74.1%) but NOT on the clean split (96.5%), and
+ *   the difference is a single case (w-third-en-2) — too thin to justify cutting
+ *   9 points of coverage. 0.90 is kept; revisit with the independent split.
+ *   Its self-reported probabilities are underconfident (Choice: 98.7% accurate
+ *   at 91.1% mean confidence), so a higher bar mostly costs recall.
+ */
+export type ThresholdEngine = 'jev' | 'llm_typed';
+
+export const ENGINE_FIELD_THRESHOLDS: Record<ThresholdEngine, Record<EvidenceField, Thresholds>> = {
+  jev: FIELD_THRESHOLDS,
+  llm_typed: FIELD_THRESHOLDS,
+};
+
+export const ENGINE_THRESHOLD_SOURCE: Record<ThresholdEngine, ThresholdSource> = {
+  jev: FIELD_THRESHOLD_SOURCE,
+  llm_typed: {
+    source: 'calibration',
+    run: 'jev-ablation@1.1.0, arm T, on turn-understanding@2.0.0 (see evaluation/results/jev-latest.md); first measured in audit 2026-09-30 §1',
+    note: '0.90 kept: 0.91 is supported on all cases but not on the clean split, on the strength of one case. Lower recall means more confirmation prompts, not more false facts.',
+  },
+};
+
+export function thresholdsFor(engine: ThresholdEngine, field: EvidenceField): Thresholds {
+  return ENGINE_FIELD_THRESHOLDS[engine][field];
+}
 
 export const FIELD_RISK: Record<EvidenceField, RiskClass> = Object.fromEntries(
   EVIDENCE_FIELDS.map((field) => [field, 'grants']),
@@ -124,6 +160,13 @@ export const ROUTING_THRESHOLDS = {
 export const VERIFIER_THRESHOLDS = {
   contradiction: 0.5,
   unlistedProgramme: 0.5,
+  /** Reject when P(the amount is used consistently with the plan) is below this. */
+  amountConsistency: 0.5,
+  /** A positive verdict on unverified data needs a caution with P at least this. */
+  caveat: 0.5,
+  /** ...unless P(the text does not mention that programme) is at least this. */
+  silentAboutProgramme: 0.5,
+  addressedToReviewer: 0.5,
 } as const;
 
 /**

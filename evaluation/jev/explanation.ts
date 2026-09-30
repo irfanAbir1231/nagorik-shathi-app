@@ -2,12 +2,12 @@ import { SEED_OPPORTUNITIES, SEED_ORGANIZATIONS } from '@/lib/db/seed';
 import { evaluateEligibility, type ConditionTrace, type EligibilityProfile } from '@/modules/eligibility/engine';
 import { verifyExplanation } from '@/modules/ai/verifier';
 import { renderTurn, type RenderPath } from '@/modules/ai/render';
-import { isPlaceholderReason, type PlannedCondition, type PlannedOpportunity, type ResponsePlan } from '@/modules/ai/response-plan';
+import { isPlaceholderReason, type PlanFact, type PlannedCondition, type PlannedOpportunity, type ResponsePlan } from '@/modules/ai/response-plan';
 import type { DecisionModel } from '@/modules/ai/decision/types';
 import type { LlmProvider } from '@/modules/ai/providers/types';
 import type { LifeEvent } from '@/lib/domain/enums';
 import { SEMANTIC_CASES } from './cases';
-import { VERIFIER_CASES } from './verifier-cases';
+import { VERIFIER_CASES, shouldReject } from './verifier-cases';
 import { mapLimit, ratio } from './infra';
 
 /**
@@ -25,14 +25,15 @@ import { mapLimit, ratio } from './infra';
  *     is the verifier's judgment, not ground truth.
  */
 
-function planFor(programmes: readonly { title: { en: string; bn: string }; organisation: { en: string; bn: string }; outcome: PlannedOpportunity['outcome'] }[], locale: 'bn' | 'en'): ResponsePlan {
+function planFor(programmes: readonly { title: { en: string; bn: string }; organisation: { en: string; bn: string }; outcome: PlannedOpportunity['outcome']; benefitAmount?: number | null }[], locale: 'bn' | 'en'): ResponsePlan {
   return {
     kind: 'recommendations', locale, intents: ['find_opportunities'], lifeEvents: [],
     opportunities: programmes.map((p, i) => ({
       id: `p${i}`, slug: `p${i}`, title: p.title, summary: { en: '', bn: '' }, organisation: p.organisation,
-      category: 'social_welfare', outcome: p.outcome, benefitAmount: null, benefitPeriod: null, deadline: null,
+      category: 'social_welfare', outcome: p.outcome, benefitAmount: p.benefitAmount ?? null, benefitPeriod: p.benefitAmount ? 'monthly' : null, deadline: null,
       relevance: 1, confidence: 63, verificationStatus: 'unverified_sample', isUnverified: true,
-      metReasons: [], failedReasons: [], unknownReasons: [], softFailedReasons: [], conditions: [],
+      // Rule copy with the limits the prose may cite (for the amount check).
+      metReasons: [], failedReasons: p.outcome === 'not_eligible' ? [{ en: 'This programme is for monthly income under ৳1,500.', bn: 'এই কর্মসূচি মাসিক আয় ৳১,৫০০ এর কম হলে প্রযোজ্য।' }] : [], unknownReasons: [], softFailedReasons: [], conditions: [],
       decisionStatus: 'needs_information', reviewReasons: [], evidenceStrength: null, nextStep: null, sourceUrl: null,
     })),
     citations: [], overallConfidence: 63, ungrounded: false,
@@ -42,7 +43,7 @@ function planFor(programmes: readonly { title: { en: string; bn: string }; organ
 export async function evaluateVerifier(jev: DecisionModel, concurrency: number) {
   const results = await mapLimit(VERIFIER_CASES, concurrency, async (c) => {
     const verdict = await verifyExplanation(c.text, planFor(c.programmes, c.lang), jev);
-    return { id: c.id, lang: c.lang, split: c.split, kind: c.kind, contradicts: c.contradicts, rejected: verdict.verdict === 'reject', reasons: verdict.reasons, error: verdict.errorKind ?? null };
+    return { id: c.id, lang: c.lang, split: c.split, kind: c.kind, contradicts: shouldReject(c), rejected: verdict.verdict === 'reject', reasons: verdict.reasons, error: verdict.errorKind ?? null };
   });
   const valid = results.filter((r) => !r.error);
   const pos = valid.filter((r) => r.contradicts);
@@ -60,6 +61,7 @@ export async function evaluateVerifier(jev: DecisionModel, concurrency: number) 
     falsePositiveRate: ratio(neg.filter((r) => r.rejected).length, neg.length),
     byLanguage: { en: slice((r) => r.lang === 'en'), bn: slice((r) => r.lang === 'bn') },
     bySplit: { dev: slice((r) => r.split === 'dev'), heldout: slice((r) => r.split === 'heldout') },
+    byKind: Object.fromEntries([...new Set(valid.map((r) => r.kind))].sort().map((k) => [k, { ...slice((r) => r.kind === k), positives: valid.filter((r) => r.kind === k && r.contradicts).length }])),
     misses: valid.filter((r) => r.contradicts !== r.rejected).map((r) => ({ id: r.id, split: r.split, kind: r.kind, expectedReject: r.contradicts, rejected: r.rejected, reasons: r.reasons })),
   };
 }
@@ -103,11 +105,18 @@ function planFromCase(caseId: string, poisoned: boolean): ResponsePlan {
     };
   });
   const excerpt = (o: (typeof programmes)[number]) => (poisoned ? POISON : `${o.summary[0]} ${o.description[0]}`.slice(0, 320));
+  // Production parity: runTurn attaches the accepted facts to the plan
+  // (planEvidence), which is what lets prose repeat the citizen's own income.
+  const facts: PlanFact[] = Object.entries(c.facts).map(([field, value]) => ({
+    field, value, status: 'accepted', method: 'jev', probability: 0.97, source: 'this_message',
+    label: { en: `${field}: ${String(value)}`, bn: `${field}: ${String(value)}` },
+  }));
   return {
     kind: 'recommendations', locale: c.lang === 'bn' ? 'bn' : 'en', intents: ['find_opportunities'], lifeEvents: events as LifeEvent[],
     opportunities,
     citations: programmes.map((o) => ({ chunkId: `${o.slug}-0`, opportunityId: o.slug, title: o.title[0], excerpt: excerpt(o), sourceUrl: o.sourceUrl ?? null })),
     overallConfidence: 63, ungrounded: false,
+    evidence: { engine: 'jev', degraded: false, facts, saveable: {} },
   };
 }
 

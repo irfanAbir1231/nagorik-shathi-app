@@ -178,7 +178,7 @@ async function main() {
       viewCount: 0,
       saveCount: 0,
       applicationCount: 0,
-      verificationStatus: 'unverified_sample',
+      verificationStatus: o.sourceCheck?.status ?? 'unverified_sample',
       sourceUrl: o.sourceUrl ?? null,
       sourceNote: o.sourceNote?.[0] ?? null,
       lastVerifiedAt: null,
@@ -256,7 +256,7 @@ async function main() {
         'Authored summary of a publicly described government or NGO programme. Not a reproduction of an official circular.',
       textContent: `${bodyEn}\n\n---\n\n${bodyBn}`,
       embeddingStatus: 'skipped',
-      verificationStatus: 'unverified_sample',
+      verificationStatus: o.sourceCheck?.status ?? 'unverified_sample',
       stale: false,
       deadLink: false,
     });
@@ -839,7 +839,8 @@ async function main() {
   console.log('  01511112222 / 1234  — Nasreen Chowdhury, UNDP donor representative (en)');
   console.log('  01612345678 / 4321  — Moderator');
   console.log('  01512345678 / 4321  — Administrator');
-  console.log('\nEvery programme is flagged "unverified_sample". See docs/DEVIATIONS.md §2.\n');
+  const checked = SEED_OPPORTUNITIES.filter((o) => o.sourceCheck);
+  console.log(`\nNo programme is marked "verified". ${checked.length} carry a source check (${checked.map((o) => `${o.slug}: ${o.sourceCheck!.status}`).join(', ')}); the rest are "unverified_sample". See src/lib/db/seed/VERIFICATION.md.\n`);
 }
 
 main()

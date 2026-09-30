@@ -96,6 +96,12 @@ export interface PlanFact {
   readonly probability: number | null;
   readonly source: string;
   readonly label: LocalisedText;
+  /** The clause of the citizen's message the fact rests on. */
+  readonly evidence?: string;
+  /** For a conflict: what the profile says. */
+  readonly profileLabel?: LocalisedText;
+  /** The profile-API patch that confirms (saves) this one fact. */
+  readonly save?: Readonly<Record<string, unknown>>;
 }
 
 export interface PlanEvidence {

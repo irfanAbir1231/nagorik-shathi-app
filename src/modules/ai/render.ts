@@ -8,6 +8,8 @@ import { verifyExplanation, type VerificationResult } from './verifier';
 import { pickLocalised, type PlannedCondition, type ResponsePlan } from './response-plan';
 import type { LlmProvider } from './providers/types';
 import type { DecisionModel } from './decision/types';
+import { STAGE_BUDGET_MS, type TurnBudget } from './budget';
+import { redactPii } from './redact';
 
 /**
  * Rendering: turning a FIXED plan into citizen-facing text.
@@ -57,6 +59,8 @@ export async function renderTurn(input: {
   readonly decisionModel: DecisionModel | null;
   readonly injectionFlagged: boolean;
   readonly signal?: AbortSignal;
+  /** Stage deadlines for the render and verification calls (defect 7). */
+  readonly budget?: TurnBudget;
 }): Promise<RenderResult> {
   const { plan } = input;
   const template = (renderPath: RenderPath, extra: Partial<RenderResult> = {}): RenderResult => ({
@@ -79,7 +83,7 @@ export async function renderTurn(input: {
 
   let rendered: { text: string; tokensIn: number; tokensOut: number };
   try {
-    rendered = await renderWithModel(plan, input.message, input.history, input.profile, input.provider, input.signal);
+    rendered = await renderWithModel(plan, input.message, input.history, input.profile, input.provider, input.budget ? input.budget.stage(STAGE_BUDGET_MS.render) : input.signal);
   } catch (error) {
     // A provider failure degrades to the deterministic composer rather than
     // failing the citizen's request. The UI shows the degraded badge.
@@ -88,8 +92,9 @@ export async function renderTurn(input: {
   const usage = { tokensIn: rendered.tokensIn, tokensOut: rendered.tokensOut };
 
   try {
-    // A number the citizen said, or that is in their profile, is not an
-    // invention when the model repeats it back to them.
+    // A non-money number the citizen said, or one in their profile, is not an
+    // invention when repeated back. Money is never taken from the message:
+    // see `unsupportedNumericClaims`.
     assertNumericGrounding(rendered.text, plan, [input.message, ...profileNumbers(input.profile)]);
   } catch (error) {
     return template('template_numeric_gate', { ...usage, error: error instanceof Error ? error.message : String(error) });
@@ -99,7 +104,7 @@ export async function renderTurn(input: {
     return { text: rendered.text, renderPath: 'model_unverified', verification: null, providerFailed: false, ...usage, error: null };
   }
 
-  const verification = await verifyExplanation(rendered.text, plan, input.decisionModel, input.signal);
+  const verification = await verifyExplanation(rendered.text, plan, input.decisionModel, input.budget ? input.budget.stage(STAGE_BUDGET_MS.verify) : input.signal);
   if (verification.verdict === 'reject') {
     return template('template_verifier_rejected', { ...usage, verification, error: verification.reasons.join(' ') });
   }
@@ -191,9 +196,12 @@ export async function renderWithModel(
     context: [contextBlock, citationBlock].filter(Boolean).join('\n\n---\n\n') || 'NO CONTEXT AVAILABLE.',
   });
 
+  // Earlier turns go to the vendor too, so they are redacted as well; system
+  // rows (fact confirmations) are not dialogue.
   const historyBlock = history
+    .filter((m) => m.role !== 'system')
     .slice(-4)
-    .map((m) => `${m.role === 'user' ? 'Citizen' : 'Nagorik Sathi'}: ${m.content.slice(0, 400)}`)
+    .map((m) => `${m.role === 'user' ? 'Citizen' : 'Nagorik Sathi'}: ${redactPii(m.content).text.slice(0, 400)}`)
     .join('\n');
 
   const missing = (() => {

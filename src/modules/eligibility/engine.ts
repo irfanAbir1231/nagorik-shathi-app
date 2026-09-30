@@ -103,6 +103,8 @@ export interface EvaluationResult {
   readonly score: number;
   readonly trace: NodeTrace;
   readonly ruleVersion: number;
+  /** Engine semantics that produced this result — see ENGINE_VERSION. */
+  readonly engineVersion: string;
 }
 
 /* -------------------------------------------------------------- helpers */
@@ -366,6 +368,20 @@ function walk(node: RuleNode, profile: EligibilityProfile): Walked {
 
 /* --------------------------------------------------------- entry point */
 
+/**
+ * Version of the evaluation SEMANTICS (not of any rule). A stored decision is
+ * only replayable if both its rule version and the engine semantics are known:
+ * the same rule can yield a different verdict under different semantics.
+ *
+ *  1.0.0  every leaf reported as a reason; soft failures anywhere downgrade.
+ *  2.0.0  decisive-only reasons: losing `any` branches no longer explain or
+ *         downgrade; a match under `none` is reported as the exclusion it is.
+ *         Moved 1.55% of benchmark verdicts, all partially_eligible → eligible,
+ *         in four programmes — see evaluation/audit/engine-v2-signoff.md.
+ *         A frozen copy of 1.0.0 is kept at evaluation/audit/probes/engine-v1.ts.
+ */
+export const ENGINE_VERSION = 'eligibility-engine@2.0.0';
+
 export interface EvaluateOptions {
   readonly ruleVersion?: number;
 }
@@ -431,6 +447,7 @@ export function evaluateEligibility(
     score,
     trace,
     ruleVersion: options.ruleVersion ?? 1,
+    engineVersion: ENGINE_VERSION,
   };
 }
 

@@ -38,6 +38,8 @@ const T = {
     rolling: 'সারা বছর খোলা',
     sampleWarning:
       'মনে রাখবেন: এই তথ্য এখনো যাচাই করা হয়নি — নমুনা তথ্য। আবেদনের আগে সংশ্লিষ্ট অফিসে নিশ্চিত করে নিন।',
+    pendingWarning:
+      'মনে রাখবেন: এই কর্মসূচির পরিমাণ সরকারি বাজেট সূত্র থেকে নেওয়া, কিন্তু কোনো পর্যালোচক এখনো সরকারি পরিপত্রের সঙ্গে মিলিয়ে দেখেননি। আবেদনের আগে অফিসে নিশ্চিত করুন।',
     staleWarning:
       'মনে রাখবেন: এই কর্মসূচির তথ্য পুরনো হয়ে থাকতে পারে বা এ নিয়ে প্রশ্ন আছে। আবেদনের আগে অফিসে নিশ্চিত করুন।',
     partialBecause: 'যে শর্ত এখনো মেলেনি',
@@ -77,6 +79,8 @@ const T = {
     rolling: 'Open all year',
     sampleWarning:
       'Please note: this information has not been verified yet — it is sample data. Confirm at the relevant office before applying.',
+    pendingWarning:
+      'Please note: the amount for this programme comes from public budget sources, but no reviewer has yet checked it against the official circular. Confirm at the office before applying.',
     staleWarning:
       'Please note: the information for this programme may be out of date or is disputed. Confirm at the office before applying.',
     partialBecause: 'Not yet met',
@@ -207,7 +211,8 @@ export function composeResponse(plan: ResponsePlan): string {
   // records get the stronger warning.
   const statuses = new Set(plan.opportunities.map((o) => o.verificationStatus ?? (o.isUnverified ? 'unverified_sample' : 'verified')));
   if (statuses.has('outdated') || statuses.has('disputed')) sections.push(t.staleWarning);
-  else if ([...statuses].some((s) => s !== 'verified')) sections.push(t.sampleWarning);
+  if (statuses.has('unverified_sample')) sections.push(t.sampleWarning);
+  else if (statuses.has('pending_review')) sections.push(t.pendingWarning);
 
   sections.push(t.seeDetails);
   return sections.join('\n\n');

@@ -29,7 +29,13 @@ import type { ChoiceQuestion, NoulQuestion, Question } from './types';
  * language is measured, not assumed.
  */
 
-export const QUESTION_SET_VERSION = 'turn-understanding@1.0.0';
+/**
+ * 2.0.0 — yes/no self-facts became three-way Choices (yes / explicitly no /
+ * not stated) so a stated denial is recorded instead of discarded; span
+ * questions pin each fact to the clause it came from. Thresholds are
+ * re-validated per question set by `npm run eval:jev`.
+ */
+export const QUESTION_SET_VERSION = 'turn-understanding@2.0.0';
 
 const WRITER = 'the writer of `message`';
 
@@ -125,28 +131,46 @@ function selfNoul(about: string, trueMeans: string, falseMeans: string): NoulQue
   };
 }
 
-export const HAS_DISABILITY = selfNoul(
-  'has a disability or long-term physical or mental impairment',
+/**
+ * A three-way self-fact. "no" is only an EXPLICIT denial by the writer about
+ * themselves; silence, and statements about other people, are "not_stated".
+ * (1.0.0 used a Noul, which cannot tell a denial from silence, so "I don't
+ * have a disability" was discarded and the question asked again.)
+ */
+function selfFlag(about: string, yes: string, no: string): ChoiceQuestion {
+  return {
+    type: 'choice',
+    instructions: `According to \`message\`, does ${WRITER} themselves ${about}?`,
+    criteria: {
+      yes,
+      no,
+      not_stated: 'The message does not say, or only says it about someone other than the writer.',
+    },
+  };
+}
+
+export const HAS_DISABILITY = selfFlag(
+  'have a disability or long-term physical or mental impairment',
   'The writer states that they themselves have a disability or impairment.',
-  'No disability of the writer is stated, or it belongs to someone else, or it is denied.',
+  'The writer explicitly says that they themselves do NOT have a disability.',
 );
 
-export const IS_PREGNANT = selfNoul(
-  'is currently pregnant',
+export const IS_PREGNANT = selfFlag(
+  'currently be pregnant',
   'The writer states that they are pregnant now.',
-  'No current pregnancy of the writer is stated, or it is someone else\'s.',
+  'The writer explicitly says that they are NOT pregnant.',
 );
 
-export const IS_STUDENT = selfNoul(
-  'is currently a student',
+export const IS_STUDENT = selfFlag(
+  'currently study or be enrolled as a student',
   'The writer states they are currently studying or enrolled.',
-  'The writer does not say they are currently studying, or only mentions someone else\'s studies.',
+  'The writer explicitly says they are NOT currently studying.',
 );
 
-export const HAS_BUSINESS = selfNoul(
-  'runs a business or shop',
+export const HAS_BUSINESS = selfFlag(
+  'run or own a business or shop',
   'The writer states they run or own a business, shop, or enterprise.',
-  'No business run by the writer is stated.',
+  'The writer explicitly says they do NOT run a business.',
 );
 
 export const NO_INCOME = selfNoul(
@@ -235,13 +259,48 @@ export const FIELD_PRODUCERS: Readonly<Partial<Record<RuleField, string>>> = {
   district: 'residence',
 };
 
+/** Self-fact questions whose supporting clause is identified, and what to call the fact. */
+export const SPAN_TARGETS: Readonly<Record<string, string>> = {
+  marital_status: 'own marital status',
+  gender: 'own gender',
+  occupation: 'own occupation',
+  education: 'own education',
+  has_disability: 'own disability, or its absence',
+  is_pregnant: 'own pregnancy, or its absence',
+  is_student: 'own studies, or their absence',
+  has_business: 'own business, or its absence',
+  no_income: 'lack of any income',
+};
+
+/**
+ * "Which clause says this?" — the pre-parsed pattern again: code splits the
+ * message into clauses, Jev only picks one. Asked speculatively for every
+ * self-fact in the same call (parallel, so almost free in latency); code uses
+ * the answer only for facts that were actually found.
+ */
+export function spanQuestion(questionId: string, clauses: readonly string[]): ChoiceQuestion {
+  return {
+    type: 'choice',
+    instructions: { clauses, question: `Which of \`clauses\` states ${WRITER}'s ${SPAN_TARGETS[questionId]}?` },
+    criteria: {
+      ...Object.fromEntries(clauses.map((clause, i) => [`clause_${i}`, clause])),
+      none: 'None of the clauses states it.',
+    },
+  };
+}
+
 export interface TurnQuestionSet {
   readonly questions: Record<string, Question>;
   readonly numbers: readonly NumberCandidate[];
   readonly places: readonly PlaceCandidate[];
+  readonly clauses: readonly string[];
 }
 
-export function buildTurnQuestions(numbers: readonly NumberCandidate[], places: readonly PlaceCandidate[]): TurnQuestionSet {
+export function buildTurnQuestions(
+  numbers: readonly NumberCandidate[],
+  places: readonly PlaceCandidate[],
+  clauses: readonly string[] = [],
+): TurnQuestionSet {
   const questions: Record<string, Question> = {
     message_kind: MESSAGE_KIND,
     primary_situation: PRIMARY_SITUATION,
@@ -258,7 +317,11 @@ export function buildTurnQuestions(numbers: readonly NumberCandidate[], places: 
   };
   for (const candidate of numbers) questions[`number_${candidate.index}`] = numberRoleQuestion(candidate);
   if (places.length > 0) questions.residence = residenceQuestion(places);
-  return { questions, numbers, places };
+  // A one-clause message IS its own span; no question needed.
+  if (clauses.length > 1) {
+    for (const id of Object.keys(SPAN_TARGETS)) questions[`span_${id}`] = spanQuestion(id, clauses);
+  }
+  return { questions, numbers, places, clauses };
 }
 
 export function isLifeEvent(value: string): value is LifeEvent {

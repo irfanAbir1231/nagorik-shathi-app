@@ -112,14 +112,16 @@ const schema = z.object({
    */
   JEV_MODEL: nonEmpty.default('jev-1.13.0'),
   JEV_BASE_URL: nonEmpty.default('https://api.typesafe.ai'),
-  JEV_TIMEOUT_MS: int(8_000),
+  /** Per attempt. Measured p95 is 587 ms (evaluation run 2026-09-30); the turn budget caps the total anyway. */
+  JEV_TIMEOUT_MS: int(2_000),
   /**
    * Which engine interprets citizen language. `auto` picks Jev when its key is
-   * present, else the LLM civic frame when a generative provider is live, else
-   * the pattern extractor. An explicit value is honoured even when its key is
+   * present, else the generative LLM answering the same typed questions
+   * (`llm_typed`) when a provider is live, else the pattern extractor. `llm` is
+   * the older free-form civic frame, kept only for the ablation. An explicit value is honoured even when its key is
    * missing, so a misconfiguration surfaces instead of silently switching.
    */
-  SEMANTIC_ENGINE: z.enum(['auto', 'jev', 'llm', 'pattern']).default('auto'),
+  SEMANTIC_ENGINE: z.enum(['auto', 'jev', 'llm_typed', 'llm', 'pattern']).default('auto'),
   /**
    * Jev re-ranking of retrieved programmes. OFF by default: it raised R@1 in
    * the retrieval ablation, but its effect inside the eligibility-banded
@@ -374,12 +376,17 @@ export function aiConfigProblems(): string[] {
 }
 
 /** Which engine interprets citizen language into structured evidence. */
-export type SemanticEngine = 'jev' | 'llm' | 'pattern';
+export type SemanticEngine = 'jev' | 'llm_typed' | 'llm' | 'pattern';
 
+/**
+ * The fallback chain is Jev → typed LLM → patterns held for confirmation; this
+ * picks where the chain STARTS. A Jev failure at request time falls through to
+ * the typed LLM when one is live (civic-frame.ts).
+ */
 export function resolveSemanticEngine(): SemanticEngine {
   if (env.SEMANTIC_ENGINE !== 'auto') return env.SEMANTIC_ENGINE;
   if (env.JEV_API_KEY) return 'jev';
-  return resolveAiMode() === 'simulated' ? 'pattern' : 'llm';
+  return resolveAiMode() === 'simulated' ? 'pattern' : 'llm_typed';
 }
 
 /** True when real vector embeddings are available; otherwise BM25 is used. */

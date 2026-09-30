@@ -204,9 +204,15 @@ export function OpportunityCard({
                     : tt('disputed')
           }
         />
-        <Badge tone={item.confidence.band === 'high' ? 'success' : item.confidence.band === 'medium' ? 'warning' : 'error'}>
-          {tt('confidence')} {item.confidence.score}%
-        </Badge>
+        {/* Source reliability of the RECORD (completeness × verification cap).
+            Hidden in the compact chat card, where the decision evidence is
+            shown instead and a bare percentage would read as "how sure we are
+            that you qualify". */}
+        {!compact ? (
+          <Badge tone={item.confidence.band === 'high' ? 'success' : item.confidence.band === 'medium' ? 'warning' : 'error'}>
+            {tt('confidence')} {item.confidence.score}%
+          </Badge>
+        ) : null}
       </div>
 
       {/* One primary action; save is a distinct 48 dp target with clear spacing. */}

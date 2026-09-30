@@ -1,4 +1,5 @@
 import { understand } from '@/modules/ai/nlu';
+import { redactPii } from '@/modules/ai/redact';
 import { interpretWithDecisionModel, interpretWithPatterns, type EvidenceFact, type SemanticFrame } from '@/modules/ai/semantic-frame';
 import { modelFrameSchema, parseJsonObject, hasVerbatimEvidence } from '@/modules/ai/civic-frame';
 import { findNumberCandidates, findPlaceCandidates, toDecimals } from '@/modules/ai/candidates';
@@ -19,7 +20,8 @@ import { calibration, mapLimit, ratio, type CalibrationPoint } from './infra';
  * end-to-end effect on deterministic eligibility.
  */
 
-export type ArmName = 'pattern_legacy' | 'pattern_confirm' | 'llm_all' | 'llm_accept' | 'jev' | 'jev_any';
+export type ArmName = 'pattern_legacy' | 'pattern_confirm' | 'llm_all' | 'llm_accept' | 'llm_typed' | 'jev' | 'jev_any';
+export type FrameArm = 'jev' | 'llm_typed';
 
 export interface PredictedFact {
   readonly field: EvidenceField;
@@ -28,11 +30,14 @@ export interface PredictedFact {
   readonly status: 'accepted' | 'needs_confirmation';
 }
 
-interface CaseRun {
+export interface CaseRun {
   readonly caseId: string;
   readonly arms: Partial<Record<ArmName, readonly PredictedFact[]>>;
   readonly jevFrame: SemanticFrame | null;
   readonly jevError: string | null;
+  /** The production fallback: the LLM answering the same typed questions. */
+  readonly typedFrame: SemanticFrame | null;
+  readonly typedError: string | null;
   readonly llmError: string | null;
   readonly llmFacts: readonly (PredictedFact & { rawField: string })[] | null;
   /** Would the production (strict) parser have accepted this LLM frame at all? */
@@ -100,31 +105,69 @@ async function llmExtract(text: string, provider: LlmProvider) {
   return { facts, strictOk };
 }
 
+/* ------------------------------------------------------- case index */
+
+const EXTRA_CASES = new Map<string, SemanticCase>();
+
+/**
+ * Registers cases from outside the built-in set (the independent field set),
+ * so every scorer can resolve their labels by id.
+ */
+export function registerCases(cases: readonly SemanticCase[]): void {
+  for (const c of cases) {
+    if (SEMANTIC_CASES.some((x) => x.id === c.id)) throw new Error(`Case id "${c.id}" collides with the built-in set.`);
+    EXTRA_CASES.set(c.id, c);
+  }
+}
+
+function caseIndex(): Map<string, SemanticCase> {
+  return new Map([...SEMANTIC_CASES.map((c) => [c.id, c] as const), ...EXTRA_CASES]);
+}
+
 /* ------------------------------------------------------------- runs */
 
 export async function runSemanticArms(options: {
   readonly jev: DecisionModel | null;
   readonly llm: LlmProvider | null;
+  /** The typed-LLM decision model (production fallback). */
+  readonly llmTyped?: DecisionModel | null;
+  /** Cases to run (default: the whole labelled set). */
+  readonly cases?: readonly SemanticCase[];
   readonly concurrency: number;
   readonly onProgress?: (done: number, total: number) => void;
 }): Promise<CaseRun[]> {
   let done = 0;
-  return mapLimit(SEMANTIC_CASES, options.concurrency, async (c) => {
-    const nlu = understand(c.text, c.lang === 'bn' ? 'bn' : 'en');
+  const cases = options.cases ?? SEMANTIC_CASES;
+  return mapLimit(cases, options.concurrency, async (c) => {
+    // Production parity: every engine reads the REDACTED message, exactly as
+    // runTurn sends it.
+    const text = redactPii(c.text).text;
+    const nlu = understand(text, c.lang === 'bn' ? 'bn' : 'en');
     const arms: Partial<Record<ArmName, readonly PredictedFact[]>> = {
-      pattern_legacy: fromEvidence(interpretWithPatterns(c.text, nlu, 'accept').facts),
-      pattern_confirm: fromEvidence(interpretWithPatterns(c.text, nlu, 'confirm').facts),
+      pattern_legacy: fromEvidence(interpretWithPatterns(text, nlu, 'accept').facts),
+      pattern_confirm: fromEvidence(interpretWithPatterns(text, nlu, 'confirm').facts),
     };
 
     let jevFrame: SemanticFrame | null = null;
     let jevError: string | null = null;
     if (options.jev) {
       try {
-        jevFrame = await interpretWithDecisionModel(c.text, options.jev);
+        jevFrame = await interpretWithDecisionModel(text, options.jev);
         arms.jev = fromEvidence(jevFrame.facts);
         arms.jev_any = fromEvidence(jevFrame.facts).map((f) => ({ ...f, status: 'accepted' as const }));
       } catch (error) {
         jevError = error instanceof Error ? error.message : String(error);
+      }
+    }
+
+    let typedFrame: SemanticFrame | null = null;
+    let typedError: string | null = null;
+    if (options.llmTyped) {
+      try {
+        typedFrame = await interpretWithDecisionModel(text, options.llmTyped);
+        arms.llm_typed = fromEvidence(typedFrame.facts);
+      } catch (error) {
+        typedError = error instanceof Error ? error.message : String(error);
       }
     }
 
@@ -133,7 +176,7 @@ export async function runSemanticArms(options: {
     let llmStrictOk: boolean | null = null;
     if (options.llm) {
       try {
-        const extracted = await llmExtract(c.text, options.llm);
+        const extracted = await llmExtract(text, options.llm);
         llmFacts = extracted.facts;
         llmStrictOk = extracted.strictOk;
         arms.llm_all = llmFacts;
@@ -145,8 +188,8 @@ export async function runSemanticArms(options: {
       }
     }
     done += 1;
-    options.onProgress?.(done, SEMANTIC_CASES.length);
-    return { caseId: c.id, arms, jevFrame, jevError, llmError, llmFacts, llmStrictOk };
+    options.onProgress?.(done, cases.length);
+    return { caseId: c.id, arms, jevFrame, jevError, typedFrame, typedError, llmError, llmFacts, llmStrictOk };
   });
 }
 
@@ -201,8 +244,8 @@ function scoreCase(c: SemanticCase, facts: readonly PredictedFact[], into: Tally
 }
 
 export function scoreArms(runs: readonly CaseRun[]) {
-  const byId = new Map(SEMANTIC_CASES.map((c) => [c.id, c]));
-  const armNames: ArmName[] = ['pattern_legacy', 'pattern_confirm', 'llm_all', 'llm_accept', 'jev', 'jev_any'];
+  const byId = caseIndex();
+  const armNames: ArmName[] = ['pattern_legacy', 'pattern_confirm', 'llm_all', 'llm_accept', 'llm_typed', 'jev', 'jev_any'];
   const result: Record<string, unknown> = {};
   for (const arm of armNames) {
     const withArm = runs.filter((r) => r.arms[arm] !== undefined);
@@ -234,7 +277,8 @@ export function scoreArms(runs: readonly CaseRun[]) {
 const CHOICE_FIELD_QUESTION: Partial<Record<EvidenceField, string>> = {
   maritalStatus: 'marital_status', gender: 'gender', occupation: 'occupation', education: 'education',
 };
-const NOUL_FIELD_QUESTION: Partial<Record<EvidenceField, string>> = {
+/** Three-way Choices (yes / explicitly no / not stated) since question set 2.0.0. */
+const FLAG_FIELD_QUESTION: Partial<Record<EvidenceField, string>> = {
   hasDisability: 'has_disability', isPregnant: 'is_pregnant', isStudent: 'is_student', hasBusiness: 'has_business',
 };
 
@@ -258,17 +302,17 @@ const NON_FIELD_ROLES = new Set(['other_age', 'other_money', 'other']);
 export interface CalibrationReport {
   readonly topLabel: ReturnType<typeof calibration>;
   readonly choice: ReturnType<typeof calibration>;
-  readonly noul: ReturnType<typeof calibration>;
+  readonly flag: ReturnType<typeof calibration>;
   readonly numberRole: ReturnType<typeof calibration>;
   readonly byLanguage: Record<string, ReturnType<typeof calibration>>;
   readonly assertions: ReturnType<typeof calibration>;
   readonly llmAssertions: ReturnType<typeof calibration> | null;
 }
 
-export function calibrationReport(runs: readonly CaseRun[]): CalibrationReport {
-  const byId = new Map(SEMANTIC_CASES.map((c) => [c.id, c]));
+export function calibrationReport(runs: readonly CaseRun[], arm: FrameArm = 'jev'): CalibrationReport {
+  const byId = caseIndex();
   const choice: CalibrationPoint[] = [];
-  const noul: CalibrationPoint[] = [];
+  const flag: CalibrationPoint[] = [];
   const numberRole: CalibrationPoint[] = [];
   const langPoints = new Map<string, CalibrationPoint[]>();
   const assertions: CalibrationPoint[] = [];
@@ -280,7 +324,9 @@ export function calibrationReport(runs: readonly CaseRun[]): CalibrationReport {
 
   for (const run of runs) {
     const c = byId.get(run.caseId)!;
-    const frame = run.jevFrame;
+    const frame = arm === 'jev' ? run.jevFrame : run.typedFrame;
+    // Candidates are found on the text the engine actually read (redacted).
+    const text = redactPii(c.text).text;
     if (frame) {
       const judgment = new Map(frame.judgments.map((j) => [j.id, j]));
       for (const [field, qid] of Object.entries(CHOICE_FIELD_QUESTION) as [EvidenceField, string][]) {
@@ -290,18 +336,16 @@ export function calibrationReport(runs: readonly CaseRun[]): CalibrationReport {
         const gold = c.facts[field];
         push(c.lang, choice, { p: j.probability, y: j.answer === (gold === undefined ? 'not_stated' : String(gold)) });
       }
-      for (const [field, qid] of Object.entries(NOUL_FIELD_QUESTION) as [EvidenceField, string][]) {
+      for (const [field, qid] of Object.entries(FLAG_FIELD_QUESTION) as [EvidenceField, string][]) {
         if (c.skip?.includes(field)) continue;
         const j = judgment.get(qid);
         if (!j) continue;
-        // Top-label form, so accuracy and ECE mean the same thing as for a
-        // Choice: the predicted answer is yes iff P(yes) ≥ 0.5, and its
-        // confidence is the probability of that answer.
-        const saysYes = j.probability >= 0.5;
-        push(c.lang, noul, { p: saysYes ? j.probability : 1 - j.probability, y: saysYes === (c.facts[field] === true) });
+        const gold = c.facts[field];
+        const goldOption = gold === true ? 'yes' : gold === false ? 'no' : 'not_stated';
+        push(c.lang, flag, { p: j.probability, y: j.answer === goldOption });
       }
       if (!c.skip?.some((f) => ['age', 'monthlyIncome', 'householdSize', 'dependents', 'landOwnershipDecimals', 'cgpa'].includes(f))) {
-        for (const candidate of findNumberCandidates(c.text)) {
+        for (const candidate of findNumberCandidates(text)) {
           const j = judgment.get(`number_${candidate.index}`);
           if (!j) continue;
           const goldRoles = goldRolesFor(c, candidate.value, candidate.landUnit);
@@ -309,7 +353,7 @@ export function calibrationReport(runs: readonly CaseRun[]): CalibrationReport {
           push(c.lang, numberRole, { p: j.probability, y: correct });
         }
       }
-      const places = findPlaceCandidates(c.text);
+      const places = findPlaceCandidates(text);
       const residence = judgment.get('residence');
       if (residence && places.length > 0 && !c.skip?.includes('district')) {
         push(c.lang, choice, { p: residence.probability, y: residence.answer === (c.facts.district ?? 'none') });
@@ -328,14 +372,92 @@ export function calibrationReport(runs: readonly CaseRun[]): CalibrationReport {
   }
 
   return {
-    topLabel: calibration([...choice, ...numberRole, ...noul]),
+    topLabel: calibration([...choice, ...numberRole, ...flag]),
     choice: calibration(choice),
-    noul: calibration(noul),
+    flag: calibration(flag),
     numberRole: calibration(numberRole),
     byLanguage: Object.fromEntries([...langPoints].map(([k, v]) => [k, calibration(v)])),
     assertions: calibration(assertions),
     llmAssertions: runs.some((r) => r.llmFacts) ? calibration(llmAssertions) : null,
   };
+}
+
+/* ------------------------------------------------------------ bootstrap */
+
+/** Deterministic PRNG (mulberry32) so intervals are reproducible. */
+function rng(seed: number) {
+  let t = seed >>> 0;
+  return () => {
+    t += 0x6d2b79f5;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+export const BOOTSTRAP = { resamples: 400, seed: 20260930 } as const;
+
+/**
+ * 95% percentile bootstrap over CASES (the unit of independence — the fields
+ * and programmes within one case are not independent). Each case's
+ * contribution is computed once; a resample only re-sums contributions.
+ * Returns null when the metric is undefined in too many resamples.
+ */
+export function bootstrapInterval<T>(
+  contributions: readonly T[],
+  metric: (sample: readonly T[]) => number | null,
+): { lo: number; hi: number } | null {
+  if (contributions.length === 0) return null;
+  const next = rng(BOOTSTRAP.seed);
+  const values: number[] = [];
+  for (let b = 0; b < BOOTSTRAP.resamples; b += 1) {
+    const sample = Array.from({ length: contributions.length }, () => contributions[Math.floor(next() * contributions.length)]!);
+    const v = metric(sample);
+    if (v !== null && Number.isFinite(v)) values.push(v);
+  }
+  if (values.length < BOOTSTRAP.resamples * 0.8) return null;
+  values.sort((a, b) => a - b);
+  return { lo: values[Math.floor(values.length * 0.025)]!, hi: values[Math.min(values.length - 1, Math.floor(values.length * 0.975))]! };
+}
+
+interface CaseContribution { readonly tally: Tally; readonly verdicts: VerdictCounts }
+
+/** Headline metrics with case-level 95% bootstrap intervals, per arm. */
+export function headlineIntervals(runs: readonly CaseRun[], arms: readonly ArmName[]) {
+  const byId = caseIndex();
+  const programmes = benchmarkProgrammes();
+  const out: Record<string, Record<string, { value: number | null; lo: number | null; hi: number | null }>> = {};
+  for (const arm of arms) {
+    const contributions: CaseContribution[] = runs.filter((r) => r.arms[arm] !== undefined).map((run) => {
+      const c = byId.get(run.caseId)!;
+      const tally = emptyTally();
+      scoreCase(c, run.arms[arm]!, tally);
+      return { tally, verdicts: caseVerdicts(c, run.arms[arm]!, programmes).counts };
+    });
+    if (contributions.length === 0) continue;
+    const sumTally = (xs: readonly CaseContribution[]) => {
+      const t = emptyTally();
+      for (const x of xs) for (const k of Object.keys(t) as (keyof Tally)[]) t[k] += x.tally[k];
+      return summarise(t);
+    };
+    const sumVerdicts = (xs: readonly CaseContribution[]) => {
+      const v = emptyVerdicts();
+      for (const x of xs) for (const k of Object.keys(v) as (keyof VerdictCounts)[]) v[k] += x.verdicts[k];
+      return v;
+    };
+    const metrics: Record<string, (xs: readonly CaseContribution[]) => number | null> = {
+      precision: (xs) => sumTally(xs).precision,
+      recall: (xs) => sumTally(xs).recall,
+      falseAssertionRate: (xs) => sumTally(xs).falseAssertionRate,
+      falseEligibleRate: (xs) => { const v = sumVerdicts(xs); return ratio(v.falseEligible, v.decisions); },
+      positiveRecall: (xs) => { const v = sumVerdicts(xs); return ratio(v.truePositive, v.goldPositive); },
+    };
+    out[arm] = Object.fromEntries(Object.entries(metrics).map(([name, fn]) => {
+      const ci = bootstrapInterval(contributions, fn);
+      return [name, { value: fn(contributions), lo: ci?.lo ?? null, hi: ci?.hi ?? null }];
+    }));
+  }
+  return out;
 }
 
 /**
@@ -344,14 +466,14 @@ export function calibrationReport(runs: readonly CaseRun[]): CalibrationReport {
  * recommended threshold is the lowest meeting the policy's precision target —
  * the policy chooses the target, the data chooses the number.
  */
-export function thresholdSweep(runs: readonly CaseRun[]) {
-  const byId = new Map(SEMANTIC_CASES.map((c) => [c.id, c]));
+export function thresholdSweep(runs: readonly CaseRun[], arm: FrameArm = 'jev') {
+  const byId = caseIndex();
   const items: { p: number; correct: boolean; falseAssertion: boolean }[] = [];
   let goldKnown = 0;
   for (const run of runs) {
     const c = byId.get(run.caseId)!;
     for (const field of EVIDENCE_FIELDS) if (!c.skip?.includes(field) && c.facts[field] !== undefined) goldKnown += 1;
-    for (const f of run.jevFrame?.facts ?? []) {
+    for (const f of (arm === 'jev' ? run.jevFrame : run.typedFrame)?.facts ?? []) {
       if (c.skip?.includes(f.field) || f.probability === null) continue;
       const gold = c.facts[f.field];
       items.push({ p: f.probability, correct: gold !== undefined && same(f.value, gold), falseAssertion: gold === undefined });
@@ -392,12 +514,12 @@ export function wilsonLower(successes: number, n: number, z = 1.96): number | nu
 }
 
 /** Every Jev disagreement with the labels, for audit. */
-export function jevDisagreements(runs: readonly CaseRun[]) {
-  const byId = new Map(SEMANTIC_CASES.map((c) => [c.id, c]));
+export function jevDisagreements(runs: readonly CaseRun[], arm: FrameArm = 'jev') {
+  const byId = caseIndex();
   const out: { caseId: string; lang: string; category: string; field: string; gold: GoldValue | null; predicted: GoldValue | null; probability: number | null; status: string | null; kind: string }[] = [];
   for (const run of runs) {
     const c = byId.get(run.caseId)!;
-    const facts = run.jevFrame?.facts ?? [];
+    const facts = (arm === 'jev' ? run.jevFrame : run.typedFrame)?.facts ?? [];
     for (const field of EVIDENCE_FIELDS) {
       if (c.skip?.includes(field)) continue;
       const gold = c.facts[field];
@@ -419,33 +541,35 @@ export function jevDisagreements(runs: readonly CaseRun[]) {
 
 /* --------------------------------------------- situations, kind, injection */
 
-export function routingReport(runs: readonly CaseRun[]) {
-  const byId = new Map(SEMANTIC_CASES.map((c) => [c.id, c]));
-  const situation = { jev: { correct: 0, n: 0 }, keyword: { correct: 0, n: 0 } };
-  const situationByLang = new Map<string, { jev: number; keyword: number; n: number }>();
-  const kind = { jev: { correct: 0, n: 0 }, pattern: { correct: 0, n: 0 } };
-  const inj = { jev: { tp: 0, fp: 0, pos: 0, neg: 0 }, pattern: { tp: 0, fp: 0, pos: 0, neg: 0 } };
+/** Routing judgments of one engine (`engine`) against the keyword / pattern baseline (`baseline`). */
+export function routingReport(runs: readonly CaseRun[], arm: FrameArm = 'jev') {
+  const byId = caseIndex();
+  const situation = { engine: { correct: 0, n: 0 }, keyword: { correct: 0, n: 0 } };
+  const situationByLang = new Map<string, { engine: number; keyword: number; n: number }>();
+  const kind = { engine: { correct: 0, n: 0 }, pattern: { correct: 0, n: 0 } };
+  const inj = { engine: { tp: 0, fp: 0, pos: 0, neg: 0 }, pattern: { tp: 0, fp: 0, pos: 0, neg: 0 } };
 
   for (const run of runs) {
     const c = byId.get(run.caseId)!;
-    const nlu = understand(c.text, c.lang === 'bn' ? 'bn' : 'en');
-    const pattern = interpretWithPatterns(c.text, nlu);
-    const frame = run.jevFrame;
+    const text = redactPii(c.text).text;
+    const nlu = understand(text, c.lang === 'bn' ? 'bn' : 'en');
+    const pattern = interpretWithPatterns(text, nlu);
+    const frame = arm === 'jev' ? run.jevFrame : run.typedFrame;
 
     if (c.situation !== 'skip') {
       const accept = c.situation === 'none' ? ['none'] : c.situation;
       const keywordTop = nlu.lifeEvents[0]?.event ?? 'none';
       situation.keyword.n += 1;
       if (accept.includes(keywordTop as never)) situation.keyword.correct += 1;
-      const lang = situationByLang.get(c.lang) ?? { jev: 0, keyword: 0, n: 0 };
+      const lang = situationByLang.get(c.lang) ?? { engine: 0, keyword: 0, n: 0 };
       lang.n += 1;
       if (accept.includes(keywordTop as never)) lang.keyword += 1;
       if (frame) {
         const jevTop = frame.situation.event ?? 'none';
-        situation.jev.n += 1;
+        situation.engine.n += 1;
         if (accept.includes(jevTop as never)) {
-          situation.jev.correct += 1;
-          lang.jev += 1;
+          situation.engine.correct += 1;
+          lang.engine += 1;
         }
       }
       situationByLang.set(c.lang, lang);
@@ -455,12 +579,12 @@ export function routingReport(runs: readonly CaseRun[]) {
     kind.pattern.n += 1;
     if (pattern.messageKind.value === goldKind) kind.pattern.correct += 1;
     if (frame) {
-      kind.jev.n += 1;
-      if (frame.messageKind.value === goldKind) kind.jev.correct += 1;
+      kind.engine.n += 1;
+      if (frame.messageKind.value === goldKind) kind.engine.correct += 1;
     }
 
     const goldInjection = c.injection === true;
-    const tally = (t: typeof inj.jev, flagged: boolean) => {
+    const tally = (t: typeof inj.engine, flagged: boolean) => {
       if (goldInjection) {
         t.pos += 1;
         if (flagged) t.tp += 1;
@@ -470,16 +594,16 @@ export function routingReport(runs: readonly CaseRun[]) {
       }
     };
     tally(inj.pattern, pattern.injection.flagged);
-    if (frame) tally(inj.jev, frame.injection.flagged);
+    if (frame) tally(inj.engine, frame.injection.flagged);
   }
 
   const rate = (x: { correct: number; n: number }) => ratio(x.correct, x.n);
   return {
-    situation: { jev: rate(situation.jev), keyword: rate(situation.keyword), n: situation.keyword.n },
-    situationByLanguage: Object.fromEntries([...situationByLang].map(([k, v]) => [k, { jev: ratio(v.jev, v.n), keyword: ratio(v.keyword, v.n), n: v.n }])),
-    messageKind: { jev: rate(kind.jev), pattern: rate(kind.pattern), n: kind.pattern.n },
+    situation: { engine: rate(situation.engine), keyword: rate(situation.keyword), n: situation.keyword.n },
+    situationByLanguage: Object.fromEntries([...situationByLang].map(([k, v]) => [k, { engine: ratio(v.engine, v.n), keyword: ratio(v.keyword, v.n), n: v.n }])),
+    messageKind: { engine: rate(kind.engine), pattern: rate(kind.pattern), n: kind.pattern.n },
     injection: {
-      jev: { tpr: ratio(inj.jev.tp, inj.jev.pos), fpr: ratio(inj.jev.fp, inj.jev.neg), positives: inj.jev.pos, negatives: inj.jev.neg },
+      engine: { tpr: ratio(inj.engine.tp, inj.engine.pos), fpr: ratio(inj.engine.fp, inj.engine.neg), positives: inj.engine.pos, negatives: inj.engine.neg },
       pattern: { tpr: ratio(inj.pattern.tp, inj.pattern.pos), fpr: ratio(inj.pattern.fp, inj.pattern.neg), positives: inj.pattern.pos, negatives: inj.pattern.neg },
     },
   };
@@ -499,51 +623,68 @@ function profileFrom(facts: Partial<Record<EvidenceField, GoldValue>>): Eligibil
  * verdicts the gold facts produce. The rule engine is the same in every arm, so
  * every difference is caused by interpretation.
  */
-export function endToEndReport(runs: readonly CaseRun[]) {
-  const byId = new Map(SEMANTIC_CASES.map((c) => [c.id, c]));
-  const programmes = ELIGIBILITY_PROGRAMMES.map((slug) => SEED_OPPORTUNITIES.find((o) => o.slug === slug)!);
+interface VerdictCounts { decisions: number; agree: number; falseEligible: number; falseDenial: number; overCautious: number; goldPositive: number; truePositive: number }
+const emptyVerdicts = (): VerdictCounts => ({ decisions: 0, agree: 0, falseEligible: 0, falseDenial: 0, overCautious: 0, goldPositive: 0, truePositive: 0 });
+
+function benchmarkProgrammes() {
+  return ELIGIBILITY_PROGRAMMES.map((slug) => SEED_OPPORTUNITIES.find((o) => o.slug === slug)!);
+}
+
+/** One case's verdicts under an arm's accepted facts vs the gold facts. */
+function caseVerdicts(c: SemanticCase, facts: readonly PredictedFact[], programmes: ReturnType<typeof benchmarkProgrammes>) {
   const positive = (o: string) => o === 'eligible' || o === 'partially_eligible';
-  const arms: ArmName[] = ['pattern_legacy', 'pattern_confirm', 'llm_all', 'llm_accept', 'jev'];
+  const counts = emptyVerdicts();
+  const falseEligible: { programme: string; gold: string; predicted: string }[] = [];
+  const goldFacts = Object.fromEntries(Object.entries(c.facts).filter(([f]) => !c.skip?.includes(f as EvidenceField)));
+  const predFacts = Object.fromEntries(
+    facts.filter((f) => f.status === 'accepted' && !c.skip?.includes(f.field)).map((f) => [f.field, f.value]),
+  );
+  const goldProfile = profileFrom(goldFacts);
+  const predProfile = profileFrom(predFacts);
+  for (const programme of programmes) {
+    const gold = evaluateEligibility(programme.rules, goldProfile).outcome;
+    const predicted = evaluateEligibility(programme.rules, predProfile).outcome;
+    counts.decisions += 1;
+    if (gold === predicted) counts.agree += 1;
+    if (positive(gold)) counts.goldPositive += 1;
+    if (positive(gold) && positive(predicted)) counts.truePositive += 1;
+    if (positive(predicted) && !positive(gold)) {
+      counts.falseEligible += 1;
+      falseEligible.push({ programme: programme.slug, gold, predicted });
+    }
+    if (predicted === 'not_eligible' && gold !== 'not_eligible') counts.falseDenial += 1;
+    if (predicted === 'unknown' && gold !== 'unknown') counts.overCautious += 1;
+  }
+  return { counts, falseEligible };
+}
+
+export function endToEndReport(runs: readonly CaseRun[]) {
+  const byId = caseIndex();
+  const programmes = benchmarkProgrammes();
+  const arms: ArmName[] = ['pattern_legacy', 'pattern_confirm', 'llm_all', 'llm_accept', 'llm_typed', 'jev'];
   const out: Record<string, unknown> = {};
   for (const arm of arms) {
     const withArm = runs.filter((r) => r.arms[arm] !== undefined);
     if (withArm.length === 0) continue;
-    let decisions = 0, agree = 0, falseEligible = 0, falseDenial = 0, overCautious = 0, goldPositive = 0, truePositive = 0;
+    const t = emptyVerdicts();
     const examples: { caseId: string; programme: string; gold: string; predicted: string }[] = [];
     for (const run of withArm) {
       const c = byId.get(run.caseId)!;
-      const goldFacts = Object.fromEntries(Object.entries(c.facts).filter(([f]) => !c.skip?.includes(f as EvidenceField)));
-      const predFacts = Object.fromEntries(
-        run.arms[arm]!.filter((f) => f.status === 'accepted' && !c.skip?.includes(f.field)).map((f) => [f.field, f.value]),
-      );
-      const goldProfile = profileFrom(goldFacts);
-      const predProfile = profileFrom(predFacts);
-      for (const programme of programmes) {
-        const gold = evaluateEligibility(programme.rules, goldProfile).outcome;
-        const predicted = evaluateEligibility(programme.rules, predProfile).outcome;
-        decisions += 1;
-        if (gold === predicted) agree += 1;
-        if (positive(gold)) goldPositive += 1;
-        if (positive(gold) && positive(predicted)) truePositive += 1;
-        if (positive(predicted) && !positive(gold)) {
-          falseEligible += 1;
-          if (examples.length < 12) examples.push({ caseId: c.id, programme: programme.slug, gold, predicted });
-        }
-        if (predicted === 'not_eligible' && gold !== 'not_eligible') falseDenial += 1;
-        if (predicted === 'unknown' && gold !== 'unknown') overCautious += 1;
-      }
+      const { counts, falseEligible } = caseVerdicts(c, run.arms[arm]!, programmes);
+      for (const k of Object.keys(t) as (keyof VerdictCounts)[]) t[k] += counts[k];
+      for (const e of falseEligible) if (examples.length < 12) examples.push({ caseId: c.id, ...e });
     }
     out[arm] = {
-      decisions,
-      agreement: ratio(agree, decisions),
-      falseEligible,
-      falseEligibleRate: ratio(falseEligible, decisions),
-      falseDenial,
-      falseDenialRate: ratio(falseDenial, decisions),
-      overCautious,
-      overCautiousRate: ratio(overCautious, decisions),
-      positiveRecall: ratio(truePositive, goldPositive),
-      goldPositive,
+      decisions: t.decisions,
+      agreement: ratio(t.agree, t.decisions),
+      falseEligible: t.falseEligible,
+      falseEligibleRate: ratio(t.falseEligible, t.decisions),
+      falseDenial: t.falseDenial,
+      falseDenialRate: ratio(t.falseDenial, t.decisions),
+      overCautious: t.overCautious,
+      overCautiousRate: ratio(t.overCautious, t.decisions),
+      positiveRecall: ratio(t.truePositive, t.goldPositive),
+      goldPositive: t.goldPositive,
       falseEligibleExamples: examples,
     };
   }

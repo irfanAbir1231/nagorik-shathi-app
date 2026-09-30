@@ -43,3 +43,8 @@ coverage/
 
 __pycache__/
 *.pyc
+
+# Real (even anonymised) citizen messages for the independent evaluation split
+evaluation/jev/annotation/field-set.json
+evaluation/jev/annotation/blind-*.csv
+evaluation/jev/annotation/*.filled.csv

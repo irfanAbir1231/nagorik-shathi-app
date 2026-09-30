@@ -339,7 +339,15 @@ export const catalog = {
       fromProfile: ['আপনার প্রোফাইল থেকে', 'From your profile'],
       fromAccount: ['অ্যাকাউন্টের ডিফল্ট — আপনি নিশ্চিত করেননি', 'Account default — not confirmed by you'],
       byPattern: ['শব্দ মিলিয়ে — যাচাই হয়নি', 'Keyword match — not checked'],
-      certainty: ['নিশ্চয়তা', 'certainty'],
+      youSaid: ['আপনি বলেছেন', 'You said'],
+      profileSays: ['প্রোফাইলে আছে', 'Your profile says'],
+      correct: ['ঠিক আছে — সংরক্ষণ করুন', 'Correct — save'],
+      notCorrect: ['ঠিক নয়', 'Not correct'],
+      useMine: ['আমি যা বললাম সেটিই ঠিক — সংরক্ষণ করুন', 'What I said is right — save it'],
+      keepProfile: ['প্রোফাইলেরটাই ঠিক', 'My profile is right'],
+      confirmedNote: ['নিশ্চিত করা হয়েছে', 'Confirmed'],
+      rejectedNote: ['বাদ দেওয়া হয়েছে — আর ব্যবহার হবে না', 'Removed — it will not be used'],
+      actionFailed: ['করা যায়নি, আবার চেষ্টা করুন', 'That did not work. Please try again.'],
       notSaved: [
         'এগুলো শুধু এই কথোপকথনে ব্যবহার হচ্ছে, আপনার প্রোফাইলে সংরক্ষণ হয়নি।',
         'These are used in this conversation only. Nothing was saved to your profile.',
@@ -647,7 +655,9 @@ export const catalog = {
   },
 
   trust: {
-    confidence: ['আস্থার মাত্রা', 'Confidence'],
+    // What the number actually measures: how complete and verified the
+    // programme's own record is — not how sure anyone is about a citizen.
+    confidence: ['উৎসের নির্ভরযোগ্যতা', 'Source reliability'],
     high: ['উচ্চ', 'High'],
     medium: ['মধ্যম', 'Medium'],
     low: ['কম', 'Low'],
