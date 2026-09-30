@@ -17,12 +17,13 @@ import { Spinner } from '@/components/primitives/Spinner';
 import { ConfidenceMeter, Badge } from '@/components/primitives/Chip';
 import { OpportunityCard, type OpportunityCardData } from '@/components/opportunity/OpportunityCard';
 import { AiEngineNotice } from './AiEngineNotice';
+import { EvidencePanel, DecisionTrace, type ConditionView, type PlanEvidenceView } from './EvidencePanel';
 import { useToast } from '@/components/providers/ToastProvider';
 import { usePreferences } from '@/components/providers/PreferencesProvider';
 import { useVoice, useVoiceReadable, useVoiceActions } from '@/components/providers/VoiceProvider';
 import { SpeakButton } from '@/components/voice/SpeakButton';
 import { formatTimeAgo } from '@/lib/format/dates';
-import type { AiEngine } from '@/lib/domain/enums';
+import type { AiEngine, VerificationStatus } from '@/lib/domain/enums';
 
 /**
  * Chat — PRD §61, the primary interaction surface.
@@ -53,6 +54,10 @@ interface PlanOpportunity {
   readonly deadline: string | null;
   readonly confidence: number;
   readonly isUnverified: boolean;
+  /** Absent on messages stored before evidence provenance existed. */
+  readonly verificationStatus?: VerificationStatus;
+  readonly conditions?: ConditionView[];
+  readonly decisionStatus?: string;
   readonly metReasons: { bn: string; en: string }[];
   readonly failedReasons: { bn: string; en: string }[];
   readonly unknownReasons: { bn: string; en: string }[];
@@ -79,6 +84,8 @@ export interface ChatMessage {
       readonly opportunities: PlanOpportunity[];
       readonly citations: Citation[];
       readonly ungrounded: boolean;
+      readonly evidence?: PlanEvidenceView;
+      readonly renderPath?: string;
     };
   } | null;
 }
@@ -87,7 +94,14 @@ interface TurnResponse {
   readonly conversationId: string;
   readonly userMessage: ChatMessage;
   readonly assistantMessage: ChatMessage;
-  readonly plan: { kind: string; opportunities: PlanOpportunity[]; citations: Citation[]; ungrounded: boolean };
+  readonly plan: {
+    kind: string;
+    opportunities: PlanOpportunity[];
+    citations: Citation[];
+    ungrounded: boolean;
+    evidence?: PlanEvidenceView;
+  };
+  readonly renderPath?: string;
   readonly understanding: {
     readonly lifeEvents: { event: string; matchedKeyword: string; confidence: number }[];
     readonly extractedFields: string[];
@@ -171,7 +185,7 @@ export function ChatClient({
       setMessages((current) => [
         ...current.filter((m) => m.id !== context?.optimisticId),
         data.userMessage,
-        { ...data.assistantMessage, payload: { plan: data.plan } },
+        { ...data.assistantMessage, payload: { plan: { ...data.plan, ...(data.renderPath ? { renderPath: data.renderPath } : {}) } } },
       ]);
       if (data.profileUpdated.length > 0) {
         toast.show({ tone: 'success', message: t('savedToProfile') });
@@ -558,6 +572,14 @@ function MessageBubble({
           </ul>
         ) : null}
 
+        {plan?.evidence ? <EvidencePanel evidence={plan.evidence} locale={locale} /> : null}
+
+        {plan?.renderPath === 'model_verified' ? (
+          <p className="type-caption text-text-secondary">{t('verifiedByChecker')}</p>
+        ) : plan?.renderPath === 'template_verifier_rejected' ? (
+          <p className="type-caption text-text-secondary">{t('templateAfterCheck')}</p>
+        ) : null}
+
         {plan?.ungrounded ? (
           <Banner tone="warning" statusWord={locale === 'bn' ? 'সতর্কতা' : 'Note'}>
             {t('noSources')}
@@ -612,7 +634,9 @@ function MessageBubble({
                   benefitAmount: o.benefitAmount,
                   benefitPeriod: o.benefitPeriod,
                   deadline: o.deadline,
-                  verificationStatus: o.isUnverified ? 'unverified_sample' : 'verified',
+                  // Prefer the real status: `isUnverified` alone cannot tell
+                  // `outdated` or `disputed` apart from verified.
+                  verificationStatus: o.verificationStatus ?? (o.isUnverified ? 'unverified_sample' : 'verified'),
                   organization: { name: o.organisation.en, nameBn: o.organisation.bn },
                   eligibility: {
                     outcome: o.outcome,
@@ -628,6 +652,9 @@ function MessageBubble({
                 }}
                 compact
               />
+              {o.conditions && o.conditions.length > 0 ? (
+                <DecisionTrace conditions={o.conditions} decisionStatus={o.decisionStatus} locale={locale} />
+              ) : null}
             </li>
           ))}
         </ul>

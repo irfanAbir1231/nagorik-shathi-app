@@ -98,6 +98,35 @@ const schema = z.object({
    */
   DEEPSEEK_EXTRA_BODY: optionalStr,
 
+  /**
+   * Jev (TypeSafe System One) — the semantic decision model. Server-only: it
+   * is read here and nowhere else, and this module is never imported by a
+   * client component. Absent, the semantic layer falls back to the pattern
+   * extractor with every rights-relevant fact held for citizen confirmation.
+   */
+  JEV_API_KEY: optionalStr,
+  /**
+   * Pinned, not `jev-latest`: acceptance thresholds are calibrated against a
+   * specific model version, and an alias can move underneath them. Change this
+   * only together with a new calibration run (see evaluation/jev/README.md).
+   */
+  JEV_MODEL: nonEmpty.default('jev-1.13.0'),
+  JEV_BASE_URL: nonEmpty.default('https://api.typesafe.ai'),
+  JEV_TIMEOUT_MS: int(8_000),
+  /**
+   * Which engine interprets citizen language. `auto` picks Jev when its key is
+   * present, else the LLM civic frame when a generative provider is live, else
+   * the pattern extractor. An explicit value is honoured even when its key is
+   * missing, so a misconfiguration surfaces instead of silently switching.
+   */
+  SEMANTIC_ENGINE: z.enum(['auto', 'jev', 'llm', 'pattern']).default('auto'),
+  /**
+   * Jev re-ranking of retrieved programmes. OFF by default: it raised R@1 in
+   * the retrieval ablation, but its effect inside the eligibility-banded
+   * production ranker has not been measured end to end.
+   */
+  JEV_RERANK: bool(false),
+
   OTP_DEV_ECHO: bool(true),
   /**
    * `ssl_wireless | bulksmsbd | twilio` dispatch a real message and need
@@ -328,6 +357,9 @@ export function aiConfigProblems(): string[] {
       'DEEPSEEK_REASONING_EFFORT is set but thinking is disabled, so it has no effect and is not sent.',
     );
   }
+  if (env.SEMANTIC_ENGINE === 'jev' && !env.JEV_API_KEY) {
+    problems.push('SEMANTIC_ENGINE is "jev" but JEV_API_KEY is not set; every Jev call will fail and fall back.');
+  }
   if (env.DEEPSEEK_EXTRA_BODY) {
     try {
       const parsed: unknown = JSON.parse(env.DEEPSEEK_EXTRA_BODY);
@@ -339,6 +371,15 @@ export function aiConfigProblems(): string[] {
     }
   }
   return problems;
+}
+
+/** Which engine interprets citizen language into structured evidence. */
+export type SemanticEngine = 'jev' | 'llm' | 'pattern';
+
+export function resolveSemanticEngine(): SemanticEngine {
+  if (env.SEMANTIC_ENGINE !== 'auto') return env.SEMANTIC_ENGINE;
+  if (env.JEV_API_KEY) return 'jev';
+  return resolveAiMode() === 'simulated' ? 'pattern' : 'llm';
 }
 
 /** True when real vector embeddings are available; otherwise BM25 is used. */

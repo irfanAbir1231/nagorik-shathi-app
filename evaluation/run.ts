@@ -224,7 +224,7 @@ async function safetyEvaluation() {
     async generate(_input: GenerateInput) { throw new Error('simulated outage'); },
   };
   const frame = await inferCivicFrame({ message: 'I am 70 years old and need support', provider: failingProvider });
-  checks.push({ category: 'provider_failure', passed: !frame.modelCall.accepted && frame.confirmedFacts.some((fact) => fact.field === 'age'), evidence: 'Provider outage preserved deterministic extraction and exposed degraded state.' });
+  checks.push({ category: 'provider_failure', passed: !frame.modelCall.accepted && frame.evidence.some((fact) => fact.field === 'age' && fact.status === 'needs_confirmation'), evidence: 'Provider outage preserved deterministic extraction (held for confirmation, never trusted) and exposed degraded state.' });
   checks.push({ category: 'unsupported_citation', passed: SEED_OPPORTUNITIES.every((item) => !item.sourceUrl || /^https?:\/\//.test(item.sourceUrl)), evidence: 'Every non-empty source reference uses an explicit HTTP(S) URL; generation is not evaluated offline.' });
   const groundingPlan: ResponsePlan = {
     kind: 'recommendations', locale: 'en', intents: ['find_opportunities'], lifeEvents: [],
@@ -234,6 +234,8 @@ async function safetyEvaluation() {
       category: 'social_protection', outcome: 'unknown', benefitAmount: 500,
       benefitPeriod: 'monthly', deadline: null, relevance: 1, confidence: 65,
       isUnverified: true, metReasons: [], failedReasons: [], unknownReasons: [],
+      verificationStatus: 'unverified_sample', softFailedReasons: [], conditions: [],
+      decisionStatus: 'needs_information', reviewReasons: [], evidenceStrength: null,
       nextStep: null, sourceUrl: null,
     }], citations: [], overallConfidence: 65, ungrounded: false,
   };

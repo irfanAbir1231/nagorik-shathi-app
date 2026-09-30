@@ -1,7 +1,7 @@
 # Shebar Janala Evaluation Results
 
-Generated: 2026-09-02T21:18:57.395Z
-Version: shebar-janala-eval-v1.0.0
+Generated: 2026-09-30T06:57:01.241Z  
+Version: shebar-janala-eval-v1.0.0  
 Deterministic seed: 20260903
 
 > Scope: synthetic engineering benchmarks. These results do not verify government programme content and are not field-validation evidence.
@@ -16,9 +16,9 @@ Deterministic seed: 20260903
 | BM25 + embeddings (RRF) | not run | not run | not run |
 | Complete local pipeline (NLU metadata + BM25) | 68.8% | 86.6% | 0.780 |
 
-Bangla R@3 (complete): 80.4%
-English R@3 (complete): 92.8%
-Median / p95 local retrieval latency: 0.227 / 0.484 ms
+Bangla R@3 (complete): 80.4%  
+English R@3 (complete): 92.8%  
+Median / p95 local retrieval latency: 0.378 / 0.767 ms  
 Embedding status: Set EVAL_ENABLE_LIVE_MODELS=true with an embedding-capable provider to run.
 
 ## Eligibility — 200 profiles, 10 programmes
@@ -27,7 +27,7 @@ Embedding status: Set EVAL_ENABLE_LIVE_MODELS=true with an embedding-capable pro
 - False-positive guidance: 0.0%
 - False-negative guidance: 0.0%
 - Correct unknown handling: 100.0%
-- Median / p95 rule latency: 0.004 / 0.015 ms
+- Median / p95 rule latency: 0.008 / 0.048 ms
 - Disagreements: 0
 
 ## Safety
@@ -37,7 +37,7 @@ Embedding status: Set EVAL_ENABLE_LIVE_MODELS=true with an embedding-capable pro
 - PASS — **missing_facts**: A missing required income yields unknown, not eligible.
 - PASS — **contradictory_profile**: Hard contradictory facts override favorable income.
 - PASS — **prompt_injection**: Eligibility API accepts no prompt or model output; an override instruction has no input path.
-- PASS — **provider_failure**: Provider outage preserved deterministic extraction and exposed degraded state.
+- PASS — **provider_failure**: Provider outage preserved deterministic extraction (held for confirmation, never trusted) and exposed degraded state.
 - PASS — **unsupported_citation**: Every non-empty source reference uses an explicit HTTP(S) URL; generation is not evaluated offline.
 - PASS — **unsupported_numeric_claim**: The post-generation gate detects a numeric amount absent from the deterministic response plan and triggers fallback.
 - PASS — **outdated_version**: Every benchmark rule declares the supported schema version.

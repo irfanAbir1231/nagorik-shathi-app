@@ -164,15 +164,29 @@ export interface IntentResult {
   readonly confidence: number;
 }
 
+/**
+ * Whole-word matching for the greeting / out-of-scope gates. Substring matching
+ * made "children", "this", and "Chittagong" greetings (they contain "hi") —
+ * which skipped retrieval entirely — and made "বাগান" (garden) off-topic
+ * because it contains "গান" (song). A Bangla pattern may match the START of a
+ * word, so inflections ("গানের", "খেলায়") still count.
+ */
+function hasWord(words: readonly string[], haystack: string, pattern: string): boolean {
+  const p = normalise(pattern);
+  if (p.includes(' ')) return ` ${haystack} `.includes(` ${p} `) || words.join(' ').includes(p);
+  const bangla = /[ঀ-৿]/.test(p);
+  return words.some((w) => w === p || (bangla && w.startsWith(p)));
+}
+
 export function classifyIntents(text: string): IntentResult {
   const haystack = normalise(text);
-  const words = haystack.split(' ').filter(Boolean);
+  const words = haystack.split(/[^a-z0-9ঀ-৿']+/).filter(Boolean);
 
   const isGreeting =
-    words.length <= 5 && GREETING_PATTERNS.some((p) => haystack.includes(normalise(p)));
+    words.length <= 5 && GREETING_PATTERNS.some((p) => hasWord(words, haystack, p));
 
   const isOutOfScope =
-    !isGreeting && OUT_OF_SCOPE_PATTERNS.some((p) => haystack.includes(normalise(p)));
+    !isGreeting && OUT_OF_SCOPE_PATTERNS.some((p) => hasWord(words, haystack, p));
 
   const matched: Intent[] = [];
   for (const intent of INTENTS) {
@@ -283,17 +297,24 @@ export function extractEntities(text: string): ExtractedEntities {
   }
 
   /* ---- gender ---- */
-  const widowhoodPhrase = /বিধবা|widow|স্বামী.{0,28}(?:মারা|মৃত্যু)|husband.{0,32}(?:died|passed away)/;
-  if (/\b(?:মহিলা|নারী|মেয়ে|woman|female|আমি একজন মহিলা|স্ত্রী)\b/.test(haystack) || widowhoodPhrase.test(haystack)) {
-    profile.gender = 'female';
-    fields.push('gender');
-  } else if (/\b(?:পুরুষ|ছেলে|man|male)\b/.test(haystack)) {
+  // `widow(?!er)`: "widower" is a man, and used to be recorded as a woman.
+  const widowhoodPhrase = /বিধবা|widow(?!er)|স্বামী.{0,28}(?:মারা|মৃত্যু)|husband.{0,32}(?:died|passed away)/;
+  // `\b` is ASCII-only in JavaScript, so the previous `\bমহিলা\b` never matched
+  // anything; Unicode-aware boundaries make the Bangla alternatives live. The
+  // words for wife/daughter/son ("স্ত্রী", "মেয়ে", "ছেলে") are dropped: "আমার স্ত্রী"
+  // is a man speaking about his wife, not a woman describing herself.
+  const femaleWords = /(?<![\p{L}\p{M}])(?:মহিলা|নারী|woman|female)(?![\p{L}\p{M}])/u;
+  const maleWords = /(?<![\p{L}\p{M}])(?:পুরুষ|man|male|widower|বিপত্নীক)(?![\p{L}\p{M}])/u;
+  if (maleWords.test(haystack)) {
     profile.gender = 'male';
+    fields.push('gender');
+  } else if (femaleWords.test(haystack) || widowhoodPhrase.test(haystack)) {
+    profile.gender = 'female';
     fields.push('gender');
   }
 
   /* ---- marital status ---- */
-  if (widowhoodPhrase.test(haystack)) {
+  if (widowhoodPhrase.test(haystack) || /widower|বিপত্নীক/.test(haystack)) {
     profile.maritalStatus = 'widowed';
     fields.push('maritalStatus');
   } else if (/তালাক|ডিভোর্স|divorce/.test(haystack)) {

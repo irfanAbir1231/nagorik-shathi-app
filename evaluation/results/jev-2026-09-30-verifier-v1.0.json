@@ -1,0 +1,5251 @@
+{
+  "version": "jev-ablation@1.0.0",
+  "meta": {
+    "gitCommit": "064e8fd977328494e92765a035a0800349b7744d",
+    "gitBranch": "feat/jev-semantic-evidence",
+    "gitDirty": true,
+    "node": "v24.18.0",
+    "generatedAt": "2026-09-30T06:44:16.364Z"
+  },
+  "configuration": {
+    "jevModelRequested": "jev-1.13.0",
+    "llm": {
+      "engine": "deepseek",
+      "model": "deepseek-v4-flash"
+    },
+    "questionSetVersion": "turn-understanding@1.0.0",
+    "policyVersion": "evidence-policy@1.1.0",
+    "verifierVersion": "explanation-verifier@1.0.0",
+    "civicFramePromptVersion": "1.0.0",
+    "systemPromptVersion": "1.4.0",
+    "thresholds": {
+      "fields": {
+        "maritalStatus": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "gender": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "occupation": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "education": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "hasDisability": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "isPregnant": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "isStudent": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "hasBusiness": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "monthlyIncome": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "age": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "householdSize": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "dependents": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "landOwnershipDecimals": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "cgpa": {
+          "accept": 0.9,
+          "confirm": 0.5
+        },
+        "district": {
+          "accept": 0.9,
+          "confirm": 0.5
+        }
+      },
+      "source": {
+        "source": "provisional",
+        "note": "Vendor-guidance defaults; replace with `npm run eval:jev -- --calibrate` output."
+      },
+      "routing": {
+        "messageKind": 0.9,
+        "primarySituation": 0.7,
+        "injection": 0.5
+      },
+      "targetPrecision": {
+        "grants": 0.97,
+        "routes": 0.85,
+        "safety": 0.5
+      }
+    },
+    "knowledgeBaseHash": "236215be7ca02179",
+    "datasets": {
+      "semantic": {
+        "cases": 109,
+        "hash": "20b1f75feaa475cb"
+      },
+      "verifier": {
+        "cases": 25,
+        "hash": "11ef050edc7ac0ca"
+      }
+    }
+  },
+  "semantic": {
+    "extraction": {
+      "pattern_legacy": {
+        "cases": 109,
+        "overall": {
+          "tp": 96,
+          "wrongValue": 13,
+          "falseAssertion": 30,
+          "missed": 51,
+          "goldKnown": 160,
+          "goldUnknown": 1462,
+          "heldCorrect": 0,
+          "heldWrong": 0,
+          "asserted": 139,
+          "precision": 0.6906474820143885,
+          "recall": 0.6,
+          "f1": 0.6421404682274248,
+          "falseAssertionRate": 0.02051983584131327,
+          "wrongValueRate": 0.08125
+        },
+        "byLanguage": {
+          "en": {
+            "tp": 37,
+            "wrongValue": 5,
+            "falseAssertion": 18,
+            "missed": 21,
+            "goldKnown": 63,
+            "goldUnknown": 664,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 60,
+            "precision": 0.6166666666666667,
+            "recall": 0.5873015873015873,
+            "f1": 0.6016260162601625,
+            "falseAssertionRate": 0.02710843373493976,
+            "wrongValueRate": 0.07936507936507936
+          },
+          "bn": {
+            "tp": 50,
+            "wrongValue": 6,
+            "falseAssertion": 9,
+            "missed": 15,
+            "goldKnown": 71,
+            "goldUnknown": 614,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 65,
+            "precision": 0.7692307692307693,
+            "recall": 0.704225352112676,
+            "f1": 0.7352941176470589,
+            "falseAssertionRate": 0.014657980456026058,
+            "wrongValueRate": 0.08450704225352113
+          },
+          "banglish": {
+            "tp": 8,
+            "wrongValue": 1,
+            "falseAssertion": 3,
+            "missed": 12,
+            "goldKnown": 21,
+            "goldUnknown": 159,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 12,
+            "precision": 0.6666666666666666,
+            "recall": 0.38095238095238093,
+            "f1": 0.4848484848484849,
+            "falseAssertionRate": 0.018867924528301886,
+            "wrongValueRate": 0.047619047619047616
+          },
+          "mixed": {
+            "tp": 1,
+            "wrongValue": 1,
+            "falseAssertion": 0,
+            "missed": 3,
+            "goldKnown": 5,
+            "goldUnknown": 25,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 0.5,
+            "recall": 0.2,
+            "f1": 0.28571428571428575,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0.2
+          }
+        },
+        "byCategory": {
+          "plain": {
+            "tp": 39,
+            "wrongValue": 6,
+            "falseAssertion": 3,
+            "missed": 27,
+            "goldKnown": 72,
+            "goldUnknown": 482,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 48,
+            "precision": 0.8125,
+            "recall": 0.5416666666666666,
+            "f1": 0.65,
+            "falseAssertionRate": 0.006224066390041493,
+            "wrongValueRate": 0.08333333333333333
+          },
+          "negation": {
+            "tp": 1,
+            "wrongValue": 1,
+            "falseAssertion": 1,
+            "missed": 4,
+            "goldKnown": 6,
+            "goldUnknown": 54,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 0.3333333333333333,
+            "recall": 0.16666666666666666,
+            "f1": 0.2222222222222222,
+            "falseAssertionRate": 0.018518518518518517,
+            "wrongValueRate": 0.16666666666666666
+          },
+          "third_party": {
+            "tp": 0,
+            "wrongValue": 2,
+            "falseAssertion": 20,
+            "missed": 2,
+            "goldKnown": 4,
+            "goldUnknown": 281,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 22,
+            "precision": 0,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0.0711743772241993,
+            "wrongValueRate": 0.5
+          },
+          "hedge": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 26,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "multi_fact": {
+            "tp": 34,
+            "wrongValue": 1,
+            "falseAssertion": 1,
+            "missed": 8,
+            "goldKnown": 43,
+            "goldUnknown": 136,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 36,
+            "precision": 0.9444444444444444,
+            "recall": 0.7906976744186046,
+            "f1": 0.8607594936708861,
+            "falseAssertionRate": 0.007352941176470588,
+            "wrongValueRate": 0.023255813953488372
+          },
+          "ambiguous": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 1,
+            "goldUnknown": 13,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "numeric": {
+            "tp": 17,
+            "wrongValue": 2,
+            "falseAssertion": 2,
+            "missed": 9,
+            "goldKnown": 28,
+            "goldUnknown": 224,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 21,
+            "precision": 0.8095238095238095,
+            "recall": 0.6071428571428571,
+            "f1": 0.6938775510204083,
+            "falseAssertionRate": 0.008928571428571428,
+            "wrongValueRate": 0.07142857142857142
+          },
+          "control": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 3,
+            "missed": 0,
+            "goldKnown": 1,
+            "goldUnknown": 88,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 0.25,
+            "recall": 1,
+            "f1": 0.4,
+            "falseAssertionRate": 0.03409090909090909,
+            "wrongValueRate": 0
+          },
+          "injection": {
+            "tp": 2,
+            "wrongValue": 1,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 83,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 0.6666666666666666,
+            "recall": 0.6666666666666666,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0.3333333333333333
+          },
+          "greeting": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 45,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          },
+          "off_topic": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 30,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          }
+        },
+        "byField": {
+          "maritalStatus": {
+            "tp": 15,
+            "wrongValue": 1,
+            "falseAssertion": 4,
+            "missed": 12,
+            "goldKnown": 28,
+            "goldUnknown": 77,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 20,
+            "precision": 0.75,
+            "recall": 0.5357142857142857,
+            "f1": 0.6250000000000001,
+            "falseAssertionRate": 0.05194805194805195,
+            "wrongValueRate": 0.03571428571428571
+          },
+          "gender": {
+            "tp": 21,
+            "wrongValue": 0,
+            "falseAssertion": 6,
+            "missed": 12,
+            "goldKnown": 33,
+            "goldUnknown": 75,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 27,
+            "precision": 0.7777777777777778,
+            "recall": 0.6363636363636364,
+            "f1": 0.7000000000000001,
+            "falseAssertionRate": 0.08,
+            "wrongValueRate": 0
+          },
+          "occupation": {
+            "tp": 10,
+            "wrongValue": 3,
+            "falseAssertion": 4,
+            "missed": 5,
+            "goldKnown": 18,
+            "goldUnknown": 90,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 17,
+            "precision": 0.5882352941176471,
+            "recall": 0.5555555555555556,
+            "f1": 0.5714285714285715,
+            "falseAssertionRate": 0.044444444444444446,
+            "wrongValueRate": 0.16666666666666666
+          },
+          "education": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 0.5,
+            "recall": 1,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0.018691588785046728,
+            "wrongValueRate": 0
+          },
+          "hasDisability": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 3,
+            "missed": 1,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 6,
+            "precision": 0.5,
+            "recall": 0.75,
+            "f1": 0.6,
+            "falseAssertionRate": 0.02857142857142857,
+            "wrongValueRate": 0
+          },
+          "isPregnant": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 5,
+            "precision": 0.6,
+            "recall": 1,
+            "f1": 0.7499999999999999,
+            "falseAssertionRate": 0.018867924528301886,
+            "wrongValueRate": 0
+          },
+          "isStudent": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "hasBusiness": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 1,
+            "precision": 1,
+            "recall": 0.5,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "monthlyIncome": {
+            "tp": 5,
+            "wrongValue": 6,
+            "falseAssertion": 2,
+            "missed": 5,
+            "goldKnown": 16,
+            "goldUnknown": 87,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 13,
+            "precision": 0.38461538461538464,
+            "recall": 0.3125,
+            "f1": 0.3448275862068966,
+            "falseAssertionRate": 0.022988505747126436,
+            "wrongValueRate": 0.375
+          },
+          "age": {
+            "tp": 22,
+            "wrongValue": 1,
+            "falseAssertion": 6,
+            "missed": 0,
+            "goldKnown": 23,
+            "goldUnknown": 85,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 29,
+            "precision": 0.7586206896551724,
+            "recall": 0.9565217391304348,
+            "f1": 0.8461538461538461,
+            "falseAssertionRate": 0.07058823529411765,
+            "wrongValueRate": 0.043478260869565216
+          },
+          "householdSize": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 2,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 0.5,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "dependents": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 13,
+            "goldKnown": 13,
+            "goldUnknown": 96,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "landOwnershipDecimals": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "cgpa": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "district": {
+            "tp": 5,
+            "wrongValue": 2,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 7,
+            "goldUnknown": 102,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 8,
+            "precision": 0.625,
+            "recall": 0.7142857142857143,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0.00980392156862745,
+            "wrongValueRate": 0.2857142857142857
+          }
+        }
+      },
+      "pattern_confirm": {
+        "cases": 109,
+        "overall": {
+          "tp": 0,
+          "wrongValue": 0,
+          "falseAssertion": 0,
+          "missed": 160,
+          "goldKnown": 160,
+          "goldUnknown": 1462,
+          "heldCorrect": 96,
+          "heldWrong": 43,
+          "asserted": 0,
+          "precision": null,
+          "recall": 0,
+          "f1": null,
+          "falseAssertionRate": 0,
+          "wrongValueRate": 0
+        },
+        "byLanguage": {
+          "en": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 63,
+            "goldKnown": 63,
+            "goldUnknown": 664,
+            "heldCorrect": 37,
+            "heldWrong": 23,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "bn": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 71,
+            "goldKnown": 71,
+            "goldUnknown": 614,
+            "heldCorrect": 50,
+            "heldWrong": 15,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "banglish": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 21,
+            "goldKnown": 21,
+            "goldUnknown": 159,
+            "heldCorrect": 8,
+            "heldWrong": 4,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "mixed": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 5,
+            "goldKnown": 5,
+            "goldUnknown": 25,
+            "heldCorrect": 1,
+            "heldWrong": 1,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          }
+        },
+        "byCategory": {
+          "plain": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 72,
+            "goldKnown": 72,
+            "goldUnknown": 482,
+            "heldCorrect": 39,
+            "heldWrong": 9,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "negation": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 6,
+            "goldKnown": 6,
+            "goldUnknown": 54,
+            "heldCorrect": 1,
+            "heldWrong": 2,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "third_party": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 4,
+            "goldKnown": 4,
+            "goldUnknown": 281,
+            "heldCorrect": 0,
+            "heldWrong": 22,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "hedge": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 2,
+            "goldKnown": 2,
+            "goldUnknown": 26,
+            "heldCorrect": 2,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "multi_fact": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 43,
+            "goldKnown": 43,
+            "goldUnknown": 136,
+            "heldCorrect": 34,
+            "heldWrong": 2,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "ambiguous": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 1,
+            "goldUnknown": 13,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "numeric": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 28,
+            "goldKnown": 28,
+            "goldUnknown": 224,
+            "heldCorrect": 17,
+            "heldWrong": 4,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "control": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 1,
+            "goldUnknown": 88,
+            "heldCorrect": 1,
+            "heldWrong": 3,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "injection": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 3,
+            "goldKnown": 3,
+            "goldUnknown": 83,
+            "heldCorrect": 2,
+            "heldWrong": 1,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "greeting": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 45,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          },
+          "off_topic": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 30,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          }
+        },
+        "byField": {
+          "maritalStatus": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 28,
+            "goldKnown": 28,
+            "goldUnknown": 77,
+            "heldCorrect": 15,
+            "heldWrong": 5,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "gender": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 33,
+            "goldKnown": 33,
+            "goldUnknown": 75,
+            "heldCorrect": 21,
+            "heldWrong": 6,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "occupation": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 18,
+            "goldKnown": 18,
+            "goldUnknown": 90,
+            "heldCorrect": 10,
+            "heldWrong": 7,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "education": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 2,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 2,
+            "heldWrong": 2,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "hasDisability": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 4,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 3,
+            "heldWrong": 3,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "isPregnant": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 3,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 3,
+            "heldWrong": 2,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "isStudent": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 2,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 2,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "hasBusiness": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 2,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 1,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "monthlyIncome": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 16,
+            "goldKnown": 16,
+            "goldUnknown": 87,
+            "heldCorrect": 5,
+            "heldWrong": 8,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "age": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 23,
+            "goldKnown": 23,
+            "goldUnknown": 85,
+            "heldCorrect": 22,
+            "heldWrong": 7,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "householdSize": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 4,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 2,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "dependents": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 13,
+            "goldKnown": 13,
+            "goldUnknown": 96,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "landOwnershipDecimals": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 3,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 3,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "cgpa": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 2,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 2,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "district": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 7,
+            "goldKnown": 7,
+            "goldUnknown": 102,
+            "heldCorrect": 5,
+            "heldWrong": 3,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          }
+        }
+      },
+      "llm_all": {
+        "cases": 109,
+        "overall": {
+          "tp": 104,
+          "wrongValue": 11,
+          "falseAssertion": 23,
+          "missed": 45,
+          "goldKnown": 160,
+          "goldUnknown": 1462,
+          "heldCorrect": 0,
+          "heldWrong": 0,
+          "asserted": 138,
+          "precision": 0.7536231884057971,
+          "recall": 0.65,
+          "f1": 0.697986577181208,
+          "falseAssertionRate": 0.01573187414500684,
+          "wrongValueRate": 0.06875
+        },
+        "byLanguage": {
+          "en": {
+            "tp": 42,
+            "wrongValue": 3,
+            "falseAssertion": 10,
+            "missed": 18,
+            "goldKnown": 63,
+            "goldUnknown": 664,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 55,
+            "precision": 0.7636363636363637,
+            "recall": 0.6666666666666666,
+            "f1": 0.711864406779661,
+            "falseAssertionRate": 0.015060240963855422,
+            "wrongValueRate": 0.047619047619047616
+          },
+          "bn": {
+            "tp": 45,
+            "wrongValue": 8,
+            "falseAssertion": 9,
+            "missed": 18,
+            "goldKnown": 71,
+            "goldUnknown": 614,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 62,
+            "precision": 0.7258064516129032,
+            "recall": 0.6338028169014085,
+            "f1": 0.6766917293233083,
+            "falseAssertionRate": 0.014657980456026058,
+            "wrongValueRate": 0.11267605633802817
+          },
+          "banglish": {
+            "tp": 13,
+            "wrongValue": 0,
+            "falseAssertion": 4,
+            "missed": 8,
+            "goldKnown": 21,
+            "goldUnknown": 159,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 17,
+            "precision": 0.7647058823529411,
+            "recall": 0.6190476190476191,
+            "f1": 0.6842105263157895,
+            "falseAssertionRate": 0.025157232704402517,
+            "wrongValueRate": 0
+          },
+          "mixed": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 5,
+            "goldUnknown": 25,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 1,
+            "recall": 0.8,
+            "f1": 0.888888888888889,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          }
+        },
+        "byCategory": {
+          "plain": {
+            "tp": 42,
+            "wrongValue": 3,
+            "falseAssertion": 5,
+            "missed": 27,
+            "goldKnown": 72,
+            "goldUnknown": 482,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 50,
+            "precision": 0.84,
+            "recall": 0.5833333333333334,
+            "f1": 0.6885245901639344,
+            "falseAssertionRate": 0.01037344398340249,
+            "wrongValueRate": 0.041666666666666664
+          },
+          "negation": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 5,
+            "goldKnown": 6,
+            "goldUnknown": 54,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 0.5,
+            "recall": 0.16666666666666666,
+            "f1": 0.25,
+            "falseAssertionRate": 0.018518518518518517,
+            "wrongValueRate": 0
+          },
+          "third_party": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 14,
+            "missed": 2,
+            "goldKnown": 4,
+            "goldUnknown": 281,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 16,
+            "precision": 0.125,
+            "recall": 0.5,
+            "f1": 0.2,
+            "falseAssertionRate": 0.0498220640569395,
+            "wrongValueRate": 0
+          },
+          "hedge": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 2,
+            "goldKnown": 2,
+            "goldUnknown": 26,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "multi_fact": {
+            "tp": 34,
+            "wrongValue": 4,
+            "falseAssertion": 0,
+            "missed": 5,
+            "goldKnown": 43,
+            "goldUnknown": 136,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 38,
+            "precision": 0.8947368421052632,
+            "recall": 0.7906976744186046,
+            "f1": 0.8395061728395061,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0.09302325581395349
+          },
+          "ambiguous": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 1,
+            "goldUnknown": 13,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "numeric": {
+            "tp": 22,
+            "wrongValue": 4,
+            "falseAssertion": 2,
+            "missed": 2,
+            "goldKnown": 28,
+            "goldUnknown": 224,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 28,
+            "precision": 0.7857142857142857,
+            "recall": 0.7857142857142857,
+            "f1": 0.7857142857142857,
+            "falseAssertionRate": 0.008928571428571428,
+            "wrongValueRate": 0.14285714285714285
+          },
+          "control": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 1,
+            "goldUnknown": 88,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 0.5,
+            "recall": 1,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0.011363636363636364,
+            "wrongValueRate": 0
+          },
+          "injection": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 3,
+            "goldUnknown": 83,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 0.6666666666666666,
+            "f1": 0.8,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "greeting": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 45,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          },
+          "off_topic": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 30,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          }
+        },
+        "byField": {
+          "maritalStatus": {
+            "tp": 20,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 8,
+            "goldKnown": 28,
+            "goldUnknown": 77,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 22,
+            "precision": 0.9090909090909091,
+            "recall": 0.7142857142857143,
+            "f1": 0.8,
+            "falseAssertionRate": 0.025974025974025976,
+            "wrongValueRate": 0
+          },
+          "gender": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 30,
+            "goldKnown": 33,
+            "goldUnknown": 75,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 0.75,
+            "recall": 0.09090909090909091,
+            "f1": 0.16216216216216214,
+            "falseAssertionRate": 0.013333333333333334,
+            "wrongValueRate": 0
+          },
+          "occupation": {
+            "tp": 4,
+            "wrongValue": 9,
+            "falseAssertion": 5,
+            "missed": 5,
+            "goldKnown": 18,
+            "goldUnknown": 90,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 18,
+            "precision": 0.2222222222222222,
+            "recall": 0.2222222222222222,
+            "f1": 0.2222222222222222,
+            "falseAssertionRate": 0.05555555555555555,
+            "wrongValueRate": 0.5
+          },
+          "education": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 0.5,
+            "recall": 1,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0.018691588785046728,
+            "wrongValueRate": 0
+          },
+          "hasDisability": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 3,
+            "missed": 0,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 7,
+            "precision": 0.5714285714285714,
+            "recall": 1,
+            "f1": 0.7272727272727273,
+            "falseAssertionRate": 0.02857142857142857,
+            "wrongValueRate": 0
+          },
+          "isPregnant": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 0.75,
+            "recall": 1,
+            "f1": 0.8571428571428571,
+            "falseAssertionRate": 0.009433962264150943,
+            "wrongValueRate": 0
+          },
+          "isStudent": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 1,
+            "precision": 1,
+            "recall": 0.5,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "hasBusiness": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 0.6666666666666666,
+            "recall": 1,
+            "f1": 0.8,
+            "falseAssertionRate": 0.009345794392523364,
+            "wrongValueRate": 0
+          },
+          "monthlyIncome": {
+            "tp": 15,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 1,
+            "goldKnown": 16,
+            "goldUnknown": 87,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 17,
+            "precision": 0.8823529411764706,
+            "recall": 0.9375,
+            "f1": 0.9090909090909091,
+            "falseAssertionRate": 0.022988505747126436,
+            "wrongValueRate": 0
+          },
+          "age": {
+            "tp": 22,
+            "wrongValue": 1,
+            "falseAssertion": 3,
+            "missed": 0,
+            "goldKnown": 23,
+            "goldUnknown": 85,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 26,
+            "precision": 0.8461538461538461,
+            "recall": 0.9565217391304348,
+            "f1": 0.8979591836734695,
+            "falseAssertionRate": 0.03529411764705882,
+            "wrongValueRate": 0.043478260869565216
+          },
+          "householdSize": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 0,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 6,
+            "precision": 0.6666666666666666,
+            "recall": 1,
+            "f1": 0.8,
+            "falseAssertionRate": 0.01904761904761905,
+            "wrongValueRate": 0
+          },
+          "dependents": {
+            "tp": 13,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 13,
+            "goldUnknown": 96,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 14,
+            "precision": 0.9285714285714286,
+            "recall": 1,
+            "f1": 0.962962962962963,
+            "falseAssertionRate": 0.010416666666666666,
+            "wrongValueRate": 0
+          },
+          "landOwnershipDecimals": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "cgpa": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "district": {
+            "tp": 6,
+            "wrongValue": 1,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 7,
+            "goldUnknown": 102,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 7,
+            "precision": 0.8571428571428571,
+            "recall": 0.8571428571428571,
+            "f1": 0.8571428571428571,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0.14285714285714285
+          }
+        }
+      },
+      "llm_accept": {
+        "cases": 109,
+        "overall": {
+          "tp": 104,
+          "wrongValue": 11,
+          "falseAssertion": 20,
+          "missed": 45,
+          "goldKnown": 160,
+          "goldUnknown": 1462,
+          "heldCorrect": 0,
+          "heldWrong": 0,
+          "asserted": 135,
+          "precision": 0.7703703703703704,
+          "recall": 0.65,
+          "f1": 0.7050847457627117,
+          "falseAssertionRate": 0.013679890560875513,
+          "wrongValueRate": 0.06875
+        },
+        "byLanguage": {
+          "en": {
+            "tp": 42,
+            "wrongValue": 3,
+            "falseAssertion": 9,
+            "missed": 18,
+            "goldKnown": 63,
+            "goldUnknown": 664,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 54,
+            "precision": 0.7777777777777778,
+            "recall": 0.6666666666666666,
+            "f1": 0.717948717948718,
+            "falseAssertionRate": 0.01355421686746988,
+            "wrongValueRate": 0.047619047619047616
+          },
+          "bn": {
+            "tp": 45,
+            "wrongValue": 8,
+            "falseAssertion": 7,
+            "missed": 18,
+            "goldKnown": 71,
+            "goldUnknown": 614,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 60,
+            "precision": 0.75,
+            "recall": 0.6338028169014085,
+            "f1": 0.6870229007633588,
+            "falseAssertionRate": 0.011400651465798045,
+            "wrongValueRate": 0.11267605633802817
+          },
+          "banglish": {
+            "tp": 13,
+            "wrongValue": 0,
+            "falseAssertion": 4,
+            "missed": 8,
+            "goldKnown": 21,
+            "goldUnknown": 159,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 17,
+            "precision": 0.7647058823529411,
+            "recall": 0.6190476190476191,
+            "f1": 0.6842105263157895,
+            "falseAssertionRate": 0.025157232704402517,
+            "wrongValueRate": 0
+          },
+          "mixed": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 5,
+            "goldUnknown": 25,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 1,
+            "recall": 0.8,
+            "f1": 0.888888888888889,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          }
+        },
+        "byCategory": {
+          "plain": {
+            "tp": 42,
+            "wrongValue": 3,
+            "falseAssertion": 4,
+            "missed": 27,
+            "goldKnown": 72,
+            "goldUnknown": 482,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 49,
+            "precision": 0.8571428571428571,
+            "recall": 0.5833333333333334,
+            "f1": 0.6942148760330579,
+            "falseAssertionRate": 0.008298755186721992,
+            "wrongValueRate": 0.041666666666666664
+          },
+          "negation": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 5,
+            "goldKnown": 6,
+            "goldUnknown": 54,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 0.5,
+            "recall": 0.16666666666666666,
+            "f1": 0.25,
+            "falseAssertionRate": 0.018518518518518517,
+            "wrongValueRate": 0
+          },
+          "third_party": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 14,
+            "missed": 2,
+            "goldKnown": 4,
+            "goldUnknown": 281,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 16,
+            "precision": 0.125,
+            "recall": 0.5,
+            "f1": 0.2,
+            "falseAssertionRate": 0.0498220640569395,
+            "wrongValueRate": 0
+          },
+          "hedge": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 2,
+            "goldKnown": 2,
+            "goldUnknown": 26,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "multi_fact": {
+            "tp": 34,
+            "wrongValue": 4,
+            "falseAssertion": 0,
+            "missed": 5,
+            "goldKnown": 43,
+            "goldUnknown": 136,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 38,
+            "precision": 0.8947368421052632,
+            "recall": 0.7906976744186046,
+            "f1": 0.8395061728395061,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0.09302325581395349
+          },
+          "ambiguous": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 1,
+            "goldUnknown": 13,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "numeric": {
+            "tp": 22,
+            "wrongValue": 4,
+            "falseAssertion": 0,
+            "missed": 2,
+            "goldKnown": 28,
+            "goldUnknown": 224,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 26,
+            "precision": 0.8461538461538461,
+            "recall": 0.7857142857142857,
+            "f1": 0.8148148148148148,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0.14285714285714285
+          },
+          "control": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 1,
+            "goldUnknown": 88,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 0.5,
+            "recall": 1,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0.011363636363636364,
+            "wrongValueRate": 0
+          },
+          "injection": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 3,
+            "goldUnknown": 83,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 0.6666666666666666,
+            "f1": 0.8,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "greeting": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 45,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          },
+          "off_topic": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 30,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          }
+        },
+        "byField": {
+          "maritalStatus": {
+            "tp": 20,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 8,
+            "goldKnown": 28,
+            "goldUnknown": 77,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 22,
+            "precision": 0.9090909090909091,
+            "recall": 0.7142857142857143,
+            "f1": 0.8,
+            "falseAssertionRate": 0.025974025974025976,
+            "wrongValueRate": 0
+          },
+          "gender": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 30,
+            "goldKnown": 33,
+            "goldUnknown": 75,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 0.75,
+            "recall": 0.09090909090909091,
+            "f1": 0.16216216216216214,
+            "falseAssertionRate": 0.013333333333333334,
+            "wrongValueRate": 0
+          },
+          "occupation": {
+            "tp": 4,
+            "wrongValue": 9,
+            "falseAssertion": 4,
+            "missed": 5,
+            "goldKnown": 18,
+            "goldUnknown": 90,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 17,
+            "precision": 0.23529411764705882,
+            "recall": 0.2222222222222222,
+            "f1": 0.22857142857142856,
+            "falseAssertionRate": 0.044444444444444446,
+            "wrongValueRate": 0.5
+          },
+          "education": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 0.5,
+            "recall": 1,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0.018691588785046728,
+            "wrongValueRate": 0
+          },
+          "hasDisability": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 3,
+            "missed": 0,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 7,
+            "precision": 0.5714285714285714,
+            "recall": 1,
+            "f1": 0.7272727272727273,
+            "falseAssertionRate": 0.02857142857142857,
+            "wrongValueRate": 0
+          },
+          "isPregnant": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 0.75,
+            "recall": 1,
+            "f1": 0.8571428571428571,
+            "falseAssertionRate": 0.009433962264150943,
+            "wrongValueRate": 0
+          },
+          "isStudent": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 1,
+            "precision": 1,
+            "recall": 0.5,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "hasBusiness": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 0.6666666666666666,
+            "recall": 1,
+            "f1": 0.8,
+            "falseAssertionRate": 0.009345794392523364,
+            "wrongValueRate": 0
+          },
+          "monthlyIncome": {
+            "tp": 15,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 1,
+            "goldKnown": 16,
+            "goldUnknown": 87,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 17,
+            "precision": 0.8823529411764706,
+            "recall": 0.9375,
+            "f1": 0.9090909090909091,
+            "falseAssertionRate": 0.022988505747126436,
+            "wrongValueRate": 0
+          },
+          "age": {
+            "tp": 22,
+            "wrongValue": 1,
+            "falseAssertion": 3,
+            "missed": 0,
+            "goldKnown": 23,
+            "goldUnknown": 85,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 26,
+            "precision": 0.8461538461538461,
+            "recall": 0.9565217391304348,
+            "f1": 0.8979591836734695,
+            "falseAssertionRate": 0.03529411764705882,
+            "wrongValueRate": 0.043478260869565216
+          },
+          "householdSize": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "dependents": {
+            "tp": 13,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 13,
+            "goldUnknown": 96,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 14,
+            "precision": 0.9285714285714286,
+            "recall": 1,
+            "f1": 0.962962962962963,
+            "falseAssertionRate": 0.010416666666666666,
+            "wrongValueRate": 0
+          },
+          "landOwnershipDecimals": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "cgpa": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "district": {
+            "tp": 6,
+            "wrongValue": 1,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 7,
+            "goldUnknown": 102,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 7,
+            "precision": 0.8571428571428571,
+            "recall": 0.8571428571428571,
+            "f1": 0.8571428571428571,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0.14285714285714285
+          }
+        }
+      },
+      "jev": {
+        "cases": 109,
+        "overall": {
+          "tp": 147,
+          "wrongValue": 0,
+          "falseAssertion": 1,
+          "missed": 13,
+          "goldKnown": 160,
+          "goldUnknown": 1462,
+          "heldCorrect": 9,
+          "heldWrong": 15,
+          "asserted": 148,
+          "precision": 0.9932432432432432,
+          "recall": 0.91875,
+          "f1": 0.9545454545454545,
+          "falseAssertionRate": 0.0006839945280437756,
+          "wrongValueRate": 0
+        },
+        "byLanguage": {
+          "en": {
+            "tp": 62,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 1,
+            "goldKnown": 63,
+            "goldUnknown": 664,
+            "heldCorrect": 1,
+            "heldWrong": 3,
+            "asserted": 63,
+            "precision": 0.9841269841269841,
+            "recall": 0.9841269841269841,
+            "f1": 0.9841269841269841,
+            "falseAssertionRate": 0.0015060240963855422,
+            "wrongValueRate": 0
+          },
+          "bn": {
+            "tp": 68,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 3,
+            "goldKnown": 71,
+            "goldUnknown": 614,
+            "heldCorrect": 3,
+            "heldWrong": 3,
+            "asserted": 68,
+            "precision": 1,
+            "recall": 0.9577464788732394,
+            "f1": 0.9784172661870503,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "banglish": {
+            "tp": 12,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 9,
+            "goldKnown": 21,
+            "goldUnknown": 159,
+            "heldCorrect": 5,
+            "heldWrong": 8,
+            "asserted": 12,
+            "precision": 1,
+            "recall": 0.5714285714285714,
+            "f1": 0.7272727272727273,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "mixed": {
+            "tp": 5,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 5,
+            "goldUnknown": 25,
+            "heldCorrect": 0,
+            "heldWrong": 1,
+            "asserted": 5,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          }
+        },
+        "byCategory": {
+          "plain": {
+            "tp": 66,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 6,
+            "goldKnown": 72,
+            "goldUnknown": 482,
+            "heldCorrect": 5,
+            "heldWrong": 10,
+            "asserted": 66,
+            "precision": 1,
+            "recall": 0.9166666666666666,
+            "f1": 0.9565217391304348,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "negation": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 2,
+            "goldKnown": 6,
+            "goldUnknown": 54,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 5,
+            "precision": 0.8,
+            "recall": 0.6666666666666666,
+            "f1": 0.7272727272727272,
+            "falseAssertionRate": 0.018518518518518517,
+            "wrongValueRate": 0
+          },
+          "third_party": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 4,
+            "goldUnknown": 281,
+            "heldCorrect": 0,
+            "heldWrong": 2,
+            "asserted": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "hedge": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 26,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "multi_fact": {
+            "tp": 39,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 4,
+            "goldKnown": 43,
+            "goldUnknown": 136,
+            "heldCorrect": 3,
+            "heldWrong": 1,
+            "asserted": 39,
+            "precision": 1,
+            "recall": 0.9069767441860465,
+            "f1": 0.951219512195122,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "ambiguous": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 1,
+            "goldUnknown": 13,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 1,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "numeric": {
+            "tp": 27,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 28,
+            "goldUnknown": 224,
+            "heldCorrect": 1,
+            "heldWrong": 2,
+            "asserted": 27,
+            "precision": 1,
+            "recall": 0.9642857142857143,
+            "f1": 0.9818181818181818,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "control": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 1,
+            "goldUnknown": 88,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 1,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "injection": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 83,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "greeting": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 45,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          },
+          "off_topic": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 30,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          }
+        },
+        "byField": {
+          "maritalStatus": {
+            "tp": 25,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 3,
+            "goldKnown": 28,
+            "goldUnknown": 77,
+            "heldCorrect": 2,
+            "heldWrong": 1,
+            "asserted": 25,
+            "precision": 1,
+            "recall": 0.8928571428571429,
+            "f1": 0.9433962264150945,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "gender": {
+            "tp": 29,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 4,
+            "goldKnown": 33,
+            "goldUnknown": 75,
+            "heldCorrect": 1,
+            "heldWrong": 4,
+            "asserted": 29,
+            "precision": 1,
+            "recall": 0.8787878787878788,
+            "f1": 0.9354838709677419,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "occupation": {
+            "tp": 18,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 18,
+            "goldUnknown": 90,
+            "heldCorrect": 0,
+            "heldWrong": 6,
+            "asserted": 19,
+            "precision": 0.9473684210526315,
+            "recall": 1,
+            "f1": 0.972972972972973,
+            "falseAssertionRate": 0.011111111111111112,
+            "wrongValueRate": 0
+          },
+          "education": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 2,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "hasDisability": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 1,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 1,
+            "recall": 0.75,
+            "f1": 0.8571428571428571,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "isPregnant": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 0,
+            "heldWrong": 1,
+            "asserted": 3,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "isStudent": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "hasBusiness": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "monthlyIncome": {
+            "tp": 16,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 16,
+            "goldUnknown": 87,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 16,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "age": {
+            "tp": 19,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 4,
+            "goldKnown": 23,
+            "goldUnknown": 85,
+            "heldCorrect": 4,
+            "heldWrong": 0,
+            "asserted": 19,
+            "precision": 1,
+            "recall": 0.8260869565217391,
+            "f1": 0.9047619047619047,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "householdSize": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "dependents": {
+            "tp": 12,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 1,
+            "goldKnown": 13,
+            "goldUnknown": 96,
+            "heldCorrect": 1,
+            "heldWrong": 1,
+            "asserted": 12,
+            "precision": 1,
+            "recall": 0.9230769230769231,
+            "f1": 0.9600000000000001,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "landOwnershipDecimals": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "cgpa": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "district": {
+            "tp": 7,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 7,
+            "goldUnknown": 102,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 7,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          }
+        }
+      },
+      "jev_any": {
+        "cases": 109,
+        "overall": {
+          "tp": 156,
+          "wrongValue": 1,
+          "falseAssertion": 15,
+          "missed": 3,
+          "goldKnown": 160,
+          "goldUnknown": 1462,
+          "heldCorrect": 0,
+          "heldWrong": 0,
+          "asserted": 172,
+          "precision": 0.9069767441860465,
+          "recall": 0.975,
+          "f1": 0.9397590361445783,
+          "falseAssertionRate": 0.010259917920656635,
+          "wrongValueRate": 0.00625
+        },
+        "byLanguage": {
+          "en": {
+            "tp": 63,
+            "wrongValue": 0,
+            "falseAssertion": 4,
+            "missed": 0,
+            "goldKnown": 63,
+            "goldUnknown": 664,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 67,
+            "precision": 0.9402985074626866,
+            "recall": 1,
+            "f1": 0.9692307692307692,
+            "falseAssertionRate": 0.006024096385542169,
+            "wrongValueRate": 0
+          },
+          "bn": {
+            "tp": 71,
+            "wrongValue": 0,
+            "falseAssertion": 3,
+            "missed": 0,
+            "goldKnown": 71,
+            "goldUnknown": 614,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 74,
+            "precision": 0.9594594594594594,
+            "recall": 1,
+            "f1": 0.9793103448275862,
+            "falseAssertionRate": 0.004885993485342019,
+            "wrongValueRate": 0
+          },
+          "banglish": {
+            "tp": 17,
+            "wrongValue": 1,
+            "falseAssertion": 7,
+            "missed": 3,
+            "goldKnown": 21,
+            "goldUnknown": 159,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 25,
+            "precision": 0.68,
+            "recall": 0.8095238095238095,
+            "f1": 0.7391304347826089,
+            "falseAssertionRate": 0.0440251572327044,
+            "wrongValueRate": 0.047619047619047616
+          },
+          "mixed": {
+            "tp": 5,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 5,
+            "goldUnknown": 25,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 6,
+            "precision": 0.8333333333333334,
+            "recall": 1,
+            "f1": 0.9090909090909091,
+            "falseAssertionRate": 0.04,
+            "wrongValueRate": 0
+          }
+        },
+        "byCategory": {
+          "plain": {
+            "tp": 71,
+            "wrongValue": 0,
+            "falseAssertion": 10,
+            "missed": 1,
+            "goldKnown": 72,
+            "goldUnknown": 482,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 81,
+            "precision": 0.8765432098765432,
+            "recall": 0.9861111111111112,
+            "f1": 0.9281045751633987,
+            "falseAssertionRate": 0.02074688796680498,
+            "wrongValueRate": 0
+          },
+          "negation": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 2,
+            "goldKnown": 6,
+            "goldUnknown": 54,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 5,
+            "precision": 0.8,
+            "recall": 0.6666666666666666,
+            "f1": 0.7272727272727272,
+            "falseAssertionRate": 0.018518518518518517,
+            "wrongValueRate": 0
+          },
+          "third_party": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 0,
+            "goldKnown": 4,
+            "goldUnknown": 281,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 6,
+            "precision": 0.6666666666666666,
+            "recall": 1,
+            "f1": 0.8,
+            "falseAssertionRate": 0.0071174377224199285,
+            "wrongValueRate": 0
+          },
+          "hedge": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 26,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "multi_fact": {
+            "tp": 42,
+            "wrongValue": 1,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 43,
+            "goldUnknown": 136,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 43,
+            "precision": 0.9767441860465116,
+            "recall": 0.9767441860465116,
+            "f1": 0.9767441860465116,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0.023255813953488372
+          },
+          "ambiguous": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 1,
+            "goldUnknown": 13,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 1,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "numeric": {
+            "tp": 28,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 0,
+            "goldKnown": 28,
+            "goldUnknown": 224,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 30,
+            "precision": 0.9333333333333333,
+            "recall": 1,
+            "f1": 0.9655172413793104,
+            "falseAssertionRate": 0.008928571428571428,
+            "wrongValueRate": 0
+          },
+          "control": {
+            "tp": 1,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 1,
+            "goldUnknown": 88,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 1,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "injection": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 83,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "greeting": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 45,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          },
+          "off_topic": {
+            "tp": 0,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 0,
+            "goldUnknown": 30,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falseAssertionRate": 0,
+            "wrongValueRate": null
+          }
+        },
+        "byField": {
+          "maritalStatus": {
+            "tp": 27,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 1,
+            "goldKnown": 28,
+            "goldUnknown": 77,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 28,
+            "precision": 0.9642857142857143,
+            "recall": 0.9642857142857143,
+            "f1": 0.9642857142857143,
+            "falseAssertionRate": 0.012987012987012988,
+            "wrongValueRate": 0
+          },
+          "gender": {
+            "tp": 30,
+            "wrongValue": 1,
+            "falseAssertion": 3,
+            "missed": 2,
+            "goldKnown": 33,
+            "goldUnknown": 75,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 34,
+            "precision": 0.8823529411764706,
+            "recall": 0.9090909090909091,
+            "f1": 0.8955223880597014,
+            "falseAssertionRate": 0.04,
+            "wrongValueRate": 0.030303030303030304
+          },
+          "occupation": {
+            "tp": 18,
+            "wrongValue": 0,
+            "falseAssertion": 7,
+            "missed": 0,
+            "goldKnown": 18,
+            "goldUnknown": 90,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 25,
+            "precision": 0.72,
+            "recall": 1,
+            "f1": 0.8372093023255813,
+            "falseAssertionRate": 0.07777777777777778,
+            "wrongValueRate": 0
+          },
+          "education": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 2,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 0.5,
+            "recall": 1,
+            "f1": 0.6666666666666666,
+            "falseAssertionRate": 0.018691588785046728,
+            "wrongValueRate": 0
+          },
+          "hasDisability": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "isPregnant": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 0.75,
+            "recall": 1,
+            "f1": 0.8571428571428571,
+            "falseAssertionRate": 0.009433962264150943,
+            "wrongValueRate": 0
+          },
+          "isStudent": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "hasBusiness": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "monthlyIncome": {
+            "tp": 16,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 16,
+            "goldUnknown": 87,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 16,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "age": {
+            "tp": 23,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 23,
+            "goldUnknown": 85,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 23,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "householdSize": {
+            "tp": 4,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 4,
+            "goldUnknown": 105,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "dependents": {
+            "tp": 13,
+            "wrongValue": 0,
+            "falseAssertion": 1,
+            "missed": 0,
+            "goldKnown": 13,
+            "goldUnknown": 96,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 14,
+            "precision": 0.9285714285714286,
+            "recall": 1,
+            "f1": 0.962962962962963,
+            "falseAssertionRate": 0.010416666666666666,
+            "wrongValueRate": 0
+          },
+          "landOwnershipDecimals": {
+            "tp": 3,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 3,
+            "goldUnknown": 106,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 3,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "cgpa": {
+            "tp": 2,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 2,
+            "goldUnknown": 107,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          },
+          "district": {
+            "tp": 7,
+            "wrongValue": 0,
+            "falseAssertion": 0,
+            "missed": 0,
+            "goldKnown": 7,
+            "goldUnknown": 102,
+            "heldCorrect": 0,
+            "heldWrong": 0,
+            "asserted": 7,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falseAssertionRate": 0,
+            "wrongValueRate": 0
+          }
+        }
+      }
+    },
+    "calibration": {
+      "topLabel": {
+        "n": 951,
+        "brier": 0.016536487907465952,
+        "ece": 0.022250262881170407,
+        "accuracy": 0.9768664563617245,
+        "meanConfidence": 0.9675709779179884,
+        "bins": [
+          {
+            "lo": 0.3,
+            "hi": 0.4,
+            "n": 3,
+            "meanP": 0.37000000000000005,
+            "accuracy": 0.3333333333333333
+          },
+          {
+            "lo": 0.4,
+            "hi": 0.5,
+            "n": 4,
+            "meanP": 0.455,
+            "accuracy": 1
+          },
+          {
+            "lo": 0.5,
+            "hi": 0.6,
+            "n": 7,
+            "meanP": 0.5485714285714286,
+            "accuracy": 0.8571428571428571
+          },
+          {
+            "lo": 0.6,
+            "hi": 0.7,
+            "n": 13,
+            "meanP": 0.64,
+            "accuracy": 0.38461538461538464
+          },
+          {
+            "lo": 0.7,
+            "hi": 0.8,
+            "n": 16,
+            "meanP": 0.7437499999999998,
+            "accuracy": 0.625
+          },
+          {
+            "lo": 0.8,
+            "hi": 0.9,
+            "n": 23,
+            "meanP": 0.8621739130434783,
+            "accuracy": 0.8260869565217391
+          },
+          {
+            "lo": 0.9,
+            "hi": 1,
+            "n": 885,
+            "meanP": 0.98682485875707,
+            "accuracy": 0.9988700564971752
+          }
+        ]
+      },
+      "choice": {
+        "n": 438,
+        "brier": 0.0268970319634703,
+        "ece": 0.02244292237442911,
+        "accuracy": 0.9611872146118722,
+        "meanConfidence": 0.9616666666666672,
+        "bins": [
+          {
+            "lo": 0.3,
+            "hi": 0.4,
+            "n": 3,
+            "meanP": 0.37000000000000005,
+            "accuracy": 0.3333333333333333
+          },
+          {
+            "lo": 0.4,
+            "hi": 0.5,
+            "n": 4,
+            "meanP": 0.455,
+            "accuracy": 1
+          },
+          {
+            "lo": 0.5,
+            "hi": 0.6,
+            "n": 5,
+            "meanP": 0.546,
+            "accuracy": 0.8
+          },
+          {
+            "lo": 0.6,
+            "hi": 0.7,
+            "n": 11,
+            "meanP": 0.6436363636363636,
+            "accuracy": 0.45454545454545453
+          },
+          {
+            "lo": 0.7,
+            "hi": 0.8,
+            "n": 12,
+            "meanP": 0.7358333333333332,
+            "accuracy": 0.5
+          },
+          {
+            "lo": 0.8,
+            "hi": 0.9,
+            "n": 7,
+            "meanP": 0.8542857142857142,
+            "accuracy": 0.8571428571428571
+          },
+          {
+            "lo": 0.9,
+            "hi": 1,
+            "n": 396,
+            "meanP": 0.9940909090909092,
+            "accuracy": 0.9974747474747475
+          }
+        ]
+      },
+      "noul": {
+        "n": 436,
+        "brier": 0.0028403669724770507,
+        "ece": 0.02743119266054581,
+        "accuracy": 0.9977064220183486,
+        "meanConfidence": 0.9731651376146836,
+        "bins": [
+          {
+            "lo": 0.5,
+            "hi": 0.6,
+            "n": 1,
+            "meanP": 0.55,
+            "accuracy": 1
+          },
+          {
+            "lo": 0.6,
+            "hi": 0.7,
+            "n": 1,
+            "meanP": 0.63,
+            "accuracy": 0
+          },
+          {
+            "lo": 0.7,
+            "hi": 0.8,
+            "n": 4,
+            "meanP": 0.7675000000000001,
+            "accuracy": 1
+          },
+          {
+            "lo": 0.8,
+            "hi": 0.9,
+            "n": 10,
+            "meanP": 0.873,
+            "accuracy": 1
+          },
+          {
+            "lo": 0.9,
+            "hi": 1,
+            "n": 420,
+            "meanP": 0.9793333333333382,
+            "accuracy": 1
+          }
+        ]
+      },
+      "numberRole": {
+        "n": 77,
+        "brier": 0.03515454545454546,
+        "ece": 0.04948051948051982,
+        "accuracy": 0.948051948051948,
+        "meanConfidence": 0.9694805194805194,
+        "bins": [
+          {
+            "lo": 0.5,
+            "hi": 0.6,
+            "n": 1,
+            "meanP": 0.56,
+            "accuracy": 1
+          },
+          {
+            "lo": 0.6,
+            "hi": 0.7,
+            "n": 1,
+            "meanP": 0.61,
+            "accuracy": 0
+          },
+          {
+            "lo": 0.8,
+            "hi": 0.9,
+            "n": 6,
+            "meanP": 0.8533333333333332,
+            "accuracy": 0.5
+          },
+          {
+            "lo": 0.9,
+            "hi": 1,
+            "n": 69,
+            "meanP": 0.990724637681159,
+            "accuracy": 1
+          }
+        ]
+      },
+      "byLanguage": {
+        "en": {
+          "n": 422,
+          "brier": 0.010246682464454954,
+          "ece": 0.012725118483409525,
+          "accuracy": 0.9881516587677726,
+          "meanConfidence": 0.9837203791469221,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.5,
+              "n": 1,
+              "meanP": 0.47000000000000003,
+              "accuracy": 1
+            },
+            {
+              "lo": 0.5,
+              "hi": 0.6,
+              "n": 1,
+              "meanP": 0.54,
+              "accuracy": 1
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.7,
+              "n": 3,
+              "meanP": 0.6666666666666666,
+              "accuracy": 0.6666666666666666
+            },
+            {
+              "lo": 0.7,
+              "hi": 0.8,
+              "n": 2,
+              "meanP": 0.74,
+              "accuracy": 0.5
+            },
+            {
+              "lo": 0.8,
+              "hi": 0.9,
+              "n": 5,
+              "meanP": 0.8540000000000001,
+              "accuracy": 0.6
+            },
+            {
+              "lo": 0.9,
+              "hi": 1,
+              "n": 410,
+              "meanP": 0.9911463414634175,
+              "accuracy": 0.9975609756097561
+            }
+          ]
+        },
+        "bn": {
+          "n": 405,
+          "brier": 0.00902222222222223,
+          "ece": 0.02024691358024463,
+          "accuracy": 0.9876543209876543,
+          "meanConfidence": 0.9748641975308668,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.5,
+              "n": 1,
+              "meanP": 0.46,
+              "accuracy": 1
+            },
+            {
+              "lo": 0.5,
+              "hi": 0.6,
+              "n": 1,
+              "meanP": 0.5,
+              "accuracy": 1
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.7,
+              "n": 3,
+              "meanP": 0.61,
+              "accuracy": 0.3333333333333333
+            },
+            {
+              "lo": 0.7,
+              "hi": 0.8,
+              "n": 6,
+              "meanP": 0.75,
+              "accuracy": 0.6666666666666666
+            },
+            {
+              "lo": 0.8,
+              "hi": 0.9,
+              "n": 6,
+              "meanP": 0.8633333333333333,
+              "accuracy": 0.8333333333333334
+            },
+            {
+              "lo": 0.9,
+              "hi": 1,
+              "n": 388,
+              "meanP": 0.9854381443298993,
+              "accuracy": 1
+            }
+          ]
+        },
+        "banglish": {
+          "n": 106,
+          "brier": 0.06851509433962265,
+          "ece": 0.0732075471698112,
+          "accuracy": 0.8962264150943396,
+          "meanConfidence": 0.8767924528301889,
+          "bins": [
+            {
+              "lo": 0.3,
+              "hi": 0.4,
+              "n": 3,
+              "meanP": 0.37000000000000005,
+              "accuracy": 0.3333333333333333
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.5,
+              "n": 2,
+              "meanP": 0.445,
+              "accuracy": 1
+            },
+            {
+              "lo": 0.5,
+              "hi": 0.6,
+              "n": 5,
+              "meanP": 0.56,
+              "accuracy": 0.8
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.7,
+              "n": 6,
+              "meanP": 0.6366666666666666,
+              "accuracy": 0.3333333333333333
+            },
+            {
+              "lo": 0.7,
+              "hi": 0.8,
+              "n": 8,
+              "meanP": 0.7400000000000001,
+              "accuracy": 0.625
+            },
+            {
+              "lo": 0.8,
+              "hi": 0.9,
+              "n": 11,
+              "meanP": 0.8672727272727273,
+              "accuracy": 0.9090909090909091
+            },
+            {
+              "lo": 0.9,
+              "hi": 1,
+              "n": 71,
+              "meanP": 0.9698591549295776,
+              "accuracy": 1
+            }
+          ]
+        },
+        "mixed": {
+          "n": 18,
+          "brier": 0.026972222222222227,
+          "ece": 0.05944444444444426,
+          "accuracy": 0.9444444444444444,
+          "meanConfidence": 0.9594444444444447,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.7,
+              "n": 1,
+              "meanP": 0.67,
+              "accuracy": 0
+            },
+            {
+              "lo": 0.8,
+              "hi": 0.9,
+              "n": 1,
+              "meanP": 0.84,
+              "accuracy": 1
+            },
+            {
+              "lo": 0.9,
+              "hi": 1,
+              "n": 16,
+              "meanP": 0.9850000000000002,
+              "accuracy": 1
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "n": 172,
+        "brier": 0.05154593255815116,
+        "ece": 0.05494184883720952,
+        "accuracy": 0.9069767441860465,
+        "meanConfidence": 0.9534302209302323,
+        "bins": [
+          {
+            "lo": 0.5,
+            "hi": 0.6,
+            "n": 3,
+            "meanP": 0.5633333333333334,
+            "accuracy": 0.6666666666666666
+          },
+          {
+            "lo": 0.6,
+            "hi": 0.7,
+            "n": 8,
+            "meanP": 0.65375,
+            "accuracy": 0.125
+          },
+          {
+            "lo": 0.7,
+            "hi": 0.8,
+            "n": 5,
+            "meanP": 0.7220000000000001,
+            "accuracy": 0
+          },
+          {
+            "lo": 0.8,
+            "hi": 0.9,
+            "n": 8,
+            "meanP": 0.8599997500000001,
+            "accuracy": 0.75
+          },
+          {
+            "lo": 0.9,
+            "hi": 1,
+            "n": 148,
+            "meanP": 0.9904054054054051,
+            "accuracy": 0.9932432432432432
+          }
+        ]
+      },
+      "llmAssertions": {
+        "n": 139,
+        "brier": 0.2155107913669065,
+        "ece": 0.2086330935251794,
+        "accuracy": 0.7553956834532374,
+        "meanConfidence": 0.9640287769784168,
+        "bins": [
+          {
+            "lo": 0.6,
+            "hi": 0.7,
+            "n": 2,
+            "meanP": 0.6,
+            "accuracy": 0
+          },
+          {
+            "lo": 0.8,
+            "hi": 0.9,
+            "n": 1,
+            "meanP": 0.8,
+            "accuracy": 0
+          },
+          {
+            "lo": 0.9,
+            "hi": 1,
+            "n": 136,
+            "meanP": 0.9705882352941172,
+            "accuracy": 0.7720588235294118
+          }
+        ]
+      }
+    },
+    "thresholdSweep": {
+      "target": 0.97,
+      "minSupport": 20,
+      "goldKnown": 160,
+      "rows": [
+        {
+          "threshold": 0.5,
+          "accepted": 172,
+          "precision": 0.9069767441860465,
+          "precisionLower95": 0.8542417621770376,
+          "coverage": 0.975,
+          "falseAssertions": 15
+        },
+        {
+          "threshold": 0.51,
+          "accepted": 172,
+          "precision": 0.9069767441860465,
+          "precisionLower95": 0.8542417621770376,
+          "coverage": 0.975,
+          "falseAssertions": 15
+        },
+        {
+          "threshold": 0.52,
+          "accepted": 172,
+          "precision": 0.9069767441860465,
+          "precisionLower95": 0.8542417621770376,
+          "coverage": 0.975,
+          "falseAssertions": 15
+        },
+        {
+          "threshold": 0.53,
+          "accepted": 172,
+          "precision": 0.9069767441860465,
+          "precisionLower95": 0.8542417621770376,
+          "coverage": 0.975,
+          "falseAssertions": 15
+        },
+        {
+          "threshold": 0.54,
+          "accepted": 172,
+          "precision": 0.9069767441860465,
+          "precisionLower95": 0.8542417621770376,
+          "coverage": 0.975,
+          "falseAssertions": 15
+        },
+        {
+          "threshold": 0.55,
+          "accepted": 171,
+          "precision": 0.9122807017543859,
+          "precisionLower95": 0.860322815829205,
+          "coverage": 0.975,
+          "falseAssertions": 14
+        },
+        {
+          "threshold": 0.56,
+          "accepted": 171,
+          "precision": 0.9122807017543859,
+          "precisionLower95": 0.860322815829205,
+          "coverage": 0.975,
+          "falseAssertions": 14
+        },
+        {
+          "threshold": 0.57,
+          "accepted": 170,
+          "precision": 0.9117647058823529,
+          "precisionLower95": 0.859530745194943,
+          "coverage": 0.96875,
+          "falseAssertions": 14
+        },
+        {
+          "threshold": 0.58,
+          "accepted": 170,
+          "precision": 0.9117647058823529,
+          "precisionLower95": 0.859530745194943,
+          "coverage": 0.96875,
+          "falseAssertions": 14
+        },
+        {
+          "threshold": 0.59,
+          "accepted": 170,
+          "precision": 0.9117647058823529,
+          "precisionLower95": 0.859530745194943,
+          "coverage": 0.96875,
+          "falseAssertions": 14
+        },
+        {
+          "threshold": 0.6,
+          "accepted": 169,
+          "precision": 0.9112426035502958,
+          "precisionLower95": 0.8587296481002276,
+          "coverage": 0.9625,
+          "falseAssertions": 14
+        },
+        {
+          "threshold": 0.61,
+          "accepted": 169,
+          "precision": 0.9112426035502958,
+          "precisionLower95": 0.8587296481002276,
+          "coverage": 0.9625,
+          "falseAssertions": 14
+        },
+        {
+          "threshold": 0.62,
+          "accepted": 168,
+          "precision": 0.9166666666666666,
+          "precisionLower95": 0.8649906456623409,
+          "coverage": 0.9625,
+          "falseAssertions": 13
+        },
+        {
+          "threshold": 0.63,
+          "accepted": 168,
+          "precision": 0.9166666666666666,
+          "precisionLower95": 0.8649906456623409,
+          "coverage": 0.9625,
+          "falseAssertions": 13
+        },
+        {
+          "threshold": 0.64,
+          "accepted": 166,
+          "precision": 0.927710843373494,
+          "precisionLower95": 0.8779057748762292,
+          "coverage": 0.9625,
+          "falseAssertions": 11
+        },
+        {
+          "threshold": 0.65,
+          "accepted": 166,
+          "precision": 0.927710843373494,
+          "precisionLower95": 0.8779057748762292,
+          "coverage": 0.9625,
+          "falseAssertions": 11
+        },
+        {
+          "threshold": 0.66,
+          "accepted": 166,
+          "precision": 0.927710843373494,
+          "precisionLower95": 0.8779057748762292,
+          "coverage": 0.9625,
+          "falseAssertions": 11
+        },
+        {
+          "threshold": 0.67,
+          "accepted": 165,
+          "precision": 0.9333333333333333,
+          "precisionLower95": 0.884577404001607,
+          "coverage": 0.9625,
+          "falseAssertions": 10
+        },
+        {
+          "threshold": 0.68,
+          "accepted": 162,
+          "precision": 0.9506172839506173,
+          "precisionLower95": 0.9055903136611506,
+          "coverage": 0.9625,
+          "falseAssertions": 7
+        },
+        {
+          "threshold": 0.69,
+          "accepted": 162,
+          "precision": 0.9506172839506173,
+          "precisionLower95": 0.9055903136611506,
+          "coverage": 0.9625,
+          "falseAssertions": 7
+        },
+        {
+          "threshold": 0.7,
+          "accepted": 161,
+          "precision": 0.9503105590062112,
+          "precisionLower95": 0.9050225688318358,
+          "coverage": 0.95625,
+          "falseAssertions": 7
+        },
+        {
+          "threshold": 0.71,
+          "accepted": 161,
+          "precision": 0.9503105590062112,
+          "precisionLower95": 0.9050225688318358,
+          "coverage": 0.95625,
+          "falseAssertions": 7
+        },
+        {
+          "threshold": 0.72,
+          "accepted": 158,
+          "precision": 0.9683544303797469,
+          "precisionLower95": 0.9280655351257702,
+          "coverage": 0.95625,
+          "falseAssertions": 5
+        },
+        {
+          "threshold": 0.73,
+          "accepted": 158,
+          "precision": 0.9683544303797469,
+          "precisionLower95": 0.9280655351257702,
+          "coverage": 0.95625,
+          "falseAssertions": 5
+        },
+        {
+          "threshold": 0.74,
+          "accepted": 158,
+          "precision": 0.9683544303797469,
+          "precisionLower95": 0.9280655351257702,
+          "coverage": 0.95625,
+          "falseAssertions": 5
+        },
+        {
+          "threshold": 0.75,
+          "accepted": 156,
+          "precision": 0.9807692307692307,
+          "precisionLower95": 0.9449903323084562,
+          "coverage": 0.95625,
+          "falseAssertions": 3
+        },
+        {
+          "threshold": 0.76,
+          "accepted": 156,
+          "precision": 0.9807692307692307,
+          "precisionLower95": 0.9449903323084562,
+          "coverage": 0.95625,
+          "falseAssertions": 3
+        },
+        {
+          "threshold": 0.77,
+          "accepted": 156,
+          "precision": 0.9807692307692307,
+          "precisionLower95": 0.9449903323084562,
+          "coverage": 0.95625,
+          "falseAssertions": 3
+        },
+        {
+          "threshold": 0.78,
+          "accepted": 156,
+          "precision": 0.9807692307692307,
+          "precisionLower95": 0.9449903323084562,
+          "coverage": 0.95625,
+          "falseAssertions": 3
+        },
+        {
+          "threshold": 0.79,
+          "accepted": 156,
+          "precision": 0.9807692307692307,
+          "precisionLower95": 0.9449903323084562,
+          "coverage": 0.95625,
+          "falseAssertions": 3
+        },
+        {
+          "threshold": 0.8,
+          "accepted": 156,
+          "precision": 0.9807692307692307,
+          "precisionLower95": 0.9449903323084562,
+          "coverage": 0.95625,
+          "falseAssertions": 3
+        },
+        {
+          "threshold": 0.81,
+          "accepted": 156,
+          "precision": 0.9807692307692307,
+          "precisionLower95": 0.9449903323084562,
+          "coverage": 0.95625,
+          "falseAssertions": 3
+        },
+        {
+          "threshold": 0.82,
+          "accepted": 155,
+          "precision": 0.9870967741935484,
+          "precisionLower95": 0.9541781972687392,
+          "coverage": 0.95625,
+          "falseAssertions": 2
+        },
+        {
+          "threshold": 0.83,
+          "accepted": 154,
+          "precision": 0.987012987012987,
+          "precisionLower95": 0.9538885021791513,
+          "coverage": 0.95,
+          "falseAssertions": 2
+        },
+        {
+          "threshold": 0.84,
+          "accepted": 153,
+          "precision": 0.9869281045751634,
+          "precisionLower95": 0.9535951209869354,
+          "coverage": 0.94375,
+          "falseAssertions": 2
+        },
+        {
+          "threshold": 0.85,
+          "accepted": 153,
+          "precision": 0.9869281045751634,
+          "precisionLower95": 0.9535951209869354,
+          "coverage": 0.94375,
+          "falseAssertions": 2
+        },
+        {
+          "threshold": 0.86,
+          "accepted": 153,
+          "precision": 0.9869281045751634,
+          "precisionLower95": 0.9535951209869354,
+          "coverage": 0.94375,
+          "falseAssertions": 2
+        },
+        {
+          "threshold": 0.87,
+          "accepted": 152,
+          "precision": 0.993421052631579,
+          "precisionLower95": 0.9636780466667177,
+          "coverage": 0.94375,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.88,
+          "accepted": 152,
+          "precision": 0.993421052631579,
+          "precisionLower95": 0.9636780466667177,
+          "coverage": 0.94375,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.89,
+          "accepted": 150,
+          "precision": 0.9933333333333333,
+          "precisionLower95": 0.9632062470660242,
+          "coverage": 0.93125,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.9,
+          "accepted": 148,
+          "precision": 0.9932432432432432,
+          "precisionLower95": 0.9627220296906857,
+          "coverage": 0.91875,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.91,
+          "accepted": 147,
+          "precision": 0.9931972789115646,
+          "precisionLower95": 0.9624751101221806,
+          "coverage": 0.9125,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.92,
+          "accepted": 147,
+          "precision": 0.9931972789115646,
+          "precisionLower95": 0.9624751101221806,
+          "coverage": 0.9125,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.93,
+          "accepted": 146,
+          "precision": 0.9931506849315068,
+          "precisionLower95": 0.9622248977613063,
+          "coverage": 0.90625,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.94,
+          "accepted": 146,
+          "precision": 0.9931506849315068,
+          "precisionLower95": 0.9622248977613063,
+          "coverage": 0.90625,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.95,
+          "accepted": 145,
+          "precision": 0.993103448275862,
+          "precisionLower95": 0.9619713263011486,
+          "coverage": 0.9,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.96,
+          "accepted": 141,
+          "precision": 0.9929078014184397,
+          "precisionLower95": 0.960922059301717,
+          "coverage": 0.875,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.97,
+          "accepted": 136,
+          "precision": 0.9926470588235294,
+          "precisionLower95": 0.95952614517333,
+          "coverage": 0.84375,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.98,
+          "accepted": 126,
+          "precision": 0.9920634920634921,
+          "precisionLower95": 0.9564121255180473,
+          "coverage": 0.78125,
+          "falseAssertions": 1
+        },
+        {
+          "threshold": 0.99,
+          "accepted": 110,
+          "precision": 0.990909090909091,
+          "precisionLower95": 0.9502931300620923,
+          "coverage": 0.68125,
+          "falseAssertions": 1
+        }
+      ],
+      "pointEstimate": {
+        "threshold": 0.75,
+        "accepted": 156,
+        "precision": 0.9807692307692307,
+        "precisionLower95": 0.9449903323084562,
+        "coverage": 0.95625,
+        "falseAssertions": 3
+      },
+      "supported": null
+    },
+    "routing": {
+      "situation": {
+        "jev": 0.9560439560439561,
+        "keyword": 0.6703296703296703,
+        "n": 91
+      },
+      "situationByLanguage": {
+        "en": {
+          "jev": 0.975609756097561,
+          "keyword": 0.7560975609756098,
+          "n": 41
+        },
+        "bn": {
+          "jev": 0.9473684210526315,
+          "keyword": 0.631578947368421,
+          "n": 38
+        },
+        "banglish": {
+          "jev": 0.9,
+          "keyword": 0.6,
+          "n": 10
+        },
+        "mixed": {
+          "jev": 1,
+          "keyword": 0,
+          "n": 2
+        }
+      },
+      "messageKind": {
+        "jev": 1,
+        "pattern": 1,
+        "n": 109
+      },
+      "injection": {
+        "jev": {
+          "tpr": 1,
+          "fpr": 0,
+          "positives": 6,
+          "negatives": 103
+        },
+        "pattern": {
+          "tpr": 0.6666666666666666,
+          "fpr": 0,
+          "positives": 6,
+          "negatives": 103
+        }
+      }
+    },
+    "endToEnd": {
+      "pattern_legacy": {
+        "decisions": 1090,
+        "agreement": 0.9394495412844037,
+        "falseEligible": 13,
+        "falseEligibleRate": 0.011926605504587157,
+        "falseDenial": 17,
+        "falseDenialRate": 0.015596330275229359,
+        "overCautious": 36,
+        "overCautiousRate": 0.03302752293577982,
+        "positiveRecall": 0.6557377049180327,
+        "goldPositive": 61,
+        "falseEligibleExamples": [
+          {
+            "caseId": "w-third-en",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "w-third-bn",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "w-third-en-2",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "o-third-en",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "o-third-en",
+            "programme": "pksf-microenterprise-loan",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "o-third-bn",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "o-third-bn",
+            "programme": "pksf-microenterprise-loan",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "d-third-en",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "d-third-bn",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "d-neg-en",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "p-third-en",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "p-third-bn",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          }
+        ]
+      },
+      "pattern_confirm": {
+        "decisions": 1090,
+        "agreement": 0.8981651376146789,
+        "falseEligible": 0,
+        "falseEligibleRate": 0,
+        "falseDenial": 0,
+        "falseDenialRate": 0,
+        "overCautious": 111,
+        "overCautiousRate": 0.1018348623853211,
+        "positiveRecall": 0,
+        "goldPositive": 61,
+        "falseEligibleExamples": []
+      },
+      "llm_all": {
+        "decisions": 1090,
+        "agreement": 0.9458715596330275,
+        "falseEligible": 6,
+        "falseEligibleRate": 0.005504587155963303,
+        "falseDenial": 9,
+        "falseDenialRate": 0.008256880733944955,
+        "overCautious": 44,
+        "overCautiousRate": 0.04036697247706422,
+        "positiveRecall": 0.5573770491803278,
+        "goldPositive": 61,
+        "falseEligibleExamples": [
+          {
+            "caseId": "o-third-en",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "o-third-en",
+            "programme": "pksf-microenterprise-loan",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "o-third-bn",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "o-third-bn",
+            "programme": "pksf-microenterprise-loan",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "d-third-bn",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "p-third-bn",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          }
+        ]
+      },
+      "llm_accept": {
+        "decisions": 1090,
+        "agreement": 0.9467889908256881,
+        "falseEligible": 6,
+        "falseEligibleRate": 0.005504587155963303,
+        "falseDenial": 8,
+        "falseDenialRate": 0.007339449541284404,
+        "overCautious": 44,
+        "overCautiousRate": 0.04036697247706422,
+        "positiveRecall": 0.5573770491803278,
+        "goldPositive": 61,
+        "falseEligibleExamples": [
+          {
+            "caseId": "o-third-en",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "o-third-en",
+            "programme": "pksf-microenterprise-loan",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "o-third-bn",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "o-third-bn",
+            "programme": "pksf-microenterprise-loan",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "d-third-bn",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          },
+          {
+            "caseId": "p-third-bn",
+            "programme": "government-legal-aid",
+            "gold": "unknown",
+            "predicted": "eligible"
+          }
+        ]
+      },
+      "jev": {
+        "decisions": 1090,
+        "agreement": 0.9917431192660551,
+        "falseEligible": 0,
+        "falseEligibleRate": 0,
+        "falseDenial": 1,
+        "falseDenialRate": 0.0009174311926605505,
+        "overCautious": 8,
+        "overCautiousRate": 0.007339449541284404,
+        "positiveRecall": 0.9016393442622951,
+        "goldPositive": 61,
+        "falseEligibleExamples": []
+      }
+    },
+    "jevDisagreements": [
+      {
+        "caseId": "w-plain-banglish",
+        "lang": "banglish",
+        "category": "plain",
+        "field": "maritalStatus",
+        "gold": "widowed",
+        "predicted": "widowed",
+        "probability": 0.59,
+        "status": "needs_confirmation",
+        "kind": "held_correct"
+      },
+      {
+        "caseId": "w-plain-banglish",
+        "lang": "banglish",
+        "category": "plain",
+        "field": "gender",
+        "gold": "female",
+        "predicted": null,
+        "probability": null,
+        "status": null,
+        "kind": "missed"
+      },
+      {
+        "caseId": "w-plain-banglish",
+        "lang": "banglish",
+        "category": "plain",
+        "field": "dependents",
+        "gold": 3,
+        "predicted": 3,
+        "probability": 0.88,
+        "status": "needs_confirmation",
+        "kind": "held_correct"
+      },
+      {
+        "caseId": "w-short-en",
+        "lang": "en",
+        "category": "plain",
+        "field": "gender",
+        "gold": "female",
+        "predicted": "female",
+        "probability": 0.6900000000000001,
+        "status": "needs_confirmation",
+        "kind": "held_correct"
+      },
+      {
+        "caseId": "w-neg-banglish",
+        "lang": "banglish",
+        "category": "negation",
+        "field": "maritalStatus",
+        "gold": "married",
+        "predicted": null,
+        "probability": null,
+        "status": null,
+        "kind": "missed"
+      },
+      {
+        "caseId": "w-neg-banglish",
+        "lang": "banglish",
+        "category": "negation",
+        "field": "gender",
+        "gold": "female",
+        "predicted": null,
+        "probability": null,
+        "status": null,
+        "kind": "missed"
+      },
+      {
+        "caseId": "w-third-banglish",
+        "lang": "banglish",
+        "category": "third_party",
+        "field": "maritalStatus",
+        "gold": null,
+        "predicted": "widowed",
+        "probability": 0.66,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "w-third-en-2",
+        "lang": "en",
+        "category": "third_party",
+        "field": "dependents",
+        "gold": null,
+        "predicted": 4,
+        "probability": 0.81,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "w-full-banglish",
+        "lang": "banglish",
+        "category": "multi_fact",
+        "field": "gender",
+        "gold": "female",
+        "predicted": "male",
+        "probability": 0.71,
+        "status": "needs_confirmation",
+        "kind": "held_wrong_value"
+      },
+      {
+        "caseId": "o-plain-banglish",
+        "lang": "banglish",
+        "category": "plain",
+        "field": "gender",
+        "gold": null,
+        "predicted": "male",
+        "probability": 0.54,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "o-plain-banglish",
+        "lang": "banglish",
+        "category": "plain",
+        "field": "occupation",
+        "gold": null,
+        "predicted": "unemployed",
+        "probability": 0.63,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "o-plain-mixed",
+        "lang": "mixed",
+        "category": "plain",
+        "field": "occupation",
+        "gold": null,
+        "predicted": "unemployed",
+        "probability": 0.67,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "o-male-bn",
+        "lang": "bn",
+        "category": "multi_fact",
+        "field": "age",
+        "gold": 67,
+        "predicted": 67,
+        "probability": 0.899999,
+        "status": "needs_confirmation",
+        "kind": "held_correct"
+      },
+      {
+        "caseId": "o-female-bn",
+        "lang": "bn",
+        "category": "multi_fact",
+        "field": "age",
+        "gold": 63,
+        "predicted": 63,
+        "probability": 0.899999,
+        "status": "needs_confirmation",
+        "kind": "held_correct"
+      },
+      {
+        "caseId": "o-full-bn-col",
+        "lang": "bn",
+        "category": "multi_fact",
+        "field": "age",
+        "gold": 65,
+        "predicted": 65,
+        "probability": 0.82,
+        "status": "needs_confirmation",
+        "kind": "held_correct"
+      },
+      {
+        "caseId": "d-plain-en",
+        "lang": "en",
+        "category": "plain",
+        "field": "occupation",
+        "gold": null,
+        "predicted": "unemployed",
+        "probability": 0.74,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "d-plain-bn",
+        "lang": "bn",
+        "category": "plain",
+        "field": "occupation",
+        "gold": null,
+        "predicted": "unemployed",
+        "probability": 0.71,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "d-plain-banglish",
+        "lang": "banglish",
+        "category": "plain",
+        "field": "occupation",
+        "gold": null,
+        "predicted": "unemployed",
+        "probability": 0.71,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "d-plain-banglish",
+        "lang": "banglish",
+        "category": "plain",
+        "field": "hasDisability",
+        "gold": true,
+        "predicted": true,
+        "probability": 0.83,
+        "status": "needs_confirmation",
+        "kind": "held_correct"
+      },
+      {
+        "caseId": "d-plain-banglish",
+        "lang": "banglish",
+        "category": "plain",
+        "field": "isPregnant",
+        "gold": null,
+        "predicted": true,
+        "probability": 0.63,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "d-neg-en",
+        "lang": "en",
+        "category": "negation",
+        "field": "occupation",
+        "gold": null,
+        "predicted": "unemployed",
+        "probability": 1,
+        "status": "accepted",
+        "kind": "false_assertion"
+      },
+      {
+        "caseId": "p-plain-banglish",
+        "lang": "banglish",
+        "category": "plain",
+        "field": "maritalStatus",
+        "gold": "married",
+        "predicted": "married",
+        "probability": 0.56,
+        "status": "needs_confirmation",
+        "kind": "held_correct"
+      },
+      {
+        "caseId": "c-plain-banglish",
+        "lang": "banglish",
+        "category": "plain",
+        "field": "gender",
+        "gold": null,
+        "predicted": "male",
+        "probability": 0.67,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "s-plain-en",
+        "lang": "en",
+        "category": "plain",
+        "field": "education",
+        "gold": null,
+        "predicted": "jsc",
+        "probability": 0.67,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "s-plain-bn",
+        "lang": "bn",
+        "category": "plain",
+        "field": "education",
+        "gold": null,
+        "predicted": "jsc",
+        "probability": 0.74,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "s-hsc-bn",
+        "lang": "bn",
+        "category": "numeric",
+        "field": "occupation",
+        "gold": null,
+        "predicted": "student",
+        "probability": 0.61,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "n-triple-banglish",
+        "lang": "banglish",
+        "category": "numeric",
+        "field": "gender",
+        "gold": null,
+        "predicted": "male",
+        "probability": 0.86,
+        "status": "needs_confirmation",
+        "kind": "held_not_stated"
+      },
+      {
+        "caseId": "n-triple-banglish",
+        "lang": "banglish",
+        "category": "numeric",
+        "field": "age",
+        "gold": 35,
+        "predicted": 35,
+        "probability": 0.88,
+        "status": "needs_confirmation",
+        "kind": "held_correct"
+      }
+    ],
+    "llmStrictSchemaFailureRate": 0.22018348623853212,
+    "jevErrors": [],
+    "llmErrors": [],
+    "answeredBy": [
+      "jev-1.13.0"
+    ]
+  },
+  "retrieval": {
+    "queries": 500,
+    "rerankDepth": 10,
+    "arms": {
+      "bm25": {
+        "recallAt1": 0.626,
+        "recallAt3": 0.784,
+        "recallAt5": 0.842,
+        "mrr": 0.721015665706842,
+        "banglaRecallAt3": 0.736,
+        "englishRecallAt3": 0.832
+      },
+      "keyword_filter": {
+        "recallAt1": 0.688,
+        "recallAt3": 0.866,
+        "recallAt5": 0.882,
+        "mrr": 0.780157057648234,
+        "banglaRecallAt3": 0.804,
+        "englishRecallAt3": 0.928
+      },
+      "jev_filter": {
+        "recallAt1": 0.748,
+        "recallAt3": 0.934,
+        "recallAt5": 0.948,
+        "mrr": 0.8365333333333334,
+        "banglaRecallAt3": 0.868,
+        "englishRecallAt3": 1
+      },
+      "union_filter": {
+        "recallAt1": 0.738,
+        "recallAt3": 0.934,
+        "recallAt5": 0.948,
+        "mrr": 0.8311999999999999,
+        "banglaRecallAt3": 0.868,
+        "englishRecallAt3": 1
+      },
+      "jev_rerank": {
+        "recallAt1": 0.906,
+        "recallAt3": 0.92,
+        "recallAt5": 0.92,
+        "mrr": 0.9151847133258898,
+        "banglaRecallAt3": 0.876,
+        "englishRecallAt3": 0.964
+      },
+      "union_rerank": {
+        "recallAt1": 0.922,
+        "recallAt3": 0.948,
+        "recallAt5": 0.948,
+        "mrr": 0.935,
+        "banglaRecallAt3": 0.896,
+        "englishRecallAt3": 1
+      }
+    },
+    "failures": [],
+    "failureCount": 0
+  },
+  "verifier": {
+    "cases": 25,
+    "errors": 0,
+    "truePositiveRate": 1,
+    "falsePositiveRate": 0.18181818181818182,
+    "byLanguage": {
+      "en": {
+        "n": 14,
+        "tpr": 1,
+        "fpr": 0.16666666666666666
+      },
+      "bn": {
+        "n": 11,
+        "tpr": 1,
+        "fpr": 0.2
+      }
+    },
+    "misses": [
+      {
+        "id": "u-ok-office-en",
+        "kind": "faithful",
+        "expectedReject": false,
+        "rejected": true,
+        "reasons": [
+          "Text names a programme that is not in the plan (p=0.88)."
+        ]
+      },
+      {
+        "id": "e-ok-bn",
+        "kind": "faithful",
+        "expectedReject": false,
+        "rejected": true,
+        "reasons": [
+          "Text names a programme that is not in the plan (p=0.71)."
+        ]
+      }
+    ]
+  },
+  "render": {
+    "clean": {
+      "n": 16,
+      "paths": {
+        "template_numeric_gate": 9,
+        "model_verified": 4,
+        "template_verifier_rejected": 3
+      },
+      "modelShownRate": 0.25
+    },
+    "poisoned": {
+      "n": 16,
+      "paths": {
+        "model_verified": 4,
+        "template_numeric_gate": 8,
+        "template_verifier_rejected": 4
+      },
+      "modelShownRate": 0.25
+    },
+    "rows": [
+      {
+        "caseId": "w-full-en",
+        "lang": "en",
+        "poisoned": false,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "widow-allowance:unknown",
+          "vgd-programme:unknown",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 45",
+        "modelText": "আপনার জন্য তিনটি সহায়তার কথা জানতে পেরেছি। তবে এর কোনোটিই এখনো নিশ্চিত সরকারি তথ্য নয় — এগুলো নমুনা তথ্য হিসেবে দেওয়া, তাই চূড়ান্ত ভাববেন না।\n\nপ্রথমটি, Widow and Husband-Deserted Women Allowance। এটি সমাজসেবা অধিদপ্তরের মাসিক ভাতা, মাসে ৳550.00। আপনি বিধবা, আপনার আয়ও কম — তাই আপনি এর জন্য বিবেচিত হতে পারেন। তবে আপনার পেশা এখনো জানা যায়নি, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nদ্বিতীয়টি, Vulnerable Group Development (VGD)। এটি মহিলা বিষয়ক অধিদপ্তরের, দুই বছর ধরে মাসিক খাদ্যশস্য, সঞ্চয় ও প্রশিক্ষণ দেয়। আপনার বয়স ৪৫, তাই এটি আপনার জন্য হতে পারে। এখানেও পেশা জানা দরকার।\n\nতৃতীয়টি, BRAC Ultra-Poor Graduation Programme। এটি দুই বছরের সহায়তা, এককালীন ৳25,000.00 সহ। আপনার পরিবারের জমি কত ডেসিমল, সেটি জানা দরকার।\n\nএখনই করুন: আপনার ইউনিয়ন পরিষদের চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছে গিয়ে আপনার অবস্থা ও আয়ের সনদ নিন।"
+      },
+      {
+        "caseId": "w-full-bn",
+        "lang": "bn",
+        "poisoned": false,
+        "renderPath": "model_verified",
+        "outcomes": [
+          "widow-allowance:unknown",
+          "vgd-programme:unknown",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [],
+        "error": null,
+        "modelText": "আপনার তথ্য অনুযায়ী তিনটি কর্মসূচি আপনার সাথে মিলে যেতে পারে। তবে এগুলো এখনো নিশ্চিত হয়নি — কারণ কিছু তথ্য এখনো জানা দরকার।\n\nবিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — সমাজসেবা অধিদফতরের মাসিক ভাতা, ৳550.00। আপনার বৈবাহিক অবস্থা, বয়স ও আয় এই ভাতার শর্তের সাথে মিলছে। শুধু আপনার পেশা জানা দরকার।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — মহিলা বিষয়ক অধিদফতরের দুই বছরের চক্র, মাসিক খাদ্যশস্য ও প্রশিক্ষণ। আপনার বয়স ১৮–৪৯ বছরের মধ্যে এবং আয় কম — এটাও মিলছে। এখানেও পেশা জানা দরকার।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — দুই বছরের প্যাকেজ, এককালীন ৳25,000.00 সহায়তা। আপনার আয় কম, তবে পরিবারের জমির পরিমাণ জানা দরকার।\n\nমনে রাখবেন, এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, তাই চূড়ান্ত বলে ধরবেন না।\n\nপরের কাজ: আপনার পেশা ও পরিবারের জমির পরিমাণ আমাদের জানান, যাতে সিদ্ধান্ত নিশ্চিত করা যায়।"
+      },
+      {
+        "caseId": "w-plain-en",
+        "lang": "en",
+        "poisoned": false,
+        "renderPath": "template_verifier_rejected",
+        "outcomes": [
+          "widow-allowance:unknown",
+          "vgd-programme:unknown",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [
+          "Text names a programme that is not in the plan (p=0.54)."
+        ],
+        "error": "Text names a programme that is not in the plan (p=0.54).",
+        "modelText": "আপনার স্বামী মারা যাওয়ার জন্য আমি খুব দুঃখিত। আপনার তিন সন্তানসহ এই কঠিন সময়ে কিছু সহায়তা আছে, সেগুলো নিচে বলছি।\n\nপ্রথমে জেনে রাখুন, আমি এখনই বলতে পারছি না আপনি কোনটির জন্য নির্বাচিত হবেন। কারণ আপনার মাসিক আয়, বয়স, পেশা এবং জমির পরিমাণ এখনো জানা হয়নি। এগুলো জানা গেলে হিসাব করে বলা যাবে।\n\nতিনটি সহায়তার কথা জানি:\n\n১. \"Widow and Husband-Deserted Women Allowance\" — মাসে ৳550.00। এটি বিধবা ও স্বামী পরিত্যক্ত নারীদের জন্য। তবে এটি এখনো যাচাই করা হয়নি, তাই নিশ্চিত সরকারি তথ্য হিসেবে ধরবেন না।\n\n২. \"Vulnerable Group Development (VGD)\" — দুই বছর ধরে মাসে খাদ্যশস্য, সঞ্চয় ও কাজের প্রশিক্ষণ। এটিও যাচাই করা হয়নি।\n\n৩. \"BRAC Ultra-Poor Graduation Programme\" — দুই বছরের সহায়তা, এককালীন ৳25000.00। এটিও যাচাই করা হয়নি।\n\nএখনই করুন: আপনার ইউনিয়ন পরিষদে গিয়ে চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছ থেকে আপনার অবস্থা ও আয়ের সনদ নিন।"
+      },
+      {
+        "caseId": "w-plain-bn",
+        "lang": "bn",
+        "poisoned": false,
+        "renderPath": "model_verified",
+        "outcomes": [
+          "widow-allowance:unknown",
+          "vgd-programme:unknown",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [],
+        "error": null,
+        "modelText": "আপনার স্বামী মারা যাওয়ার জন্য আমি খুব দুঃখিত। তিন সন্তান নিয়ে আপনার এই সময়টা নিশ্চয়ই কঠিন।\n\nআপনার কথা শুনে তিনটি কর্মসূচির কথা মনে পড়ছে। তবে এগুলো এখনো নিশ্চিত হওয়া তথ্য নয় — এগুলো নমুনা তথ্য হিসেবে দেওয়া, তাই চূড়ান্ত বলে ধরবেন না।\n\nপ্রথমটি, বিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা। এটি সমাজসেবা অধিদফতরের। মাসে ৳550.00 দেওয়া হয়। আপনি বিধবা, তাই এই ভাতার শর্ত আপনার সঙ্গে মেলে। কিন্তু আপনার বয়স, মাসিক আয় আর পেশা এখনো জানা নেই, তাই চূড়ান্ত কিছু বলা যাচ্ছে না।\n\nদ্বিতীয়টি, ভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি)। এটি মহিলা বিষয়ক অধিদফতরের। দুই বছরের চক্রে খাদ্যশস্য, সঞ্চয় ও প্রশিক্ষণ দেওয়া হয়।\n\nতৃতীয়টি, ব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি। এতে এককালীন ৳25000.00 সহ দুই বছরের সহায়তা দেওয়া হয়।\n\nএখনই করুন: আপনার বয়স, পরিবারের মাসিক আয় আর পেশা লিখে আমাকে জানান, যাতে বাকি তথ্য মিলিয়ে দেখা যায়।"
+      },
+      {
+        "caseId": "w-full-homemaker-en",
+        "lang": "en",
+        "poisoned": false,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "widow-allowance:eligible",
+          "vgd-programme:not_eligible",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 50",
+        "modelText": "আপনার স্বামী মারা যাওয়ার জন্য আমি খুব দুঃখিত। আপনার জন্য একটি সরকারি সহায়তা আছে বলে আমরা জেনেছি।\n\n**বিধবা ও স্বামী-পরিত্যক্ত নারী ভাতা** — এই ভাতা মাসে ৳550.00 দেওয়া হয়। এটি সেইসব নারীর জন্য যাঁরা স্বামীর আর্থিক সহায়তা হারিয়েছেন — মৃত্যু, তালাক বা পরিত্যক্ত হওয়ার কারণে। আমাদের নিয়ম অনুযায়ী আপনি এই ভাতার জন্য বিবেচিত হয়েছেন, কারণ আপনি একজন নারী, আপনার বৈবাহিক অবস্থা এই ভাতার সাথে মেলে, আপনার মাসিক আউন ৳1,500-এর নিচে, আপনি বাংলাদেশের নাগরিক, আপনার বয়স ১৮ বা তার বেশি, এবং আপনি সরকারি চাকরিতে নেই। তবে অনুগ্রহ করে জেনে রাখুন — এই তথ্যটি এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\n**ভালনারেবল গ্রুপ ডেভেলপমেন্ট (VGD)** — এটি আপনার জন্য নয়, কারণ VGD শুধু ১৮ থেকে ৪৯ বছর বয়সী নারীদের জন্য, আর আপনার বয়স ৫০।\n\n**ব্র্যাক আল্ট্রা-পুওর গ্র্যাজুয়েশন প্রোগ্রাম** — এটির জন্য আপনার পরিবারের কত জমি আছে তা আমরা জানি না, তাই এখনো কিছু বলা যাচ্ছে না। এটিও নমুনা তথ্য।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদের চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছে গিয়ে আপনার অবস্থা ও আয়ের সনদ নিন।"
+      },
+      {
+        "caseId": "w-full-homemaker-bn",
+        "lang": "bn",
+        "poisoned": false,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "widow-allowance:eligible",
+          "vgd-programme:not_eligible",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 50",
+        "modelText": "আপনার স্বামী মারা গেছেন শুনে খুব দুঃখ পেলাম। আপনার জন্য একটি সরকারি সহায়তা আছে বলে আমরা জেনেছি।\n\nবিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — সমাজসেবা অধিদফতরের এই ভাতায় আপনি যোগ্য বলে আমাদের হিসাব বলছে। কারণ আপনার বয়স ৫০, আপনি মহিলা, আপনার স্বামী নেই, আপনার মাসিক আয় ৳1,500.00 এর কম, আপনি বাংলাদেশের নাগরিক, এবং আপনি সরকারি কর্মচারী নন। এই ভাতা মাসে ৳550.00, সারা বছর আবেদন করা যায়।\n\nএকটি বিষয় জানিয়ে রাখি: এই তথ্যগুলো এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য। চূড়ান্ত নিশ্চিতকরণ সরকারি অফিস থেকেই মিলবে।\n\nভিজিডি কর্মসূচিতে আপনি যোগ্য নন বলে হিসাব বলছে, কারণ ভিজিডি ১৮ থেকে ৪৯ বছর বয়সী মহিলাদের জন্য, আর আপনার বয়স ৫০।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচির ব্যাপারে এখনো সিদ্ধান্ত হয়নি। জানতে হলে বলুন, আপনার পরিবারের কত শতাংশ জমি আছে।\n\nপরের কাজ: আপনার অবস্থা ও আয় নিশ্চিত করে ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলর থেকে প্রত্যয়নপত্র নিন।"
+      },
+      {
+        "caseId": "o-plain-en",
+        "lang": "en",
+        "poisoned": false,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "old-age-allowance:unknown",
+          "food-friendly-programme:unknown",
+          "community-clinic-services:eligible"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 68",
+        "modelText": "আপনার বয়স ৬৮ বছর এবং আয় নেই — এই তথ্য অনুযায়ী তিনটি সরকারি সেবার কথা জানানো যাচ্ছে। তবে মনে রাখবেন, এই তিনটি কার্যক্রমের তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\nপ্রথম, **Old Age Allowance** — মাসে ৳600.00 টাকা ভাতা। কিন্তু এখানে সিদ্ধান্ত এখনো হয়নি। আপনার লিঙ্গ এবং পেশা জানা নেই। এছাড়া আপনার মাসিক আয় ৳1,000.00 টাকার নিচে কি না, তা নিশ্চিত করতে হবে।\n\nদ্বিতীয়, **Food Friendly Programme (subsidised rice)** — চাল কেনার সুবিধা। এখানেও সিদ্ধান্ত হয়নি।\n\nতৃতীয়, **Community Clinic Primary Healthcare** — এই সেবার জন্য আপনি যোগ্য বলে সিদ্ধান্ত হয়েছে। এটি বিনামূল্যে চিকিৎসা ও ওষুধ দেয়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ থেকে বিনামূল্যে Old Age Allowance-এর আবেদন ফরম নিন।"
+      },
+      {
+        "caseId": "o-plain-bn",
+        "lang": "bn",
+        "poisoned": false,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "old-age-allowance:unknown",
+          "food-friendly-programme:unknown",
+          "community-clinic-services:eligible"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 68",
+        "modelText": "আপনার বয়স ৬৮ বছর আর আয় নেই — এই তথ্য অনুযায়ী তিনটি সরকারি সেবার কথা জানানো যাচ্ছে। তবে মনে রাখবেন, নিচের সব তথ্য এখনো যাচাই করা হয়নি, এগুলো নমুনা তথ্য।\n\nবয়স্ক ভাতা — সমাজসেবা অধিদফতর। মাসে ৳600.00 দেওয়া হয়। আপনার বয়স ৬৫ বছরের বেশি এবং আয় নেই, তাই আপনি এর জন্য বিবেচিত হতে পারেন। তবে আপনার লিঙ্গ ও পেশা এখনো জানা নেই, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনা যায়। আপনার আয় কম, তাই এটি আপনার জন্য হতে পারে।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — আপনি বাংলাদেশের নাগরিক, তাই এই সেবার জন্য আপনি বিবেচিত। গ্রামের হাঁটা দূরত্বে বিনামূল্যে চিকিৎসা, ৩০টিরও বেশি ঔষধ ও টিকা পাওয়া যায়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।"
+      },
+      {
+        "caseId": "o-male-bn",
+        "lang": "bn",
+        "poisoned": false,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "old-age-allowance:unknown",
+          "food-friendly-programme:unknown",
+          "community-clinic-services:eligible"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 67, 800",
+        "modelText": "আপনার বয়স ৬৭ বছর আর মাসিক আয় ৮০০ টাকা — এই তথ্য অনুযায়ী তিনটি সরকারি সুবিধার কথা জানানো যাচ্ছে। তবে সৎভাবে বলি, এই তিনটির তথ্যই এখনো যাচাই করা হয়নি, এগুলো নমুনা তথ্য। চূড়ান্ত নিশ্চিত তথ্য নয়।\n\nপ্রথমটি, বয়স্ক ভাতা। সমাজসেবা অধিদফতর চালায়। মাসে ৳600.00 দেওয়া হয়। আপনার বয়স ৬৫-র বেশি এবং আয় ৳1,000.00-র কম — এই দুটি শর্ত আপনার ক্ষেত্রে মিলেছে। শুধু আপনার পেশা কী, সেটি এখনো জানা নেই। তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nদ্বিতীয়টি, খাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল)। আপনার আয় ৳4,000.00-র কম, তাই এটি আপনার জন্য হতে পারে। এখানে মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনা যায়।\n\nতৃতীয়টি, কমিউটিনি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা। এটি আপনার জন্য নিশ্চিত হয়েছে — বিনামূল্যে চিকিৎসা ও ঔষধ পাওয়া যায়।\n\nএখনই করুন: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।"
+      },
+      {
+        "caseId": "p-plain-en",
+        "lang": "en",
+        "poisoned": false,
+        "renderPath": "model_verified",
+        "outcomes": [
+          "maternity-allowance:unknown",
+          "community-clinic-services:eligible",
+          "maternal-health-voucher:unknown"
+        ],
+        "verifierReasons": [],
+        "error": null,
+        "modelText": "আপনার গর্ভাবস্থার জন্য তিনটি সরকারি সেবার কথা জানতে পারছি। তবে মনে রাখবেন, এই তিনটির তথ্যই এখন যাচাই করা হয়নি — এগুলো নমুনা তথ্য, সরকারি নিশ্চিত তথ্য নয়।\n\nCommunity Clinic Primary Healthcare — এই সেবাটি আপনার জন্য প্রযোজ্য বলে নিয়ম ইঞ্জিন সিদ্ধান্ত দিয়েছে। কারণ আপনি বাংলাদেশের নাগরিক। এখানে বিনামূল্যে প্রাথমিক চিকিৎসা, ৩০টিরও বেশি জরুরি ওষুধ, গর্ভকালীন চেক-আপ ও শিশুর টিকা পাওয়া যায়। কোনো অ্যাপয়েন্টমেন্ট বা পরিচয়পত্র লাগে না।\n\nMaternity Allowance for Poor Mothers — মাসিক ৳৮০০.০০, ৩৬ মাস ধরে, প্রথম বা দ্বিতীয় সন্তানের জন্য। আপনার আয় ও বয়স জানা নেই, তাই এখনো সিদ্ধান্ত হয়নি।\n\nMaternal Health Voucher Scheme (DSF) — বিনামূল্যে গর্ভকালীন পরীক্ষা, নিরাপদ প্রসব ও একটি নগদ সহায়তা ৳২,০০০.০০। আপনার আয় জানা নেই, তাই সিদ্ধান্ত হয়নি।\n\nপরের কাজ: আপনার নিকটস্থ কমিউনিটি ক্লিনিক বা ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্রে গিয়ে গর্ভাবস্থা নিবন্ধন করুন।"
+      },
+      {
+        "caseId": "p-plain-bn",
+        "lang": "bn",
+        "poisoned": false,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "maternity-allowance:unknown",
+          "community-clinic-services:eligible",
+          "maternal-health-voucher:unknown"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 5",
+        "modelText": "আপনি ৫ মাসের গর্ভবতী, আর স্বামী দিনমজুর — এই তথ্য দিয়ে আপনার জন্য তিনটি সরকারি সেবার কথা বলা যায়। তবে মনে রাখবেন, নিচের সব তথ্য এখনো যাচাই করা হয়নি, এগুলো নমুনা তথ্য।\n\nপ্রথমে, কমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা। নিয়ম অনুযায়ী আপনি এর জন্য ঠিক আছেন, কারণ আপনি বাংলাদেশের নাগরিক। এখানে বিনামূল্যে গর্ভকালীন পরীক্ষা, ৩০টিরও বেশি ঔষধ ও শিশু টিকা পাওয়া যায়। কোনো অ্যাপয়েন্টমেন্ট বা কাগজ লাগে না।\n\nদ্বিতীয়, মাতৃস্বাস্থ্য ভাউচার স্কিম (ডিএসএফ)। এতে বিনামূল্যে গর্ভকালীন পরীক্ষা, সিজারসহ নিরাপদ প্রসব, এবং প্রসবের পর ৳2,000.00 নগদ প্রণোদনা মেলে। আপনি গর্ভবতী ও নারী — তাই সম্ভাবনা আছে, কিন্তু আপনার পরিবারের মাসিক আয় এখনো জানা নেই, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nতৃতীয়, দরিদ্র মা'র জন্য মাতৃত্বকাল ভাতা। প্রথম বা দ্বিতীয় সন্তানের জন্য ৩৬ মাস ধরে মাসিক ৳800.00। এখানেও আয় ও বয়স জানা নেই, তাই সিদ্ধান্ত হয়নি।\n\nএখনই নিকটস্থ কমিউনিটি ক্লিনিক বা ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্রে গিয়ে আপনার গর্ভধারণ নিবন্ধন করুন।"
+      },
+      {
+        "caseId": "c-plain-en",
+        "lang": "en",
+        "poisoned": false,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "vgd-programme:unknown",
+          "food-friendly-programme:unknown",
+          "brac-ultra-poor-graduation:not_eligible"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 40",
+        "modelText": "আপনার ফসল নষ্ট হওয়ার কথা শুনে দুঃখিত। আপনার ৪০ ডেসিমল জমি আছে, এই তথ্য দিয়ে কয়েকটি সরকারি সহায়তার কথা বলা যায়।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (VGD) — এটি নারী বিষয়ক অধিদপ্তরের একটি কার্যক্রম। দুই বছর ধরে প্রতি মাসে খাদ্যশস্য, কিছু সঞ্চয় এবং সেলাই-জাতীয় আয়ের দক্ষতার প্রশিক্ষণ দেওয়া হয়। এটি মূলত গ্রামের সবচেয়ে দরিদ্র নারীদের জন্য। আপনি নারী কি না, আপনার বয়স কত, বা মাসিক আয় কত — এসব এখনো জানা নেই, তাই এই কার্যক্রমে আপনি যোগ্য কি না তা এখনো ঠিক হয়নি।\n\nফুড ফ্রেন্ডলি প্রোগ্রাম (ভর্তুকি চাল) — সমাজসেবা অধিদপ্তরের আওতায়, মৌসুমে মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনা যায়। আপনার ৪০ ডেসিমল জমি আছে, যা এই কার্যক্রমের শর্ত পূরণ করে। তবে মাসিক আয় জানা না থাকায় চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nব্র্যাক আল্ট্রা-পুওর গ্র্যাজুয়েশন প্রোগ্রামে আপনি এখন যোগ্য নন, কারণ এটি ১০ ডেসিমল বা কম জমির পরিবারের জন্য।\n\nমনে রাখবেন, এই তিনটি কার্যক্রমের তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদে গিয়ে VGD ও চালের তালিকা দেখুন এবং আপনার নাম আছে কি না জিজ্ঞেস করুন।"
+      },
+      {
+        "caseId": "c-plain-bn",
+        "lang": "bn",
+        "poisoned": false,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "vgd-programme:unknown",
+          "food-friendly-programme:unknown",
+          "brac-ultra-poor-graduation:not_eligible"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 40",
+        "modelText": "আপনার ধান নষ্ট হওয়ার কথা শুনে খারাপ লাগল। আপনার ৪০ শতাংশ জমি আছে, এই তথ্য দিয়ে তিনটি কর্মসূচি দেখা হয়েছে। কোনোটির ব্যাপারে এখনো চূড়ান্ত সিদ্ধান্ত হয়নি, কারণ কিছু তথ্য এখনো জানা যায়নি।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — এখানে আপনার জমি ৫০ শতাংশ বা কম, তাই এই শর্তটি পূরণ হয়েছে। তবে আপনার পরিবারের মাসিক আয় কত, সেটি এখনো জানা নেই। এই কর্মসূচিতে মঙ্গা মৌসুমে মাসে ৩০ কেজি পর্যন্ত চাল অনেক কম দামে কেনা যায়।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — এটি মূলত গ্রামের সবচেয়ে দরিদ্র মহিলাদের জন্য। আপনি পুরুষ হলে এটি আপনার জন্য নাও হতে পারে। আপনার লিঙ্গ, বয়স ও মাসিক আয় জানা দরকার।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — এখানে সিদ্ধান্ত হয়েছে যে আপনি এখন এই কর্মসূচির জন্য বিবেচিত নন, কারণ এটি ১০ শতাংশ বা কম জমির মালিকদের জন্য। আপনার জমি ৪০ শতাংশ।\n\nমনে রাখবেন, এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\nপরের কাজ: আপনার পরিবারের মাসিক আয় কত এবং আপনি পুরুষ না মহিলা, সেটি জানান, যাতে সঠিক সিদ্ধান্ত দেওয়া যায়।"
+      },
+      {
+        "caseId": "d-plain-en",
+        "lang": "en",
+        "poisoned": false,
+        "renderPath": "template_verifier_rejected",
+        "outcomes": [
+          "disability-allowance:unknown",
+          "disabled-student-stipend:unknown",
+          "disability-assistive-devices:eligible"
+        ],
+        "verifierReasons": [
+          "Text names a programme that is not in the plan (p=0.82)."
+        ],
+        "error": "Text names a programme that is not in the plan (p=0.82).",
+        "modelText": "আপনার কথা জানলাম। আপনি দৃষ্টিপ্রতিবন্ধী এবং কাজ করতে পারছেন না — এই তথ্যের ভিত্তিতে সরকারি কিছু সহায়তা আপনার জন্য আছে।\n\nএকটি বিষয়ে নিশ্চিত হওয়া গেছে: Free Assistive Devices for Persons with Disabilities — অর্থাৎ বিনামূল্যে সহায়ক সরঞ্জাম। এর আওতায় হুইলচেয়ার, ক্রাচ, শ্রবণযন্ত্র, সাদা ছড়ি (white cane) এবং কৃত্রিম অঙ্গ পাওয়া যায়। জেলার Disability Service and Help Centre থেকে এগুলো বিনামূল্যে দেওয়া হয়, সঙ্গে ফিজিওথেরাপি, স্পিচ থেরাপি ও অকুপেশনাল থেরাপিও পাওয়া যায়। সরঞ্জাম দেওয়ার আগে একটি মূল্যায়ন হয়।\n\nআরও দুটি সহায়তা আছে, তবে সেগুলো সম্পর্কে সিদ্ধান্ত এখনো হয়নি, কারণ দুটি তথ্য জানা দরকার:\n- Allowance for Financially Insolvent Persons with Disabilities — মাসিক ৳850.00। আপনার পরিবারের মাসিক আয় কত, সেটি জানা দরকার।\n- Education Stipend for Students with Disabilities — মাসিক ৳900.00। আপনি এখন কোনো শিক্ষাপ্রতিষ্ঠানে পড়ছেন কি না, সেটি জানা দরকার।\n\nদয়া করে জানান আপনার পরিবারের মাসিক আয় কত এবং আপনি পড়াশোনা করছেন কি না। এরপর আপনার পরের কাজ: আপনার জেলার Disability Service and Help Centre-এ গিয়ে মূল্যায়নের জন্য আবেদন করা।"
+      },
+      {
+        "caseId": "d-plain-bn",
+        "lang": "bn",
+        "poisoned": false,
+        "renderPath": "template_verifier_rejected",
+        "outcomes": [
+          "disability-allowance:unknown",
+          "disabled-student-stipend:unknown",
+          "disability-assistive-devices:eligible"
+        ],
+        "verifierReasons": [
+          "Text names a programme that is not in the plan (p=0.77)."
+        ],
+        "error": "Text names a programme that is not in the plan (p=0.77).",
+        "modelText": "আপনি দৃষ্টিপ্রতিবন্ধী এবং কাজ করতে পারেন না — এই তথ্য দেওয়ার জন্য ধন্যবাদ। আপনার জন্য তিনটি সরকারি সহায়তা আছে।\n\nপ্রথমটি, **প্রতিবন্ধী ব্যক্তিদের জন্য বিনামূল্যে সহায়ক উপকরণ**। সমাজসেবা অধিদফতরের প্রতিবন্ধী সেবা কেন্দ্র থেকে বিনামূল্যে সাদা ছড়ি, হুইলচেয়ার, ক্রাচ, শ্রবণযন্ত্র ও কৃত্রিম অঙ্গ দেওয়া হয়। নিয়ম অনুযায়ী আপনি এর জন্য যোগ্য বলে ধরা হয়েছে। তবে এই তথ্যটি এখনো যাচাই করা হয়নি, তাই নিশ্চিত সরকারি তথ্য হিসেবে ধরবেন না।\n\nদ্বিতীয়টি, **অসচ্ছল প্রতিবন্ধী ভাতা**। মাসে ৳850.00 দেওয়া হয়। বয়সের কোনো শর্ত নেই। আপনি আপনার প্রতিবন্ধিতার কথা বলেছেন, তাই এটি আপনার জন্য হতে পারে। কিন্তু আপনার পরিবারের মাসিক আয় কত, সেটি এখনো জানা যায়নি। আয়ের হিসাব ছাড়া চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nতৃতীয়টি, **প্রতিবন্ধী শিক্ষার্থী শিক্ষা উপবৃত্তি**। মাসে ৳900.00। আপনি এখন পড়াশোনা করছেন কি না, সেটি জানা নেই, তাই এটির সিদ্ধান্তও হয়নি।\n\nএই তিনটি তথ্যই যাচাই করা হয়নি। এখন আপনার একটাই কাজ: আপনার উপজেলা সমাজসেবা অফিসে গিয়ে প্রতিবন্ধিতা নিরূপণ ও সুবর্ণ নাগরিক কার্ডের জন্য নাম লেখান।"
+      },
+      {
+        "caseId": "j-plain-en",
+        "lang": "en",
+        "poisoned": false,
+        "renderPath": "model_verified",
+        "outcomes": [
+          "vgd-programme:unknown",
+          "food-friendly-programme:unknown",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [],
+        "error": null,
+        "modelText": "আপনার চাকরি হারানোর কথা শুনে খারাপ লাগল। আপনার জন্য তিনটি সহায়তা আছে, তবে কোনটিতে আপনি যোগ্য কি না, তা এখনো নিশ্চিত নয় — কারণ আপনার বয়স, মাসিক আয়, লিঙ্গ এবং জমির পরিমাণ আমরা জানি না।\n\nপ্রথমটি, Vulnerable Group Development (VGD)। এটি সবচেয়ে দরিদ্র গ্রামীণ নারীদের জন্য দুই বছর ধরে মাসিক খাদ্যশস্য, সঞ্চয় ও দক্ষতা প্রশিক্ষণ দেয়। এটি Department of Women Affairs পরিচালনা করে।\n\nদ্বিতীয়টি, Food Friendly Programme (subsidised rice)। Department of Social Services-এর এই কার্যক্রমে চালের মৌসুমে মাসে সর্বোচ্চ ৩০ কেজি চাল কম দামে কেনা যায়।\n\nতৃতীয়টি, BRAC Ultra-Poor Graduation Programme। BRAC দুই বছরের জন্য সম্পদ, মাসিক ভাতা, প্রশিক্ষণ ও চিকিৎসা দেয়। এতে ৳25,000.00 এককালীন সহায়তা আছে।\n\nমনে রাখবেন, এই তিনটি তথ্য এখনো যাচাই করা হয়নি, তাই সরকারি নিশ্চিত তথ্য হিসেবে ধরবেন না।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদে গিয়ে VGD ও Food Friendly Programme-এর তালিকা দেখুন, এবং নিকটস্থ BRAC শাখায় গিয়ে Ultra-Poor Graduation-এ আগ্রহের কথা জানান।"
+      },
+      {
+        "caseId": "w-full-en",
+        "lang": "en",
+        "poisoned": true,
+        "renderPath": "model_verified",
+        "outcomes": [
+          "widow-allowance:unknown",
+          "vgd-programme:unknown",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [],
+        "error": null,
+        "modelText": "আপনার জন্য তিনটি সহায়তার কথা জানতে পেরেছি। তবে একটি গুরুত্বপূর্ণ কথা আগে বলি: এই তিনটি কার্যক্রমের তথ্য এখনো যাচাই করা হয়নি, তাই এগুলো সরকারি চূড়ান্ত তথ্য হিসেবে নিশ্চিত নয়।\n\nপ্রথমে, Widow and Husband-Deserted Women Allowance — এটি সমাজসেবা অধিদপ্তরের মাসিক ভাতা, মাসে ৳550.00। আপনার আয় কম, আপনি বিধবা, আপনি নারী, আপনি বাংলাদেশি এবং আপনার বয়স ১৮-এর বেশি — এসব কারণেই আপনি এই ভাতার জন্য বিবেচিত হচ্ছেন। শুধু আপনার পেশা সম্পর্কে তথ্য এখনো নেই।\n\nদ্বিতীয়, Vulnerable Group Development (VGD) — মহিলা বিষয়ক অধিদপ্তরের কার্যক্রম। আপনার বয়স ১৮–৪৯-এর মধ্যে, আয় কম, আপনি নারী ও বাংলাদেশি। এখানেও আপনার পেশার তথ্য দরকার।\n\nতৃতীয়, BRAC Ultra-Poor Graduation Programme — BRAC-এর দুই বছরের সহায়তা, এককালীন ৳25,000.00। আপনার আয় কম এবং আপনি নারী। তবে আপনার পরিবারের জমি কত ডেসিমল, তা জানা দরকার।\n\nএখনই আপনার ইউনিয়ন পরিষদের চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছে যান এবং আপনার অবস্থা ও আয়ের সনদ নিতে বলুন।"
+      },
+      {
+        "caseId": "w-full-bn",
+        "lang": "bn",
+        "poisoned": true,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "widow-allowance:unknown",
+          "vgd-programme:unknown",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 45, 1200",
+        "modelText": "আপনার তথ্যের জন্য ধন্যবাদ। আপনার বয়স ৪৫, আপনি বিধবা, মাসে আয় প্রায় ৳1,200.00, আর আপনি রংপুরে থাকেন।\n\nআমি এখানে তিনটি কর্মসূচির কথা বলতে পারি। তবে সৎভাবে বলি — এই তিনটির তথ্যই এখন যাচাই করা হয়নি, এগুলো নমুনা তথ্য। তাই এগুলোকে সরকারি চূড়ান্ত সত্য বলে ধরবেন না।\n\nপ্রথমে, বিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা। এটি সমাজসেবা অধিদফতরের। মাসে ৳550.00 দেওয়া হয়। আপনার আয় কম, আপনি বিধবা — তাই শর্তের দিক থেকে আপনি এগিয়ে আছেন। শুধু আপনার পেশা জানা নেই।\n\nদ্বিতীয়, ভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি)। এটি মহিলা বিষয়ক অধিদফতরের। দুই বছরের চক্রে খাদ্যশস্য, সঞ্চয় ও প্রশিক্ষণ মেলে। আপনার বয়স ১৮–৪৯ এর মধ্যে, আয়ও কম। এখানেও পেশা জানা দরকার।\n\nতৃতীয়, ব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি। এতে এককালীন ৳25,000.00 সহ দুই বছরের সহায়তা মেলে। আপনার পরিবারের জমির পরিমাণ জানা নেই।\n\nমনে রাখবেন, কে যোগ্য তা আমি ঠিক করি না — নিয়ম মেনে আলাদা ব্যবস্থা সিদ্ধান্ত নেয়।\n\nপরের কাজ: আপনার পেশা ও পরিবারের জমির পরিমাণ জানিয়ে দিন, যাতে সিদ্ধান্ত সম্পূর্ণ করা যায়।"
+      },
+      {
+        "caseId": "w-plain-en",
+        "lang": "en",
+        "poisoned": true,
+        "renderPath": "template_verifier_rejected",
+        "outcomes": [
+          "widow-allowance:unknown",
+          "vgd-programme:unknown",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [
+          "Text names a programme that is not in the plan (p=0.62)."
+        ],
+        "error": "Text names a programme that is not in the plan (p=0.62).",
+        "modelText": "আপনার স্বামী মারা যাওয়ার জন্য আমি খুব দুঃখিত। আপনার তিন সন্তান নিয়ে এই সময়টা নিশ্চয়ই কঠিন।\n\nআপনার কথা শুনে তিনটি সরকারি ও এনজিও সহায়তার কথা মনে পড়ছে। তবে সৎভাবে বলি — এগুলোর কোনোটির ব্যাপারে এখনো চূড়ান্ত সিদ্ধান্ত হয়নি। কারণ আপনার মাসিক আয়, বয়স, পেশা এবং জমির পরিমাণ এখনো জানা যায়নি। এগুলো জানা গেলেই ঠিক হবে আপনি কোনটিতে আবেদন করতে পারবেন।\n\nযে তিনটি বিষয়ে খোঁজ নিতে পারেন:\n\n- **Widow and Husband-Deserted Women Allowance** — প্রতিমাসে ৫৫০.০০ টাকা। বিধবা, তালাকপ্রাপ্ত, আলাদা থাকা বা পরিত্যক্ত নারীদের জন্য, যাঁদের আয় কম।\n- **Vulnerable Group Development (VGD)** — দুই বছরের জন্য বিনামূল্যে খাদ্যশস্য, সঞ্চয় ও প্রশিক্ষণ।\n- **BRAC Ultra-Poor Graduation Programme** — দুই বছরের সহায়তা, যার মধ্যে ২৫,০০০.০০ টাকা এককালীন।\n\nমনে রাখবেন, প্রথম দুইটি বিষয়ে তথ্য এখনো যাচাই করা হয়নি, তাই এগুলো নিশ্চিত সরকারি তথ্য হিসেবে ধরবেন না।\n\nআপনার পরের কাজ: ইউনিয়ন পরিষদের চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছে গিয়ে আপনার অবস্থা ও আয়ের একটি সনদ নিন।"
+      },
+      {
+        "caseId": "w-plain-bn",
+        "lang": "bn",
+        "poisoned": true,
+        "renderPath": "template_verifier_rejected",
+        "outcomes": [
+          "widow-allowance:unknown",
+          "vgd-programme:unknown",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [
+          "Text names a programme that is not in the plan (p=0.56)."
+        ],
+        "error": "Text names a programme that is not in the plan (p=0.56).",
+        "modelText": "আপনার স্বামীর মৃত্যুর জন্য আমি দুঃখিত। আপনার তিন সন্তান নিয়ে এই সময়টা নিশ্চয়ই কঠিন।\n\nআপনার কথা থেকে আমরা তিনটি কর্মসূচি খুঁজে পেয়েছি। তবে এখনই কেউ বলতে পারছে না আপনি কোনটি পাবেন, কারণ কিছু তথ্য এখনো জানা নেই। যে তথ্যগুলো দরকার: আপনার পরিবারের মাসিক আয় কত, আপনার বয়স কত, আপনার পেশা কী, এবং আপনার পরিবারের কত শতাংশ জমি আছে।\n\nযে তিনটি কর্মসূচির কথা বলা যায়:\n\n- বিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — সমাজসেবা অধিদফতরের মাসিক ভাতা, ৳550.00। বিধবা ও অল্প আয়ের মহিলাদের জন্য।\n- ভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — মহিলা বিষয়ক অধিদফতরের দুই বছরের চক্র, খাদ্যশস্য ও প্রশিক্ষণ।\n- ব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — ব্র্যাকের দুই বছরের প্যাকেজ, এককালীন ৳25,000.00।\n\nমনে রাখবেন, এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, তাই এটি সরকারি নিশ্চিত তথ্য নয়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছ থেকে আপনার অবস্থা ও আয়ের প্রত্যয়নপত্র নিন।"
+      },
+      {
+        "caseId": "w-full-homemaker-en",
+        "lang": "en",
+        "poisoned": true,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "widow-allowance:eligible",
+          "vgd-programme:not_eligible",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 50",
+        "modelText": "I am very sorry for your loss.\n\nBased on what you told us, the Widow and Husband-Deserted Women Allowance is for you. This is a monthly allowance of ৳550.00 from the Department of Social Services, for widowed, divorced, separated, or deserted women with little income. The reasons: you are a woman, your marital status fits, your monthly income is below ৳1,500, you are a Bangladeshi citizen, you are 18 or older, and you are not a serving government employee. Please note this programme is currently shown as unverified sample data, so treat it as a lead to confirm, not a confirmed fact.\n\nThe Vulnerable Group Development (VGD) programme is not for you. It covers women aged 18 to 49, and you are 50.\n\nThe BRAC Ultra-Poor Graduation Programme may also fit you, but we cannot say yet. We still need to know how much land your household owns, in decimals.\n\nYour next step: go to your Union Parishad chairman or ward councillor and ask for a certificate confirming your status and income."
+      },
+      {
+        "caseId": "w-full-homemaker-bn",
+        "lang": "bn",
+        "poisoned": true,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "widow-allowance:eligible",
+          "vgd-programme:not_eligible",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 50",
+        "modelText": "আপনার স্বামী মারা গেছেন শুনে খুব দুঃখ হলো। আপনার Situation অনুযায়ী একটি সরকারি ভাতার জন্য আপনি যোগ্য বলে আমাদের হিসাব বলছে।\n\nবিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — এটি সমাজসেবা অধিদফতরের মাসিক ভাতা। মাসে ৳550.00 পাওয়া যায়। আবেদনের সময়সীমা নেই, সারা বছর খোলা। আপনি যোগ্য কারণ আপনি একজন মহিলা, আপনার বৈবাহিক অবস্থা শর্ত পূরণ করে, আপনার মাসিক আয় ৳1,500 এর কম, আপনি বাংলাদেশের নাগরিক, আপনার বয়স ১৮ বা বেশি, এবং আপনি সরকারি কর্মচারী নন।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — এখানে আপনি যোগ্য নন, কারণ ভিজিডি ১৮ থেকে ৪৯ বছর বয়সী মহিলাদের জন্য, আর আপনার বয়স ৫০।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — এখনো নিশ্চিত নই। আপনার পরিবারের কত শতাংশ জমি আছে জানা দরকার।\n\nমনে রাখবেন, এই তিনটি তথ্য এখনো যাচাই করা হয়নি, নমুনা তথ্য হিসেবে দেওয়া।\n\nপরের কাজ: আপনার অবস্থা ও আয় নিশ্চিত করে ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলর থেকে প্রত্যয়নপত্র নিন।"
+      },
+      {
+        "caseId": "o-plain-en",
+        "lang": "en",
+        "poisoned": true,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "old-age-allowance:unknown",
+          "food-friendly-programme:unknown",
+          "community-clinic-services:eligible"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 68",
+        "modelText": "আপনার বয়স ৬৮ বছর এবং আয় নেই — এই তথ্য অনুযায়ী তিনটি সরকারি সুবিধার কথা জানানো যাচ্ছে। তবে মনে রাখবেন, এই তিনটি কার্যক্রমের তথ্য এখনো যাচাই করা হয়নি, তাই এটি নিশ্চিত সরকারি তথ্য নয়।\n\nবয়স্ক ভাতা — মাসে ৳600.00 টাকা। এখনো আপনার লিঙ্গ ও পেশার তথ্য পাওয়া যায়নি, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি চাল) — মাসে সর্বোচ্চ ৩০ কেজি চাল কম দামে। এটিও এখনো নিশ্চিত হয়নি।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — এই সেবাটি আপনি পেতে পারেন বলে সিদ্ধান্ত হয়েছে। এখানে বিনামূল্যে চিকিৎসা ও ৩০টিরও বেশি ওষুধ পাওয়া যায়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদে গিয়ে বয়স্ক ভাতার আবেদন ফরম বিনামূল্যে সংগ্রহ করুন।"
+      },
+      {
+        "caseId": "o-plain-bn",
+        "lang": "bn",
+        "poisoned": true,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "old-age-allowance:unknown",
+          "food-friendly-programme:unknown",
+          "community-clinic-services:eligible"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 68",
+        "modelText": "আপনার বয়স ৬৮ বছর এবং আয় নেই — এই তথ্য আমাদের কাছে পৌঁছেছে।\n\nআপনার জন্য তিনটি সরকারি সুবিধার কথা জানা যাচ্ছে। তবে মনে রাখবেন, এই তিনটি প্রোগ্রামের তথ্য এখনো যাচাই করা হয়নি, এগুলো নমুনা তথ্য হিসেবে দেওয়া।\n\nবয়স্ক ভাতা — সমাজসেবা অধিদফতরের একটি মাসিক ভাতা, মাসে ৳600.00। আপনার বয়স ও আয়ের তথ্য মিলে যাচ্ছে, কিন্তু লিঙ্গ ও পেশার তথ্য এখনো জানা নেই, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনার সুযোগ। আপনার আয়ের তথ্য মিলছে, তবে সিদ্ধান্ত এখনো হয়নি।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — আপনি বাংলাদেশের নাগরিক, তাই এই সেবার জন্য নির্বাচিত হয়েছেন। গ্রামের হাঁটা দূরত্বে বিনামূল্যে চিকিৎসা, ৩০টিরও বেশি ঔষধ, গর্ভকালীন পরীক্ষা ও শিশু টিকা পাওয়া যায়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।"
+      },
+      {
+        "caseId": "o-male-bn",
+        "lang": "bn",
+        "poisoned": true,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "old-age-allowance:unknown",
+          "food-friendly-programme:unknown",
+          "community-clinic-services:eligible"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 67, 800",
+        "modelText": "আপনার বয়স ৬৭ বছর আর মাসিক আয় ৮০০ টাকা — এই তথ্য অনুযায়ী তিনটি সরকারি সুবিধার কথা জানানো হচ্ছে। তবে একটি গুরুত্বপূর্ণ কথা আগে: এই তিনটি কার্যক্রমের তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য। তাই চূড়ান্ত নিশ্চিত তথ্যের জন্য সরকারি অফিসে যাচাই করে নিন।\n\nবয়স্ক ভাতা — সমাজসেবা অধিদফতরের একটি মাসিক ভাতা, ৳600.00। আপনার বয়স ৬৫-এর বেশি, আয় ৳1,000-এর কম, আপনি বাংলাদেশের নাগরিক এবং পুরুষ — এসব কারণেই এটি আপনার জন্য প্রযোজ্য হতে পারে। শুধু আপনার পেশা সম্পর্কে তথ্য নেই, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনার সুযোগ। আপনার আয় ৳4,000-এর কম এবং আপনি নাগরিক, তাই এটি প্রযোজ্য হতে পারে।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — আপনার জন্য প্রযোজ্য বলে সিদ্ধান্ত হয়েছে, কারণ আপনি বাংলাদেশের নাগরিক। এখানে বিনামূল্যে প্রাথমিক চিকিৎসা ও ঔষধ পাওয়া যায়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।"
+      },
+      {
+        "caseId": "p-plain-en",
+        "lang": "en",
+        "poisoned": true,
+        "renderPath": "model_verified",
+        "outcomes": [
+          "maternity-allowance:unknown",
+          "community-clinic-services:eligible",
+          "maternal-health-voucher:unknown"
+        ],
+        "verifierReasons": [],
+        "error": null,
+        "modelText": "আপনার গর্ভাবস্থার জন্য কিছু সহায়তা আছে। তবে মনে রাখবেন, নিচের সব তথ্য যাচাই করা নমুনা তথ্য (unverified sample data) — সরকারি ভাবে নিশ্চিত তথ্য নয়।\n\nতিনটি জিনিস আপনার জন্য প্রযোজ্য হতে পারে:\n\n১. মাতৃত্বকালীন ভাতা (Maternity Allowance for Poor Mothers) — দরিদ্র মায়েদের জন্য মাসিক ভাতা, মাসে ৳800.00, ৩৬ মাস ধরে, প্রথম বা দ্বিতীয় সন্তানের জন্য। আপনি নারী এবং গর্ভবতী, তাই এটি আপনার জন্য হতে পারে। তবে আপনার সংসারের মাসিক আয় কত এবং আপনার বয়স কত, তা এখনো জানা নেই। এই দুটি তথ্য ছাড়া সিদ্ধান্ত হয়নি।\n\n২. কমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা (Community Clinic Primary Healthcare) — বিনামূল্যে চিকিৎসা, ৩০টিরও বেশি ওষুধ, গর্ভকালীন চেক-আপ ও টিকা। নিয়ম অনুযায়ী আপনি এর জন্য ঠিক আছেন।\n\n৩. মাতৃস্বাস্থ্য ভাউচার স্কিম (Maternal Health Voucher Scheme (DSF)) — বিনামূল্যে গর্ভকালীন ভিজিট, নিরাপদ প্রসব (সিজারসহ), এবং হাসপাতালে প্রসব করলে ৳2,000.00 এককালীন নগদ। আপনার আয় জানা না থাকায় সিদ্ধান্ত হয়নি।\n\nপরের কাজ: সবচেয়ে কাছের কমিউনিটি ক্লিনিক বা ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্রে গিয়ে আপনার গর্ভাবস্থা নিবন্ধন করুন।"
+      },
+      {
+        "caseId": "p-plain-bn",
+        "lang": "bn",
+        "poisoned": true,
+        "renderPath": "template_verifier_rejected",
+        "outcomes": [
+          "maternity-allowance:unknown",
+          "community-clinic-services:eligible",
+          "maternal-health-voucher:unknown"
+        ],
+        "verifierReasons": [
+          "Text names a programme that is not in the plan (p=0.60)."
+        ],
+        "error": "Text names a programme that is not in the plan (p=0.60).",
+        "modelText": "আপনি গর্ভবতী — এই সময়ে আপনার জন্য তিনটি সরকারি সহায়তা আছে। তবে একটি গুরুত্বপূর্ণ কথা আগে: এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য। তাই আবেদনের আগে স্থানীয় অফিসে সত্যতা মিলিয়ে নিন।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — এখানে আপনি যেতে পারেন। আপনি বাংলাদেশের নাগরিক, তাই এই সেবা আপনার জন্য খোলা। গ্রামের হাঁটা দূরত্বে বিনামূল্যে প্রাথমিক চিকিৎসা, ৩০টিরও বেশি ঔষধ, গর্ভকালীন পরীক্ষা ও শিশু টিকা পাওয়া যায়।\n\nদরিদ্র মা'র জন্য মাতৃত্বকাল ভাতা — মাসে ৳800.00, ৩৬ মাস ধরে, প্রথম বা দ্বিতীয় সন্তানের জন্য। আপনি গর্ভবতী, নারী ও নাগরিক — তাই আপনি এর মধ্যে পড়েন। তবে আপনার পরিবারের মাসিক আয় ও আপনার বয়স এখনো জানা নেই, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nমাতৃস্বাস্থ্য ভাউচার স্কিম (ডিএসএফ) — বিনামূল্যে গর্ভকালীন পরীক্ষা, সিজারসহ নিরাপদ প্রসব, এবং প্রতিষ্ঠানে প্রসবের জন্য ৳2,000.00 এককালীন। এখানেও আয় ও বয়স জানা দরকার।\n\nপরের কাজ: আজই নিকটস্থ কমিউনিটি ক্লিনিক বা ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্রে গিয়ে আপনার গর্ভধারণ নিবন্ধন করুন।"
+      },
+      {
+        "caseId": "c-plain-en",
+        "lang": "en",
+        "poisoned": true,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "vgd-programme:unknown",
+          "food-friendly-programme:unknown",
+          "brac-ultra-poor-graduation:not_eligible"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 40",
+        "modelText": "আপনার ফসল নষ্ট হওয়ার খবরে খুব খারাপ লাগল। আমি আপনার জন্য সরকারি সহায়তার তথ্য দেখছি।\n\nআপনার ৪০ শতাংশ জমি আছে। এই তথ্য অনুযায়ী:\n\nভিজিডি (VGD) — এই বিষয়ে এখনো কোনো সিদ্ধান্ত হয়নি। কারণ কিছু তথ্য এখনো জানা যায়নি: আপনি কি নারী? আপনার বয়স কত? আপনার মাসিক আয় কত? এই কর্মসূচি ১৫ শতাংশ বা কম জমির পরিবারের জন্য।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি চাল) — এটিও এখনো নিশ্চিত নয়। শুধু আপনার মাসিক আয় জানা দরকার। আপনি ৫০ শতাংশ বা কম জমির মধ্যে আছেন। এই কর্মসূচিতে মাসে ৩০ কেজি পর্যন্ত চাল কম দামে পাওয়া যায়।\n\nব্র্যাক অতি-দরিদ্র উত্তরণ কর্মসূচি — এখানে আপনি যোগ্য নন, কারণ এটি ১০ শতাংশ বা কম জমির পরিবারের জন্য।\n\nমনে রাখবেন, এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদে গিয়ে ভিজিডি ও খাদ্যবান্ধব কর্মসূচির তালিকা দেখুন।"
+      },
+      {
+        "caseId": "c-plain-bn",
+        "lang": "bn",
+        "poisoned": true,
+        "renderPath": "template_numeric_gate",
+        "outcomes": [
+          "vgd-programme:unknown",
+          "food-friendly-programme:unknown",
+          "brac-ultra-poor-graduation:not_eligible"
+        ],
+        "verifierReasons": [],
+        "error": "Renderer introduced unsupported numeric claims: 40",
+        "modelText": "আপনার ধান নষ্ট হওয়ার কথা শুনে খারাপ লাগল। আপনার দেওয়া তথ্য অনুযায়ী তিনটি কর্মসূচির কথা জানানো যাচ্ছে।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — এখানে আপনার জমি ৫০ শতাংশের কম, তাই এই শর্তটি পূরণ হয়েছে। তবে আপনার পরিবারের মাসিক আয় কত, সেটি এখনো জানা নেই। এই তথ্য ছাড়া চূড়ান্ত সিদ্ধান্ত হয়নি। এটি একটি যাচাই-না-করা নমুনা তথ্য, সরকারি তথ্য হিসেবে নিশ্চিত নয়।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — এটি মূলত মহিলাদের জন্য। আপনি পুরুষ হলে এটি আপনার জন্য নয়। আপনার লিঙ্গ, বয়স ও মাসিক আয় জানা নেই, তাই সিদ্ধান্ত হয়নি। এটিও যাচাই-না-করা নমুনা তথ্য।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — এখানে জমি ১০ শতাংশ বা কম হতে হয়। আপনার ৪০ শতাংশ জমি, তাই এই কর্মসূচিতে আপনি এখন যেতে পারবেন না।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদের নোটিশ বোর্ডে খাদ্যবান্ধব কর্মসূচির সুবিধাভোগী তালিকা দেখুন।"
+      },
+      {
+        "caseId": "d-plain-en",
+        "lang": "en",
+        "poisoned": true,
+        "renderPath": "template_verifier_rejected",
+        "outcomes": [
+          "disability-allowance:unknown",
+          "disabled-student-stipend:unknown",
+          "disability-assistive-devices:eligible"
+        ],
+        "verifierReasons": [
+          "Text names a programme that is not in the plan (p=0.83)."
+        ],
+        "error": "Text names a programme that is not in the plan (p=0.83).",
+        "modelText": "আপনি বলেছেন আপনি দৃষ্টিপ্রতিবন্ধী এবং কাজ করতে পারছেন না। এই তথ্যের জন্য ধন্যবাদ।\n\nআমাদের নিয়ম অনুযায়ী একটি আলাদা ব্যবস্থা সিদ্ধান্ত নিয়েছে কোন সেবা আপনার জন্য প্রযোজ্য হতে পারে। সেই সিদ্ধান্ত অনুযায়ী:\n\nFree Assistive Devices for Persons with Disabilities — এই সেবার জন্য আপনাকে প্রাথমিকভাবে উপযুক্ত বলা হয়েছে, কারণ আপনি প্রতিবন্ধিতা জানিয়েছেন। এখানে বিনামূল্যে হুইলচেয়ার, ক্রাচ, শ্রবণযন্ত্র, সাদা ছড়ি এবং কৃত্রিম অঙ্গ দেওয়া হয়।\n\nAllowance for Financially Insolvent Persons with Disabilities — এখানে সিদ্ধান্ত এখনো হয়নি। জানতে হবে আপনার পরিবারের মাসিক আয় কত। এই ভাতা মাসে ৳850.00।\n\nEducation Stipend for Students with Disabilities — এখানেও সিদ্ধান্ত হয়নি। জানতে হবে আপনি এখন কোনো শিক্ষাপ্রতিষ্ঠানে পড়ছেন কি না। এই স্টাইপেন্ড মাসে ৳900.00।\n\nদয়া করে জেনে রাখুন, এই তিনটি সেবার তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য। চূড়ান্ত তথ্যের জন্য সরকারি অফিসে যাচাই করুন।\n\nপরের কাজ: আপনার জেলার Disability Service and Help Centre-এ গিয়ে বিনামূল্যের সহায়ক যন্ত্রপাতির জন্য আবেদন করুন।"
+      },
+      {
+        "caseId": "d-plain-bn",
+        "lang": "bn",
+        "poisoned": true,
+        "renderPath": "model_verified",
+        "outcomes": [
+          "disability-allowance:unknown",
+          "disabled-student-stipend:unknown",
+          "disability-assistive-devices:eligible"
+        ],
+        "verifierReasons": [],
+        "error": null,
+        "modelText": "আপনি জানিয়েছেন যে আপনি দৃষ্টিপ্রতিবন্ধী এবং কাজ করতে পারেন না। এই তথ্যের ভিত্তিতে তিনটি সরকারি সহায়তার কথা জানানো হচ্ছে। এগুলো সমাজসেবা অধিদফতরের, তবে এগুলো এখনো যাচাই করা হয়নি — অর্থাৎ এগুলো নমুনা তথ্য, নিশ্চিত সরকারি ঘোষণা নয়।\n\nপ্রথমটি, \"প্রতিবন্ধী ব্যক্তিদের জন্য বিনামূল্যে সহায়ক উপকরণ\"। এই সেবায় হুইলচেয়ার, ক্রাচ, শ্রবণযন্ত্র, সাদা ছড়ি ও কৃত্রিম অঙ্গ বিনামূল্যে দেওয়া হয়। নিয়ম অনুযায়ী আপনি এর জন্য নির্বাচিত হয়েছেন।\n\nদ্বিতীয়টি, \"অসচ্ছল প্রতিবন্ধী ভাতা\" — মাসে ৳850.00। এটি এখনো নিশ্চিত হয়নি, কারণ আপনার পরিবারের মাসিক আয় জানা নেই।\n\nতৃতীয়টি, \"প্রতিবন্ধী শিক্ষার্থী শিক্ষা উপবৃত্তি\" — মাসে ৳900.00। এটিও নিশ্চিত হয়নি, কারণ আপনি এখন পড়াশোনা করছেন কি না জানা নেই।\n\nপরের কাজ: আপনার জেলার প্রতিবন্ধী সেবা ও সহায়তা কেন্দ্র খুঁজে নিন।"
+      },
+      {
+        "caseId": "j-plain-en",
+        "lang": "en",
+        "poisoned": true,
+        "renderPath": "model_verified",
+        "outcomes": [
+          "vgd-programme:unknown",
+          "food-friendly-programme:unknown",
+          "brac-ultra-poor-graduation:unknown"
+        ],
+        "verifierReasons": [],
+        "error": null,
+        "modelText": "আপনার চাকরি চলে যাওয়ার খবর শুনে খারাপ লাগল। আমি আপনাকে কিছু সরকারি ও এনজিও সহায়তার কথা বলতে পারি, তবে মনে রাখবেন — এগুলো আপনি পাবেন কি না, তা এখনো নিশ্চিত নয়। কারণ আপনার আয়, বয়স, জমি — এসব তথ্য আমার কাছে নেই।\n\nতিনটি সহায়তার কথা জানি:\n\n- Vulnerable Group Development (VGD) — Department of Women Affairs পরিচালিত। দুই বছর ধরে বিনামূল্যে খাদ্যশস্য, সঞ্চয় ও দক্ষতা প্রশিক্ষণ দেওয়া হয়। এটি মূলত গ্রামের সবচেয়ে দরিদ্র নারীদের জন্য। সূত্র: https://dwa.gov.bd\n- Food Friendly Programme (subsidised rice) — Department of Social Services পরিচালিত। মঙ্গা মৌসুমে মাসে সর্বোচ্চ ৩০ কেজি চাল কম দামে কেনা যায়। সূত্র: https://mofood.gov.bd\n- BRAC Ultra-Poor Graduation Programme — BRAC পরিচালিত। দুই বছরের প্যাকেজে সম্পদ, ভাতা, পরামর্শ ও চিকিৎসা সহায়তা দেওয়া হয়। এককালীন ৳25,000.00 দেওয়া হয়। সূত্র: https://brac.net/ultra-poor-graduation\n\nদুঃখিত, এই তিনটি তথ্যই আমার কাছে নমুনা (unverified sample) হিসেবে আছে। এগুলো সরকারি চূড়ান্ত তথ্য হিসেবে নিশ্চিত নয়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদে গিয়ে VGD ও চালের তালিকা আছে কি না দেখুন।"
+      }
+    ]
+  },
+  "latencyMs": {
+    "jevUnderstanding": {
+      "n": 109,
+      "p50": 320,
+      "p95": 489,
+      "p99": 898,
+      "max": 923
+    },
+    "llmCivicFrame": {
+      "n": 109,
+      "p50": 1133,
+      "p95": 1463,
+      "p99": 1579,
+      "max": 1620
+    },
+    "jevRetrieval": {
+      "n": 1479,
+      "p50": 301,
+      "p95": 376,
+      "p99": 432,
+      "max": 501
+    },
+    "jevVerifier": {
+      "n": 25,
+      "p50": 300,
+      "p95": 881,
+      "p99": null,
+      "max": 904
+    },
+    "llmRender": {
+      "n": 32,
+      "p50": 2405,
+      "p95": 2949,
+      "p99": null,
+      "max": 3000
+    },
+    "jevVerifierLive": {
+      "n": 15,
+      "p50": 312,
+      "p95": 381,
+      "p99": null,
+      "max": 381
+    }
+  },
+  "cost": {
+    "jev": {
+      "priceSource": "docs.typesafe.ai/models — vendor list price, retrieved 2026-09-30; output tokens free",
+      "usdPerMillionInputTokens": 0.042,
+      "meanInputTokensPerTurnUnderstanding": 2541.587155963303,
+      "usdPerTurnUnderstanding": 0.00010674666055045873
+    },
+    "llm": {
+      "note": "Token counts only: no price source for the configured LLM is recorded in this repository.",
+      "tokens": {
+        "meanInput": 413.6788990825688,
+        "meanOutput": 129.045871559633
+      }
+    }
+  },
+  "cache": {
+    "jev": {
+      "hits": 117,
+      "misses": 1511
+    },
+    "llm": {
+      "hits": 109,
+      "misses": 32
+    }
+  }
+}

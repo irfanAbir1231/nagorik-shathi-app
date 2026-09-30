@@ -1,9 +1,9 @@
 {
   "version": "shebar-janala-eval-v1.0.0",
-  "generatedAt": "2026-09-02T21:18:57.395Z",
+  "generatedAt": "2026-09-30T06:57:01.241Z",
   "randomSeed": 20260903,
   "environment": {
-    "node": "v22.18.0",
+    "node": "v24.18.0",
     "liveModelsEnabled": false
   },
   "retrieval": {
@@ -46,8 +46,8 @@
     "embeddingModel": null,
     "embeddingReason": "Set EVAL_ENABLE_LIVE_MODELS=true with an embedding-capable provider to run.",
     "latencyMs": {
-      "median": 0.22730000000001382,
-      "p95": 0.4836999999999989
+      "median": 0.3780999999999608,
+      "p95": 0.7669999999999959
     }
   },
   "eligibility": {
@@ -60,8 +60,8 @@
     "unknownHandlingAccuracy": 1,
     "disagreements": [],
     "latencyMs": {
-      "median": 0.004300000000000637,
-      "p95": 0.015199999999992997
+      "median": 0.008499999999969532,
+      "p95": 0.04780000000005202
     }
   },
   "safety": {
@@ -96,7 +96,7 @@
       {
         "category": "provider_failure",
         "passed": true,
-        "evidence": "Provider outage preserved deterministic extraction and exposed degraded state."
+        "evidence": "Provider outage preserved deterministic extraction (held for confirmation, never trusted) and exposed degraded state."
       },
       {
         "category": "unsupported_citation",

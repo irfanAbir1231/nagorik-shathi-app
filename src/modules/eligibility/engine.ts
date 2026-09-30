@@ -283,12 +283,31 @@ interface Walked {
   readonly trace: NodeTrace;
   readonly state: ConditionState;
   readonly conditions: ConditionTrace[];
+  /**
+   * The leaves that DETERMINED this node's state — the only ones an
+   * explanation may cite. A losing `any` branch ("Men qualify from age 65"
+   * for a 67-year-old man who qualified on the men's branch… or a woman on
+   * hers) did not decide anything and must not be reported as a reason.
+   */
+  readonly decisive: ConditionTrace[];
+}
+
+/**
+ * The trace of a condition that sits directly under a `none` group, stated
+ * from the group's point of view: the child MATCHING is the exclusion, so it
+ * is reported as a failure with the author's `whenFailed` copy (e.g. "Households
+ * with a government salary are excluded"), and not matching is reported as met.
+ */
+function invertedTrace(condition: RuleCondition, trace: ConditionTrace): ConditionTrace {
+  if (trace.state === 'unknown') return trace;
+  const state: ConditionState = trace.state === 'met' ? 'failed' : 'met';
+  return { ...trace, state, reason: state === 'failed' ? condition.whenFailed : condition.whenMet };
 }
 
 function walk(node: RuleNode, profile: EligibilityProfile): Walked {
   if (node.kind === 'condition') {
     const trace = traceCondition(node, profile);
-    return { trace, state: trace.state, conditions: [trace] };
+    return { trace, state: trace.state, conditions: [trace], decisive: [trace] };
   }
 
   const walked = node.children.map((child) => walk(child, profile));
@@ -297,6 +316,39 @@ function walk(node: RuleNode, profile: EligibilityProfile): Walked {
     child.kind === 'condition' ? (child.soft ?? false) : false,
   );
   const state = combine(node.kind, childStates, softFlags);
+
+  // Mirror `combine`: soft children only count when there are no hard ones.
+  const hasHard = softFlags.some((soft) => !soft);
+  const counts = (i: number) => !softFlags[i] || !hasHard;
+  const pick = (predicate: (i: number) => boolean) =>
+    walked.flatMap((w, i) => (predicate(i) ? w.decisive : []));
+
+  let decisive: ConditionTrace[];
+  if (node.kind === 'all') {
+    // A hard failure alone decides a failed `all`; otherwise every child
+    // (including soft misses, which are the reason for a partial result) matters.
+    // An unknown SOFT child blocks nothing, so it is not a reason to ask either.
+    decisive =
+      state === 'failed'
+        ? pick((i) => !softFlags[i] && walked[i]!.state === 'failed')
+        : pick((i) => !(softFlags[i] && walked[i]!.state === 'unknown'));
+  } else if (node.kind === 'any') {
+    decisive =
+      state === 'failed'
+        ? pick(counts)
+        : pick((i) => counts(i) && walked[i]!.state === state);
+  } else {
+    const relevant =
+      state === 'failed'
+        ? walked.map((w, i) => (w.state === 'met' ? i : -1)).filter((i) => i >= 0)
+        : state === 'unknown'
+          ? walked.map((w, i) => (w.state === 'unknown' ? i : -1)).filter((i) => i >= 0)
+          : walked.map((_, i) => i);
+    decisive = relevant.flatMap((i) => {
+      const child = node.children[i]!;
+      return child.kind === 'condition' ? [invertedTrace(child, walked[i]!.trace as ConditionTrace)] : walked[i]!.decisive;
+    });
+  }
 
   return {
     trace: {
@@ -308,6 +360,7 @@ function walk(node: RuleNode, profile: EligibilityProfile): Walked {
     },
     state,
     conditions: walked.flatMap((w) => w.conditions),
+    decisive,
   };
 }
 
@@ -322,7 +375,10 @@ export function evaluateEligibility(
   profile: EligibilityProfile,
   options: EvaluateOptions = {},
 ): EvaluationResult {
-  const { trace, state, conditions } = walk(ruleSet.root, profile);
+  // `conditions` (every leaf) stays in the full `trace` for audit; the summary
+  // lists, the outcome's soft-failure test, coverage, and the score all use
+  // the DECISIVE leaves, so an explanation can only cite what decided it.
+  const { trace, state, decisive: conditions, conditions: allLeaves } = walk(ruleSet.root, profile);
 
   /**
    * Reasons are ordered by WEIGHT descending, not by tree position.
@@ -355,7 +411,9 @@ export function evaluateEligibility(
   // Weighted score over hard conditions only. Unknowns contribute nothing —
   // they neither reward nor punish, which keeps ranking honest for incomplete
   // profiles instead of pushing them to the bottom.
-  const hardConditions = conditions.filter((c) => !c.soft);
+  // The ranking score is a heuristic over EVERY leaf (how close the citizen is
+  // to the whole rule), not an explanation, so it is not limited to decisive ones.
+  const hardConditions = allLeaves.filter((c) => !c.soft);
   const totalWeight = hardConditions.reduce((sum, c) => sum + c.weight, 0);
   const earned = hardConditions
     .filter((c) => c.state === 'met')

@@ -216,6 +216,45 @@ export async function retrieve(query: string, options: RetrieveOptions = {}): Pr
   return diverse;
 }
 
+/**
+ * Structured retrieval by life-event metadata alone — the fallback when the
+ * citizen's wording matched nothing lexically but their situation was
+ * understood (typically Banglish, or phrasing absent from the corpus).
+ *
+ * The previous fallback re-ran BM25 with the event CODES as the query
+ * ("widowhood"), which almost never matches, because chunks do not contain the
+ * codes. This returns each matching programme's first chunk with a zero
+ * lexical score, so downstream code and the log can see it was a metadata hit.
+ */
+export async function retrieveByLifeEvents(
+  lifeEvents: readonly string[],
+  options: { district?: string | null; limit?: number } = {},
+): Promise<RetrievedChunk[]> {
+  if (lifeEvents.length === 0) return [];
+  const candidates = await loadCandidates({ lifeEvents, district: options.district ?? null });
+  const seen = new Set<string>();
+  const out: RetrievedChunk[] = [];
+  for (const candidate of candidates) {
+    const key = candidate.opportunityId ?? candidate.documentId;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({
+      chunkId: candidate.chunkId,
+      opportunityId: candidate.opportunityId,
+      documentId: candidate.documentId,
+      content: candidate.content,
+      title: candidate.title ?? 'Untitled',
+      slug: candidate.slug,
+      sourceUrl: candidate.sourceUrl,
+      lexicalScore: 0,
+      semanticScore: 0,
+      score: 0,
+    });
+    if (out.length >= (options.limit ?? 8)) break;
+  }
+  return out;
+}
+
 /** Distinct programme ids from a retrieval result, in relevance order. */
 export function opportunityIdsFrom(chunks: readonly RetrievedChunk[]): string[] {
   const seen = new Set<string>();

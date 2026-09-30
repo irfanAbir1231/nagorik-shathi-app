@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     const body = upsertRuleSchema.parse(await readJson(request));
 
     const [opportunity] = await db
-      .select({ id: opportunities.id, title: opportunities.title })
+      .select({ id: opportunities.id, title: opportunities.title, verificationStatus: opportunities.verificationStatus })
       .from(opportunities)
       .where(eq(opportunities.id, body.opportunityId))
       .limit(1);
@@ -97,16 +97,29 @@ export async function POST(request: NextRequest) {
       })
       .returning();
 
+    // A verification covers the rules as much as the text: activating a new
+    // rule version on a verified programme returns it to review, so a changed
+    // rule can never inherit the uncapped confidence of a verified record.
+    // (Previously any staff member could publish and activate a rule on a
+    // verified programme with no review and no change of status.)
+    const resetVerification = body.active && opportunity.verificationStatus === 'verified';
+    if (resetVerification) {
+      await db
+        .update(opportunities)
+        .set({ verificationStatus: 'pending_review', lastVerifiedAt: null, updatedAt: new Date() })
+        .where(eq(opportunities.id, body.opportunityId));
+    }
+
     await recordAudit({
       actorId: guard.session.userId,
       actorRole: guard.session.role,
       action: 'rule.publish',
       entityType: 'eligibility_rule',
       entityId: created!.id,
-      after: { opportunityId: body.opportunityId, version: nextVersion },
+      after: { opportunityId: body.opportunityId, version: nextVersion, verificationReset: resetVerification },
     });
 
-    return ok({ rule: created, smokeTest: smoke, version: nextVersion }, { status: 201 });
+    return ok({ rule: created, smokeTest: smoke, version: nextVersion, verificationReset: resetVerification }, { status: 201 });
   }, 'admin/rules:post');
 }
 

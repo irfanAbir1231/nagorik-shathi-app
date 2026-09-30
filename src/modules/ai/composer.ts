@@ -38,6 +38,11 @@ const T = {
     rolling: 'সারা বছর খোলা',
     sampleWarning:
       'মনে রাখবেন: এই তথ্য এখনো যাচাই করা হয়নি — নমুনা তথ্য। আবেদনের আগে সংশ্লিষ্ট অফিসে নিশ্চিত করে নিন।',
+    staleWarning:
+      'মনে রাখবেন: এই কর্মসূচির তথ্য পুরনো হয়ে থাকতে পারে বা এ নিয়ে প্রশ্ন আছে। আবেদনের আগে অফিসে নিশ্চিত করুন।',
+    partialBecause: 'যে শর্ত এখনো মেলেনি',
+    confirmQuestion: (label: string, value: string) => `আমি বুঝেছি আপনার ${label}: "${value}"। এটা কি ঠিক? নিচের বোতাম চেপে নিশ্চিত করুন, অথবা সঠিক তথ্যটি লিখুন।`,
+    conflictQuestion: (label: string, stored: string, stated: string) => `আপনার প্রোফাইলে ${label} "${stored}", কিন্তু আপনি বললেন "${stated}"। কোনটি ঠিক?`,
     nextStep: 'পরবর্তী পদক্ষেপ',
     noResults:
       'আপনার বর্ণনার সঙ্গে মেলে এমন যাচাই করা কোনো কর্মসূচি আমি এখন খুঁজে পাচ্ছি না। আমি অনুমান করে কিছু বলব না।',
@@ -72,6 +77,11 @@ const T = {
     rolling: 'Open all year',
     sampleWarning:
       'Please note: this information has not been verified yet — it is sample data. Confirm at the relevant office before applying.',
+    staleWarning:
+      'Please note: the information for this programme may be out of date or is disputed. Confirm at the office before applying.',
+    partialBecause: 'Not yet met',
+    confirmQuestion: (label: string, value: string) => `I understood your ${label} as "${value}". Is that right? Confirm with the button below, or tell me the correct answer.`,
+    conflictQuestion: (label: string, stored: string, stated: string) => `Your profile says your ${label} is "${stored}", but you told me "${stated}". Which is correct?`,
     nextStep: 'Next step',
     noResults:
       'I cannot find a verified programme that matches what you described. I will not guess.',
@@ -117,6 +127,9 @@ function opportunityBlock(o: PlannedOpportunity, locale: 'bn' | 'en'): string {
     const shown = reasons.slice(0, 2).map((r) => pickLocalised(r, locale));
     lines.push(`${t.because}: ${shown.join(' ')}`);
   }
+  if (o.outcome === 'partially_eligible' && (o.softFailedReasons ?? []).length > 0) {
+    lines.push(`${t.partialBecause}: ${pickLocalised(o.softFailedReasons[0]!, locale)}`);
+  }
   if (o.unknownReasons.length > 0 && o.outcome === 'unknown') {
     lines.push(`${t.needToKnow}: ${pickLocalised(o.unknownReasons[0]!, locale)}`);
   }
@@ -149,6 +162,12 @@ export function composeResponse(plan: ResponsePlan): string {
   if (plan.kind === 'clarification') {
     const label = plan.missingFieldLabel ? pickLocalised(plan.missingFieldLabel, locale) : '';
     const reason = plan.missingFieldReason ? pickLocalised(plan.missingFieldReason, locale) : '';
+    const values = plan.clarificationValues;
+    const stated = values?.stated ? pickLocalised(values.stated, locale) : '';
+    if (plan.clarificationKind === 'confirm') return t.confirmQuestion(label, stated);
+    if (plan.clarificationKind === 'conflict') {
+      return t.conflictQuestion(label, values?.profile ? pickLocalised(values.profile, locale) : '', stated);
+    }
     const question = locale === 'bn' ? `আপনার ${label} কত?` : `What is your ${label}?`;
     return reason ? `${question}\n\n${t.askWhy}: ${reason}` : question;
   }
@@ -184,9 +203,11 @@ export function composeResponse(plan: ResponsePlan): string {
     for (const o of group) sections.push(opportunityBlock(o, locale));
   }
 
-  if (plan.opportunities.some((o) => o.isUnverified)) {
-    sections.push(t.sampleWarning);
-  }
+  // Every status short of `verified` is flagged; outdated and disputed
+  // records get the stronger warning.
+  const statuses = new Set(plan.opportunities.map((o) => o.verificationStatus ?? (o.isUnverified ? 'unverified_sample' : 'verified')));
+  if (statuses.has('outdated') || statuses.has('disputed')) sections.push(t.staleWarning);
+  else if ([...statuses].some((s) => s !== 'verified')) sections.push(t.sampleWarning);
 
   sections.push(t.seeDetails);
   return sections.join('\n\n');

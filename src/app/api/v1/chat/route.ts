@@ -54,6 +54,8 @@ export async function POST(request: NextRequest) {
           profileUpdated: result.profileUpdated,
           engine: result.engine,
           degraded: result.degraded,
+          renderPath: result.renderPath,
+          semanticEngine: result.civicFrame.engine,
         },
         { meta: { latencyMs: result.latencyMs, ai: describeAiMode() } },
       );

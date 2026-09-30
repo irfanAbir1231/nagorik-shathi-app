@@ -5,32 +5,50 @@ import {
   type Conversation, type Message,
 } from '@/lib/db/schema';
 import type { NluResult } from './nlu';
-import { confirmedProfile, inferCivicFrame, type CivicFrame } from './civic-frame';
-import { retrieve, opportunityIdsFrom, type RetrievedChunk } from '@/modules/knowledge/retrieval';
+import { inferCivicFrame, type CivicFrame } from './civic-frame';
+import { retrieve, retrieveByLifeEvents, opportunityIdsFrom, type RetrievedChunk } from '@/modules/knowledge/retrieval';
 import { listOpportunities, recordEvaluation, type EnrichedOpportunity } from '@/modules/opportunities/opportunity.service';
 import { toEligibilityProfile } from '@/modules/eligibility/profile-mapper';
-import { fieldLabel, type EligibilityProfile } from '@/modules/eligibility/engine';
-import { composeResponse } from './composer';
-import { assertNumericGrounding } from './grounding';
+import { fieldLabel, type ConditionTrace, type EligibilityProfile } from '@/modules/eligibility/engine';
+import { renderTurn, type RenderPath } from './render';
 import { getProvider } from './providers';
+import { getDecisionModel } from './decision/jev';
+import { env, resolveSemanticEngine } from '@/lib/config/env';
+import { judgeRelevance, RELEVANCE_VERSION } from './relevance';
+import type { Judgment } from './semantic-frame';
 import { PROMPTS } from '@/prompts';
-import { pickLocalised, type PlannedOpportunity, type ResponsePlan } from './response-plan';
-import type { Intent, LifeEvent } from '@/lib/domain/enums';
+export type { RenderPath } from './render';
+import {
+  isPlaceholderReason,
+  type DecisionStatus, type PlanEvidence, type PlanFact, type PlannedCondition, type PlannedOpportunity, type ResponsePlan,
+} from './response-plan';
+import { buildLedger, type ConversationFact, type Ledger } from './evidence';
+import { factLabel, valueLabel } from './fact-labels';
+import { VERIFIER_VERSION } from './verifier';
+import type { EvidenceFact } from './semantic-frame';
+import type { Intent } from '@/lib/domain/enums';
 import type { RuleField } from '@/lib/domain/rules';
-import { formatDate } from '@/lib/format/dates';
-import { encryptStringArray, decryptStringArray } from '@/lib/security/field-encryption';
+import { decryptStringArray } from '@/lib/security/field-encryption';
 
 /**
- * Conversation pipeline — PRD §19 and §14.
+ * Conversation pipeline.
  *
- * Input → NLU → profile update → missing-information check → retrieval →
- * eligibility → ranking → plan → render → persist.
+ *   message ─► semantic interpretation (Jev | LLM frame | patterns)   evidence, not decisions
+ *           ─► evidence ledger (profile ⊕ this conversation)          what may be used, and why
+ *           ─► retrieval (SQL metadata filter → BM25)                  candidate programmes
+ *           ─► deterministic rule engine                               the ONLY eligibility authority
+ *           ─► plan (verdicts, decisive reasons, provenance, status)
+ *           ─► render (LLM prose, gated: injection → numbers → Jev verifier) or template
+ *           ─► persist (message, evidence, evaluation snapshots, ai_log)
  *
- * The ordering is the point. Eligibility and retrieval happen BEFORE any model
- * is involved, so the model can only voice conclusions the deterministic layer
- * already reached (PRD Principle 4). If retrieval finds nothing, the plan says
- * so and the model is not called at all — there is no path by which an
- * unsupported answer can be produced.
+ * The ordering is the point. Nothing after the rule engine can change a
+ * verdict: the model's prose is only `text`, and it is shown only if it passes
+ * the gates. Nothing before the rule engine can make a verdict: interpretation
+ * produces facts with probabilities, and only ACCEPTED facts reach the engine.
+ *
+ * Conversation facts are conversation-scoped. This service never writes the
+ * citizen's profile — a fact becomes a profile fact only when the citizen
+ * confirms it through the profile API (the "save to my profile" action).
  */
 
 const MAX_HISTORY_MESSAGES = 8;
@@ -51,9 +69,11 @@ export interface TurnResult {
   readonly plan: ResponsePlan;
   readonly nlu: NluResult;
   readonly civicFrame: CivicFrame;
+  /** Always empty now: chat never writes the profile. Kept for API compatibility. */
   readonly profileUpdated: readonly string[];
   readonly engine: string;
   readonly degraded: boolean;
+  readonly renderPath: RenderPath;
   readonly latencyMs: number;
 }
 
@@ -87,105 +107,83 @@ async function loadHistory(conversationId: string): Promise<Message[]> {
 }
 
 /**
- * Merges newly extracted entities into the stored profile.
- *
- * Only writes fields the citizen has actually stated, and never overwrites an
- * existing value with a weaker one — a passing mention should not clobber a
- * value the citizen entered deliberately on the profile form.
+ * Every fact stated earlier in THIS conversation, oldest first, read back from
+ * the assistant messages that recorded them. Reading all turns (not the last
+ * eight) means a fact does not silently expire mid-conversation.
  */
-async function applyExtractedEntities(
-  userId: string,
-  extracted: Partial<EligibilityProfile>,
-  detectedEvents: readonly LifeEvent[],
-): Promise<string[]> {
-  const [existing] = await db.select().from(userProfiles).where(eq(userProfiles.userId, userId)).limit(1);
-  const applied: string[] = [];
-  const patch: Record<string, unknown> = {};
-
-  const setIfAbsent = (column: string, value: unknown, currentValue: unknown) => {
-    if (value === undefined || value === null) return;
-    if (currentValue !== null && currentValue !== undefined) return;
-    patch[column] = value;
-    applied.push(column);
-  };
-
-  if (existing) {
-    setIfAbsent('statedAge', extracted.age, existing.dateOfBirth ?? existing.statedAge);
-    setIfAbsent('gender', extracted.gender, existing.gender);
-    setIfAbsent('maritalStatus', extracted.maritalStatus, existing.maritalStatus);
-    setIfAbsent('occupation', extracted.occupation, existing.occupation);
-    setIfAbsent('monthlyIncome', extracted.monthlyIncome, existing.monthlyIncome);
-    setIfAbsent('education', extracted.education, existing.education);
-    setIfAbsent('cgpa', extracted.cgpa, existing.cgpa);
-    setIfAbsent('district', extracted.district, existing.district);
-    setIfAbsent('division', extracted.division, existing.division);
-    setIfAbsent('hasDisability', extracted.hasDisability, existing.hasDisability);
-    setIfAbsent('isPregnant', extracted.isPregnant, existing.isPregnant);
-    setIfAbsent('householdSize', extracted.householdSize, existing.householdSize);
-    setIfAbsent('landOwnershipDecimals', extracted.landOwnershipDecimals, existing.landOwnershipDecimals);
-    setIfAbsent('isStudent', extracted.isStudent, existing.isStudent);
-    setIfAbsent('hasBusiness', extracted.hasBusiness, existing.hasBusiness);
-
-    // Medical conditions are only stored with explicit consent (PRD §68), and
-    // encrypted at rest (SJ-44) — `existing.medicalConditions` is ciphertext,
-    // decrypted here before merging; `patch.medicalConditions` is encrypted
-    // again before the write below.
-    if (extracted.medicalConditions && existing.shareHealthData) {
-      const currentConditions = decryptStringArray(existing.medicalConditions) ?? [];
-      const merged = [...new Set([...currentConditions, ...extracted.medicalConditions])];
-      patch.medicalConditions = encryptStringArray(merged);
-      applied.push('medicalConditions');
-    }
-
-    if (detectedEvents.length > 0) {
-      const known = new Set((existing.lifeEvents ?? []).map((e) => e.event));
-      const additions = detectedEvents
-        .filter((e) => !known.has(e))
-        .map((e) => ({ event: e, detectedAt: Date.now(), source: 'conversation' as const }));
-      if (additions.length > 0) {
-        patch.lifeEvents = [...(existing.lifeEvents ?? []), ...additions];
-        applied.push('lifeEvents');
-      }
-    }
-
-    if (Object.keys(patch).length > 0) {
-      await db
-        .update(userProfiles)
-        .set({ ...patch, updatedAt: new Date() })
-        .where(eq(userProfiles.userId, userId));
-    }
-    return applied;
+async function loadConversationFacts(conversationId: string): Promise<ConversationFact[]> {
+  const rows = await db
+    .select({ payload: messages.payload })
+    .from(messages)
+    .where(and(eq(messages.conversationId, conversationId), eq(messages.role, 'assistant')))
+    .orderBy(asc(messages.createdAt));
+  const out: ConversationFact[] = [];
+  for (const row of rows) {
+    const facts = (row.payload as { evidenceFacts?: unknown } | null)?.evidenceFacts;
+    if (Array.isArray(facts)) out.push(...(facts as ConversationFact[]));
   }
-
-  // No profile row yet — create one from whatever was stated.
-  const insert: Record<string, unknown> = { userId, shareHealthData: false };
-  const fields: [string, unknown][] = [
-    ['statedAge', extracted.age], ['gender', extracted.gender], ['maritalStatus', extracted.maritalStatus],
-    ['occupation', extracted.occupation], ['monthlyIncome', extracted.monthlyIncome],
-    ['education', extracted.education], ['cgpa', extracted.cgpa], ['district', extracted.district],
-    ['division', extracted.division], ['hasDisability', extracted.hasDisability],
-    ['isPregnant', extracted.isPregnant], ['householdSize', extracted.householdSize],
-    ['landOwnershipDecimals', extracted.landOwnershipDecimals], ['isStudent', extracted.isStudent],
-    ['hasBusiness', extracted.hasBusiness],
-  ];
-  for (const [key, value] of fields) {
-    if (value !== undefined && value !== null) {
-      insert[key] = value;
-      applied.push(key);
-    }
-  }
-  if (detectedEvents.length > 0) {
-    insert.lifeEvents = detectedEvents.map((e) => ({ event: e, detectedAt: Date.now(), source: 'conversation' as const }));
-    applied.push('lifeEvents');
-  }
-  await db.insert(userProfiles).values(insert as never);
-  return applied;
+  return out;
 }
 
 /* ------------------------------------------------------------- planning */
 
-function toPlannedOpportunity(item: EnrichedOpportunity, locale: 'bn' | 'en'): PlannedOpportunity {
+function conditionOf(trace: ConditionTrace, ledger: Ledger): PlannedCondition {
+  const p = ledger.provenance[trace.field];
+  return {
+    field: trace.field,
+    state: trace.state,
+    soft: trace.soft,
+    reason: trace.reason,
+    ...(trace.actual !== undefined ? { actual: trace.actual } : {}),
+    ...(p && trace.state !== 'unknown'
+      ? { provenance: { source: p.source, method: p.method, probability: p.probability, ...(p.note ? { note: p.note } : {}) } }
+      : {}),
+    ...(trace.citation ? { citation: trace.citation } : {}),
+  };
+}
+
+/**
+ * What may be done with a verdict — separate from the verdict. Every rule
+ * below is a policy statement; none is learned.
+ */
+function decisionStatusOf(
+  item: EnrichedOpportunity,
+  ledger: Ledger,
+  injectionFlagged: boolean,
+): { status: DecisionStatus; reasons: string[] } {
+  const outcome = item.evaluation.outcome;
+  const pendingFields = new Set<string>(ledger.pending.map((f) => f.field));
+  const conflictFields = new Set<string>(ledger.conflicts.map((c) => c.field));
+  const reasons: string[] = [];
+
+  if (outcome === 'unknown') {
+    const unknownFields = [...item.evaluation.unknown.map((c) => c.field), ...item.evaluation.missingFields];
+    if (unknownFields.some((f) => conflictFields.has(f))) return { status: 'review', reasons: ['conflicting_facts'] };
+    if (unknownFields.some((f) => pendingFields.has(f))) return { status: 'needs_confirmation', reasons: ['fact_awaiting_confirmation'] };
+    return { status: 'needs_information', reasons: [] };
+  }
+
+  const positive = outcome === 'eligible' || outcome === 'partially_eligible';
+  if (positive && item.opportunity.verificationStatus !== 'verified') reasons.push(`source_${item.opportunity.verificationStatus}`);
+  if (positive && injectionFlagged) reasons.push('instruction_injection_suspected');
+  return reasons.length > 0 ? { status: 'review', reasons } : { status: 'decided', reasons: [] };
+}
+
+function evidenceStrengthOf(conditions: readonly PlannedCondition[]): number | null {
+  const probabilities = conditions
+    .filter((c) => c.state !== 'unknown' && c.provenance?.method === 'jev' && c.provenance.probability !== null)
+    .map((c) => c.provenance!.probability as number);
+  return probabilities.length > 0 ? Math.min(...probabilities) : null;
+}
+
+function toPlannedOpportunity(item: EnrichedOpportunity, ledger: Ledger, injectionFlagged: boolean): PlannedOpportunity {
   const firstStep = item.opportunity.applicationProcess[0];
+  const e = item.evaluation;
+  const conditions = [...e.matched, ...e.failed, ...e.softFailed, ...e.unknown]
+    .filter((c) => !isPlaceholderReason(c.reason))
+    .map((c) => conditionOf(c, ledger));
+  const reasonsOf = (list: readonly ConditionTrace[]) => list.map((c) => c.reason).filter((r) => !isPlaceholderReason(r));
+  const decision = decisionStatusOf(item, ledger, injectionFlagged);
   return {
     id: item.opportunity.id,
     slug: item.opportunity.slug,
@@ -193,16 +191,25 @@ function toPlannedOpportunity(item: EnrichedOpportunity, locale: 'bn' | 'en'): P
     summary: { en: item.opportunity.summary, bn: item.opportunity.summaryBn },
     organisation: { en: item.organization.name, bn: item.organization.nameBn },
     category: item.opportunity.category,
-    outcome: item.evaluation.outcome,
+    outcome: e.outcome,
     benefitAmount: item.opportunity.benefitAmount,
     benefitPeriod: item.opportunity.benefitPeriod,
     deadline: item.opportunity.deadline,
     relevance: item.ranking?.total ?? 0,
     confidence: item.confidence.score,
-    isUnverified: item.opportunity.verificationStatus === 'unverified_sample',
-    metReasons: item.evaluation.matched.map((c) => c.reason),
-    failedReasons: item.evaluation.failed.map((c) => c.reason),
-    unknownReasons: item.evaluation.unknown.map((c) => c.reason),
+    verificationStatus: item.opportunity.verificationStatus,
+    // Anything short of `verified` is unverified. The previous check matched
+    // only `unverified_sample`, so `outdated` and `disputed` records were shown
+    // as verified in chat.
+    isUnverified: item.opportunity.verificationStatus !== 'verified',
+    metReasons: reasonsOf(e.matched),
+    failedReasons: reasonsOf(e.failed),
+    unknownReasons: reasonsOf(e.unknown),
+    softFailedReasons: reasonsOf(e.softFailed),
+    conditions,
+    decisionStatus: decision.status,
+    reviewReasons: decision.reasons,
+    evidenceStrength: evidenceStrengthOf(conditions),
     nextStep: firstStep ? { en: firstStep.en, bn: firstStep.bn } : null,
     sourceUrl: item.opportunity.sourceUrl,
   };
@@ -230,12 +237,91 @@ function chooseMissingField(items: readonly EnrichedOpportunity[]): RuleField | 
   return [...counts.entries()].sort((a, b) => b[1] - a[1])[0]![0];
 }
 
-function reasonForField(field: RuleField, locale: 'bn' | 'en'): { en: string; bn: string } {
+function reasonForField(field: RuleField): { en: string; bn: string } {
   const label = fieldLabel(field);
   return {
     en: `Several programmes decide by ${label.en}, so knowing it lets me tell you which ones you can actually get.`,
     bn: `কয়েকটি কর্মসূচি ${label.bn} দেখে সিদ্ধান্ত নেয়, তাই এটি জানলে আমি বলতে পারব আপনি কোনগুলো সত্যিই পাবেন।`,
   };
+}
+
+/**
+ * What to ask first. A contradiction is resolved before anything else (a
+ * verdict built on it would be arbitrary), then a fact the citizen said but we
+ * are not sure we understood, then the highest-leverage missing field.
+ */
+function chooseClarification(items: readonly EnrichedOpportunity[], ledger: Ledger): Pick<
+  ResponsePlan, 'missingField' | 'missingFieldLabel' | 'missingFieldReason' | 'clarificationKind' | 'clarificationValues'
+> | null {
+  const undecidedFields = new Set(
+    items
+      .filter((i) => i.evaluation.outcome === 'unknown')
+      .flatMap((i) => [...i.evaluation.unknown.map((c) => c.field), ...i.evaluation.missingFields]),
+  );
+  const conflict = ledger.conflicts.find((c) => undecidedFields.has(c.field as RuleField));
+  if (conflict) {
+    const field = conflict.field as RuleField;
+    const stated = valueLabel(field, conflict.conversationValue);
+    const stored = valueLabel(field, conflict.profileValue);
+    return {
+      missingField: field,
+      missingFieldLabel: fieldLabel(field),
+      clarificationKind: 'conflict',
+      clarificationValues: { stated, profile: stored },
+      missingFieldReason: {
+        en: `Your profile says "${stored.en}", but you told me "${stated.en}". I will not guess which is right.`,
+        bn: `আপনার প্রোফাইলে আছে "${stored.bn}", কিন্তু আপনি বললেন "${stated.bn}"। কোনটি ঠিক, তা আমি অনুমান করব না।`,
+      },
+    };
+  }
+  const pending = ledger.pending.find((f) => undecidedFields.has(f.field as RuleField));
+  if (pending) {
+    const field = pending.field as RuleField;
+    const label = factLabel(field, pending.value);
+    return {
+      missingField: field,
+      missingFieldLabel: fieldLabel(field),
+      clarificationKind: 'confirm',
+      clarificationValues: { stated: valueLabel(field, pending.value) },
+      missingFieldReason: {
+        en: `I understood "${label.en}", but I am not certain, so I have not used it yet.`,
+        bn: `আমি বুঝেছি "${label.bn}", কিন্তু নিশ্চিত নই, তাই এখনো এটি ব্যবহার করিনি।`,
+      },
+    };
+  }
+  const missing = chooseMissingField(items);
+  if (!missing) return null;
+  return { missingField: missing, missingFieldLabel: fieldLabel(missing), missingFieldReason: reasonForField(missing), clarificationKind: 'missing' };
+}
+
+/** Maps a fact to the profile API's field name, for "save to my profile". */
+const PROFILE_FIELD: Partial<Record<string, string>> = { age: 'statedAge' };
+const SAVEABLE_FIELDS = new Set([
+  'maritalStatus', 'gender', 'occupation', 'education', 'hasDisability', 'isPregnant', 'isStudent',
+  'hasBusiness', 'monthlyIncome', 'age', 'householdSize', 'dependents', 'landOwnershipDecimals', 'cgpa', 'district',
+]);
+
+function planEvidence(frame: CivicFrame, ledger: Ledger): PlanEvidence {
+  const facts: PlanFact[] = [];
+  for (const [field, p] of Object.entries(ledger.provenance)) {
+    if (field === 'annualIncome' || field === 'division' || field === 'lifeEvents' || field === 'medicalConditions') continue;
+    facts.push({ field, value: p.value, status: 'accepted', method: p.method, probability: p.probability, source: p.source, label: factLabel(field, p.value) });
+  }
+  for (const f of ledger.pending) {
+    facts.push({ field: f.field, value: f.value, status: 'needs_confirmation', method: f.method, probability: f.probability, source: 'this_message', label: factLabel(f.field, f.value) });
+  }
+  for (const c of ledger.conflicts) {
+    facts.push({ field: c.field, value: c.conversationValue, status: 'conflict', method: 'conversation', probability: null, source: c.conversationSource, label: factLabel(c.field, c.conversationValue) });
+  }
+  const saveable: Record<string, unknown> = {};
+  for (const f of ledger.saveable) {
+    if (SAVEABLE_FIELDS.has(f.field)) saveable[PROFILE_FIELD[f.field] ?? f.field] = f.value;
+  }
+  // A pending fact is saveable too: saving IS the citizen's confirmation.
+  for (const f of ledger.pending) {
+    if (SAVEABLE_FIELDS.has(f.field)) saveable[PROFILE_FIELD[f.field] ?? f.field] = f.value;
+  }
+  return { engine: frame.engine, degraded: frame.degraded, facts, saveable };
 }
 
 /* --------------------------------------------------------------- turn */
@@ -247,56 +333,64 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
   if (!user) throw new Error('User not found');
 
   const provider = getProvider();
+  const decisionModel = getDecisionModel();
   const civicFrame = await inferCivicFrame({
     message: input.message,
     fallbackLocale: input.localeHint ?? (user.language as 'bn' | 'en'),
     provider,
+    decisionModel,
+    engine: resolveSemanticEngine(),
     ...(input.signal ? { signal: input.signal } : {}),
   });
   const nlu = civicFrame.nlu;
-  const locale = nlu.locale;
+  const locale = civicFrame.locale;
 
   const conversation = await ensureConversation(input.userId, input.conversationId, locale);
   const history = await loadHistory(conversation.id);
+  const earlierFacts = await loadConversationFacts(conversation.id);
 
   const [userMessage] = await db
     .insert(messages)
     .values({ conversationId: conversation.id, role: 'user', kind: 'text', content: input.message })
     .returning();
 
-  const detectedEvents = civicFrame.lifeEvents;
-  const confirmedEvents = nlu.lifeEvents.map((event) => event.event);
-  const profileUpdated = await applyExtractedEntities(input.userId, confirmedProfile(civicFrame), confirmedEvents);
-
   const [profileRow] = await db.select().from(userProfiles).where(eq(userProfiles.userId, input.userId)).limit(1);
   const decryptedProfileRow = profileRow
     ? { ...profileRow, medicalConditions: decryptStringArray(profileRow.medicalConditions) }
     : null;
-  const profile = toEligibilityProfile({ user, profile: decryptedProfileRow });
+  const storedProfile = toEligibilityProfile({ user, profile: decryptedProfileRow });
+
+  const currentFacts: EvidenceFact[] = [...civicFrame.evidence];
+  const ledger = buildLedger({ profile: storedProfile, earlier: earlierFacts, current: currentFacts, currentMessageId: userMessage!.id });
+  const profile: EligibilityProfile = ledger.profile;
+  const injectionFlagged = civicFrame.semantic.injection.flagged;
 
   /* ---- build the plan ---- */
   let plan: ResponsePlan;
+  let relevanceJudgments: Judgment[] = [];
+  let relevanceError: string | null = null;
+  const situationEvents = civicFrame.situation ? [civicFrame.situation] : [];
 
-  if (nlu.isGreeting) {
-    plan = emptyPlan('greeting', locale, nlu);
-  } else if (nlu.isOutOfScope) {
-    plan = emptyPlan('out_of_scope', locale, nlu);
+  if (civicFrame.isGreeting) {
+    plan = emptyPlan('greeting', locale, nlu, situationEvents);
+  } else if (civicFrame.isOutOfScope) {
+    plan = emptyPlan('out_of_scope', locale, nlu, situationEvents);
   } else {
-    // Retrieval is scoped by the citizen's district and detected life events, so
+    const topics = civicFrame.lifeEvents;
+    // Retrieval is scoped by the citizen's district and the detected topics, so
     // an irrelevant or geographically unavailable programme cannot surface.
     const retrieved = await retrieve(civicFrame.retrievalQuery, {
       district: profile.district ?? null,
-      lifeEvents: detectedEvents.length > 0 ? detectedEvents : undefined,
+      lifeEvents: topics.length > 0 ? topics : undefined,
       limit: 14,
     });
 
-    // Fall back to a life-event-only search when the wording matched nothing
-    // lexically — a citizen may describe a situation in words absent from the
-    // corpus while the situation itself is clearly mapped.
+    // The wording matched nothing lexically but the situation is understood:
+    // fall back to metadata-only retrieval by topic.
     const effective = retrieved.length > 0
       ? retrieved
-      : detectedEvents.length > 0
-        ? await retrieve(detectedEvents.join(' '), { district: profile.district ?? null, lifeEvents: detectedEvents, limit: 14 })
+      : topics.length > 0
+        ? await retrieveByLifeEvents(topics, { district: profile.district ?? null, limit: 8 })
         : [];
 
     const retrievedIds = opportunityIdsFrom(effective);
@@ -307,56 +401,52 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
       }
     }
 
+    // Optional: Jev re-orders what BM25 found. Fails open (BM25 order stands).
+    if (env.JEV_RERANK && decisionModel && effective.length > 0) {
+      const relevance = await judgeRelevance(input.message, effective, decisionModel, input.signal);
+      relevanceJudgments = relevance.judgments;
+      relevanceError = relevance.error;
+      for (const [id, score] of relevance.scores) retrievalScores.set(id, score);
+    }
+
     const { items } = retrievedIds.length > 0
       ? await listOpportunities({
           profile,
           userId: input.userId,
           filters: { ids: retrievedIds, limit: MAX_RECOMMENDATIONS * 2 },
           retrievalScores,
-          detectedLifeEvents: detectedEvents,
+          detectedLifeEvents: topics,
           interests: profileRow?.interests ?? [],
         })
       : { items: [] as EnrichedOpportunity[] };
 
     if (items.length === 0) {
-      plan = { ...emptyPlan('no_results', locale, nlu), ungrounded: effective.length === 0 };
+      plan = { ...emptyPlan('no_results', locale, nlu, situationEvents), ungrounded: effective.length === 0 };
     } else {
-      const missingField = chooseMissingField(items);
       const shortlist = items.slice(0, MAX_RECOMMENDATIONS);
+      const clarification = chooseClarification(shortlist, ledger);
+      const planned = shortlist.map((i) => toPlannedOpportunity(i, ledger, injectionFlagged));
+      const common = {
+        locale,
+        intents: nlu.intents as Intent[],
+        lifeEvents: situationEvents,
+        opportunities: planned,
+        citations: effective.slice(0, 6).map(citationOf),
+        overallConfidence: Math.round(
+          shortlist.reduce((sum, i) => sum + i.confidence.score, 0) / Math.max(1, shortlist.length),
+        ),
+        ungrounded: false,
+      };
 
       // Ask BEFORE recommending when the answer would change the verdicts —
       // PRD §22: "instead of guessing".
+      // A contradiction on a decisive fact is always put to the citizen, even
+      // when other programmes were decided: staying silent about it would let
+      // the citizen act on verdicts built around a field we know is disputed.
       const decidedCount = shortlist.filter((i) => i.evaluation.outcome !== 'unknown').length;
-      if (missingField && decidedCount === 0) {
-        plan = {
-          kind: 'clarification',
-          locale,
-          intents: nlu.intents as Intent[],
-          lifeEvents: detectedEvents,
-          opportunities: shortlist.map((i) => toPlannedOpportunity(i, locale)),
-          missingField,
-          missingFieldLabel: fieldLabel(missingField),
-          missingFieldReason: reasonForField(missingField, locale),
-          citations: effective.slice(0, 6).map(citationOf),
-          overallConfidence: Math.round(
-            shortlist.reduce((sum, i) => sum + i.confidence.score, 0) / Math.max(1, shortlist.length),
-          ),
-          ungrounded: false,
-        };
-      } else {
-        plan = {
-          kind: 'recommendations',
-          locale,
-          intents: nlu.intents as Intent[],
-          lifeEvents: detectedEvents,
-          opportunities: shortlist.map((i) => toPlannedOpportunity(i, locale)),
-          citations: effective.slice(0, 6).map(citationOf),
-          overallConfidence: Math.round(
-            shortlist.reduce((sum, i) => sum + i.confidence.score, 0) / Math.max(1, shortlist.length),
-          ),
-          ungrounded: false,
-        };
-      }
+      plan = clarification && (decidedCount === 0 || clarification.clarificationKind === 'conflict')
+        ? { kind: 'clarification', ...common, ...clarification }
+        : { kind: 'recommendations', ...common };
 
       // Persist each decision with its profile snapshot for later audit.
       await Promise.all(
@@ -367,32 +457,29 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
     }
   }
 
-  /* ---- render ---- */
-  let text: string;
-  let degraded = false;
-  let tokensIn = civicFrame.modelCall.tokensIn;
-  let tokensOut = civicFrame.modelCall.tokensOut;
-  let engineError: string | null = civicFrame.modelCall.error ?? null;
+  plan = { ...plan, evidence: planEvidence(civicFrame, ledger) };
 
-  if (provider.isLive && plan.kind !== 'greeting' && plan.kind !== 'out_of_scope') {
-    try {
-      const rendered = await renderWithModel(plan, input.message, history, profile, input.signal);
-      assertNumericGrounding(rendered.text, plan);
-      text = rendered.text;
-      tokensIn += rendered.tokensIn;
-      tokensOut += rendered.tokensOut;
-    } catch (error) {
-      // A provider failure degrades to the deterministic composer rather than
-      // failing the citizen's request. The UI shows the degraded badge.
-      degraded = true;
-      engineError = error instanceof Error ? error.message : String(error);
-      text = composeResponse(plan);
-    }
-  } else {
-    text = composeResponse(plan);
-  }
+  /* ---- render ---- */
+  const rendered = await renderTurn({
+    plan,
+    message: input.message,
+    history,
+    profile,
+    provider,
+    decisionModel,
+    injectionFlagged,
+    ...(input.signal ? { signal: input.signal } : {}),
+  });
+  const { text, renderPath, verification } = rendered;
+  const degraded = civicFrame.degraded || rendered.providerFailed;
+  const tokensIn = civicFrame.modelCall.tokensIn + rendered.tokensIn;
+  const tokensOut = civicFrame.modelCall.tokensOut + rendered.tokensOut;
+  const engineError: string | null = rendered.error ?? civicFrame.modelCall.error ?? civicFrame.decisionCall.error ?? null;
 
   const latencyMs = Date.now() - startedAt;
+  const modelWrote = renderPath === 'model_verified' || renderPath === 'model_unverified';
+  const servedBy = modelWrote ? provider.engine : 'simulated';
+  const evidenceFacts: ConversationFact[] = currentFacts.map((f) => ({ ...f, messageId: userMessage!.id }));
 
   const [assistantMessage] = await db
     .insert(messages)
@@ -407,20 +494,27 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
           opportunities: plan.opportunities,
           citations: plan.citations,
           missingField: plan.missingField ?? null,
+          clarificationKind: plan.clarificationKind ?? null,
           lifeEvents: plan.lifeEvents,
           ungrounded: plan.ungrounded,
+          evidence: plan.evidence,
+          renderPath,
           civicFrame: {
             version: civicFrame.version,
-            confirmedFacts: civicFrame.confirmedFacts,
+            engine: civicFrame.engine,
+            degraded: civicFrame.degraded,
             proposedFacts: civicFrame.proposedFacts,
             uncertainFacts: civicFrame.uncertainFacts,
             modelCall: civicFrame.modelCall,
+            decisionCall: civicFrame.decisionCall,
           },
         },
+        // Read back by `loadConversationFacts` on later turns.
+        evidenceFacts,
       },
       tokens: tokensOut,
       latencyMs,
-      aiEngine: degraded ? 'simulated' : provider.engine,
+      aiEngine: servedBy,
       confidence: plan.overallConfidence,
     })
     .returning();
@@ -430,18 +524,32 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
     conversationId: conversation.id,
     messageId: assistantMessage!.id,
     requestType: 'conversation',
-    engine: degraded ? 'simulated' : provider.engine,
-    model: degraded ? 'deterministic-composer-v1' : provider.model,
+    engine: servedBy,
+    model: modelWrote ? provider.model : 'deterministic-composer-v1',
     promptTemplate: PROMPTS.system.name,
     promptVersion: PROMPTS.system.version,
     inputSummary: input.message.slice(0, 500),
     outputSummary: text.slice(0, 500),
     intents: [...plan.intents],
     entities: {
-      confirmed: nlu.entities.profile,
+      frameVersion: civicFrame.version,
+      semanticEngine: civicFrame.engine,
+      semanticDegraded: civicFrame.degraded,
+      decisionModel: civicFrame.semantic.model,
+      questionSetVersion: civicFrame.semantic.questionSetVersion,
+      policyVersion: civicFrame.semantic.policyVersion,
+      decisionCall: civicFrame.decisionCall,
+      judgments: civicFrame.semantic.judgments,
+      facts: currentFacts,
+      injection: civicFrame.semantic.injection,
+      situation: civicFrame.semantic.situation,
+      ledger: { conflicts: ledger.conflicts, pending: ledger.pending, superseded: ledger.superseded },
+      decisions: plan.opportunities.map((o) => ({ id: o.id, outcome: o.outcome, status: o.decisionStatus, reviewReasons: o.reviewReasons, evidenceStrength: o.evidenceStrength })),
+      renderPath,
+      relevance: env.JEV_RERANK ? { version: RELEVANCE_VERSION, judgments: relevanceJudgments, error: relevanceError } : null,
+      verification: verification ? { version: VERIFIER_VERSION, ...verification } : null,
       proposed: civicFrame.proposedFacts,
       uncertain: civicFrame.uncertainFacts,
-      frameVersion: civicFrame.version,
     },
     retrievedChunkIds: plan.citations.map((c) => c.chunkId),
     citedOpportunityIds: plan.opportunities.map((o) => o.id),
@@ -471,9 +579,10 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
     plan,
     nlu,
     civicFrame,
-    profileUpdated,
-    engine: degraded ? 'simulated' : provider.engine,
+    profileUpdated: [],
+    engine: servedBy,
     degraded,
+    renderPath,
     latencyMs,
   };
 }
@@ -488,110 +597,22 @@ function citationOf(chunk: RetrievedChunk) {
   };
 }
 
-function emptyPlan(kind: ResponsePlan['kind'], locale: 'bn' | 'en', nlu: NluResult): ResponsePlan {
+function emptyPlan(
+  kind: ResponsePlan['kind'],
+  locale: 'bn' | 'en',
+  nlu: NluResult,
+  lifeEvents: ResponsePlan['lifeEvents'],
+): ResponsePlan {
   return {
     kind,
     locale,
     intents: nlu.intents as Intent[],
-    lifeEvents: nlu.lifeEvents.map((e) => e.event),
+    lifeEvents,
     opportunities: [],
     citations: [],
     overallConfidence: kind === 'greeting' ? 100 : 0,
     ungrounded: kind === 'no_results',
   };
-}
-
-/**
- * Renders the plan with a live model. The model receives ONLY the plan's
- * contents as context, so it cannot introduce a programme, amount, or rule that
- * the deterministic layer did not put there.
- */
-async function renderWithModel(
-  plan: ResponsePlan,
-  message: string,
-  history: readonly Message[],
-  profile: EligibilityProfile,
-  signal?: AbortSignal,
-): Promise<{ text: string; tokensIn: number; tokensOut: number }> {
-  const locale = plan.locale;
-
-  const profileSummary = [
-    profile.age !== undefined ? `Age: ${profile.age}` : null,
-    profile.gender ? `Gender: ${profile.gender}` : null,
-    profile.district ? `District: ${profile.district}` : null,
-    profile.occupation ? `Occupation: ${profile.occupation}` : null,
-    profile.monthlyIncome !== undefined ? `Monthly income: BDT ${profile.monthlyIncome}` : null,
-    profile.maritalStatus ? `Marital status: ${profile.maritalStatus}` : null,
-    profile.education ? `Education: ${profile.education}` : null,
-  ]
-    .filter(Boolean)
-    .join(' · ') || 'No profile details recorded yet.';
-
-  const situation = plan.lifeEvents.length > 0
-    ? `Detected life events: ${plan.lifeEvents.join(', ')}`
-    : 'No specific life event detected.';
-
-  const eligibilityBlock = plan.opportunities
-    .map((o) => {
-      const met = o.metReasons.map((r) => `    + ${pickLocalised(r, locale)}`).join('\n');
-      const failed = o.failedReasons.map((r) => `    - ${pickLocalised(r, locale)}`).join('\n');
-      const unknown = o.unknownReasons.map((r) => `    ? ${pickLocalised(r, locale)}`).join('\n');
-      return [
-        `  ${pickLocalised(o.title, locale)} — DECISION: ${o.outcome}${o.isUnverified ? ' (UNVERIFIED SAMPLE DATA)' : ''}`,
-        met, failed, unknown,
-      ].filter(Boolean).join('\n');
-    })
-    .join('\n');
-
-  const contextBlock = plan.opportunities
-    .map((o) => {
-      const lines = [
-        `### ${pickLocalised(o.title, locale)}`,
-        `Organisation: ${pickLocalised(o.organisation, locale)}`,
-        pickLocalised(o.summary, locale),
-        o.benefitAmount !== null ? `Amount: BDT ${o.benefitAmount.toFixed(2)} ${o.benefitPeriod ?? ''}` : null,
-        o.deadline ? `Deadline: ${formatDate(o.deadline, 'en')}` : 'Deadline: rolling, open all year',
-        o.nextStep ? `First step: ${pickLocalised(o.nextStep, locale)}` : null,
-        o.sourceUrl ? `Source: ${o.sourceUrl}` : null,
-      ].filter(Boolean);
-      return lines.join('\n');
-    })
-    .join('\n\n');
-
-  const citationBlock = plan.citations.map((c) => `[${c.title}] ${c.excerpt}`).join('\n\n');
-
-  const system = PROMPTS.system.render({
-    profile: profileSummary,
-    situation,
-    eligibility: eligibilityBlock || 'No eligibility decisions available.',
-    context: [contextBlock, citationBlock].filter(Boolean).join('\n\n---\n\n') || 'NO CONTEXT AVAILABLE.',
-  });
-
-  const historyBlock = history
-    .slice(-4)
-    .map((m) => `${m.role === 'user' ? 'Citizen' : 'Shebar Janala'}: ${m.content.slice(0, 400)}`)
-    .join('\n');
-
-  const userPrompt =
-    plan.kind === 'clarification'
-      ? PROMPTS.clarification.render({
-          message,
-          missing: plan.missingFieldLabel ? pickLocalised(plan.missingFieldLabel, locale) : 'more information',
-        })
-      : PROMPTS.conversation.render({
-          message,
-          history: historyBlock ? `Earlier in this conversation:\n${historyBlock}` : '',
-        });
-
-  const result = await getProvider().generate({
-    system,
-    user: userPrompt,
-    maxTokens: 900,
-    temperature: 0.3,
-    ...(signal ? { signal } : {}),
-  });
-
-  return { text: result.text, tokensIn: result.tokensIn, tokensOut: result.tokensOut };
 }
 
 /* ------------------------------------------------------- conversations */

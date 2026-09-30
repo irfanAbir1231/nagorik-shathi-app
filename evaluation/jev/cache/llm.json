@@ -1,0 +1,1905 @@
+{
+ "00834fcb6185324d16bca5c9ff65ffbabfeceb8ab5c8ba983dfebf23a765d714": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"education\",\"hasDisability\",\"maritalStatus\",\"householdSize\",\"isStudent\",\"hasBusiness\",\"farmSizeDecimals\",\"isPregnant\",\"medicalConditions\",\"hasNid\",\"hasBankAccount\",\"isFreedomFighterFamily\"],\"normalizedQuery\":\"government benefits eligibility information\",\"candidateProgrammeHints\":[\"social safety net programmes\",\"allowance schemes\",\"benefit eligibility information\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 411,
+   "tokensOut": 117
+  },
+  "latencyMs": 862,
+  "measuredAt": "2026-09-30T06:40:52.903Z"
+ },
+ "0373372ba8fb688e78fa25ff5fdb9aea281c8b678fc9480de578f5ec1480004e": {
+  "value": {
+   "text": "{\"intents\":[\"ngo_assistance\",\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.98,\"evidence\":\"আমার স্বামী মারা গেছেন\"},{\"field\":\"dependents\",\"value\":3,\"confidence\":0.95,\"evidence\":\"আমার তিনটি সন্তান আছে\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow with three children seeking assistance\",\"candidateProgrammeHints\":[\"widow allowance\",\"NGO assistance\",\"child support services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 416,
+   "tokensOut": 149
+  },
+  "latencyMs": 1219,
+  "measuredAt": "2026-09-30T06:40:29.722Z"
+ },
+ "03e493ff567b8c95a5a267373fd709e070c31faba62b04408bc96483d5a93341": {
+  "value": {
+   "text": "{\"intents\":[\"ngo_assistance\",\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.98,\"evidence\":\"Amar husband last year expire korse\"},{\"field\":\"dependents\",\"value\":3,\"confidence\":0.95,\"evidence\":\"3 jon baccha\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow with three children seeking financial and social assistance\",\"candidateProgrammeHints\":[\"widow allowance\",\"NGO assistance for widows\",\"child support programmes\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 417,
+   "tokensOut": 148
+  },
+  "latencyMs": 1328,
+  "measuredAt": "2026-09-30T06:40:29.829Z"
+ },
+ "05c80109f48e541cf496c3ef352a590b93485166a78383f6d19bee435cffde60": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":68,\"confidence\":0.99,\"evidence\":\"আমার বয়স ৬৮ বছর\"},{\"field\":\"monthlyIncome\",\"value\":0,\"confidence\":0.95,\"evidence\":\"আমার কোনো আয় নেই\"}],\"uncertainFacts\":[\"district\",\"gender\",\"maritalStatus\",\"householdSize\",\"hasNid\",\"hasBankAccount\",\"occupation\"],\"normalizedQuery\":\"বয়স্ক নাগরিক সহায়তা ও সামাজিক নিরাপত্তা সুবিধা\",\"candidateProgrammeHints\":[\"বয়স্ক ভাতা\",\"সামাজিক নিরাপত্তা কর্মসূচি\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 413,
+   "tokensOut": 163
+  },
+  "latencyMs": 1227,
+  "measuredAt": "2026-09-30T06:40:37.011Z"
+ },
+ "06730393522fff8c867331e330210fc191d8dc7351903f0ef2972e18f8378921": {
+  "value": {
+   "text": "আপনার তথ্যের জন্য ধন্যবাদ। আপনার বয়স ৪৫, আপনি বিধবা, মাসে আয় প্রায় ৳1,200.00, আর আপনি রংপুরে থাকেন।\n\nআমি এখানে তিনটি কর্মসূচির কথা বলতে পারি। তবে সৎভাবে বলি — এই তিনটির তথ্যই এখন যাচাই করা হয়নি, এগুলো নমুনা তথ্য। তাই এগুলোকে সরকারি চূড়ান্ত সত্য বলে ধরবেন না।\n\nপ্রথমে, বিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা। এটি সমাজসেবা অধিদফতরের। মাসে ৳550.00 দেওয়া হয়। আপনার আয় কম, আপনি বিধবা — তাই শর্তের দিক থেকে আপনি এগিয়ে আছেন। শুধু আপনার পেশা জানা নেই।\n\nদ্বিতীয়, ভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি)। এটি মহিলা বিষয়ক অধিদফতরের। দুই বছরের চক্রে খাদ্যশস্য, সঞ্চয় ও প্রশিক্ষণ মেলে। আপনার বয়স ১৮–৪৯ এর মধ্যে, আয়ও কম। এখানেও পেশা জানা দরকার।\n\nতৃতীয়, ব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি। এতে এককালীন ৳25,000.00 সহ দুই বছরের সহায়তা মেলে। আপনার পরিবারের জমির পরিমাণ জানা নেই।\n\nমনে রাখবেন, কে যোগ্য তা আমি ঠিক করি না — নিয়ম মেনে আলাদা ব্যবস্থা সিদ্ধান্ত নেয়।\n\nপরের কাজ: আপনার পেশা ও পরিবারের জমির পরিমাণ জানিয়ে দিন, যাতে সিদ্ধান্ত সম্পূর্ণ করা যায়।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1479,
+   "tokensOut": 413
+  },
+  "latencyMs": 2813,
+  "measuredAt": "2026-09-30T06:45:52.740Z"
+ },
+ "067b7687ae742d0778cbe2c85e36efd4122a8552e62c2b4825c9c4d3e693d4bb": {
+  "value": {
+   "text": "I'm sorry you're going through this. Let me share what I have.\n\nOne programme has already been decided for you: Free Assistive Devices for Persons with Disabilities, run by the Department of Social Services. The decision was \"eligible\" because you have reported a disability. This gives free wheelchairs, crutches, hearing aids, white canes, and prosthetics through Disability Service Centres. It is open all year. Please note this is unverified sample data, not a confirmed government fact.\n\nTwo other programmes are still undecided, because we are missing information:\n\n- Allowance for Financially Insolvent Persons with Disabilities — a monthly allowance of ৳850.00. We need to know your monthly household income.\n- Education Stipend for Students with Disabilities — a monthly stipend of ৳900.00. We need to know if you are currently a student.\n\nI cannot tell you that you qualify for everything, and I cannot say no documents are needed — that is not in my verified information.\n\nYour next step: visit your Upazila Social Services Office for a disability assessment and Suborno Nagorik card registration.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1088,
+   "tokensOut": 236
+  },
+  "latencyMs": 1438,
+  "measuredAt": "2026-09-30T06:50:51.171Z"
+ },
+ "068c4dd3cc93aa5851d2eb9a88b70358b895d42a5ce46c919e0bbf648beb4cb5": {
+  "value": {
+   "text": "I need to be honest with you about two things first.\n\nThe three programmes below are marked as unverified sample data. That means I cannot confirm them as official government facts. Please treat them as leads to check, not as confirmed promises.\n\nAlso, I will not tell you that you qualify for everything or that no papers are needed. That is not true, and no real office works that way.\n\nHere is what the rule engine found so far. For all three, the decision is still \"unknown\" because one question is unanswered.\n\nWidow and Husband-Deserted Women Allowance: it noted you are a woman, your marital status fits, your income is under ৳1,500.00, you are Bangladeshi, and you are 18 or older. It still needs to know your occupation.\n\nVulnerable Group Development (VGD): it noted you are a woman, your income is under ৳2,000.00, your age fits the 18–49 range, and you are Bangladeshi. It still needs your occupation.\n\nBRAC Ultra-Poor Graduation Programme: it noted your income is under ৳3,000.00 and you are a woman. It still needs to know how much land your household owns, in decimals.\n\nNext step: tell me your occupation and your household's land size, so the engine can finish its decision.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1282,
+   "tokensOut": 283
+  },
+  "latencyMs": 1834,
+  "measuredAt": "2026-09-30T06:50:41.664Z"
+ },
+ "0765ca1c09702cded4631b6f9f685289c4d14742e2d0579550f6ab82bb3708a0": {
+  "value": {
+   "text": "আপনি জানিয়েছেন যে আপনি দৃষ্টিপ্রতিবন্ধী এবং কাজ করতে পারেন না। এই তথ্যের জন্য ধন্যবাদ।\n\nআপনার জন্য তিনটি সরকারি সহায়তা আছে। তবে মনে রাখবেন, এই তিনটি তথ্য এখনো যাচাই করা হয়নি — এটি নমুনা তথ্য, সরকারি নিশ্চিত তথ্য নয়।\n\nপ্রথমত, প্রতিবন্ধী ব্যক্তিদের জন্য বিনামূল্যে সহায়ক উপকরণ। এতে হুইলচেয়ার, ক্রাচ, শ্রবণযন্ত্র, সাদা ছড়ি ও কৃত্রিম অঙ্গ বিনামূল্যে পাওয়া যায়। নিয়ম অনুযায়ী আপনি এই সহায়তার জন্য নির্বাচিত হয়েছেন।\n\nদ্বিতীয়ত, অসচ্ছল প্রতিবন্ধী ভাতা — মাসে ৮৫০.০০ টাকা। এখানে একটি প্রশ্নের উত্তর এখনো জানা নেই: আপনার পরিবারের মাসিক আয় কত? তাই এখনই বলা যাচ্ছে না।\n\nতৃতীয়ত, প্রতিবন্ধী শিক্ষার্থী শিক্ষা উপবৃত্তি — মাসে ৯০০.০০ টাকা। আপনি এখন শিক্ষার্থী কি না, সেটি জানা নেই।\n\nসবচেয়ে আগে যা করবেন: আপনার জেলার প্রতিবন্ধী সেবা ও সহায়তা কেন্দ্র খুঁজে নিন এবং সেখানে গিয়ে কথা বলুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1272,
+   "tokensOut": 319
+  },
+  "latencyMs": 2202,
+  "measuredAt": "2026-09-30T06:50:52.198Z"
+ },
+ "092c18672f22e4714ff4293cc160b3a97b86c8c05017dafc06af2592de4610a1": {
+  "value": {
+   "text": "{\"intents\":[],\"lifeEvents\":[],\"facts\":[{\"field\":\"dependents\",\"value\":2,\"confidence\":0.95,\"evidence\":\"2 kids\"},{\"field\":\"householdSize\",\"value\":3,\"confidence\":0.6,\"evidence\":\"2 kids\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"maritalStatus\",\"hasDisability\",\"citizenship\"],\"normalizedQuery\":\"family support services for children\",\"candidateProgrammeHints\":[\"child_education\",\"family_welfare\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 408,
+   "tokensOut": 117
+  },
+  "latencyMs": 1014,
+  "measuredAt": "2026-09-30T06:40:50.217Z"
+ },
+ "099e73c3d0eff3f64dfdd36aeae473d8be637dd9cc6aeac6c7b9993117eef20e": {
+  "value": {
+   "text": "{\"intents\":[\"sme_support\",\"entrepreneurship\"],\"lifeEvents\":[\"entrepreneurship\"],\"facts\":[{\"field\":\"hasBusiness\",\"value\":false,\"confidence\":0.95,\"evidence\":\"I have no money\"},{\"field\":\"businessType\",\"value\":\"tailoring\",\"confidence\":0.98,\"evidence\":\"tailoring business\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"education\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"tailoring business startup support no money\",\"candidateProgrammeHints\":[\"SME loan or grant programmes\",\"women entrepreneur development funds\",\"skills training for tailoring\",\"microfinance support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 409,
+   "tokensOut": 147
+  },
+  "latencyMs": 1104,
+  "measuredAt": "2026-09-30T06:40:48.043Z"
+ },
+ "0b6156b3aebdd58a53874495f0c356a6fd4b8209cc42b2bdd4504e8783a7067e": {
+  "value": {
+   "text": "আপনার স্বামী মারা যাওয়ার জন্য আমি খুব দুঃখিত। আপনার তিন সন্তানসহ এই কঠিন সময়ে কিছু সহায়তা আছে, সেগুলো নিচে বলছি।\n\nপ্রথমে জেনে রাখুন, আমি এখনই বলতে পারছি না আপনি কোনটির জন্য নির্বাচিত হবেন। কারণ আপনার মাসিক আয়, বয়স, পেশা এবং জমির পরিমাণ এখনো জানা হয়নি। এগুলো জানা গেলে হিসাব করে বলা যাবে।\n\nতিনটি সহায়তার কথা জানি:\n\n১. \"Widow and Husband-Deserted Women Allowance\" — মাসে ৳550.00। এটি বিধবা ও স্বামী পরিত্যক্ত নারীদের জন্য। তবে এটি এখনো যাচাই করা হয়নি, তাই নিশ্চিত সরকারি তথ্য হিসেবে ধরবেন না।\n\n২. \"Vulnerable Group Development (VGD)\" — দুই বছর ধরে মাসে খাদ্যশস্য, সঞ্চয় ও কাজের প্রশিক্ষণ। এটিও যাচাই করা হয়নি।\n\n৩. \"BRAC Ultra-Poor Graduation Programme\" — দুই বছরের সহায়তা, এককালীন ৳25000.00। এটিও যাচাই করা হয়নি।\n\nএখনই করুন: আপনার ইউনিয়ন পরিষদে গিয়ে চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছ থেকে আপনার অবস্থা ও আয়ের সনদ নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1289,
+   "tokensOut": 332
+  },
+  "latencyMs": 3000,
+  "measuredAt": "2026-09-30T06:45:37.894Z"
+ },
+ "0ee0d9d090136beb09caa6a37c4a1e9b96798aa6d6ca00df085681985c223736": {
+  "value": {
+   "text": "আপনার স্বামী মারা গেছেন জেনে খুব দুঃখ পেলাম। আপনার কথা শুনে কিছু তথ্য দিচ্ছি।\n\nবিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — এই কর্মসূচিতে আপনাকে নির্বাচিত করা হয়েছে। কারণ আপনি একজন মহিলা, আপনার বৈবাহিক অবস্থা শর্ত পূরণ করে, আপনার মাসিক আয় ৳১,৫০০.০০ এর কম, আপনি বাংলাদেশের নাগরিক, আপনার বয়স ১৮ বছর বা বেশি, এবং আপনি সরকারি কর্মচারী নন। এই ভাতা মাসে ৳৫৫০.০০, সারা বছর আবেদন করা যায়। তবে মনে রাখবেন, এটি এখনো যাচাই করা নমুনা তথ্য — সরকারিভাবে নিশ্চিত নয়।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — এখানে আপনি নির্বাচিত হননি, কারণ ভিজিডি ১৮ থেকে ৪৯ বছর বয়সী মহিলাদের জন্য। আপনার বয়স ৫০।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — এখানে সিদ্ধান্ত এখনো হয়নি। একটি প্রশ্নের উত্তর দরকার: আপনার পরিবারের কত শতাংশ জমি আছে? এটিও যাচাই করা নমুনা তথ্য।\n\nপরের কাজ: আপনার অবস্থা ও আয় নিশ্চিত করে ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের প্রত্যয়নপত্র নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1459,
+   "tokensOut": 364
+  },
+  "latencyMs": 2165,
+  "measuredAt": "2026-09-30T06:50:44.469Z"
+ },
+ "0f138668c7b818c7781225b8354b0b0ad75913d5f903a8780f428205a6541c4d": {
+  "value": {
+   "text": "I am very sorry about your husband. Let me tell you what I can see.\n\nThree programmes in our records may fit your situation. Please note: all three are marked as unverified sample data, so treat them as leads to check, not confirmed facts.\n\nWidow and Husband-Deserted Women Allowance, from the Department of Social Services. It gives ৳550.00 each month to widowed, divorced, separated, or deserted women with little income. Priority goes to women who are older, have dependent children, own no land, and have no other earnings.\n\nVulnerable Group Development (VGD), from the Department of Women Affairs. It gives free food grain each month, plus savings and skills training, over two years.\n\nBRAC Ultra-Poor Graduation Programme. It gives assets, a living stipend, coaching, and healthcare for two years, and ৳25,000.00 as a one-time amount.\n\nThe rule engine has not yet decided whether you qualify for any of these. It still needs to know your monthly household income, your age, and your occupation. For BRAC, it also needs to know how much land your household owns.\n\nNext step: gather those four answers, then get a certificate from your Union Parishad chairman or ward councillor confirming your status and income.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1335,
+   "tokensOut": 270
+  },
+  "latencyMs": 2239,
+  "measuredAt": "2026-09-30T06:50:27.982Z"
+ },
+ "116c0b1d2f920a0f7dd4a4a320b24058a4271fbb42b017ef24d1799269c1a9d9": {
+  "value": {
+   "text": "{\"intents\":[\"agriculture_support\",\"disaster_recovery\"],\"lifeEvents\":[\"crop_loss\",\"disaster_recovery\"],\"facts\":[{\"field\":\"occupation\",\"value\":\"farmer\",\"confidence\":0.98,\"evidence\":\"I am a farmer\"},{\"field\":\"landOwnershipDecimals\",\"value\":40,\"confidence\":0.99,\"evidence\":\"40 decimals of land\"},{\"field\":\"crops\",\"value\":\"rice\",\"confidence\":0.98,\"evidence\":\"rice crop\"}],\"uncertainFacts\":[\"district\",\"division\",\"monthlyIncome\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"flood crop loss farmer rice agriculture support disaster recovery\",\"candidateProgrammeHints\":[\"agriculture_support\",\"disaster_recovery\",\"crop_loss_assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 414,
+   "tokensOut": 171
+  },
+  "latencyMs": 1102,
+  "measuredAt": "2026-09-30T06:40:45.138Z"
+ },
+ "118ceade6e1c892c9b64c2335fe5209468667b062ce5096d328037e9cbb0b183": {
+  "value": {
+   "text": "আপনার ফসল নষ্ট হওয়ার খবরে খুব খারাপ লাগল। আমি আপনার জন্য সরকারি সহায়তার তথ্য দেখছি।\n\nআপনার ৪০ শতাংশ জমি আছে। এই তথ্য অনুযায়ী:\n\nভিজিডি (VGD) — এই বিষয়ে এখনো কোনো সিদ্ধান্ত হয়নি। কারণ কিছু তথ্য এখনো জানা যায়নি: আপনি কি নারী? আপনার বয়স কত? আপনার মাসিক আয় কত? এই কর্মসূচি ১৫ শতাংশ বা কম জমির পরিবারের জন্য।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি চাল) — এটিও এখনো নিশ্চিত নয়। শুধু আপনার মাসিক আয় জানা দরকার। আপনি ৫০ শতাংশ বা কম জমির মধ্যে আছেন। এই কর্মসূচিতে মাসে ৩০ কেজি পর্যন্ত চাল কম দামে পাওয়া যায়।\n\nব্র্যাক অতি-দরিদ্র উত্তরণ কর্মসূচি — এখানে আপনি যোগ্য নন, কারণ এটি ১০ শতাংশ বা কম জমির পরিবারের জন্য।\n\nমনে রাখবেন, এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদে গিয়ে ভিজিডি ও খাদ্যবান্ধব কর্মসূচির তালিকা দেখুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1097,
+   "tokensOut": 326
+  },
+  "latencyMs": 2402,
+  "measuredAt": "2026-09-30T06:46:00.473Z"
+ },
+ "11a7e669f44c5af5f313c970b0b58db24de97774ebdae2cc3e7ae1217c5a9c3d": {
+  "value": {
+   "text": "আপনার গর্ভাবস্থার জন্য তিনটি সরকারি সেবার কথা জানতে পারছি। তবে মনে রাখবেন, এই তিনটির তথ্যই এখন যাচাই করা হয়নি — এগুলো নমুনা তথ্য, সরকারি নিশ্চিত তথ্য নয়।\n\nCommunity Clinic Primary Healthcare — এই সেবাটি আপনার জন্য প্রযোজ্য বলে নিয়ম ইঞ্জিন সিদ্ধান্ত দিয়েছে। কারণ আপনি বাংলাদেশের নাগরিক। এখানে বিনামূল্যে প্রাথমিক চিকিৎসা, ৩০টিরও বেশি জরুরি ওষুধ, গর্ভকালীন চেক-আপ ও শিশুর টিকা পাওয়া যায়। কোনো অ্যাপয়েন্টমেন্ট বা পরিচয়পত্র লাগে না।\n\nMaternity Allowance for Poor Mothers — মাসিক ৳৮০০.০০, ৩৬ মাস ধরে, প্রথম বা দ্বিতীয় সন্তানের জন্য। আপনার আয় ও বয়স জানা নেই, তাই এখনো সিদ্ধান্ত হয়নি।\n\nMaternal Health Voucher Scheme (DSF) — বিনামূল্যে গর্ভকালীন পরীক্ষা, নিরাপদ প্রসব ও একটি নগদ সহায়তা ৳২,০০০.০০। আপনার আয় জানা নেই, তাই সিদ্ধান্ত হয়নি।\n\nপরের কাজ: আপনার নিকটস্থ কমিউনিটি ক্লিনিক বা ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্রে গিয়ে গর্ভাবস্থা নিবন্ধন করুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1209,
+   "tokensOut": 345
+  },
+  "latencyMs": 2119,
+  "measuredAt": "2026-09-30T06:45:44.254Z"
+ },
+ "11d976e78969f586cc2df6d57a0f77abc545529ad7a7bf8ccb81e19e39a2e178": {
+  "value": {
+   "text": "আপনার ধান নষ্ট হওয়ার কথা শুনে খারাপ লাগল। আপনার ৪০ শতাংশ জমি আছে, এই তথ্য দিয়ে তিনটি কর্মসূচি দেখা হয়েছে। কোনোটির ব্যাপারে এখনো চূড়ান্ত সিদ্ধান্ত হয়নি, কারণ কিছু তথ্য এখনো জানা যায়নি।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — এখানে আপনার জমি ৫০ শতাংশ বা কম, তাই এই শর্তটি পূরণ হয়েছে। তবে আপনার পরিবারের মাসিক আয় কত, সেটি এখনো জানা নেই। এই কর্মসূচিতে মঙ্গা মৌসুমে মাসে ৩০ কেজি পর্যন্ত চাল অনেক কম দামে কেনা যায়।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — এটি মূলত গ্রামের সবচেয়ে দরিদ্র মহিলাদের জন্য। আপনি পুরুষ হলে এটি আপনার জন্য নাও হতে পারে। আপনার লিঙ্গ, বয়স ও মাসিক আয় জানা দরকার।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — এখানে সিদ্ধান্ত হয়েছে যে আপনি এখন এই কর্মসূচির জন্য বিবেচিত নন, কারণ এটি ১০ শতাংশ বা কম জমির মালিকদের জন্য। আপনার জমি ৪০ শতাংশ।\n\nমনে রাখবেন, এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\nপরের কাজ: আপনার পরিবারের মাসিক আয় কত এবং আপনি পুরুষ না মহিলা, সেটি জানান, যাতে সঠিক সিদ্ধান্ত দেওয়া যায়।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1438,
+   "tokensOut": 391
+  },
+  "latencyMs": 2598,
+  "measuredAt": "2026-09-30T06:45:47.237Z"
+ },
+ "13bb00d2c9346e42917db310ce2d38c143ce4c546b1fb4c7e85e226d717070c9": {
+  "value": {
+   "text": "You told us you are 68 and have no income. Based on that, here is where things stand.\n\nFor the Old Age Allowance, the decision is still unknown. Some facts are confirmed: you are 65 or older, you are a Bangladeshi citizen, and your monthly income is below ৳1,000. But two things are still open — your gender, and your occupation. We cannot treat those as answered. Please note this programme is currently unverified sample data, not a confirmed government fact. If it applies, it pays ৳600.00 per month.\n\nThe Food Friendly Programme (subsidised rice) is also undecided. Confirmed: your income is below ৳4,000 and you are a Bangladeshi citizen. This is also unverified sample data. It lets you buy up to 30 kg of rice a month at a low price.\n\nCommunity Clinic Primary Healthcare is decided as eligible for you, as a Bangladeshi citizen. This is unverified sample data too. It gives free check-ups and medicines.\n\nNext step: go to your Union Parishad and ask for the Old Age Allowance form. It is free.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1234,
+   "tokensOut": 239
+  },
+  "latencyMs": 1792,
+  "measuredAt": "2026-09-30T06:50:32.198Z"
+ },
+ "15755d02d1969e212a476392e2e566aec542d485c0ac7de615411d78868caf30": {
+  "value": {
+   "text": "I'm sorry you lost your job. I can share some programmes that may help, but I cannot tell you whether you qualify — that is decided by a separate rule system, and for you it has not yet made a decision.\n\nThree programmes came up, all marked as unverified sample data, so please treat them as leads to check, not confirmed facts:\n\n- Vulnerable Group Development (VGD): free monthly food grain plus savings and skills training for the poorest rural women, over two years. Run by the Department of Women Affairs.\n- Food Friendly Programme: buy up to 30 kg of rice a month at a subsidised price. Run by the Department of Social Services.\n- BRAC Ultra-Poor Graduation Programme: a two-year package of assets, a living stipend, coaching and healthcare, with ৳25,000.00 one time. Run by BRAC.\n\nThe rule system could not decide any of these because it still needs to know your monthly household income, your age, whether you are a woman, and how much land your household owns.\n\nNext step: tell me those four details so the decision can be made.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1110,
+   "tokensOut": 232
+  },
+  "latencyMs": 1799,
+  "measuredAt": "2026-09-30T06:50:53.267Z"
+ },
+ "171e13cb10619a5101d61067535ccd5f578e165743c67c0248fa2b5d358efa3f": {
+  "value": {
+   "text": "{\"intents\":[\"ngo_assistance\",\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.95,\"evidence\":\"আমার সামী গত বসর মারা গেসে\"},{\"field\":\"dependents\",\"value\":3,\"confidence\":0.9,\"evidence\":\"তিনটা বাচ্চা আসে\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow with three children seeking assistance\",\"candidateProgrammeHints\":[\"widow allowance\",\"child support\",\"NGO assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 419,
+   "tokensOut": 152
+  },
+  "latencyMs": 1195,
+  "measuredAt": "2026-09-30T06:40:29.683Z"
+ },
+ "174a02228a218f2ec004a1a41d180083030b56caae8a36beca66b0d9315cf645": {
+  "value": {
+   "text": "{\"intents\":[],\"lifeEvents\":[],\"facts\":[{\"field\":\"dependents\",\"value\":2,\"confidence\":0.95,\"evidence\":\"আমার দুইটা বাচ্চা\"},{\"field\":\"householdSize\",\"value\":3,\"confidence\":0.6,\"evidence\":\"আমার দুইটা বাচ্চা\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"maritalStatus\",\"hasDisability\",\"isStudent\",\"hasNid\"],\"normalizedQuery\":\"children family support services Bangladesh\",\"candidateProgrammeHints\":[\"child_education_support\",\"family_welfare_services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 415,
+   "tokensOut": 138
+  },
+  "latencyMs": 1107,
+  "measuredAt": "2026-09-30T06:40:50.519Z"
+ },
+ "182475ba10fe3cb0596af3be3a4e5d430957037675a0ef8b7a4a5a97d7fb60e1": {
+  "value": {
+   "text": "{\"intents\":[\"ngo_assistance\",\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"age\",\"value\":50,\"confidence\":0.99,\"evidence\":\"আমার বয়স ৫০\"},{\"field\":\"gender\",\"value\":\"female\",\"confidence\":0.95,\"evidence\":\"আমার স্বামী মারা গেছেন\"},{\"field\":\"occupation\",\"value\":\"গৃহিণী\",\"confidence\":0.99,\"evidence\":\"আমি গৃহিণী\"},{\"field\":\"monthlyIncome\",\"value\":0,\"confidence\":0.95,\"evidence\":\"কোনো আয় নেই\"},{\"field\":\"dependents\",\"value\":2,\"confidence\":0.99,\"evidence\":\"দুইটি সন্তান আছে\"}],\"uncertainFacts\":[\"district\",\"division\",\"householdSize\",\"hasNid\",\"hasBankAccount\",\"childrenAges\",\"childrenEducationStatus\"],\"normalizedQuery\":\"widow financial assistance Bangladesh NGO support no income two children\",\"candidateProgrammeHints\":[\"widow allowance\",\"NGO financial assistance\",\"social safety net widow support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 434,
+   "tokensOut": 237
+  },
+  "latencyMs": 1463,
+  "measuredAt": "2026-09-30T06:40:35.462Z"
+ },
+ "199c216d8ce11a06431020ed5a0bb5fd2b3810c289bf993fdfcd667b874f571a": {
+  "value": {
+   "text": "আপনার বয়স ৬৭ বছর আর মাসিক আয় ৮০০ টাকা — এই তথ্য অনুযায়ী তিনটি সরকারি সুবিধার কথা জানানো হচ্ছে। তবে একটি গুরুত্বপূর্ণ কথা আগে: এই তিনটি কার্যক্রমের তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য। তাই চূড়ান্ত নিশ্চিত তথ্যের জন্য সরকারি অফিসে যাচাই করে নিন।\n\nবয়স্ক ভাতা — সমাজসেবা অধিদফতরের একটি মাসিক ভাতা, ৳600.00। আপনার বয়স ৬৫-এর বেশি, আয় ৳1,000-এর কম, আপনি বাংলাদেশের নাগরিক এবং পুরুষ — এসব কারণেই এটি আপনার জন্য প্রযোজ্য হতে পারে। শুধু আপনার পেশা সম্পর্কে তথ্য নেই, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনার সুযোগ। আপনার আয় ৳4,000-এর কম এবং আপনি নাগরিক, তাই এটি প্রযোজ্য হতে পারে।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — আপনার জন্য প্রযোজ্য বলে সিদ্ধান্ত হয়েছে, কারণ আপনি বাংলাদেশের নাগরিক। এখানে বিনামূল্যে প্রাথমিক চিকিৎসা ও ঔষধ পাওয়া যায়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1259,
+   "tokensOut": 399
+  },
+  "latencyMs": 2636,
+  "measuredAt": "2026-09-30T06:45:58.069Z"
+ },
+ "1aa792256b88f1637de416a971ac7f7f39668d5aac9cfe1b64f73df367fb4aeb": {
+  "value": {
+   "text": "{\"intents\":[\"check_eligibility\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":66,\"confidence\":0.99,\"evidence\":\"I am 66\"}],\"uncertainFacts\":[\"monthlyIncome\",\"district\",\"gender\",\"occupation\",\"householdSize\",\"hasDisability\",\"maritalStatus\",\"hasNid\"],\"normalizedQuery\":\"old age allowance eligibility poor elderly\",\"candidateProgrammeHints\":[\"old age allowance\",\"social safety net programme\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 410,
+   "tokensOut": 107
+  },
+  "latencyMs": 890,
+  "measuredAt": "2026-09-30T06:40:54.012Z"
+ },
+ "1c8a52a8a318b22981325be899e81760f8e8b51305efa9914678ab294a4ea0dc": {
+  "value": {
+   "text": "{\"intents\":[\"check_eligibility\",\"general_information\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":70,\"confidence\":0.99,\"evidence\":\"I am 70\"},{\"field\":\"annualIncome\",\"value\":9600,\"confidence\":0.99,\"evidence\":\"my yearly income is 9600 taka\"}],\"uncertainFacts\":[\"district\",\"gender\",\"occupation\",\"householdSize\",\"hasDisability\",\"maritalStatus\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"old age allowance eligibility low income senior citizen\",\"candidateProgrammeHints\":[\"old age allowance\",\"social safety net programme for elderly\",\"low income senior citizen support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 411,
+   "tokensOut": 150
+  },
+  "latencyMs": 1301,
+  "measuredAt": "2026-09-30T06:40:39.354Z"
+ },
+ "1e687b4de5357785e4421a1477d3a73bb63071235cca933aebc25ff57c63b139": {
+  "value": {
+   "text": "আপনার ধান নষ্ট হওয়ার কথা শুনে দুঃখ হলো। আপনার ৪০ শতাংশ জমি আছে — এই তথ্য দিয়ে তিনটি কর্মসূচির বিষয়ে যা জানা গেছে, তা নিচে বলছি।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — এখনো নিশ্চিত হওয়া যায়নি। আপনি বাংলাদেশের নাগরিক, আর এই কর্মসূচি ১৫ শতাংশ বা কম জমির মালিকদের জন্য। আপনার জমি ৪০ শতাংশ, তাই এটি আপনার জন্য হবে কি না, তা এখনো পরিষ্কার নয়। আপনি মহিলা কি না, পরিবারের মাসিক আয় কত, বয়স কত — এসব জানা নেই।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — এখনো নিশ্চিত হওয়া যায়নি। আপনি বাংলাদেশের নাগরিক এবং আপনার জমি ৫০ শতাংশের কম, এই দুটি শর্ত পূরণ হয়েছে। শুধু পরিবারের মাসিক আয় জানা নেই।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — এই কর্মসূচিতে আপনি এখন যেতে পারবেন না, কারণ এটি ১০ শতাংশ বা কম জমির মালিকদের জন্য, আর আপনার জমি ৪০ শতাংশ।\n\nমনে রাখবেন, এই তিনটি কর্মসূচির তথ্য যাচাই করা নমুনা তথ্য, সরকারি নিশ্চিত তথ্য নয়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদে গিয়ে ভিজিডি ও খাদ্যবান্ধব কর্মসূচির তালিকা দেখুন এবং আপনার পরিবারের মাসিক আয় জানিয়ে নিবন্ধন করতে বলুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1369,
+   "tokensOut": 404
+  },
+  "latencyMs": 2741,
+  "measuredAt": "2026-09-30T06:50:51.122Z"
+ },
+ "1eadf8f60161aa597ffae7ae29618a722c3956f3aadebb313e004032239b8218": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[],\"facts\":[{\"field\":\"age\",\"value\":35,\"confidence\":0.99,\"evidence\":\"boyos 35\"},{\"field\":\"monthlyIncome\",\"value\":3000,\"confidence\":0.99,\"evidence\":\"mashe 3 hajar taka income\"},{\"field\":\"householdSize\",\"value\":4,\"confidence\":0.99,\"evidence\":\"family te 4 jon\"}],\"uncertainFacts\":[\"district\",\"occupation\",\"education\",\"hasDisability\",\"maritalStatus\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"low income family support services Bangladesh\",\"candidateProgrammeHints\":[\"social safety net\",\"low-income family assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 416,
+   "tokensOut": 154
+  },
+  "latencyMs": 1318,
+  "measuredAt": "2026-09-30T06:40:51.582Z"
+ },
+ "1f6431e0052c10f0952ebd5dbc9696d95e3a01eb47e694c22e251e33da7a7125": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\",\"find_opportunities\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":68,\"confidence\":0.99,\"evidence\":\"Amar age 68\"},{\"field\":\"monthlyIncome\",\"value\":0,\"confidence\":0.95,\"evidence\":\"ekhon kono income nai\"}],\"uncertainFacts\":[\"district\",\"gender\",\"maritalStatus\",\"householdSize\",\"dependents\",\"hasDisability\",\"hasNid\",\"hasBankAccount\",\"occupation\",\"education\"],\"normalizedQuery\":\"old age allowance and senior citizen support Bangladesh\",\"candidateProgrammeHints\":[\"old age allowance\",\"senior citizen social safety net\",\"elderly welfare support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 415,
+   "tokensOut": 155
+  },
+  "latencyMs": 1465,
+  "measuredAt": "2026-09-30T06:40:37.671Z"
+ },
+ "22642a62b82c3a611ff15f637f701dd3a2b8076937159c956537a63b7787d500": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\",\"ask_question\"],\"lifeEvents\":[\"pregnancy\"],\"facts\":[{\"field\":\"isPregnant\",\"value\":true,\"confidence\":0.99,\"evidence\":\"I am 5 months pregnant\"},{\"field\":\"occupation\",\"value\":\"day labourer\",\"confidence\":0.95,\"evidence\":\"my husband is a day labourer\"}],\"uncertainFacts\":[\"district\",\"division\",\"monthlyIncome\",\"householdSize\",\"hasNid\",\"hasBankAccount\",\"medicalConditions\"],\"normalizedQuery\":\"pregnancy healthcare support for low-income family\",\"candidateProgrammeHints\":[\"maternal health services\",\"pregnancy allowance\",\"antenatal care support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 411,
+   "tokensOut": 145
+  },
+  "latencyMs": 1185,
+  "measuredAt": "2026-09-30T06:40:42.210Z"
+ },
+ "2282b394a3114e4d249bf3daf34f36e9f14fbb08ca5a8a4d745a77ab7946a96a": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.99,\"evidence\":\"I am a widower\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"dependents\"],\"normalizedQuery\":\"widow widower support services Bangladesh\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net\",\"widowhood support services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 410,
+   "tokensOut": 111
+  },
+  "latencyMs": 1287,
+  "measuredAt": "2026-09-30T06:40:33.691Z"
+ },
+ "22eb7a138458f4adae0ef514a93f96b0ae5b51c2dd8775fd69bdf68eb4878a93": {
+  "value": {
+   "text": "{\"intents\":[],\"lifeEvents\":[],\"facts\":[{\"field\":\"district\",\"value\":\"Sylhet\",\"confidence\":0.95,\"evidence\":\"আমি সিলেটে থাকি\"}],\"uncertainFacts\":[\"age\",\"gender\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"hasDisability\",\"maritalStatus\"],\"normalizedQuery\":\"Sylhet district resident services\",\"candidateProgrammeHints\":[\"district-based social services\",\"local government services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 411,
+   "tokensOut": 102
+  },
+  "latencyMs": 1188,
+  "measuredAt": "2026-09-30T06:40:49.523Z"
+ },
+ "23a9b9cde7cddfeb4d49190be29df9b9734c2cf9c8911c0b96fc5b1218591ca6": {
+  "value": {
+   "text": "{\"intents\":[\"check_eligibility\",\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.95,\"evidence\":\"shami mara geche\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"hasNid\",\"hasBankAccount\",\"householdSize\",\"dependents\"],\"normalizedQuery\":\"widow allowance eligibility Bangladesh\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net widow support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 413,
+   "tokensOut": 114
+  },
+  "latencyMs": 1250,
+  "measuredAt": "2026-09-30T06:40:32.700Z"
+ },
+ "266c729fdc03392bc5cf1672b99a105e215c824dfcec987e947f519afe648709": {
+  "value": {
+   "text": "You are five months pregnant, so let me tell you what I have.\n\nOne programme is confirmed for you: Community Clinic Primary Healthcare. The decision was made because you are a Bangladeshi citizen. This gives you free basic care, medicines, antenatal check-ups and child immunisation near your village. Please note this is unverified sample data, not a confirmed government fact.\n\nTwo other programmes are still undecided, not approved. They are the Maternity Allowance for Poor Mothers (৳800.00 monthly for 36 months) and the Maternal Health Voucher Scheme (DSF) (৳2,000.00 once, plus free visits and safe delivery). Both are also unverified sample data. The engine could not finish because it does not know your monthly household income or your age. It has not said you are eligible, and no one has said you need no documents.\n\nYour next step: go to your nearest community clinic or Union Health and Family Welfare Centre and register your pregnancy.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1141,
+   "tokensOut": 203
+  },
+  "latencyMs": 1652,
+  "measuredAt": "2026-09-30T06:50:47.274Z"
+ },
+ "272bbb634800ef69195a4a1dce40f9b37ea9c768ebac2a38e91607e610874016": {
+  "value": {
+   "text": "আপনি যা বলেছেন, তা থেকে তিনটি বিষয় জানা গেল: আপনার বয়স ৬৭ বছর, আপনি পুরুষ, আর মাসিক আয় ৮০০ টাকা। এই তথ্যের ভিত্তিতে নিচের কথা বলা যায়।\n\nবয়স্ক ভাতা — সমাজসেবা অধিদফতরের একটি মাসিক ভাতা, মাসে ৳600.00। আপনার বয়স ৬৫ বছরের বেশি, আয় ৳1,000.00-এর কম, আপনি বাংলাদেশের নাগরিক এবং আপনি পুরুষ — এই বিষয়গুলো মিলেছে। তবে আপনার পেশা কী, সেটি এখনো জানা নেই। তাই এই ভাতা পাবেন কি না, তা এখনো নিশ্চিত নয়। এই তথ্যটি যাচাই করা হয়নি, তাই এটি সরকারি চূড়ান্ত তথ্য নয়।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — মঙ্গা মৌসুমে মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনার সুযোগ। আপনার আয় ৳4,000.00-এর কম এবং আপনি বাংলাদেশের নাগরিক — এটুকু মিলেছে। তবে এটিও যাচাই করা তথ্য নয়।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — আপনি বাংলাদেশের নাগরিক, তাই এই সেবা আপনার জন্য নির্ধারিত হয়েছে। গ্রামের হাঁটা দূরত্বে বিনামূল্যে প্রাথমিক চিকিৎসা, ৩০টিরও বেশি ঔষধ, গর্ভকালীন পরীক্ষা ও শিশু টিকা পাওয়া যায়। এটিও যাচাই করা তথ্য নয়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1306,
+   "tokensOut": 452
+  },
+  "latencyMs": 2954,
+  "measuredAt": "2026-09-30T06:50:48.068Z"
+ },
+ "29ec8738c52b13cc64ec67a0b8af3b5926c3fc37e8031d9e5a8ac9c36f2ab8c8": {
+  "value": {
+   "text": "{\"intents\":[],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[],\"normalizedQuery\":\"\",\"candidateProgrammeHints\":[]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 406,
+   "tokensOut": 36
+  },
+  "latencyMs": 856,
+  "measuredAt": "2026-09-30T06:40:54.148Z"
+ },
+ "2ce613453888f2c81abf080e7d40b78f1a0530083155cfda58d376dcc50b5856": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[\"disability_onset\"],\"facts\":[{\"field\":\"hasDisability\",\"value\":true,\"confidence\":0.99,\"evidence\":\"I am blind\"},{\"field\":\"disabilityType\",\"value\":\"blindness\",\"confidence\":0.99,\"evidence\":\"I am blind\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"division\",\"monthlyIncome\",\"occupation\",\"education\",\"maritalStatus\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"support services for blind persons unable to work\",\"candidateProgrammeHints\":[\"disability allowance\",\"assistive services\",\"employment support for persons with disabilities\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 403,
+   "tokensOut": 148
+  },
+  "latencyMs": 936,
+  "measuredAt": "2026-09-30T06:40:40.301Z"
+ },
+ "303fbae04385fde2754816f7c44e89c010687713803b6fba604e2e53f9ef45f4": {
+  "value": {
+   "text": "{\"intents\":[\"agriculture_support\"],\"lifeEvents\":[],\"facts\":[{\"field\":\"landOwnershipDecimals\",\"value\":66,\"confidence\":0.9,\"evidence\":\"২ বিঘা জমি আছে\"},{\"field\":\"occupation\",\"value\":\"কৃষিকাজ\",\"confidence\":0.95,\"evidence\":\"কৃষিকাজ করি\"}],\"uncertainFacts\":[\"district\",\"division\",\"crops\",\"farmSizeDecimals\",\"monthlyIncome\",\"householdSize\"],\"normalizedQuery\":\"কৃষি সহায়তা কৃষক জমি ২ বিঘা\",\"candidateProgrammeHints\":[\"কৃষি ভর্তুকি\",\"কৃষি ঋণ\",\"কৃষক সহায়তা কার্যক্রম\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 416,
+   "tokensOut": 160
+  },
+  "latencyMs": 1464,
+  "measuredAt": "2026-09-30T06:40:46.050Z"
+ },
+ "33af1d3e3f1b49f5095281083ebb1074d172da11b9253fa4e67554a2a144d837": {
+  "value": {
+   "text": "আপনার স্বামীর মৃত্যুতে আমি দুঃখিত। আপনার তিন সন্তানকে নিয়ে এই সময়টা নিশ্চয়ই কঠিন।\n\nআপনার জন্য তিনটি কর্মসূচি পাওয়া গেছে। তবে মনে রাখবেন, এগুলো এখনো নিশ্চিত হয়নি — কিছু তথ্য এখনো জানা দরকার। তাই কেউ এখনই বলতে পারছে না যে আপনি টাকা পাবেন।\n\nপ্রথমে, বিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা। এটি সমাজসেবা অধিদফতরের। মাসে ৳550.00 দেওয়া হয়। আপনি মহিলা, আপনার বৈবাহিক অবস্থা মিলে যায়, আপনি বাংলাদেশের নাগরিক — এগুলো ঠিক আছে। কিন্তু আপনার পরিবারের মাসিক আয়, আপনার বয়স ও পেশা এখনো জানা নেই।\n\nদ্বিতীয়, ভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি)। এটি মহিলা বিষয়ক অধিদফতরের। দুই বছরের চক্রে খাদ্যশস্য, সঞ্চয় ও প্রশিক্ষণ দেওয়া হয়। এখানেও আয়, বয়স ও পেশা জানা দরকার।\n\nতৃতীয়, ব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি। এতে এককালীন ৳25000.00 সহ সহায়তা দেওয়া হয়। এখানে আপনার পরিবারের আয় ও জমির পরিমাণ জানা দরকার।\n\nএই তিনটি তথ্যই এখনো অজানা। তাই কোনো সিদ্ধান্ত হয়নি।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছে গিয়ে আপনার অবস্থা ও আয়ের প্রত্যয়নপত্র নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1472,
+   "tokensOut": 410
+  },
+  "latencyMs": 2952,
+  "measuredAt": "2026-09-30T06:50:44.820Z"
+ },
+ "35177b746082f5afa5e5a5081106fb0fa972bf204496971d3719ec4c91df9724": {
+  "value": {
+   "text": "{\"intents\":[\"check_eligibility\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"education\",\"hasDisability\",\"maritalStatus\",\"householdSize\",\"lifeEvents\"],\"normalizedQuery\":\"eligibility check for government services\",\"candidateProgrammeHints\":[\"social safety net programmes\",\"welfare assistance schemes\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 402,
+   "tokensOut": 87
+  },
+  "latencyMs": 782,
+  "measuredAt": "2026-09-30T06:40:55.184Z"
+ },
+ "35e30360234feaab7dd41a8cc96bd34ed7f5f467e860d8d71e985084be2bd0ba": {
+  "value": {
+   "text": "আপনার জন্য তিনটি সহায়তার কথা জানতে পেরেছি। তবে একটি গুরুত্বপূর্ণ কথা আগে বলি: এই তিনটি কার্যক্রমের তথ্য এখনো যাচাই করা হয়নি, তাই এগুলো সরকারি চূড়ান্ত তথ্য হিসেবে নিশ্চিত নয়।\n\nপ্রথমে, Widow and Husband-Deserted Women Allowance — এটি সমাজসেবা অধিদপ্তরের মাসিক ভাতা, মাসে ৳550.00। আপনার আয় কম, আপনি বিধবা, আপনি নারী, আপনি বাংলাদেশি এবং আপনার বয়স ১৮-এর বেশি — এসব কারণেই আপনি এই ভাতার জন্য বিবেচিত হচ্ছেন। শুধু আপনার পেশা সম্পর্কে তথ্য এখনো নেই।\n\nদ্বিতীয়, Vulnerable Group Development (VGD) — মহিলা বিষয়ক অধিদপ্তরের কার্যক্রম। আপনার বয়স ১৮–৪৯-এর মধ্যে, আয় কম, আপনি নারী ও বাংলাদেশি। এখানেও আপনার পেশার তথ্য দরকার।\n\nতৃতীয়, BRAC Ultra-Poor Graduation Programme — BRAC-এর দুই বছরের সহায়তা, এককালীন ৳25,000.00। আপনার আয় কম এবং আপনি নারী। তবে আপনার পরিবারের জমি কত ডেসিমল, তা জানা দরকার।\n\nএখনই আপনার ইউনিয়ন পরিষদের চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছে যান এবং আপনার অবস্থা ও আয়ের সনদ নিতে বলুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1236,
+   "tokensOut": 344
+  },
+  "latencyMs": 2456,
+  "measuredAt": "2026-09-30T06:45:52.381Z"
+ },
+ "36a446ad9a98eddec9ca84a84c11bc5807e8d6098de0e37341e5b6217116b6e6": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\",\"general_information\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.95,\"evidence\":\"আমার স্বামী নেই\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"dependents\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow alone household support services Bangladesh\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net\",\"women's livelihood support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 413,
+   "tokensOut": 122
+  },
+  "latencyMs": 1236,
+  "measuredAt": "2026-09-30T06:40:36.233Z"
+ },
+ "38297b971dc7b53fc9fc399a43dc2654472fc12ac38a471b248f26dd3cb116c5": {
+  "value": {
+   "text": "আপনি গর্ভবতী এবং আপনার স্বামী দিনমজুর — এই তথ্য জানানোর জন্য ধন্যবাদ।\n\nআপনার জন্য তিনটি সরকারি সেবা আছে। তবে মনে রাখবেন, এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — এখানে আপনি সেবা পেতে পারেন। আপনি বাংলাদেশের নাগরিক, তাই এই সেবা আপনার জন্য নির্ধারিত হয়েছে। গ্রামের কাছে বিনামূল্যে চিকিৎসা, ৩০টিরও বেশি ঔষধ, গর্ভকালীন পরীক্ষা ও শিশু টিকা পাওয়া যায়।\n\nদরিদ্র মা'র জন্য মাতৃত্বকাল ভাতা — মাসে ৳800.00, ৩৬ মাস ধরে। তবে আপনি টাকা পাবেন কি না, তা এখনো নিশ্চিত নয়। আপনার পরিবারের মাসিক আয় কত এবং আপনার বয়স কত — এই দুটি তথ্য জানা নেই।\n\nমাতৃস্বাস্থ্য ভাউচার স্কিম (ডিএসএফ) — বিনামূল্যে গর্ভকালীন পরীক্ষা, নিরাপদ প্রসব এবং একবার ৳2,000.00 নগদ। এখানেও আপনার পরিবারের মাসিক আয় জানা নেই, তাই সিদ্ধান্ত হয়নি।\n\nপরের কাজ: যত দ্রুত সম্ভব নিকটস্থ কমিউনিটি ক্লিনিক বা ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্রে গিয়ে আপনার গর্ভধারণ নিবন্ধন করুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1395,
+   "tokensOut": 383
+  },
+  "latencyMs": 2204,
+  "measuredAt": "2026-09-30T06:50:49.707Z"
+ },
+ "3929dfdc3c4205e56e7966ceba6675d73ae0c164ec2152b65e8ed376298a59a8": {
+  "value": {
+   "text": "{\"intents\":[\"agriculture_support\"],\"lifeEvents\":[\"crop_loss\"],\"facts\":[{\"field\":\"occupation\",\"value\":\"farmer\",\"confidence\":0.95,\"evidence\":\"ami krishok\"}],\"uncertainFacts\":[\"district\",\"landOwnershipDecimals\",\"farmSizeDecimals\",\"crops\",\"monthlyIncome\",\"householdSize\"],\"normalizedQuery\":\"crop loss farmer agriculture support\",\"candidateProgrammeHints\":[\"agriculture support\",\"crop loss assistance\",\"farmer relief\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 413,
+   "tokensOut": 111
+  },
+  "latencyMs": 963,
+  "measuredAt": "2026-09-30T06:40:45.407Z"
+ },
+ "3a14553abc0bc3685f2167b4bb8439d1c2066fc254a84ad914cb5b4cc453c396": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\",\"follow_up\"],\"lifeEvents\":[\"widowhood\",\"disaster_recovery\"],\"facts\":[],\"uncertainFacts\":[\"husband's death confirmation\",\"citizenship\",\"district\",\"age\",\"householdSize\",\"monthlyIncome\",\"hasNid\"],\"normalizedQuery\":\"husband missing boat accident widow support services\",\"candidateProgrammeHints\":[\"widow allowance\",\"disaster relief assistance\",\"missing person support\",\"social safety net\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 414,
+   "tokensOut": 103
+  },
+  "latencyMs": 1279,
+  "measuredAt": "2026-09-30T06:40:32.782Z"
+ },
+ "3b0533875165640b14b6e12e48120f706909635e8e3c5d6801c38347f61c7ffb": {
+  "value": {
+   "text": "{\"intents\":[\"agriculture_support\",\"ask_question\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[\"district\",\"landOwnershipDecimals\",\"farmSizeDecimals\",\"crops\",\"occupation\",\"monthlyIncome\"],\"normalizedQuery\":\"বাগান করার জন্য সহায়তা agriculture gardening support\",\"candidateProgrammeHints\":[\"agriculture support\",\"horticulture support\",\"home gardening assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 407,
+   "tokensOut": 92
+  },
+  "latencyMs": 1019,
+  "measuredAt": "2026-09-30T06:40:55.535Z"
+ },
+ "3b4cb9b7dd833e62b2c473880895c739acf1443dcc2cddd9dbaa99ed8842c3b5": {
+  "value": {
+   "text": "I am very sorry for your loss.\n\nBased on what you told us, the Widow and Husband-Deserted Women Allowance is for you. This is a monthly allowance of ৳550.00 from the Department of Social Services, for widowed, divorced, separated, or deserted women with little income. The reasons: you are a woman, your marital status fits, your monthly income is below ৳1,500, you are a Bangladeshi citizen, you are 18 or older, and you are not a serving government employee. Please note this programme is currently shown as unverified sample data, so treat it as a lead to confirm, not a confirmed fact.\n\nThe Vulnerable Group Development (VGD) programme is not for you. It covers women aged 18 to 49, and you are 50.\n\nThe BRAC Ultra-Poor Graduation Programme may also fit you, but we cannot say yet. We still need to know how much land your household owns, in decimals.\n\nYour next step: go to your Union Parishad chairman or ward councillor and ask for a certificate confirming your status and income.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1164,
+   "tokensOut": 232
+  },
+  "latencyMs": 1737,
+  "measuredAt": "2026-09-30T06:45:54.479Z"
+ },
+ "3c11f6539a31090868cfa7bddb7a13d474fc00f21f133ff3e70f51f6f093fbdc": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"check_eligibility\"],\"lifeEvents\":[\"disability_onset\"],\"facts\":[{\"field\":\"hasDisability\",\"value\":true,\"confidence\":0.99,\"evidence\":\"ami protibondhi\"},{\"field\":\"occupation\",\"value\":\"unable to work\",\"confidence\":0.95,\"evidence\":\"kaj korte pari na\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"disabilityType\",\"monthlyIncome\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"disability unable to work support services Bangladesh\",\"candidateProgrammeHints\":[\"disability allowance\",\"disability support services\",\"social safety net programmes\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 407,
+   "tokensOut": 151
+  },
+  "latencyMs": 1157,
+  "measuredAt": "2026-09-30T06:40:40.868Z"
+ },
+ "3de9a31a9f0d0036ef60cda91d2ab6973b7e842fa3ec5c1c19f63dc99bd18fda": {
+  "value": {
+   "text": "{\"intents\":[\"ngo_assistance\",\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.98,\"evidence\":\"husband died\"},{\"field\":\"dependents\",\"value\":3,\"confidence\":0.95,\"evidence\":\"three children\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow with three children support assistance\",\"candidateProgrammeHints\":[\"widow allowance\",\"NGO assistance\",\"child support services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 402,
+   "tokensOut": 135
+  },
+  "latencyMs": 1294,
+  "measuredAt": "2026-09-30T06:40:31.302Z"
+ },
+ "3e64b58610af6499eefcf9b764477facb559b1c447f6f4b5fcb02c33150218fc": {
+  "value": {
+   "text": "আপনার তথ্য অনুযায়ী তিনটি কর্মসূচি আপনার সাথে মিলে যেতে পারে। তবে এগুলো এখনো নিশ্চিত হয়নি — কারণ কিছু তথ্য এখনো জানা দরকার।\n\nবিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — সমাজসেবা অধিদফতরের মাসিক ভাতা, ৳550.00। আপনার বৈবাহিক অবস্থা, বয়স ও আয় এই ভাতার শর্তের সাথে মিলছে। শুধু আপনার পেশা জানা দরকার।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — মহিলা বিষয়ক অধিদফতরের দুই বছরের চক্র, মাসিক খাদ্যশস্য ও প্রশিক্ষণ। আপনার বয়স ১৮–৪৯ বছরের মধ্যে এবং আয় কম — এটাও মিলছে। এখানেও পেশা জানা দরকার।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — দুই বছরের প্যাকেজ, এককালীন ৳25,000.00 সহায়তা। আপনার আয় কম, তবে পরিবারের জমির পরিমাণ জানা দরকার।\n\nমনে রাখবেন, এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, তাই চূড়ান্ত বলে ধরবেন না।\n\nপরের কাজ: আপনার পেশা ও পরিবারের জমির পরিমাণ আমাদের জানান, যাতে সিদ্ধান্ত নিশ্চিত করা যায়।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1589,
+   "tokensOut": 347
+  },
+  "latencyMs": 2510,
+  "measuredAt": "2026-09-30T06:45:37.402Z"
+ },
+ "42ea7d5b5637deb506744618e9a2adcf2c83f14eaec0c009e93bf478d2c21ebf": {
+  "value": {
+   "text": "{\"intents\":[\"higher_education\",\"scholarship_search\"],\"lifeEvents\":[\"higher_education\"],\"facts\":[{\"field\":\"education\",\"value\":\"HSC\",\"confidence\":0.95,\"evidence\":\"এইচএসসিতে\"},{\"field\":\"cgpa\",\"value\":4.5,\"confidence\":0.99,\"evidence\":\"জিপিএ ৪.৫\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"university\",\"department\",\"preferredCountry\",\"hasDisability\",\"isFreedomFighterFamily\"],\"normalizedQuery\":\"HSC GPA 4.5 university admission scholarship Bangladesh\",\"candidateProgrammeHints\":[\"university admission support\",\"higher education scholarship\",\"undergraduate financial aid\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 425,
+   "tokensOut": 156
+  },
+  "latencyMs": 1363,
+  "measuredAt": "2026-09-30T06:40:47.314Z"
+ },
+ "4698125feddd7a458442cd7b9a29de821169d69afdcdbaa2876868c5f60117ce": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":70,\"confidence\":0.95,\"evidence\":\"মায়ের বয়স ৭০\"},{\"field\":\"age\",\"value\":40,\"confidence\":0.95,\"evidence\":\"আমার বয়স ৪০\"}],\"uncertainFacts\":[\"district\",\"monthlyIncome\",\"occupation\",\"maritalStatus\",\"hasDisability\",\"householdSize\"],\"normalizedQuery\":\"elderly care support for 70 year old mother\",\"candidateProgrammeHints\":[\"old age allowance\",\"elderly care services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 423,
+   "tokensOut": 138
+  },
+  "latencyMs": 1014,
+  "measuredAt": "2026-09-30T06:40:51.797Z"
+ },
+ "4789aaf03c0b46f014e141f4f27152473f671bdf5a37da2d4539d10df7d9221c": {
+  "value": {
+   "text": "আপনার স্বামী মারা গেছেন শুনে খুব দুঃখ পেলাম। আপনার জন্য একটি সরকারি সহায়তা আছে বলে আমরা জেনেছি।\n\nবিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — সমাজসেবা অধিদফতরের এই ভাতায় আপনি যোগ্য বলে আমাদের হিসাব বলছে। কারণ আপনার বয়স ৫০, আপনি মহিলা, আপনার স্বামী নেই, আপনার মাসিক আয় ৳1,500.00 এর কম, আপনি বাংলাদেশের নাগরিক, এবং আপনি সরকারি কর্মচারী নন। এই ভাতা মাসে ৳550.00, সারা বছর আবেদন করা যায়।\n\nএকটি বিষয় জানিয়ে রাখি: এই তথ্যগুলো এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য। চূড়ান্ত নিশ্চিতকরণ সরকারি অফিস থেকেই মিলবে।\n\nভিজিডি কর্মসূচিতে আপনি যোগ্য নন বলে হিসাব বলছে, কারণ ভিজিডি ১৮ থেকে ৪৯ বছর বয়সী মহিলাদের জন্য, আর আপনার বয়স ৫০।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচির ব্যাপারে এখনো সিদ্ধান্ত হয়নি। জানতে হলে বলুন, আপনার পরিবারের কত শতাংশ জমি আছে।\n\nপরের কাজ: আপনার অবস্থা ও আয় নিশ্চিত করে ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলর থেকে প্রত্যয়নপত্র নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1522,
+   "tokensOut": 355
+  },
+  "latencyMs": 2439,
+  "measuredAt": "2026-09-30T06:45:40.636Z"
+ },
+ "497a5c6aa4d40cdef4ac610d3e193a47a91dcadab90d56f5c748263afd3bc46b": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"check_eligibility\"],\"lifeEvents\":[\"job_loss\"],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"education\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"job loss garment factory worker employment support services\",\"candidateProgrammeHints\":[\"employment support\",\"skills training\",\"financial assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 407,
+   "tokensOut": 89
+  },
+  "latencyMs": 852,
+  "measuredAt": "2026-09-30T06:40:42.850Z"
+ },
+ "4ab75acab60c07bdb8b96003dc174ebe7be5a0a2004bfaa4cf7f8f29fb7b2857": {
+  "value": {
+   "text": "{\"intents\":[\"agriculture_support\",\"general_information\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":66,\"confidence\":0.99,\"evidence\":\"আমার বয়স ৬৬\"},{\"field\":\"occupation\",\"value\":\"কৃষিকাজ\",\"confidence\":0.95,\"evidence\":\"আগে কৃষিকাজ করতাম\"},{\"field\":\"monthlyIncome\",\"value\":2000,\"confidence\":0.9,\"evidence\":\"ছেলে মাসে ২০০০ টাকা দেয়\"}],\"uncertainFacts\":[\"district\",\"gender\",\"hasDisability\",\"maritalStatus\",\"householdSize\",\"landOwnershipDecimals\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"বয়স্ক কৃষক অবসরপ্রাপ্ত সহায়তা ও সামাজিক নিরাপত্তা কর্মসূচি\",\"candidateProgrammeHints\":[\"বয়স্ক ভাতা\",\"কৃষি সহায়তা\",\"সামাজিক নিরাপত্তা কর্মসূচি\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 433,
+   "tokensOut": 224
+  },
+  "latencyMs": 1227,
+  "measuredAt": "2026-09-30T06:40:38.554Z"
+ },
+ "4b85eba26e510534be4f85609281af8ea077b1e89952a61482ffde2765bc79a9": {
+  "value": {
+   "text": "{\"intents\":[\"disaster_recovery\",\"nearby_services\"],\"lifeEvents\":[\"disaster_recovery\"],\"facts\":[{\"field\":\"district\",\"value\":\"Kurigram\",\"confidence\":0.99,\"evidence\":\"Kurigram\"}],\"uncertainFacts\":[\"householdSize\",\"monthlyIncome\",\"hasNid\",\"hasBankAccount\",\"landOwnershipDecimals\"],\"normalizedQuery\":\"flood house damage assistance Kurigram\",\"candidateProgrammeHints\":[\"disaster relief\",\"housing repair assistance\",\"NGO flood support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 410,
+   "tokensOut": 115
+  },
+  "latencyMs": 1057,
+  "measuredAt": "2026-09-30T06:40:48.895Z"
+ },
+ "4c8adee811190d29e73174fce77cb471d95b08961dc7de04ebdd7d0be3981a5a": {
+  "value": {
+   "text": "{\"intents\":[\"ngo_assistance\",\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.98,\"evidence\":\"My husband died last year\"},{\"field\":\"dependents\",\"value\":3,\"confidence\":0.95,\"evidence\":\"three children\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"children ages\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow with three children support assistance\",\"candidateProgrammeHints\":[\"widow allowance\",\"NGO assistance for widows\",\"child support programmes\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 407,
+   "tokensOut": 139
+  },
+  "latencyMs": 1307,
+  "measuredAt": "2026-09-30T06:40:29.785Z"
+ },
+ "4e9c36ae46ef7fdd45ec03ccf232e0d83b9cdd8ec76fbd64d7cc136e0abe3db9": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.99,\"evidence\":\"I am a widow\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"householdSize\",\"dependents\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow assistance support services\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net\",\"NGO assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 405,
+   "tokensOut": 109
+  },
+  "latencyMs": 805,
+  "measuredAt": "2026-09-30T06:40:30.860Z"
+ },
+ "5033a7bc2833d5ce1efd5f38a9c5ed08eb6f303830b31be1ce0c6def2bd356d5": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\",\"general_information\"],\"lifeEvents\":[\"divorce\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"separated\",\"confidence\":0.95,\"evidence\":\"স্বামী আমাকে ফেলে চলে গেছে\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"dependents\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"স্বামী পরিত্যক্ত নারীর সহায়তা ও পরামর্শ সেবা\",\"candidateProgrammeHints\":[\"women's welfare support\",\"legal aid for women\",\"social safety net allowance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 421,
+   "tokensOut": 140
+  },
+  "latencyMs": 1200,
+  "measuredAt": "2026-09-30T06:40:36.060Z"
+ },
+ "50811746f69b6ea21e9dfaa9235a3e1da3f9ca4054faac8ef963dd2ab541d76f": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.99,\"evidence\":\"আমি একজন বিধবা\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"householdSize\",\"dependents\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow assistance support services\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net assistance\",\"NGO support for widows\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 412,
+   "tokensOut": 116
+  },
+  "latencyMs": 892,
+  "measuredAt": "2026-09-30T06:40:30.996Z"
+ },
+ "51b2eba847e84bfb3ae2171cc9d87a75e2b31eb443b74131048b4ba77eba79c4": {
+  "value": {
+   "text": "আপনি পাঁচ মাসের গর্ভবতী এবং আপনার স্বামী দিনমজুর — এই তথ্য দিয়ে তিনটি সরকারি সেবার কথা জানানো যাচ্ছে। তবে মনে রাখবেন, এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা: আপনি বাংলাদেশের নাগরিক, তাই এই সেবা আপনার জন্য নির্ধারিত হয়েছে। গ্রামের হাঁটা দূরত্বে বিনামূল্যে প্রাথমিক চিকিৎসা, ৩০টিরও বেশি ঔষধ, গর্ভকালীন পরীক্ষা ও শিশু টিকা পাওয়া যায়।\n\nদরিদ্র মা'র জন্য মাতৃত্বকাল ভাতা: আপনি মহিলা ও গর্ভবতী, তাই প্রাথমিক শর্ত পূরণ হয়েছে। তবে সিদ্ধান্ত এখনো অনিশ্চিত — আপনার পরিবারের মাসিক আয় ও আপনার বয়স জানা নেই। এই ভাতা মাসে ৳800.00, ৩৬ মাস ধরে, প্রথম বা দ্বিতীয় সন্তানের জন্য।\n\nমাতৃস্বাস্থ্য ভাউচার স্কিম (ডিএসএফ): এখানেও আয় ও বয়স জানা নেই, তাই সিদ্ধান্ত অনিশ্চিত। এতে বিনামূল্যে গর্ভকালীন পরীক্ষা, নিরাপদ প্রসব এবং এককালীন ৳2,000.00 নগদ প্রণোদনা আছে।\n\nপরের কাজ: যত দ্রুত সম্ভব নিকটস্থ কমিউনিটি ক্লিনিক বা ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্রে গিয়ে গর্ভধারণ নিবন্ধন করুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1509,
+   "tokensOut": 411
+  },
+  "latencyMs": 2224,
+  "measuredAt": "2026-09-30T06:50:35.896Z"
+ },
+ "546e1c27c7325f371997559cd47e877721a5c8395f8318e222d3f3dbf5aed783": {
+  "value": {
+   "text": "আপনার চাকরি চলে যাওয়ার খবর শুনে খারাপ লাগল। আমি আপনাকে কিছু সরকারি ও এনজিও সহায়তার কথা বলতে পারি, তবে মনে রাখবেন — এগুলো আপনি পাবেন কি না, তা এখনো নিশ্চিত নয়। কারণ আপনার আয়, বয়স, জমি — এসব তথ্য আমার কাছে নেই।\n\nতিনটি সহায়তার কথা জানি:\n\n- Vulnerable Group Development (VGD) — Department of Women Affairs পরিচালিত। দুই বছর ধরে বিনামূল্যে খাদ্যশস্য, সঞ্চয় ও দক্ষতা প্রশিক্ষণ দেওয়া হয়। এটি মূলত গ্রামের সবচেয়ে দরিদ্র নারীদের জন্য। সূত্র: https://dwa.gov.bd\n- Food Friendly Programme (subsidised rice) — Department of Social Services পরিচালিত। মঙ্গা মৌসুমে মাসে সর্বোচ্চ ৩০ কেজি চাল কম দামে কেনা যায়। সূত্র: https://mofood.gov.bd\n- BRAC Ultra-Poor Graduation Programme — BRAC পরিচালিত। দুই বছরের প্যাকেজে সম্পদ, ভাতা, পরামর্শ ও চিকিৎসা সহায়তা দেওয়া হয়। এককালীন ৳25,000.00 দেওয়া হয়। সূত্র: https://brac.net/ultra-poor-graduation\n\nদুঃখিত, এই তিনটি তথ্যই আমার কাছে নমুনা (unverified sample) হিসেবে আছে। এগুলো সরকারি চূড়ান্ত তথ্য হিসেবে নিশ্চিত নয়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদে গিয়ে VGD ও চালের তালিকা আছে কি না দেখুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1064,
+   "tokensOut": 390
+  },
+  "latencyMs": 2332,
+  "measuredAt": "2026-09-30T06:46:03.788Z"
+ },
+ "563b85fc531dd05d2d4f1300747f582ea38fab7e1586a5e769eb013e2a08e725": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[\"disability_onset\"],\"facts\":[{\"field\":\"hasDisability\",\"value\":false,\"confidence\":0.99,\"evidence\":\"I am not disabled\"},{\"field\":\"disabilityType\",\"value\":\"blind\",\"confidence\":0.95,\"evidence\":\"my son is blind\"}],\"uncertainFacts\":[\"son's age\",\"district\",\"household income\",\"son's citizenship\",\"son's student status\"],\"normalizedQuery\":\"support services for blind son disability assistance\",\"candidateProgrammeHints\":[\"disability allowance\",\"special education support\",\"assistive device support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 406,
+   "tokensOut": 132
+  },
+  "latencyMs": 935,
+  "measuredAt": "2026-09-30T06:40:41.368Z"
+ },
+ "564a185da5bd3983c2e76bad12868db52c3e026a894d61f5df96ca7b35a6f082": {
+  "value": {
+   "text": "আপনি গর্ভবতী — এই সময়ে আপনার জন্য তিনটি সরকারি সহায়তা আছে। তবে একটি গুরুত্বপূর্ণ কথা আগে: এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য। তাই আবেদনের আগে স্থানীয় অফিসে সত্যতা মিলিয়ে নিন।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — এখানে আপনি যেতে পারেন। আপনি বাংলাদেশের নাগরিক, তাই এই সেবা আপনার জন্য খোলা। গ্রামের হাঁটা দূরত্বে বিনামূল্যে প্রাথমিক চিকিৎসা, ৩০টিরও বেশি ঔষধ, গর্ভকালীন পরীক্ষা ও শিশু টিকা পাওয়া যায়।\n\nদরিদ্র মা'র জন্য মাতৃত্বকাল ভাতা — মাসে ৳800.00, ৩৬ মাস ধরে, প্রথম বা দ্বিতীয় সন্তানের জন্য। আপনি গর্ভবতী, নারী ও নাগরিক — তাই আপনি এর মধ্যে পড়েন। তবে আপনার পরিবারের মাসিক আয় ও আপনার বয়স এখনো জানা নেই, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nমাতৃস্বাস্থ্য ভাউচার স্কিম (ডিএসএফ) — বিনামূল্যে গর্ভকালীন পরীক্ষা, সিজারসহ নিরাপদ প্রসব, এবং প্রতিষ্ঠানে প্রসবের জন্য ৳2,000.00 এককালীন। এখানেও আয় ও বয়স জানা দরকার।\n\nপরের কাজ: আজই নিকটস্থ কমিউনিটি ক্লিনিক বা ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্রে গিয়ে আপনার গর্ভধারণ নিবন্ধন করুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1348,
+   "tokensOut": 414
+  },
+  "latencyMs": 2405,
+  "measuredAt": "2026-09-30T06:45:59.757Z"
+ },
+ "5806bbba876ffa14667068d0f2dce734da7ebef6cdf617af82b49cd50e9d305b": {
+  "value": {
+   "text": "আপনি যা বলেছেন, তা থেকে তিনটি সরকারি সুবিধার কথা জানা যাচ্ছে। তবে মনে রাখবেন, এই তথ্যগুলো এখনো যাচাই করা হয়নি — এগুলো নমুনা তথ্য, চূড়ান্ত সরকারি তথ্য নয়।\n\nবয়স্ক ভাতা: আপনার বয়স ৬৭ এবং মাসিক আয় ৮০০ টাকা — এই দুটি শর্ত পূরণ হয়েছে। তবে আপনার পেশা কী, সেটি এখনো জানা নেই। তাই এই ভাতার ব্যাপারে চূড়ান্ত সিদ্ধান্ত হয়নি। এই ভাতায় মাসে ৳600.00 দেওয়া হয়। আবেদনের কোনো শেষ তারিখ নেই, সারা বছরই করা যায়।\n\nখাদ্যবান্ধব কর্মসূচি: আপনার আয় ৳4,000 এর কম, তাই এই শর্তটি পূরণ হয়েছে। এখানে মঙ্গা মৌসুমে মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনা যায়। সিদ্ধান্ত এখনো চূড়ান্ত হয়নি।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা: আপনি বাংলাদেশের নাগরিক, তাই এই সেবার জন্য আপনি যোগ্য। এখানে বিনামূল্যে প্রাথমিক চিকিৎসা, ৩০টিরও বেশি ঔষধ, গর্ভকালীন পরীক্ষা ও শিশু টিকা পাওয়া যায়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1424,
+   "tokensOut": 382
+  },
+  "latencyMs": 2565,
+  "measuredAt": "2026-09-30T06:50:33.723Z"
+ },
+ "593c333379e725856deb3278a52ab63f483084999b681b5a3b0ab2e203f8ebed": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\",\"ask_question\"],\"lifeEvents\":[\"serious_medical_need\"],\"facts\":[{\"field\":\"medicalConditions\",\"value\":\"kidney failure requiring regular dialysis\",\"confidence\":0.95,\"evidence\":\"কিডনি নষ্ট, নিয়মিত ডায়ালাইসিস করাতে হয়\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"kidney dialysis patient financial and medical assistance Bangladesh\",\"candidateProgrammeHints\":[\"government health assistance\",\"dialysis support programme\",\"NGO medical aid\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 421,
+   "tokensOut": 138
+  },
+  "latencyMs": 1133,
+  "measuredAt": "2026-09-30T06:40:48.742Z"
+ },
+ "59534c0906d803841b8419f6c30235a83c51bff6b41381da87155c80e9044c00": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"ask_question\"],\"lifeEvents\":[\"job_loss\",\"seeking_employment\"],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"occupation\",\"education\",\"monthlyIncome\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"job loss employment support services Bangladesh\",\"candidateProgrammeHints\":[\"employment support\",\"job placement services\",\"vocational training\",\"social safety net\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 411,
+   "tokensOut": 97
+  },
+  "latencyMs": 1034,
+  "measuredAt": "2026-09-30T06:40:43.677Z"
+ },
+ "598c133ddc53482ee6864cffb6344fed88d0af3dcee2f7f33ea44421b5b03721": {
+  "value": {
+   "text": "আপনার ধান নষ্ট হওয়ার কথা শুনে খারাপ লাগল। আপনার দেওয়া তথ্য অনুযায়ী তিনটি কর্মসূচির কথা জানানো যাচ্ছে।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — এখানে আপনার জমি ৫০ শতাংশের কম, তাই এই শর্তটি পূরণ হয়েছে। তবে আপনার পরিবারের মাসিক আয় কত, সেটি এখনো জানা নেই। এই তথ্য ছাড়া চূড়ান্ত সিদ্ধান্ত হয়নি। এটি একটি যাচাই-না-করা নমুনা তথ্য, সরকারি তথ্য হিসেবে নিশ্চিত নয়।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — এটি মূলত মহিলাদের জন্য। আপনি পুরুষ হলে এটি আপনার জন্য নয়। আপনার লিঙ্গ, বয়স ও মাসিক আয় জানা নেই, তাই সিদ্ধান্ত হয়নি। এটিও যাচাই-না-করা নমুনা তথ্য।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — এখানে জমি ১০ শতাংশ বা কম হতে হয়। আপনার ৪০ শতাংশ জমি, তাই এই কর্মসূচিতে আপনি এখন যেতে পারবেন না।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদের নোটিশ বোর্ডে খাদ্যবান্ধব কর্মসূচির সুবিধাভোগী তালিকা দেখুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1322,
+   "tokensOut": 340
+  },
+  "latencyMs": 2161,
+  "measuredAt": "2026-09-30T06:46:01.455Z"
+ },
+ "59e8eea8d93fce4c2541b3266c65270379f7fd456743551fe08975ce191c6ed3": {
+  "value": {
+   "text": "আপনার তথ্যের জন্য ধন্যবাদ। আপনার বয়স ৪৫ বছর, আপনি বিধবা, মাসে আয় প্রায় ১২০০ টাকা, এবং আপনি রংপুরে থাকেন।\n\nআপনি যে তিনটি কর্মসূচির কথা জেনেছেন, তার কোনোটির ব্যাপারে এখনো চূড়ান্ত সিদ্ধান্ত হয়নি। কারণ কিছু তথ্য এখনো জানা নেই। এগুলো আসলে নমুনা তথ্য, সরকারি যাচাই করা তথ্য নয়।\n\n১. বিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — সমাজসেবা অধিদফতর। মাসিক ৫৫০.০০ টাকা। আপনার কোন পেশা, সেটি এখনো জানা নেই।\n\n২. ভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — মহিলা বিষয়ক অধিদফতর। আপনার পেশা জানা দরকার।\n\n৩. ব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — ব্র্যাক। এককালীন ২৫,০০০.০০ টাকা। আপনার পরিবারের কত শতাংশ জমি আছে, তা জানা নেই।\n\nএই তিনটি কর্মসূচিই সারা বছর খোলা। কোনোটির জন্যই এখনই আবেদন করা যাবে না, কারণ আগে বাকি তথ্য জানা দরকার।\n\nপরের কাজ: আপনার পেশা এবং পরিবারের জমির পরিমাণ আমাদের জানান, যাতে সিদ্ধান্ত সম্পূর্ণ করা যায়।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1526,
+   "tokensOut": 352
+  },
+  "latencyMs": 2177,
+  "measuredAt": "2026-09-30T06:50:42.009Z"
+ },
+ "59f9fca381917143139bf9b3008363968621b05933048fbc69c386cbabc8aef7": {
+  "value": {
+   "text": "I am sorry for your loss. Based on what you told us, one programme looks open to you.\n\nWidow and Husband-Deserted Women Allowance — the rule engine found you can get this. It is for women whose husband has died, who have little income, and who are Bangladeshi citizens aged 18 or above. You are a woman, you are 50, your monthly income is below ৳1,500, and you are not a government employee. The allowance is ৳550.00 per month. Please note this programme is shown as unverified sample data, so confirm the details locally.\n\nVGD is not for you, because it covers women aged 18 to 49, and you are 50.\n\nThe BRAC Ultra-Poor Graduation Programme is still undecided. It gives ৳25,000.00 once, plus assets and training. The engine needs to know how much land your household owns, in decimals.\n\nNext step: go to your Union Parishad chairman or ward councillor and ask for a certificate confirming your status and income.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1320,
+   "tokensOut": 225
+  },
+  "latencyMs": 1794,
+  "measuredAt": "2026-09-30T06:50:30.074Z"
+ },
+ "5be69b1fc730295d3a0b19d0a7e329c41cb68a2d3120a40a5a169d102bf23125": {
+  "value": {
+   "text": "আপনার জন্য তিনটি সহায়তার কথা জানতে পেরেছি। তবে এর কোনোটিই এখনো নিশ্চিত সরকারি তথ্য নয় — এগুলো নমুনা তথ্য হিসেবে দেওয়া, তাই চূড়ান্ত ভাববেন না।\n\nপ্রথমটি, Widow and Husband-Deserted Women Allowance। এটি সমাজসেবা অধিদপ্তরের মাসিক ভাতা, মাসে ৳550.00। আপনি বিধবা, আপনার আয়ও কম — তাই আপনি এর জন্য বিবেচিত হতে পারেন। তবে আপনার পেশা এখনো জানা যায়নি, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nদ্বিতীয়টি, Vulnerable Group Development (VGD)। এটি মহিলা বিষয়ক অধিদপ্তরের, দুই বছর ধরে মাসিক খাদ্যশস্য, সঞ্চয় ও প্রশিক্ষণ দেয়। আপনার বয়স ৪৫, তাই এটি আপনার জন্য হতে পারে। এখানেও পেশা জানা দরকার।\n\nতৃতীয়টি, BRAC Ultra-Poor Graduation Programme। এটি দুই বছরের সহায়তা, এককালীন ৳25,000.00 সহ। আপনার পরিবারের জমি কত ডেসিমল, সেটি জানা দরকার।\n\nএখনই করুন: আপনার ইউনিয়ন পরিষদের চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছে গিয়ে আপনার অবস্থা ও আয়ের সনদ নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1346,
+   "tokensOut": 323
+  },
+  "latencyMs": 2595,
+  "measuredAt": "2026-09-30T06:45:37.483Z"
+ },
+ "5ffc29476005708b40c02b85718d6c53f79faa78db3c95c0bc21602741520f12": {
+  "value": {
+   "text": "I'm sorry for your loss. Based on what you told me, three programmes came up for you. Please note: the rule engine has not yet confirmed any of them — all three are marked as unverified sample data, so treat them as leads to check, not confirmed facts.\n\nWidow and Husband-Deserted Women Allowance — a monthly allowance of ৳550.00 from the Department of Social Services, for widowed women with little income. The engine found you meet the age, income, nationality and marital points, but it still needs to know your occupation.\n\nVulnerable Group Development (VGD) — monthly free food grain plus savings and skills training over two years, from the Department of Women Affairs. Your age and income fit, but your occupation is still unknown.\n\nBRAC Ultra-Poor Graduation Programme — a two-year package with a ৳25,000.00 one-time asset transfer, a stipend, coaching and healthcare. The engine still needs to know how much land your household owns.\n\nNext step: tell me your occupation and your household's land size, so the engine can finish checking.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1392,
+   "tokensOut": 232
+  },
+  "latencyMs": 1823,
+  "measuredAt": "2026-09-30T06:50:27.558Z"
+ },
+ "60c2e808ccce5d87ecc48085cab6fba8c37a986f2cde162222566adf1aa2d559": {
+  "value": {
+   "text": "আপনার স্বামী মারা যাওয়ার জন্য আমি খুব দুঃখিত। তিন সন্তান নিয়ে আপনার এই সময়টা নিশ্চয়ই কঠিন।\n\nআপনার কথা শুনে তিনটি কর্মসূচির কথা মনে পড়ছে। তবে এগুলো এখনো নিশ্চিত হওয়া তথ্য নয় — এগুলো নমুনা তথ্য হিসেবে দেওয়া, তাই চূড়ান্ত বলে ধরবেন না।\n\nপ্রথমটি, বিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা। এটি সমাজসেবা অধিদফতরের। মাসে ৳550.00 দেওয়া হয়। আপনি বিধবা, তাই এই ভাতার শর্ত আপনার সঙ্গে মেলে। কিন্তু আপনার বয়স, মাসিক আয় আর পেশা এখনো জানা নেই, তাই চূড়ান্ত কিছু বলা যাচ্ছে না।\n\nদ্বিতীয়টি, ভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি)। এটি মহিলা বিষয়ক অধিদফতরের। দুই বছরের চক্রে খাদ্যশস্য, সঞ্চয় ও প্রশিক্ষণ দেওয়া হয়।\n\nতৃতীয়টি, ব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি। এতে এককালীন ৳25000.00 সহ দুই বছরের সহায়তা দেওয়া হয়।\n\nএখনই করুন: আপনার বয়স, পরিবারের মাসিক আয় আর পেশা লিখে আমাকে জানান, যাতে বাকি তথ্য মিলিয়ে দেখা যায়।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1535,
+   "tokensOut": 340
+  },
+  "latencyMs": 2294,
+  "measuredAt": "2026-09-30T06:45:39.784Z"
+ },
+ "61d8417e7b5c49d6e461b8ce237b0b1bc73a13f6a65f5f3567d319ab90b7e83b": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[\"eligibility status\",\"programme applied for\",\"approval details\"],\"normalizedQuery\":\"government approval eligibility verification\",\"candidateProgrammeHints\":[]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 412,
+   "tokensOut": 57
+  },
+  "latencyMs": 1052,
+  "measuredAt": "2026-09-30T06:40:52.529Z"
+ },
+ "6508ad48a5a8bf3b3285e8e12cd5b97938844c94c9d92a3a51c3fa7fc8b759c3": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[],\"facts\":[{\"field\":\"isStudent\",\"value\":true,\"confidence\":0.99,\"evidence\":\"I am a student\"},{\"field\":\"occupation\",\"value\":\"fisherman\",\"confidence\":0.95,\"evidence\":\"my father is a fisherman\"}],\"uncertainFacts\":[\"age\",\"district\",\"division\",\"monthlyIncome\",\"householdSize\",\"hasDisability\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"student class 9 fisherman family support services\",\"candidateProgrammeHints\":[\"education support\",\"fisherman family assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 411,
+   "tokensOut": 131
+  },
+  "latencyMs": 971,
+  "measuredAt": "2026-09-30T06:40:46.283Z"
+ },
+ "6583e4c4f075a4f5a705759bece5a89f771d6d6cf37b72599eca8889ac9862e0": {
+  "value": {
+   "text": "{\"intents\":[\"scholarship_search\",\"check_eligibility\"],\"lifeEvents\":[\"child_education\"],\"facts\":[{\"field\":\"education\",\"value\":\"class 7\",\"confidence\":0.95,\"evidence\":\"ক্লাস সেভেনে পড়ে\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"division\",\"monthlyIncome\",\"annualIncome\",\"occupation\",\"hasDisability\",\"maritalStatus\",\"householdSize\",\"dependents\",\"isStudent\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"class 7 student stipend scholarship eligibility Bangladesh\",\"candidateProgrammeHints\":[\"secondary school stipend programme\",\"child education support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 421,
+   "tokensOut": 143
+  },
+  "latencyMs": 1318,
+  "measuredAt": "2026-09-30T06:40:47.516Z"
+ },
+ "662116990fd0b93d7a5fd534a8da2eb640cbe84c8dcc935b37a17ef6d6294b22": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\",\"ngo_assistance\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[\"loan details\",\"repayment terms\",\"income\",\"district\",\"household size\"],\"normalizedQuery\":\"NGO loan repayment difficulty assistance\",\"candidateProgrammeHints\":[\"NGO microfinance support\",\"debt relief services\",\"financial hardship assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 411,
+   "tokensOut": 80
+  },
+  "latencyMs": 839,
+  "measuredAt": "2026-09-30T06:40:51.169Z"
+ },
+ "66fb4ae0690e59308cc13d486d34b86d557bb51fe2fb382873caac4d1bf0cf87": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"general_information\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"gender\",\"value\":\"female\",\"confidence\":0.99,\"evidence\":\"আমি একজন মহিলা\"},{\"field\":\"age\",\"value\":63,\"confidence\":0.99,\"evidence\":\"বয়স ৬৩\"}],\"uncertainFacts\":[\"district\",\"monthlyIncome\",\"maritalStatus\",\"householdSize\",\"hasDisability\",\"occupation\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"elderly low income woman social safety net support Bangladesh\",\"candidateProgrammeHints\":[\"old age allowance\",\"widow allowance\",\"social safety net programmes\",\"healthcare support for elderly\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 416,
+   "tokensOut": 155
+  },
+  "latencyMs": 1222,
+  "measuredAt": "2026-09-30T06:40:39.154Z"
+ },
+ "6a5ef9d7788dd3060e9137e717db39be6b8d7ffa16bb660c07c26fd66f9c4839": {
+  "value": {
+   "text": "{\"intents\":[\"ngo_assistance\",\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.98,\"evidence\":\"স্বামী মারা গেছে\"},{\"field\":\"dependents\",\"value\":3,\"confidence\":0.95,\"evidence\":\"তিনটা বাচ্চা\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow with three children seeking financial assistance and support services\",\"candidateProgrammeHints\":[\"widow allowance\",\"NGO assistance for widows\",\"child support programmes\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 423,
+   "tokensOut": 151
+  },
+  "latencyMs": 1404,
+  "measuredAt": "2026-09-30T06:40:29.898Z"
+ },
+ "6ab7957121a365a61c802fe08f9fc2a1d07217267c272752e1cf2695197a7dd9": {
+  "value": {
+   "text": "আপনার বয়স ৬৮ বছর এবং আয় নেই — এই তথ্য আমাদের কাছে পৌঁছেছে। এখন কোন সুবিধা পাবেন, তা নিয়ম মেনে ঠিক করা হয়েছে। মনে রাখবেন, নিচের সব তথ্য নমুনা যাচাইকৃত নয়, তাই চূড়ান্ত নিশ্চয়তা নয়।\n\nবয়স্ক ভাতা (সমাজসেবা অধিদফতর): এখনো সিদ্ধান্ত হয়নি। আপনার বয়স ও আয়ের শর্ত পূরণ হয়েছে ধরা হয়েছে। তবে আপনার লিঙ্গ ও পেশা এখনো জানা যায়নি — এগুলো না জানলে সিদ্ধান্ত দেওয়া যাবে না। মাসিক ৳600.00 পাওয়া যায়।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল): এখনো সিদ্ধান্ত হয়নি। আপনার আয় ও নাগরিকত্বের শর্ত পূরণ হয়েছে ধরা হয়েছে।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা (স্বাস্থ্য অধিদপ্তর): আপনি এই সেবা পাবেন বলে সিদ্ধান্ত হয়েছে। গ্রামের কাছে বিনামূল্যে চিকিৎসা, ৩০টিরও বেশি ঔষধ, গর্ভকালীন পরীক্ষা ও শিশু টিকা পাওয়া যায়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1324,
+   "tokensOut": 363
+  },
+  "latencyMs": 2396,
+  "measuredAt": "2026-09-30T06:50:47.206Z"
+ },
+ "6e45f803b0a5a72d268e07456678446415345c769a6f90517f99b8f03736db31": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"check_eligibility\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"age\",\"value\":45,\"confidence\":0.99,\"evidence\":\"45 year old\"},{\"field\":\"maritalStatus\",\"value\":\"widow\",\"confidence\":0.99,\"evidence\":\"widow\"},{\"field\":\"monthlyIncome\",\"value\":1200,\"confidence\":0.99,\"evidence\":\"1200 taka a month\"},{\"field\":\"district\",\"value\":\"Rangpur\",\"confidence\":0.99,\"evidence\":\"Rangpur\"}],\"uncertainFacts\":[\"gender\",\"occupation\",\"education\",\"householdSize\",\"dependents\",\"hasDisability\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow financial assistance Rangpur low income\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net\",\"financial assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 423,
+   "tokensOut": 189
+  },
+  "latencyMs": 1293,
+  "measuredAt": "2026-09-30T06:40:34.247Z"
+ },
+ "6fef3d63823640be72deba383cc15faaa8a3dfd1673c94a943455ca2c1188da0": {
+  "value": {
+   "text": "আপনার কথা অনুযায়ী আপনি ৪৫ বছরের বিধবা, মাসে প্রায় ১,২০০.০০ টাকা আয় করেন এবং রংপুরে থাকেন। আপনার জন্য তিনটি কর্মসূচি পাওয়া গেছে। তবে এগুলো এখনো নিশ্চিত হয়নি, কারণ কিছু তথ্য বাকি আছে।\n\nবিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — সমাজসেবা অধিদফতরের মাসিক ভাতা, ৳৫৫০.০০ টাকা। আপনার বৈবাহিক অবস্থা, আয়, বয়স ও নাগরিকত্ব এই ভাতার শর্ত পূরণ করে। শুধু আপনার পেশা জানা নেই।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — মহিলা বিষয়ক অধিদফতরের দুই বছরের খাদ্যশস্য ও প্রশিক্ষণ কর্মসূচি। আপনার আয়, বয়স ও নাগরিকত্ব শর্ত পূরণ করে। এখানেও পেশা জানা দরকার।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — ৳২৫,০০০.০০ টাকা এককালীন সহায়তা। আপনার আয় ও লিঙ্গ শর্ত পূরণ করে। আপনার পরিবারের কত শতাংশ জমি আছে, তা জানা নেই।\n\nমনে রাখবেন, এই তিনটি কর্মসূচির তথ্য যাচাই করা নমুনা তথ্য, সরকারি নিশ্চিত তথ্য নয়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছে গিয়ে অবস্থা ও আয়ের প্রত্যয়নপত্র নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1636,
+   "tokensOut": 405
+  },
+  "latencyMs": 2686,
+  "measuredAt": "2026-09-30T06:50:28.427Z"
+ },
+ "712b334429ef8b21789f7b6f2ce68c39f60a28b2608214757e00b089a22057ac": {
+  "value": {
+   "text": "{\"intents\":[\"ngo_assistance\",\"general_information\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"householdSize\",\"dependents\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow assistance support Bangladesh\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net widow support\",\"NGO widow assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 419,
+   "tokensOut": 92
+  },
+  "latencyMs": 1119,
+  "measuredAt": "2026-09-30T06:40:32.414Z"
+ },
+ "714d42c0c3c3d88aec041f72fa936b1f0523b21c31c0e75d2058c36e439794b9": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[],\"facts\":[{\"field\":\"age\",\"value\":28,\"confidence\":0.99,\"evidence\":\"I am 28\"},{\"field\":\"monthlyIncome\",\"value\":6000,\"confidence\":0.99,\"evidence\":\"I earn 6000 taka a month\"},{\"field\":\"occupation\",\"value\":\"rickshaw driver\",\"confidence\":0.95,\"evidence\":\"driving a rickshaw\"}],\"uncertainFacts\":[\"district\",\"gender\",\"householdSize\",\"hasDisability\",\"education\"],\"normalizedQuery\":\"low income rickshaw driver support services\",\"candidateProgrammeHints\":[\"social safety net programmes\",\"livelihood support\",\"financial assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 416,
+   "tokensOut": 152
+  },
+  "latencyMs": 1115,
+  "measuredAt": "2026-09-30T06:40:44.234Z"
+ },
+ "7380623f5e281b762120b2ff9ccb97c7f545c9653d083a1aa57a8732feeacb72": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"seeking_employment\"],\"lifeEvents\":[\"seeking_employment\"],\"facts\":[{\"field\":\"hasDisability\",\"value\":false,\"confidence\":0.99,\"evidence\":\"I don't have any disability\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"division\",\"monthlyIncome\",\"occupation\",\"education\",\"isStudent\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"job opportunities employment support\",\"candidateProgrammeHints\":[\"employment services\",\"job placement programmes\",\"skills training\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 409,
+   "tokensOut": 118
+  },
+  "latencyMs": 926,
+  "measuredAt": "2026-09-30T06:40:41.568Z"
+ },
+ "74410899f771ba62e077300339a81a7256b9938dfe4fbb3d05978fbbc2cea482": {
+  "value": {
+   "text": "আপনার বয়স ৬৮ বছর আর আয় নেই — এই তথ্য অনুযায়ী তিনটি সরকারি সেবার কথা জানানো যাচ্ছে। তবে মনে রাখবেন, নিচের সব তথ্য এখনো যাচাই করা হয়নি, এগুলো নমুনা তথ্য।\n\nবয়স্ক ভাতা — সমাজসেবা অধিদফতর। মাসে ৳600.00 দেওয়া হয়। আপনার বয়স ৬৫ বছরের বেশি এবং আয় নেই, তাই আপনি এর জন্য বিবেচিত হতে পারেন। তবে আপনার লিঙ্গ ও পেশা এখনো জানা নেই, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনা যায়। আপনার আয় কম, তাই এটি আপনার জন্য হতে পারে।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — আপনি বাংলাদেশের নাগরিক, তাই এই সেবার জন্য আপনি বিবেচিত। গ্রামের হাঁটা দূরত্বে বিনামূল্যে চিকিৎসা, ৩০টিরও বেশি ঔষধ ও টিকা পাওয়া যায়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1395,
+   "tokensOut": 335
+  },
+  "latencyMs": 2075,
+  "measuredAt": "2026-09-30T06:45:42.714Z"
+ },
+ "74d0447ba3a18f7db2bdeb63f403d63cef23654e65cffd6e91b98604eb11396a": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[\"maritalStatus\",\"medicalConditions\",\"district\",\"age\",\"monthlyIncome\"],\"normalizedQuery\":\"স্বামী হাসপাতালে ভর্তি সহায়তা\",\"candidateProgrammeHints\":[\"hospital support services\",\"medical assistance programmes\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 420,
+   "tokensOut": 78
+  },
+  "latencyMs": 915,
+  "measuredAt": "2026-09-30T06:40:31.114Z"
+ },
+ "78faf911bed6c1e0772cdeafeeeb09d49209b535615d0d8b64a5167e4d7be7c5": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\",\"general_information\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"maritalStatus\",\"monthlyIncome\",\"district\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow allowance eligibility rules Bangladesh\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net allowance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 407,
+   "tokensOut": 85
+  },
+  "latencyMs": 838,
+  "measuredAt": "2026-09-30T06:40:52.965Z"
+ },
+ "79ac903ae309215b83dd7ef3c4dd6c50e182e8080119661bc1b0582b31bc1865": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"general_information\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":66,\"confidence\":0.99,\"evidence\":\"I am 66\"},{\"field\":\"occupation\",\"value\":\"retired farmer\",\"confidence\":0.95,\"evidence\":\"a retired farmer\"},{\"field\":\"monthlyIncome\",\"value\":2000,\"confidence\":0.9,\"evidence\":\"my son sends me 2000 taka a month\"}],\"uncertainFacts\":[\"district\",\"gender\",\"maritalStatus\",\"householdSize\",\"hasDisability\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"old age allowance retired farmer low income Bangladesh\",\"candidateProgrammeHints\":[\"old age allowance\",\"social safety net pension\",\"farmer welfare support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 418,
+   "tokensOut": 171
+  },
+  "latencyMs": 1430,
+  "measuredAt": "2026-09-30T06:40:38.657Z"
+ },
+ "7acb03583d27de6d89b2e5f5bb6d10a2ba0b01845746cbab4ea11bf6c0af02e0": {
+  "value": {
+   "text": "{\"intents\":[\"sme_support\"],\"lifeEvents\":[\"entrepreneurship\"],\"facts\":[{\"field\":\"hasBusiness\",\"value\":true,\"confidence\":0.99,\"evidence\":\"আমার একটা ছোট চায়ের দোকান আছে\"},{\"field\":\"businessType\",\"value\":\"tea shop\",\"confidence\":0.95,\"evidence\":\"চায়ের দোকান\"}],\"uncertainFacts\":[\"district\",\"monthlyIncome\",\"hasNid\",\"hasBankAccount\",\"employees\"],\"normalizedQuery\":\"small tea shop business loan support Bangladesh\",\"candidateProgrammeHints\":[\"SME loan programmes\",\"small business financing\",\"cottage industry support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 422,
+   "tokensOut": 140
+  },
+  "latencyMs": 997,
+  "measuredAt": "2026-09-30T06:40:47.615Z"
+ },
+ "7cfd12637d415b4dcd7c56cc8152778752a521e309c7d2d227f3378b2e401b8d": {
+  "value": {
+   "text": "I'm sorry you're facing this. Based on what you told me, the rule engine found you may qualify for three programmes. Please note all three are marked as unverified sample data, so treat the details as a guide, not confirmed government fact.\n\nFree Assistive Devices for Persons with Disabilities — the engine decided you are eligible for this one. It gives free white canes, wheelchairs, crutches, hearing aids, and prosthetics, plus physiotherapy and speech therapy, through district Disability Service and Help Centres.\n\nAllowance for Financially Insolvent Persons with Disabilities — the engine could not decide yet. It knows you have a disability and are a Bangladeshi citizen, but it still needs to know your monthly household income. The amount is ৳850.00 per month.\n\nEducation Stipend for Students with Disabilities — also undecided. It needs to know if you are currently a student. The amount is ৳900.00 per month.\n\nYour next step: go to your district Disability Service and Help Centre to ask about the free devices and to start your disability assessment.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1199,
+   "tokensOut": 226
+  },
+  "latencyMs": 1642,
+  "measuredAt": "2026-09-30T06:50:37.845Z"
+ },
+ "7da52e74e33f853b0d90e0ab2b3a0d5e9231b090d50657667ae36c429e61067d": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\",\"nearby_services\"],\"lifeEvents\":[\"pregnancy\"],\"facts\":[],\"uncertainFacts\":[\"district\",\"division\",\"age\",\"householdSize\",\"monthlyIncome\",\"hasNid\"],\"normalizedQuery\":\"pregnancy check-up maternal healthcare services nearby\",\"candidateProgrammeHints\":[\"maternal health services\",\"antenatal care\",\"community clinic\",\"upazila health complex\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 411,
+   "tokensOut": 92
+  },
+  "latencyMs": 839,
+  "measuredAt": "2026-09-30T06:40:42.512Z"
+ },
+ "7dbd8ddd554d92ae29c6ba910cb70e0f3431bcbffb48e4b8ae69dd83928e3a54": {
+  "value": {
+   "text": "I'm sorry about your crop. Let me share what the checks show.\n\nFor the Food Friendly Programme (subsidised rice), you meet two points so far: you are a Bangladeshi citizen, and you own 50 decimals of land or less. Your land is 40 decimals, so that fits. But one question is still open: your monthly household income is not known. So this is not yet a yes or no.\n\nFor the Vulnerable Group Development (VGD), one point is open too: it is for households owning 15 decimals or less, and you have 40 decimals. Your income, age, and whether you are a woman are also not known. So no decision yet.\n\nFor the BRAC Ultra-Poor Graduation Programme, the decision is no. It is for households owning 10 decimals or less, and you have 40.\n\nPlease note: all three programmes are marked as unverified sample data, so treat them as examples, not confirmed facts.\n\nNext step: go to your Union Parishad and check the published beneficiary list for the Food Friendly Programme.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1143,
+   "tokensOut": 220
+  },
+  "latencyMs": 1722,
+  "measuredAt": "2026-09-30T06:50:49.443Z"
+ },
+ "7dd96a21f2e20e5d6a3539b6a5a4d079d09519c19ce038cca3ccf56deb5a97b8": {
+  "value": {
+   "text": "{\"intents\":[],\"lifeEvents\":[],\"facts\":[{\"field\":\"age\",\"value\":64,\"confidence\":0.99,\"evidence\":\"I am 64 years old\"},{\"field\":\"householdSize\",\"value\":5,\"confidence\":0.99,\"evidence\":\"We are 5 people in the family\"}],\"uncertainFacts\":[\"district\",\"monthlyIncome\",\"occupation\",\"hasDisability\",\"maritalStatus\"],\"normalizedQuery\":\"family support services for 64 year old household of 5\",\"candidateProgrammeHints\":[\"old age allowance\",\"social safety net programmes\",\"family welfare services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 412,
+   "tokensOut": 129
+  },
+  "latencyMs": 950,
+  "measuredAt": "2026-09-30T06:40:39.691Z"
+ },
+ "7e6c32b1170ff0687e3f02b0df1717b694401f9e18346634075703641bcbc564": {
+  "value": {
+   "text": "{\"intents\":[],\"lifeEvents\":[],\"facts\":[{\"field\":\"age\",\"value\":64,\"confidence\":0.99,\"evidence\":\"আমার বয়স ৬৪\"},{\"field\":\"householdSize\",\"value\":5,\"confidence\":0.99,\"evidence\":\"আমাদের পরিবারে ৫ জন\"}],\"uncertainFacts\":[\"district\",\"division\",\"monthlyIncome\",\"occupation\",\"hasDisability\",\"maritalStatus\",\"hasNid\"],\"normalizedQuery\":\"বয়স্ক নাগরিক সহায়তা ও পারিবারিক কল্যাণ সেবা\",\"candidateProgrammeHints\":[\"old age allowance\",\"social safety net\",\"family welfare services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 413,
+   "tokensOut": 146
+  },
+  "latencyMs": 1344,
+  "measuredAt": "2026-09-30T06:40:40.231Z"
+ },
+ "7e851eead3fd779ee1ae03665c1d4676cbef440e66462fbb9c1fef352761aa58": {
+  "value": {
+   "text": "আপনি বলেছেন আপনি দৃষ্টিপ্রতিবন্ধী এবং কাজ করতে পারছেন না। এই তথ্যের জন্য ধন্যবাদ।\n\nআমাদের নিয়ম অনুযায়ী একটি আলাদা ব্যবস্থা সিদ্ধান্ত নিয়েছে কোন সেবা আপনার জন্য প্রযোজ্য হতে পারে। সেই সিদ্ধান্ত অনুযায়ী:\n\nFree Assistive Devices for Persons with Disabilities — এই সেবার জন্য আপনাকে প্রাথমিকভাবে উপযুক্ত বলা হয়েছে, কারণ আপনি প্রতিবন্ধিতা জানিয়েছেন। এখানে বিনামূল্যে হুইলচেয়ার, ক্রাচ, শ্রবণযন্ত্র, সাদা ছড়ি এবং কৃত্রিম অঙ্গ দেওয়া হয়।\n\nAllowance for Financially Insolvent Persons with Disabilities — এখানে সিদ্ধান্ত এখনো হয়নি। জানতে হবে আপনার পরিবারের মাসিক আয় কত। এই ভাতা মাসে ৳850.00।\n\nEducation Stipend for Students with Disabilities — এখানেও সিদ্ধান্ত হয়নি। জানতে হবে আপনি এখন কোনো শিক্ষাপ্রতিষ্ঠানে পড়ছেন কি না। এই স্টাইপেন্ড মাসে ৳900.00।\n\nদয়া করে জেনে রাখুন, এই তিনটি সেবার তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য। চূড়ান্ত তথ্যের জন্য সরকারি অফিসে যাচাই করুন।\n\nপরের কাজ: আপনার জেলার Disability Service and Help Centre-এ গিয়ে বিনামূল্যের সহায়ক যন্ত্রপাতির জন্য আবেদন করুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1042,
+   "tokensOut": 347
+  },
+  "latencyMs": 2467,
+  "measuredAt": "2026-09-30T06:46:02.562Z"
+ },
+ "7ee98440ea91f2bf037a196f3f046f8b8db0d44dd06af3d17579df93bbe832a0": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"ask_question\"],\"lifeEvents\":[\"seeking_employment\"],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"education\",\"occupation\",\"hasDisability\",\"isStudent\"],\"normalizedQuery\":\"job training opportunities employment support\",\"candidateProgrammeHints\":[\"skills training programmes\",\"employment support services\",\"vocational training\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 413,
+   "tokensOut": 85
+  },
+  "latencyMs": 812,
+  "measuredAt": "2026-09-30T06:40:44.003Z"
+ },
+ "7f21424d359747c0d872435f9a4a09fc9060a995617f5c6ad3dde8b3bc933b59": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":68,\"confidence\":0.99,\"evidence\":\"amar boyos 68\"}],\"uncertainFacts\":[\"monthlyIncome\",\"district\",\"gender\",\"occupation\",\"householdSize\",\"hasDisability\",\"maritalStatus\"],\"normalizedQuery\":\"senior citizen no income support services\",\"candidateProgrammeHints\":[\"old age allowance\",\"social safety net\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 407,
+   "tokensOut": 103
+  },
+  "latencyMs": 851,
+  "measuredAt": "2026-09-30T06:40:36.919Z"
+ },
+ "809ca086428af3c45bf5a35eeacbf5150518a801325332853d3c63a0fde316ac": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\",\"ask_question\"],\"lifeEvents\":[\"serious_medical_need\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"married\",\"confidence\":0.95,\"evidence\":\"My husband\"}],\"uncertainFacts\":[\"district\",\"division\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"medicalConditions\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"hospital care support for sick husband medical need\",\"candidateProgrammeHints\":[\"hospital assistance\",\"medical expense support\",\"healthcare services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 408,
+   "tokensOut": 117
+  },
+  "latencyMs": 1056,
+  "measuredAt": "2026-09-30T06:40:31.183Z"
+ },
+ "81b9951c622270e51bc7a1343d113ba55efef84aab87c6af230fc8ee2145cd99": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":70,\"confidence\":0.95,\"evidence\":\"আমার মায়ের বয়স ৭০\"},{\"field\":\"monthlyIncome\",\"value\":0,\"confidence\":0.9,\"evidence\":\"তাঁর কোনো আয় নেই\"}],\"uncertainFacts\":[\"district\",\"gender\",\"maritalStatus\",\"hasNid\",\"hasBankAccount\",\"householdSize\",\"dependents\"],\"normalizedQuery\":\"বয়স্ক ভাতা ও বয়স্কদের সামাজিক সহায়তা সেবা\",\"candidateProgrammeHints\":[\"old age allowance\",\"social safety net for elderly\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 415,
+   "tokensOut": 153
+  },
+  "latencyMs": 1092,
+  "measuredAt": "2026-09-30T06:40:37.612Z"
+ },
+ "81ccdc09593b1fcee8bfdd6f0b9f7666b5f9ced904a5ae1204241042b4c595a0": {
+  "value": {
+   "text": "আপনার স্বামী মারা যাওয়ার জন্য আমি খুব দুঃখিত। আপনার জন্য একটি সরকারি সহায়তা আছে বলে আমরা জেনেছি।\n\n**বিধবা ও স্বামী-পরিত্যক্ত নারী ভাতা** — এই ভাতা মাসে ৳550.00 দেওয়া হয়। এটি সেইসব নারীর জন্য যাঁরা স্বামীর আর্থিক সহায়তা হারিয়েছেন — মৃত্যু, তালাক বা পরিত্যক্ত হওয়ার কারণে। আমাদের নিয়ম অনুযায়ী আপনি এই ভাতার জন্য বিবেচিত হয়েছেন, কারণ আপনি একজন নারী, আপনার বৈবাহিক অবস্থা এই ভাতার সাথে মেলে, আপনার মাসিক আউন ৳1,500-এর নিচে, আপনি বাংলাদেশের নাগরিক, আপনার বয়স ১৮ বা তার বেশি, এবং আপনি সরকারি চাকরিতে নেই। তবে অনুগ্রহ করে জেনে রাখুন — এই তথ্যটি এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\n**ভালনারেবল গ্রুপ ডেভেলপমেন্ট (VGD)** — এটি আপনার জন্য নয়, কারণ VGD শুধু ১৮ থেকে ৪৯ বছর বয়সী নারীদের জন্য, আর আপনার বয়স ৫০।\n\n**ব্র্যাক আল্ট্রা-পুওর গ্র্যাজুয়েশন প্রোগ্রাম** — এটির জন্য আপনার পরিবারের কত জমি আছে তা আমরা জানি না, তাই এখনো কিছু বলা যাচ্ছে না। এটিও নমুনা তথ্য।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদের চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছে গিয়ে আপনার অবস্থা ও আয়ের সনদ নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1274,
+   "tokensOut": 395
+  },
+  "latencyMs": 2949,
+  "measuredAt": "2026-09-30T06:45:40.648Z"
+ },
+ "81d0187d5fdc83ac804f793f9bd872df0df5aa2dae3494e80040aa1756bd779e": {
+  "value": {
+   "text": "আপনি দৃষ্টিপ্রতিবন্ধী এবং কাজ করতে পারেন না — এই তথ্য দেওয়ার জন্য ধন্যবাদ। আপনার জন্য তিনটি সরকারি সহায়তা আছে।\n\nপ্রথমটি, প্রতিবন্ধী ব্যক্তিদের জন্য বিনামূল্যে সহায়ক উপকরণ। নিয়ম অনুযায়ী আপনি এর জন্য যোগ্য বলে ধরা হয়েছে, কারণ আপনি প্রতিবন্ধিতার তথ্য দিয়েছেন। সমাজসেবা অধিদফতর প্রতিবন্ধী সেবা কেন্দ্রের মাধ্যমে বিনামূল্যে হুইলচেয়ার, ক্রাচ, শ্রবণযন্ত্র, সাদা ছড়ি ও কৃত্রিম অঙ্গ দেয়। দৃষ্টিপ্রতিবন্ধী হলে সাদা ছড়ি এখান থেকেই পাওয়া যায়। আবেদনের সময়সীমা নেই, সারা বছর খোলা।\n\nদ্বিতীয়টি, অসচ্ছল প্রতিবন্ধী ভাতা। এটি মাসে ৳850.00, সারা বছর আবেদন করা যায়। তবে আপনি যোগ্য কি না, তা এখনো ঠিক হয়নি — আপনার পরিবারের মাসিক আয় কত, সেটি জানা নেই। এই তথ্য ছাড়া কেউ সিদ্ধান্ত দিতে পারে না।\n\nতৃতীয়টি, প্রতিবন্ধী শিক্ষার্থী শিক্ষা উপবৃত্তি, মাসে ৳900.00। আপনি এখন শিক্ষার্থী কি না, সেটিও জানা নেই।\n\nমনে রাখবেন, এই তিনটি তথ্য যাচাই করা নমুনা তথ্য, চূড়ান্ত সরকারি ঘোষণা নয়।\n\nপরের কাজ: আপনার জেলার প্রতিবন্ধী সেবা ও সহায়তা কেন্দ্র খুঁজে নিন এবং সাদা ছড়ির জন্য আবেদন করুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1383,
+   "tokensOut": 397
+  },
+  "latencyMs": 2435,
+  "measuredAt": "2026-09-30T06:50:39.475Z"
+ },
+ "82f31a7953abf1d549c15953139071e2697ee6c55e63cfeb38511a21eb9595b6": {
+  "value": {
+   "text": "{\"intents\":[],\"lifeEvents\":[],\"facts\":[{\"field\":\"age\",\"value\":58,\"confidence\":0.99,\"evidence\":\"আমার বয়স ৫৮\"},{\"field\":\"monthlyIncome\",\"value\":4500,\"confidence\":0.95,\"evidence\":\"মাসে সাড়ে চার হাজার টাকা আয়\"},{\"field\":\"householdSize\",\"value\":5,\"confidence\":0.95,\"evidence\":\"পরিবারে ৫ জন\"}],\"uncertainFacts\":[\"gender\",\"district\",\"division\",\"occupation\",\"education\",\"maritalStatus\",\"hasDisability\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"৫৮ বছর বয়সী নিম্ন আয়ের ব্যক্তির জন্য সরকারি সহায়তা ও সুযোগ\",\"candidateProgrammeHints\":[\"বয়স্ক ভাতা\",\"সামাজিক নিরাপত্তা কর্মসূচি\",\"নিম্ন আয় সহায়তা\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 426,
+   "tokensOut": 205
+  },
+  "latencyMs": 1620,
+  "measuredAt": "2026-09-30T06:40:51.491Z"
+ },
+ "84416e92ff7a6ce9147babc83e2ae346df947a122837b06251cc65e2f0f1f05a": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\",\"ask_question\"],\"lifeEvents\":[\"widowhood\",\"disaster_recovery\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.6,\"evidence\":\"আমার স্বামী নৌকাডুবিতে মারা গেছেন\"}],\"uncertainFacts\":[\"maritalStatus\",\"district\",\"division\",\"age\",\"householdSize\",\"dependents\",\"monthlyIncome\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow disaster boat capsize missing husband support services\",\"candidateProgrammeHints\":[\"widow allowance\",\"disaster relief\",\"social safety net\",\"legal support for missing person\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 425,
+   "tokensOut": 147
+  },
+  "latencyMs": 1204,
+  "measuredAt": "2026-09-30T06:40:32.810Z"
+ },
+ "8569092de42f2bc6249e6c65a0bf8a8936706ec877410c7a4de3afa8ef555bfe": {
+  "value": {
+   "text": "আপনার চাকরি হারানোর কথা শুনে খারাপ লাগল। আপনার জন্য তিনটি সহায়তা আছে, তবে কোনটিতে আপনি যোগ্য কি না, তা এখনো নিশ্চিত নয় — কারণ আপনার বয়স, মাসিক আয়, লিঙ্গ এবং জমির পরিমাণ আমরা জানি না।\n\nপ্রথমটি, Vulnerable Group Development (VGD)। এটি সবচেয়ে দরিদ্র গ্রামীণ নারীদের জন্য দুই বছর ধরে মাসিক খাদ্যশস্য, সঞ্চয় ও দক্ষতা প্রশিক্ষণ দেয়। এটি Department of Women Affairs পরিচালনা করে।\n\nদ্বিতীয়টি, Food Friendly Programme (subsidised rice)। Department of Social Services-এর এই কার্যক্রমে চালের মৌসুমে মাসে সর্বোচ্চ ৩০ কেজি চাল কম দামে কেনা যায়।\n\nতৃতীয়টি, BRAC Ultra-Poor Graduation Programme। BRAC দুই বছরের জন্য সম্পদ, মাসিক ভাতা, প্রশিক্ষণ ও চিকিৎসা দেয়। এতে ৳25,000.00 এককালীন সহায়তা আছে।\n\nমনে রাখবেন, এই তিনটি তথ্য এখনো যাচাই করা হয়নি, তাই সরকারি নিশ্চিত তথ্য হিসেবে ধরবেন না।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদে গিয়ে VGD ও Food Friendly Programme-এর তালিকা দেখুন, এবং নিকটস্থ BRAC শাখায় গিয়ে Ultra-Poor Graduation-এ আগ্রহের কথা জানান।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1180,
+   "tokensOut": 340
+  },
+  "latencyMs": 2378,
+  "measuredAt": "2026-09-30T06:45:49.617Z"
+ },
+ "87fd28cbe3c04515a9e06fc173cdd02590aa0c26cbaa269d944da5a79b2940ae": {
+  "value": {
+   "text": "You told me you are 68 and have no income. Thank you — that helps.\n\nOne programme, the Old Age Allowance, is not yet decided. The rule engine could not finish because two things are still unknown: your gender, and your occupation. It also notes this programme is unverified sample data, so please treat it as a lead to check, not a confirmed fact. The allowance is ৳600.00 a month, and applications are open all year.\n\nFor the Food Friendly Programme (subsidised rice), also unverified sample data, the engine has not reached a decision either. It lets you buy up to 30 kg of rice a month at a lower price during the lean season.\n\nThe Community Clinic Primary Healthcare service is decided as eligible for you, based on your Bangladeshi citizenship. This is also unverified sample data. It gives free primary care and medicines.\n\nNext step: tell me your gender and your occupation, so the engine can finish the Old Age Allowance decision.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1116,
+   "tokensOut": 204
+  },
+  "latencyMs": 1492,
+  "measuredAt": "2026-09-30T06:50:45.322Z"
+ },
+ "8d544749554e255e9e794bdb0f814ce481e0c1668c8c69c857fd08681f557b1b": {
+  "value": {
+   "text": "{\"intents\":[\"higher_education\",\"scholarship_search\"],\"lifeEvents\":[\"higher_education\"],\"facts\":[{\"field\":\"education\",\"value\":\"HSC\",\"confidence\":0.99,\"evidence\":\"passed HSC\"},{\"field\":\"cgpa\",\"value\":4.5,\"confidence\":0.99,\"evidence\":\"GPA 4.5\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"preferredCountry\",\"university\",\"department\",\"hasDisability\",\"isFreedomFighterFamily\"],\"normalizedQuery\":\"HSC GPA 4.5 university admission scholarship Bangladesh\",\"candidateProgrammeHints\":[\"university admission support\",\"undergraduate scholarship\",\"higher education financial aid\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 413,
+   "tokensOut": 152
+  },
+  "latencyMs": 1392,
+  "measuredAt": "2026-09-30T06:40:47.181Z"
+ },
+ "9319c7144a12a21646033c19f4f618481276869c98129eae800bdf59744b8802": {
+  "value": {
+   "text": "{\"intents\":[\"agriculture_support\"],\"lifeEvents\":[\"crop_loss\"],\"facts\":[{\"field\":\"occupation\",\"value\":\"farmer\",\"confidence\":0.95,\"evidence\":\"My father is a farmer\"}],\"uncertainFacts\":[\"district\",\"farmSizeDecimals\",\"crops\",\"landOwnershipDecimals\",\"householdSize\",\"monthlyIncome\"],\"normalizedQuery\":\"farmer crop loss agriculture support\",\"candidateProgrammeHints\":[\"agriculture support\",\"crop loss assistance\",\"farmer relief\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 408,
+   "tokensOut": 112
+  },
+  "latencyMs": 1097,
+  "measuredAt": "2026-09-30T06:40:45.879Z"
+ },
+ "9460f2a67f7958b2ccd801b55ff17fb788718acd2a79132c035271b91f31fa3c": {
+  "value": {
+   "text": "{\"intents\":[\"disaster_recovery\",\"nearby_services\"],\"lifeEvents\":[\"disaster_recovery\"],\"facts\":[{\"field\":\"district\",\"value\":\"কুড়িগ্রাম\",\"confidence\":0.99,\"evidence\":\"কুড়িগ্রামে\"}],\"uncertainFacts\":[\"householdSize\",\"monthlyIncome\",\"hasNid\",\"hasBankAccount\",\"age\",\"gender\"],\"normalizedQuery\":\"কুড়িগ্রাম বন্যা ঘর ভাঙা সহায়তা পুনর্বাসন\",\"candidateProgrammeHints\":[\"বন্যা পুনর্বাসন সহায়তা\",\"আশ্রয়ণ সহায়তা\",\"জেলা প্রশাসন ত্রাণ সহায়তা\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 421,
+   "tokensOut": 158
+  },
+  "latencyMs": 1139,
+  "measuredAt": "2026-09-30T06:40:49.054Z"
+ },
+ "947f3384d913af0db9b0bbe5aece89b62debbcf8868c12b239f63ef3697e4e27": {
+  "value": {
+   "text": "আপনার গর্ভাবস্থার জন্য কিছু সহায়তা আছে। তবে মনে রাখবেন, নিচের সব তথ্য যাচাই করা নমুনা তথ্য (unverified sample data) — সরকারি ভাবে নিশ্চিত তথ্য নয়।\n\nতিনটি জিনিস আপনার জন্য প্রযোজ্য হতে পারে:\n\n১. মাতৃত্বকালীন ভাতা (Maternity Allowance for Poor Mothers) — দরিদ্র মায়েদের জন্য মাসিক ভাতা, মাসে ৳800.00, ৩৬ মাস ধরে, প্রথম বা দ্বিতীয় সন্তানের জন্য। আপনি নারী এবং গর্ভবতী, তাই এটি আপনার জন্য হতে পারে। তবে আপনার সংসারের মাসিক আয় কত এবং আপনার বয়স কত, তা এখনো জানা নেই। এই দুটি তথ্য ছাড়া সিদ্ধান্ত হয়নি।\n\n২. কমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা (Community Clinic Primary Healthcare) — বিনামূল্যে চিকিৎসা, ৩০টিরও বেশি ওষুধ, গর্ভকালীন চেক-আপ ও টিকা। নিয়ম অনুযায়ী আপনি এর জন্য ঠিক আছেন।\n\n৩. মাতৃস্বাস্থ্য ভাউচার স্কিম (Maternal Health Voucher Scheme (DSF)) — বিনামূল্যে গর্ভকালীন ভিজিট, নিরাপদ প্রসব (সিজারসহ), এবং হাসপাতালে প্রসব করলে ৳2,000.00 এককালীন নগদ। আপনার আয় জানা না থাকায় সিদ্ধান্ত হয়নি।\n\nপরের কাজ: সবচেয়ে কাছের কমিউনিটি ক্লিনিক বা ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্রে গিয়ে আপনার গর্ভাবস্থা নিবন্ধন করুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1095,
+   "tokensOut": 418
+  },
+  "latencyMs": 2458,
+  "measuredAt": "2026-09-30T06:45:58.945Z"
+ },
+ "972dd9bc0291b37ffc63f1bea56c58afd4afabfb9a9761d9337c8df6cb718d18": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"ask_question\"],\"lifeEvents\":[\"job_loss\"],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"division\",\"monthlyIncome\",\"occupation\",\"education\",\"householdSize\",\"dependents\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"job loss family support assistance Bangladesh\",\"candidateProgrammeHints\":[\"employment support\",\"social safety net\",\"family assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 406,
+   "tokensOut": 97
+  },
+  "latencyMs": 1269,
+  "measuredAt": "2026-09-30T06:40:44.109Z"
+ },
+ "9af6beff75ef133d8fd29ef2feabc14d8876b9820c7f60841e64cd117c828466": {
+  "value": {
+   "text": "{\"intents\":[\"ngo_assistance\",\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.98,\"evidence\":\"amar shami goto bochor mara gese\"},{\"field\":\"dependents\",\"value\":3,\"confidence\":0.95,\"evidence\":\"3 ta baccha ache\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow with three children financial assistance Bangladesh\",\"candidateProgrammeHints\":[\"widow allowance\",\"vulnerable women benefit\",\"child support programme\",\"NGO assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 413,
+   "tokensOut": 152
+  },
+  "latencyMs": 1247,
+  "measuredAt": "2026-09-30T06:40:29.981Z"
+ },
+ "a053134fcfe36ed8942facd4e6cc68f4b17449d06269d5c110dc381b03e3dffe": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[],\"facts\":[{\"field\":\"age\",\"value\":28,\"confidence\":0.99,\"evidence\":\"আমার বয়স ২৮\"},{\"field\":\"occupation\",\"value\":\"রিকশা চালক\",\"confidence\":0.95,\"evidence\":\"রিকশা চালিয়ে\"},{\"field\":\"monthlyIncome\",\"value\":6000,\"confidence\":0.98,\"evidence\":\"মাসে ৬০০০ টাকা আয় করি\"}],\"uncertainFacts\":[\"district\",\"division\",\"householdSize\",\"dependents\",\"education\",\"hasDisability\",\"maritalStatus\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"রিকশা চালক মাসিক আয় ৬০০০ সহায়তা সুবিধা\",\"candidateProgrammeHints\":[\"low-income livelihood support\",\"social safety net allowance\",\"skill development for transport workers\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 427,
+   "tokensOut": 202
+  },
+  "latencyMs": 1186,
+  "measuredAt": "2026-09-30T06:40:44.479Z"
+ },
+ "a0a10151edee96953e439764b0c47b2f65c9cf8e8c7de6c4ca40e1758d375c70": {
+  "value": {
+   "text": "{\"intents\":[\"ngo_assistance\",\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"age\",\"value\":50,\"confidence\":0.99,\"evidence\":\"I am 50\"},{\"field\":\"occupation\",\"value\":\"housewife\",\"confidence\":0.99,\"evidence\":\"a housewife\"},{\"field\":\"monthlyIncome\",\"value\":0,\"confidence\":0.95,\"evidence\":\"no income\"},{\"field\":\"dependents\",\"value\":2,\"confidence\":0.95,\"evidence\":\"two children\"},{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.99,\"evidence\":\"My husband died\"}],\"uncertainFacts\":[\"district\",\"division\",\"householdSize\",\"hasNid\",\"hasBankAccount\",\"children ages\",\"education\"],\"normalizedQuery\":\"widow financial assistance and support for low-income household with children\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net assistance\",\"NGO livelihood support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 418,
+   "tokensOut": 207
+  },
+  "latencyMs": 1441,
+  "measuredAt": "2026-09-30T06:40:34.564Z"
+ },
+ "a1cf311a0eaddd031b6ebd0cc42516fe92a5123a83fc80f16cdaeda9ecab7c43": {
+  "value": {
+   "text": "আপনার কথা জানলাম। আপনি দৃষ্টিপ্রতিবন্ধী এবং কাজ করতে পারছেন না — এই তথ্যের ভিত্তিতে সরকারি কিছু সহায়তা আপনার জন্য আছে।\n\nএকটি বিষয়ে নিশ্চিত হওয়া গেছে: Free Assistive Devices for Persons with Disabilities — অর্থাৎ বিনামূল্যে সহায়ক সরঞ্জাম। এর আওতায় হুইলচেয়ার, ক্রাচ, শ্রবণযন্ত্র, সাদা ছড়ি (white cane) এবং কৃত্রিম অঙ্গ পাওয়া যায়। জেলার Disability Service and Help Centre থেকে এগুলো বিনামূল্যে দেওয়া হয়, সঙ্গে ফিজিওথেরাপি, স্পিচ থেরাপি ও অকুপেশনাল থেরাপিও পাওয়া যায়। সরঞ্জাম দেওয়ার আগে একটি মূল্যায়ন হয়।\n\nআরও দুটি সহায়তা আছে, তবে সেগুলো সম্পর্কে সিদ্ধান্ত এখনো হয়নি, কারণ দুটি তথ্য জানা দরকার:\n- Allowance for Financially Insolvent Persons with Disabilities — মাসিক ৳850.00। আপনার পরিবারের মাসিক আয় কত, সেটি জানা দরকার।\n- Education Stipend for Students with Disabilities — মাসিক ৳900.00। আপনি এখন কোনো শিক্ষাপ্রতিষ্ঠানে পড়ছেন কি না, সেটি জানা দরকার।\n\nদয়া করে জানান আপনার পরিবারের মাসিক আয় কত এবং আপনি পড়াশোনা করছেন কি না। এরপর আপনার পরের কাজ: আপনার জেলার Disability Service and Help Centre-এ গিয়ে মূল্যায়নের জন্য আবেদন করা।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1153,
+   "tokensOut": 363
+  },
+  "latencyMs": 2469,
+  "measuredAt": "2026-09-30T06:45:47.449Z"
+ },
+ "a21aeb1def9348150098bd5c37087fb31f9ed974e901cfe4cb6c39691e276761": {
+  "value": {
+   "text": "You are five months pregnant, and that is the most useful thing you have told us. Please note: the programme details below are marked as unverified sample data, so treat them as a guide, not a confirmed government fact.\n\nThree programmes came up for you.\n\nCommunity Clinic Primary Healthcare: the decision is that you can use it. The only reason needed was that you are a Bangladeshi citizen. It gives free check-ups during pregnancy, free medicines, and child vaccinations, close to most villages. No appointment or identity papers are needed.\n\nMaternity Allowance for Poor Mothers: the decision is not yet known. Two questions are still open — your monthly household income, and your age. This one pays ৳800.00 each month for 36 months, for a first or second child.\n\nMaternal Health Voucher Scheme (DSF): also not yet known, for the same two open questions. It covers free antenatal visits, safe delivery including caesarean, and a one-time cash amount of ৳2,000.00.\n\nYour next step: go to your nearest community clinic or Union Health and Family Welfare Centre and register your pregnancy.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1255,
+   "tokensOut": 235
+  },
+  "latencyMs": 1633,
+  "measuredAt": "2026-09-30T06:50:34.136Z"
+ },
+ "a48bdce1ebdf6ee07aa1e0fdba8ff75564f183daeac2bd1a9ff78509d52f6fc0": {
+  "value": {
+   "text": "আপনার স্বামীর মৃত্যুর জন্য আমি দুঃখিত। আপনার তিন সন্তান নিয়ে এই সময়টা নিশ্চয়ই কঠিন।\n\nআপনার কথা থেকে আমরা তিনটি কর্মসূচি খুঁজে পেয়েছি। তবে এখনই কেউ বলতে পারছে না আপনি কোনটি পাবেন, কারণ কিছু তথ্য এখনো জানা নেই। যে তথ্যগুলো দরকার: আপনার পরিবারের মাসিক আয় কত, আপনার বয়স কত, আপনার পেশা কী, এবং আপনার পরিবারের কত শতাংশ জমি আছে।\n\nযে তিনটি কর্মসূচির কথা বলা যায়:\n\n- বিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — সমাজসেবা অধিদফতরের মাসিক ভাতা, ৳550.00। বিধবা ও অল্প আয়ের মহিলাদের জন্য।\n- ভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — মহিলা বিষয়ক অধিদফতরের দুই বছরের চক্র, খাদ্যশস্য ও প্রশিক্ষণ।\n- ব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — ব্র্যাকের দুই বছরের প্যাকেজ, এককালীন ৳25,000.00।\n\nমনে রাখবেন, এই তিনটি কর্মসূচির তথ্য এখনো যাচাই করা হয়নি, তাই এটি সরকারি নিশ্চিত তথ্য নয়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছ থেকে আপনার অবস্থা ও আয়ের প্রত্যয়নপত্র নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1425,
+   "tokensOut": 374
+  },
+  "latencyMs": 2299,
+  "measuredAt": "2026-09-30T06:45:54.976Z"
+ },
+ "a4db0488dd46928755eee6534f179e7e9fdb10be132981ea72f79665a830032e": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"check_eligibility\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":70,\"confidence\":0.99,\"evidence\":\"70 years old\"},{\"field\":\"monthlyIncome\",\"value\":0,\"confidence\":0.95,\"evidence\":\"no income\"}],\"uncertainFacts\":[\"district\",\"gender\",\"maritalStatus\",\"hasDisability\",\"hasNid\",\"hasBankAccount\",\"householdSize\",\"dependents\"],\"normalizedQuery\":\"old age allowance and support for elderly woman with no income\",\"candidateProgrammeHints\":[\"old age allowance\",\"social safety net\",\"elderly welfare support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 408,
+   "tokensOut": 144
+  },
+  "latencyMs": 1092,
+  "measuredAt": "2026-09-30T06:40:37.475Z"
+ },
+ "a4e4b934bba68c4cfd465bb6c3c907b444165ced242be609b803ab3f1a5887c5": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\",\"ngo_assistance\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"division\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"dependents\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow support assistance Bangladesh\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net widow support\",\"NGO widow assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 408,
+   "tokensOut": 99
+  },
+  "latencyMs": 930,
+  "measuredAt": "2026-09-30T06:40:32.085Z"
+ },
+ "aae36f3191b22a2b58f5a84c1f5a8d619c1a985575ed3d6eadab258d8cccadbe": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[],\"normalizedQuery\":\"cricket match result yesterday\",\"candidateProgrammeHints\":[]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 403,
+   "tokensOut": 45
+  },
+  "latencyMs": 731,
+  "measuredAt": "2026-09-30T06:40:54.536Z"
+ },
+ "ac1dc5bc4d819039b12cd977be34096e4bd91af67910198fa0caa67ac3079cdc": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"check_eligibility\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.99,\"evidence\":\"ami bidhoba\"},{\"field\":\"age\",\"value\":45,\"confidence\":0.99,\"evidence\":\"boyos 45\"},{\"field\":\"monthlyIncome\",\"value\":1200,\"confidence\":0.99,\"evidence\":\"mashe 1200 taka income\"},{\"field\":\"district\",\"value\":\"Rangpur\",\"confidence\":0.99,\"evidence\":\"Rangpur e thaki\"}],\"uncertainFacts\":[\"gender\",\"occupation\",\"education\",\"householdSize\",\"dependents\",\"hasDisability\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow allowance and support services Rangpur\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net\",\"women's welfare support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 420,
+   "tokensOut": 199
+  },
+  "latencyMs": 1579,
+  "measuredAt": "2026-09-30T06:40:34.662Z"
+ },
+ "aca44b9ebb7e05741c4da6081da081e2062e65054fe8c59214fad4dba19fc667": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[],\"facts\":[{\"field\":\"education\",\"value\":\"নবম শ্রেণি\",\"confidence\":0.95,\"evidence\":\"নবম শ্রেণির শিক্ষার্থী\"},{\"field\":\"occupation\",\"value\":\"জেলে\",\"confidence\":0.9,\"evidence\":\"বাবা জেলে\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"hasDisability\",\"isStudent\"],\"normalizedQuery\":\"নবম শ্রেণির শিক্ষার্থী জেলে পরিবারের সহায়তা\",\"candidateProgrammeHints\":[\"শিক্ষা সহায়তা\",\"জেলে পরিবার সহায়তা\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 416,
+   "tokensOut": 145
+  },
+  "latencyMs": 1159,
+  "measuredAt": "2026-09-30T06:40:46.621Z"
+ },
+ "ae105d9aee4c6c20caeb1290d96eebbb864b70c7e89644272ee5c1c181cdb91f": {
+  "value": {
+   "text": "I'm sorry you lost your job. That is a hard moment, and there are programmes that may help. But I want to be honest with you first: the three programmes below are marked as unverified sample data, so please treat them as leads to check, not confirmed facts.\n\nThe rule engine could not yet decide whether you qualify for any of them, because some important facts are still unknown. For the Vulnerable Group Development (VGD) programme, it does not know whether you are a woman, your monthly household income, or your age. For the Food Friendly Programme (subsidised rice), it does not know your monthly household income. For the BRAC Ultra-Poor Graduation Programme, it does not know your monthly household income, how much land your household owns, or whether you are a woman.\n\nVGD gives monthly free food grain, savings, and skills training to the poorest rural women. The Food Friendly Programme lets you buy up to 30 kg of rice a month at a low price. BRAC's programme gives assets, a stipend, coaching, and healthcare for two years.\n\nNext step: tell me your monthly household income, your age, whether you are a woman, and how much land your household owns, so the engine can decide.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1226,
+   "tokensOut": 257
+  },
+  "latencyMs": 1804,
+  "measuredAt": "2026-09-30T06:50:39.461Z"
+ },
+ "ae2137514b7903ee9f7c8b65f2d55acd94d55467e81826b205ccd6ca3abc248e": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\",\"ask_question\"],\"lifeEvents\":[\"pregnancy\"],\"facts\":[{\"field\":\"gender\",\"value\":\"female\",\"confidence\":0.95,\"evidence\":\"আমার মেয়ে\"},{\"field\":\"isPregnant\",\"value\":true,\"confidence\":0.98,\"evidence\":\"আমার মেয়ে গর্ভবতী\"}],\"uncertainFacts\":[\"age\",\"district\",\"division\",\"monthlyIncome\",\"householdSize\",\"medicalConditions\",\"hasNid\"],\"normalizedQuery\":\"pregnancy maternity health benefits Bangladesh\",\"candidateProgrammeHints\":[\"maternal health services\",\"pregnancy allowance\",\"safe motherhood programme\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 418,
+   "tokensOut": 142
+  },
+  "latencyMs": 982,
+  "measuredAt": "2026-09-30T06:40:42.863Z"
+ },
+ "b0f0619b4cb1f48b8da7aa93bc5a91d9a40b4a9d5ade5a7e1f2aff560eb44209": {
+  "value": {
+   "text": "আপনার স্বামী মারা গেছেন শুনে খুব দুঃখ হলো। আপনার Situation অনুযায়ী একটি সরকারি ভাতার জন্য আপনি যোগ্য বলে আমাদের হিসাব বলছে।\n\nবিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — এটি সমাজসেবা অধিদফতরের মাসিক ভাতা। মাসে ৳550.00 পাওয়া যায়। আবেদনের সময়সীমা নেই, সারা বছর খোলা। আপনি যোগ্য কারণ আপনি একজন মহিলা, আপনার বৈবাহিক অবস্থা শর্ত পূরণ করে, আপনার মাসিক আয় ৳1,500 এর কম, আপনি বাংলাদেশের নাগরিক, আপনার বয়স ১৮ বা বেশি, এবং আপনি সরকারি কর্মচারী নন।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — এখানে আপনি যোগ্য নন, কারণ ভিজিডি ১৮ থেকে ৪৯ বছর বয়সী মহিলাদের জন্য, আর আপনার বয়স ৫০।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — এখনো নিশ্চিত নই। আপনার পরিবারের কত শতাংশ জমি আছে জানা দরকার।\n\nমনে রাখবেন, এই তিনটি তথ্য এখনো যাচাই করা হয়নি, নমুনা তথ্য হিসেবে দেওয়া।\n\nপরের কাজ: আপনার অবস্থা ও আয় নিশ্চিত করে ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলর থেকে প্রত্যয়নপত্র নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1412,
+   "tokensOut": 352
+  },
+  "latencyMs": 2267,
+  "measuredAt": "2026-09-30T06:45:55.432Z"
+ },
+ "b1513705371c74644d70f7c7f40aeb08757411e55acf61af62a050a54b353cf7": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[\"medicalConditions\",\"monthlyIncome\",\"district\",\"age\",\"householdSize\"],\"normalizedQuery\":\"medicine cost healthcare support\",\"candidateProgrammeHints\":[\"healthcare assistance\",\"medical expense support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 408,
+   "tokensOut": 67
+  },
+  "latencyMs": 952,
+  "measuredAt": "2026-09-30T06:40:50.034Z"
+ },
+ "b1937531643e1251234e188c4fac49a3ee6fb504a6357f7dc9c4432f30f5d3a5": {
+  "value": {
+   "text": "I am sorry about your husband. Let me explain what the rule engine decided for you.\n\nWidow and Husband-Deserted Women Allowance — the engine says you can get this. It is a monthly allowance of ৳550.00 for widowed women with little income. The reasons: you are a woman, your marital status fits, your monthly income is below ৳1,500, you are a Bangladeshi citizen, you are 18 or older, and you are not a serving government employee. Please note this programme is marked as unverified sample data, so treat it as a lead to confirm, not a confirmed fact.\n\nVulnerable Group Development (VGD) — the engine says no. VGD covers women aged 18 to 49, and you are 50.\n\nBRAC Ultra-Poor Graduation Programme — the engine could not decide. It needs one answer: how much land does your household own, in decimals? This is also unverified sample data.\n\nNext step: go to your Union Parishad chairman or ward councillor and ask for a certificate confirming your status and income. That is the first step for the allowance.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1210,
+   "tokensOut": 238
+  },
+  "latencyMs": 1553,
+  "measuredAt": "2026-09-30T06:50:43.518Z"
+ },
+ "b2ad90fa233749503871f9a3c6595f2e39a0e7eccaa81d4e8bf6026826eae45d": {
+  "value": {
+   "text": "আপনার স্বামী মারা যাওয়ার জন্য আমি খুব দুঃখিত। আপনার তিন সন্তান নিয়ে এই সময়টা নিশ্চয়ই কঠিন।\n\nআপনার কথা শুনে তিনটি সরকারি ও এনজিও সহায়তার কথা মনে পড়ছে। তবে সৎভাবে বলি — এগুলোর কোনোটির ব্যাপারে এখনো চূড়ান্ত সিদ্ধান্ত হয়নি। কারণ আপনার মাসিক আয়, বয়স, পেশা এবং জমির পরিমাণ এখনো জানা যায়নি। এগুলো জানা গেলেই ঠিক হবে আপনি কোনটিতে আবেদন করতে পারবেন।\n\nযে তিনটি বিষয়ে খোঁজ নিতে পারেন:\n\n- **Widow and Husband-Deserted Women Allowance** — প্রতিমাসে ৫৫০.০০ টাকা। বিধবা, তালাকপ্রাপ্ত, আলাদা থাকা বা পরিত্যক্ত নারীদের জন্য, যাঁদের আয় কম।\n- **Vulnerable Group Development (VGD)** — দুই বছরের জন্য বিনামূল্যে খাদ্যশস্য, সঞ্চয় ও প্রশিক্ষণ।\n- **BRAC Ultra-Poor Graduation Programme** — দুই বছরের সহায়তা, যার মধ্যে ২৫,০০০.০০ টাকা এককালীন।\n\nমনে রাখবেন, প্রথম দুইটি বিষয়ে তথ্য এখনো যাচাই করা হয়নি, তাই এগুলো নিশ্চিত সরকারি তথ্য হিসেবে ধরবেন না।\n\nআপনার পরের কাজ: ইউনিয়ন পরিষদের চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছে গিয়ে আপনার অবস্থা ও আয়ের একটি সনদ নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1179,
+   "tokensOut": 374
+  },
+  "latencyMs": 2943,
+  "measuredAt": "2026-09-30T06:45:52.872Z"
+ },
+ "b3bf83bf8b0acd96f07448ff14143c0583111f75f596c28c9ab980c74d12f94f": {
+  "value": {
+   "text": "আপনার বয়স ৬৮ বছর এবং আয় নেই — এই তথ্য আমাদের কাছে পৌঁছেছে।\n\nআপনার জন্য তিনটি সরকারি সুবিধার কথা জানা যাচ্ছে। তবে মনে রাখবেন, এই তিনটি প্রোগ্রামের তথ্য এখনো যাচাই করা হয়নি, এগুলো নমুনা তথ্য হিসেবে দেওয়া।\n\nবয়স্ক ভাতা — সমাজসেবা অধিদফতরের একটি মাসিক ভাতা, মাসে ৳600.00। আপনার বয়স ও আয়ের তথ্য মিলে যাচ্ছে, কিন্তু লিঙ্গ ও পেশার তথ্য এখনো জানা নেই, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনার সুযোগ। আপনার আয়ের তথ্য মিলছে, তবে সিদ্ধান্ত এখনো হয়নি।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — আপনি বাংলাদেশের নাগরিক, তাই এই সেবার জন্য নির্বাচিত হয়েছেন। গ্রামের হাঁটা দূরত্বে বিনামূল্যে চিকিৎসা, ৩০টিরও বেশি ঔষধ, গর্ভকালীন পরীক্ষা ও শিশু টিকা পাওয়া যায়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1277,
+   "tokensOut": 367
+  },
+  "latencyMs": 2049,
+  "measuredAt": "2026-09-30T06:45:57.351Z"
+ },
+ "b3c6a0243f533d1b7afe19e2df757d76b05a675d82eed6308ad33fd9fcaaf725": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\",\"general_information\"],\"lifeEvents\":[\"migration\",\"seeking_employment\"],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"education\",\"occupation\",\"preferredCountry\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"Malaysia overseas employment training requirements\",\"candidateProgrammeHints\":[\"overseas employment training\",\"migrant worker pre-departure orientation\",\"technical training centre courses\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 411,
+   "tokensOut": 102
+  },
+  "latencyMs": 957,
+  "measuredAt": "2026-09-30T06:40:45.016Z"
+ },
+ "b3f237d15f39d5151fe61deacbe6c42ad5dcefdff4ec86f06bce4336d9228b3c": {
+  "value": {
+   "text": "I'm sorry about your husband. Let me share what I have.\n\nThree programmes may fit your situation, but please note: all three are marked as unverified sample data, so treat them as leads to check, not confirmed facts.\n\nWidow and Husband-Deserted Women Allowance — a monthly allowance of ৳550.00 from the Department of Social Services, for widowed women with little income. Open all year.\n\nVulnerable Group Development (VGD) — monthly free food grain plus savings and skills training for the poorest rural women, over two years. Run by the Department of Women Affairs.\n\nBRAC Ultra-Poor Graduation Programme — a two-year package with assets, a living stipend, coaching, and healthcare, plus ৳25,000.00 once.\n\nThe rule engine has not yet decided whether you qualify for any of these. It still needs to know your monthly household income, your age, and your occupation. For BRAC, it also needs to know how much land your household owns.\n\nNext step: gather those four answers, then get a certificate from your Union Parishad chairman or ward councillor confirming your status and income.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1225,
+   "tokensOut": 239
+  },
+  "latencyMs": 1683,
+  "measuredAt": "2026-09-30T06:50:41.518Z"
+ },
+ "b53ee30d2ff79b8247920b17c0c7f1ec9dde921faee95d18626beaf9dbe2c67b": {
+  "value": {
+   "text": "আপনার বয়স ৬৮ বছর এবং আয় নেই — এই তথ্য অনুযায়ী তিনটি সরকারি সুবিধার কথা জানানো যাচ্ছে। তবে মনে রাখবেন, এই তিনটি কার্যক্রমের তথ্য এখনো যাচাই করা হয়নি, তাই এটি নিশ্চিত সরকারি তথ্য নয়।\n\nবয়স্ক ভাতা — মাসে ৳600.00 টাকা। এখনো আপনার লিঙ্গ ও পেশার তথ্য পাওয়া যায়নি, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি চাল) — মাসে সর্বোচ্চ ৩০ কেজি চাল কম দামে। এটিও এখনো নিশ্চিত হয়নি।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা — এই সেবাটি আপনি পেতে পারেন বলে সিদ্ধান্ত হয়েছে। এখানে বিনামূল্যে চিকিৎসা ও ৩০টিরও বেশি ওষুধ পাওয়া যায়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদে গিয়ে বয়স্ক ভাতার আবেদন ফরম বিনামূল্যে সংগ্রহ করুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1070,
+   "tokensOut": 270
+  },
+  "latencyMs": 2003,
+  "measuredAt": "2026-09-30T06:45:56.484Z"
+ },
+ "b5b0d06b533588887d39aa0dc7872c1630bbcf12019d810c9d3c9b74157f474f": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":65,\"confidence\":0.99,\"evidence\":\"বয়স ৬৫ হইসে\"},{\"field\":\"monthlyIncome\",\"value\":0,\"confidence\":0.95,\"evidence\":\"মাসে ৫০০ টাকাও কামাই নাই\"}],\"uncertainFacts\":[\"district\",\"gender\",\"householdSize\",\"hasNid\",\"hasBankAccount\",\"maritalStatus\"],\"normalizedQuery\":\"বয়স্ক ভাতা আবেদন যোগ্যতা ৬৫ বছর আয়হীন\",\"candidateProgrammeHints\":[\"বয়স্ক ভাতা\",\"সমাজসেবা ভাতা\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 430,
+   "tokensOut": 160
+  },
+  "latencyMs": 1108,
+  "measuredAt": "2026-09-30T06:40:40.096Z"
+ },
+ "b94f717b9bad5e8709418352516545069a07f3b396b32ffeee4c173aff20e992": {
+  "value": {
+   "text": "আপনার বয়স ৬৭ বছর আর মাসিক আয় ৮০০ টাকা — এই তথ্য অনুযায়ী তিনটি সরকারি সুবিধার কথা জানানো যাচ্ছে। তবে সৎভাবে বলি, এই তিনটির তথ্যই এখনো যাচাই করা হয়নি, এগুলো নমুনা তথ্য। চূড়ান্ত নিশ্চিত তথ্য নয়।\n\nপ্রথমটি, বয়স্ক ভাতা। সমাজসেবা অধিদফতর চালায়। মাসে ৳600.00 দেওয়া হয়। আপনার বয়স ৬৫-র বেশি এবং আয় ৳1,000.00-র কম — এই দুটি শর্ত আপনার ক্ষেত্রে মিলেছে। শুধু আপনার পেশা কী, সেটি এখনো জানা নেই। তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nদ্বিতীয়টি, খাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল)। আপনার আয় ৳4,000.00-র কম, তাই এটি আপনার জন্য হতে পারে। এখানে মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনা যায়।\n\nতৃতীয়টি, কমিউটিনি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা। এটি আপনার জন্য নিশ্চিত হয়েছে — বিনামূল্যে চিকিৎসা ও ঔষধ পাওয়া যায়।\n\nএখনই করুন: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1377,
+   "tokensOut": 372
+  },
+  "latencyMs": 2444,
+  "measuredAt": "2026-09-30T06:45:43.094Z"
+ },
+ "bbf87459c7b8722e1ef9c2a9477f914e6ec5e12c38b2bd450ed22dbc5f0577ef": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[],\"facts\":[{\"field\":\"monthlyIncome\",\"value\":8000,\"confidence\":0.95,\"evidence\":\"earns 8000 taka a month\"},{\"field\":\"occupation\",\"value\":\"homemaker\",\"confidence\":0.9,\"evidence\":\"I stay at home\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"householdSize\",\"dependents\",\"hasDisability\",\"maritalStatus\"],\"normalizedQuery\":\"low income household support services Bangladesh\",\"candidateProgrammeHints\":[\"social safety net\",\"low-income family assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 412,
+   "tokensOut": 130
+  },
+  "latencyMs": 1048,
+  "measuredAt": "2026-09-30T06:40:51.684Z"
+ },
+ "bc83941a7c236d583f234db20d0bb2a51715dc9114930c56bc1d6f468b14d6aa": {
+  "value": {
+   "text": "{\"intents\":[\"check_eligibility\",\"ask_question\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":72,\"confidence\":0.99,\"evidence\":\"72 bochor\"}],\"uncertainFacts\":[\"gender\",\"district\",\"monthlyIncome\",\"maritalStatus\",\"hasNid\",\"hasBankAccount\",\"isFreedomFighterFamily\"],\"normalizedQuery\":\"old age allowance eligibility Bangladesh 72 years\",\"candidateProgrammeHints\":[\"old age allowance\",\"social safety net pension\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 410,
+   "tokensOut": 111
+  },
+  "latencyMs": 1400,
+  "measuredAt": "2026-09-30T06:40:38.392Z"
+ },
+ "c3adaf130febe37078c047ed7152cc0b43a70c756be65a7265bbe0e1469cfaeb": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"check_eligibility\"],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"age\",\"value\":68,\"confidence\":0.99,\"evidence\":\"68 years old\"},{\"field\":\"monthlyIncome\",\"value\":0,\"confidence\":0.95,\"evidence\":\"no income\"}],\"uncertainFacts\":[\"gender\",\"district\",\"division\",\"occupation\",\"householdSize\",\"dependents\",\"hasDisability\",\"maritalStatus\",\"hasNid\",\"hasBankAccount\",\"citizenship\"],\"normalizedQuery\":\"old age allowance and financial assistance for senior citizens with no income\",\"candidateProgrammeHints\":[\"old age allowance\",\"social safety net\",\"senior citizen welfare\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 408,
+   "tokensOut": 153
+  },
+  "latencyMs": 1291,
+  "measuredAt": "2026-09-30T06:40:36.649Z"
+ },
+ "c5063f784244b91ae74d9cd6b5205899c2a781b5c0ca3d986fd98141b5e5c0e9": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"check_eligibility\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"age\",\"value\":45,\"confidence\":0.99,\"evidence\":\"৪৫ বছরের\"},{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.99,\"evidence\":\"বিধবা\"},{\"field\":\"monthlyIncome\",\"value\":1200,\"confidence\":0.95,\"evidence\":\"মাসে প্রায় ১২০০ টাকা আয় করি\"},{\"field\":\"district\",\"value\":\"Rangpur\",\"confidence\":0.99,\"evidence\":\"রংপুরে থাকি\"}],\"uncertainFacts\":[\"gender\",\"occupation\",\"education\",\"householdSize\",\"dependents\",\"hasDisability\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow woman 45 years low income Rangpur social assistance widow allowance\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net allowance\",\"old age allowance\",\"NGO assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 430,
+   "tokensOut": 215
+  },
+  "latencyMs": 1431,
+  "measuredAt": "2026-09-30T06:40:35.035Z"
+ },
+ "c53ff245b3c43be503cb58a2cae899edee053f5c2e6728512b450141f389b106": {
+  "value": {
+   "text": "আপনার স্বামী মারা যাওয়ার খবরে আমি খুব দুঃখিত। তিন সন্তান নিয়ে এই সময়টা আপনার জন্য কঠিন, তা আমি বুঝতে পারছি।\n\nআপনার কথা শুনে তিনটি সরকারি ও এনজিও সহায়তার কথা মনে পড়ছে। তবে সৎভাবে বলি — এগুলোর তথ্য এখনো যাচাই করা হয়নি, এগুলো নমুনা তথ্য হিসেবে দেওয়া। তাই চূড়ান্ত সত্য ধরে নেবেন না।\n\n১. বিধবা ও স্বামী নিগৃহীতা মহিলা ভাতা — সমাজসেবা অধিদফতরের মাসিক ভাতা, ৳550.00। বিধবা, তালাকপ্রাপ্ত বা স্বামী পরিত্যক্তা অল্প আয়ের মহিলাদের জন্য।\n\n২. ভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — মহিলা বিষয়ক অধিদফতরের দুই বছরের চক্র, বিনামূল্যে খাদ্যশস্য, সঞ্চয় ও প্রশিক্ষণ।\n\n৩. ব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — দুই বছরের প্যাকেজ, এককালীন ৳25,000.00 সহ সম্পদ ও সহায়তা।\n\nএখনো কিছু জানা নেই: আপনার বয়স, পরিবারের মাসিক আয়, পেশা, এবং কত শতাংশ জমি আছে। এগুলোর উত্তর ছাড়া কে কোন সহায়তা পাবেন, তা বলা যাবে না।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলরের কাছ থেকে আপনার অবস্থা ও আয়ের প্রত্যয়নপত্র নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1582,
+   "tokensOut": 397
+  },
+  "latencyMs": 2554,
+  "measuredAt": "2026-09-30T06:50:30.532Z"
+ },
+ "c85c8163a7ee346398778b92574a43e2003301e202c88796a3cbc122f9a32391": {
+  "value": {
+   "text": "আপনি জানিয়েছেন যে আপনি দৃষ্টিপ্রতিবন্ধী এবং কাজ করতে পারেন না। এই তথ্যের ভিত্তিতে তিনটি সরকারি সহায়তার কথা জানানো হচ্ছে। এগুলো সমাজসেবা অধিদফতরের, তবে এগুলো এখনো যাচাই করা হয়নি — অর্থাৎ এগুলো নমুনা তথ্য, নিশ্চিত সরকারি ঘোষণা নয়।\n\nপ্রথমটি, \"প্রতিবন্ধী ব্যক্তিদের জন্য বিনামূল্যে সহায়ক উপকরণ\"। এই সেবায় হুইলচেয়ার, ক্রাচ, শ্রবণযন্ত্র, সাদা ছড়ি ও কৃত্রিম অঙ্গ বিনামূল্যে দেওয়া হয়। নিয়ম অনুযায়ী আপনি এর জন্য নির্বাচিত হয়েছেন।\n\nদ্বিতীয়টি, \"অসচ্ছল প্রতিবন্ধী ভাতা\" — মাসে ৳850.00। এটি এখনো নিশ্চিত হয়নি, কারণ আপনার পরিবারের মাসিক আয় জানা নেই।\n\nতৃতীয়টি, \"প্রতিবন্ধী শিক্ষার্থী শিক্ষা উপবৃত্তি\" — মাসে ৳900.00। এটিও নিশ্চিত হয়নি, কারণ আপনি এখন পড়াশোনা করছেন কি না জানা নেই।\n\nপরের কাজ: আপনার জেলার প্রতিবন্ধী সেবা ও সহায়তা কেন্দ্র খুঁজে নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1225,
+   "tokensOut": 313
+  },
+  "latencyMs": 1943,
+  "measuredAt": "2026-09-30T06:46:02.417Z"
+ },
+ "caa73087ea489d58e5023eb3bfae03d4871162e0b1c03518d2250fd2ed7243a8": {
+  "value": {
+   "text": "{\"intents\":[],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[],\"normalizedQuery\":\"\",\"candidateProgrammeHints\":[]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 408,
+   "tokensOut": 36
+  },
+  "latencyMs": 859,
+  "measuredAt": "2026-09-30T06:40:51.709Z"
+ },
+ "cbe861fcb7af3d875baea646ec9f25f5cde90cacda30722fe55cf87d146ddbe3": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\"],\"lifeEvents\":[\"serious_medical_need\"],\"facts\":[{\"field\":\"medicalConditions\",\"value\":\"medicine expenses\",\"confidence\":0.6,\"evidence\":\"ওষুধে ৫০০০ টাকা খরচ হয়েছে\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"householdSize\",\"hasDisability\",\"medicalConditions\"],\"normalizedQuery\":\"ওষুধ খরচ সহায়তা স্বাস্থ্যসেবা\",\"candidateProgrammeHints\":[\"স্বাস্থ্য সহায়তা\",\"ওষুধ ক্রয় সহায়তা\",\"চিকিৎসা ভাতা\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 416,
+   "tokensOut": 142
+  },
+  "latencyMs": 1244,
+  "measuredAt": "2026-09-30T06:40:50.430Z"
+ },
+ "ccaba95143c55841e087aa9718584bfefbce1a8a11c3387ab4f738075e077d80": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[],\"normalizedQuery\":\"general information\",\"candidateProgrammeHints\":[]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 397,
+   "tokensOut": 42
+  },
+  "latencyMs": 853,
+  "measuredAt": "2026-09-30T06:40:54.074Z"
+ },
+ "cdaaf9ce418f5ce1cb6e0a5c37460eca3897f363be392232f9d606f6d8e9a6ba": {
+  "value": {
+   "text": "আপনার স্বামী মারা যাওয়ার কারণে আপনি বিধবা হয়েছেন। সরকারি নিয়ম অনুযায়ী দেখা হয়েছে — আপনি বিধবা ও স্বামী নিগৃহীতা মহিলা ভাতার জন্য নির্বাচিত হয়েছেন। কারণ আপনি একজন মহিলা, আপনার বয়স ১৮ বছরের বেশি, আপনি বাংলাদেশের নাগরিক, আপনি সরকারি চাকরি করেন না, আপনার মাসিক আয় ৳1,500.00 এর কম, আর আপনার বৈবাহিক অবস্থা শর্ত পূরণ করে।\n\nএই ভাতা সমাজসেবা অধিদফতর দেয়। মাসে ৳550.00 পাওয়া যায়। আবেদনের সময় সারা বছর খোলা থাকে। তবে জেনে রাখুন, এই তথ্যটি এখনো যাচাই করা হয়নি — এটি নমুনা তথ্য।\n\nভিজিডি কর্মসূচিতে আপনি নির্বাচিত হননি, কারণ ভিজিডি ১৮ থেকে ৪৯ বছর বয়সী মহিলাদের জন্য।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচির ব্যাপারে এখনো সিদ্ধান্ত হয়নি। একটি প্রশ্নের উত্তর দরকার: আপনার পরিবারের কত শতাংশ জমি আছে?\n\nপরের কাজ: আপনার অবস্থা ও আয় নিশ্চিত করে ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলর থেকে প্রত্যয়নপত্র নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1569,
+   "tokensOut": 329
+  },
+  "latencyMs": 2084,
+  "measuredAt": "2026-09-30T06:50:30.835Z"
+ },
+ "d19941443f0b2fb390757b8c9b90c648eb62e6049b5b292391f38ca77ed880ed": {
+  "value": {
+   "text": "আপনি দৃষ্টিপ্রতিবন্ধী এবং কাজ করতে পারেন না — এই তথ্য দেওয়ার জন্য ধন্যবাদ। আপনার জন্য তিনটি সরকারি সহায়তা আছে।\n\nপ্রথমটি, **প্রতিবন্ধী ব্যক্তিদের জন্য বিনামূল্যে সহায়ক উপকরণ**। সমাজসেবা অধিদফতরের প্রতিবন্ধী সেবা কেন্দ্র থেকে বিনামূল্যে সাদা ছড়ি, হুইলচেয়ার, ক্রাচ, শ্রবণযন্ত্র ও কৃত্রিম অঙ্গ দেওয়া হয়। নিয়ম অনুযায়ী আপনি এর জন্য যোগ্য বলে ধরা হয়েছে। তবে এই তথ্যটি এখনো যাচাই করা হয়নি, তাই নিশ্চিত সরকারি তথ্য হিসেবে ধরবেন না।\n\nদ্বিতীয়টি, **অসচ্ছল প্রতিবন্ধী ভাতা**। মাসে ৳850.00 দেওয়া হয়। বয়সের কোনো শর্ত নেই। আপনি আপনার প্রতিবন্ধিতার কথা বলেছেন, তাই এটি আপনার জন্য হতে পারে। কিন্তু আপনার পরিবারের মাসিক আয় কত, সেটি এখনো জানা যায়নি। আয়ের হিসাব ছাড়া চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nতৃতীয়টি, **প্রতিবন্ধী শিক্ষার্থী শিক্ষা উপবৃত্তি**। মাসে ৳900.00। আপনি এখন পড়াশোনা করছেন কি না, সেটি জানা নেই, তাই এটির সিদ্ধান্তও হয়নি।\n\nএই তিনটি তথ্যই যাচাই করা হয়নি। এখন আপনার একটাই কাজ: আপনার উপজেলা সমাজসেবা অফিসে গিয়ে প্রতিবন্ধিতা নিরূপণ ও সুবর্ণ নাগরিক কার্ডের জন্য নাম লেখান।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1336,
+   "tokensOut": 391
+  },
+  "latencyMs": 2547,
+  "measuredAt": "2026-09-30T06:45:48.523Z"
+ },
+ "d46afafd4a1a4f6554d7b67a73691215638f918082fd7551bd630125e1b3e6a3": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"maritalStatus\",\"monthlyIncome\",\"district\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"widow allowance and elderly allowance information\",\"candidateProgrammeHints\":[\"widow allowance\",\"old age allowance\",\"social safety net allowance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 417,
+   "tokensOut": 82
+  },
+  "latencyMs": 1222,
+  "measuredAt": "2026-09-30T06:40:53.141Z"
+ },
+ "d50d08d1067d1df9a25af944925e411b802b29012599535f3539d4c3d3bcc057": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\",\"ask_question\"],\"lifeEvents\":[\"old_age\"],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"maritalStatus\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"বয়স্ক ভাতা নিয়ম eligibility old age allowance rules\",\"candidateProgrammeHints\":[\"বয়স্ক ভাতা\",\"old age allowance\",\"social safety net programme\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 413,
+   "tokensOut": 99
+  },
+  "latencyMs": 1219,
+  "measuredAt": "2026-09-30T06:40:54.119Z"
+ },
+ "d62c1b72987ff5b17f3d4114d8385cd6af494b4c57a5991eca85985aced051a7": {
+  "value": {
+   "text": "{\"intents\":[],\"lifeEvents\":[],\"facts\":[{\"field\":\"district\",\"value\":\"Sylhet\",\"confidence\":0.95,\"evidence\":\"I live in Sylhet\"}],\"uncertainFacts\":[],\"normalizedQuery\":\"services for a person living in Sylhet with son in Dhaka\",\"candidateProgrammeHints\":[]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 409,
+   "tokensOut": 73
+  },
+  "latencyMs": 650,
+  "measuredAt": "2026-09-30T06:40:48.792Z"
+ },
+ "d840ea46484419bc0f2c6dc8573f5cbe171f898601bca0ff7fbb231068becc76": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\",\"nearby_services\"],\"lifeEvents\":[\"serious_medical_need\"],\"facts\":[],\"uncertainFacts\":[\"medical condition\",\"district of residence\",\"age\",\"gender\",\"income\",\"treatment type\",\"preferred hospital\"],\"normalizedQuery\":\"Dhaka medical treatment healthcare services\",\"candidateProgrammeHints\":[\"government hospital services\",\"healthcare support programmes\",\"medical travel assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 407,
+   "tokensOut": 91
+  },
+  "latencyMs": 1168,
+  "measuredAt": "2026-09-30T06:40:49.959Z"
+ },
+ "dc6236ba5af06219b01e474d988dfa35361f88f0e647713aed71845ee5b03a1e": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.99,\"evidence\":\"আমি বিপত্নীক\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"dependents\",\"hasNid\"],\"normalizedQuery\":\"widowed person support services Bangladesh\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net\",\"widow welfare support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 417,
+   "tokensOut": 115
+  },
+  "latencyMs": 1216,
+  "measuredAt": "2026-09-30T06:40:34.557Z"
+ },
+ "dc8506c15035d0c683f5bbc718ef265e27374109cee03669952e81aa2452013c": {
+  "value": {
+   "text": "আপনার বয়স ৬৮ বছর এবং আয় নেই — এই তথ্য অনুযায়ী তিনটি সরকারি সুবিধার কথা জানা যাচ্ছে।\n\nবয়স্ক ভাতা: সমাজসেবা অধিদফতরের এই ভাতায় মাসে ৳600.00 দেওয়া হয়, এমন বয়স্ক নাগরিকদের যাঁদের আয় নেই বা খুব কম। আপনার বয়স ও আয়ের তথ্য মিলছে, তবে লিঙ্গ ও পেশার তথ্য এখনো জানা নেই। তাই এখনই নিশ্চিত বলা যাচ্ছে না — এগুলো জানা গেলে হিসাবটি সম্পূর্ণ হবে। মনে রাখবেন, এই তথ্যটি এখনো যাচাই করা নমুনা তথ্য, সরকারিভাবে নিশ্চিত নয়।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল): মাসে ৩০ কেজি পর্যন্ত চাল অনেক কম দামে কেনা যায়। আপনার আয়ের তথ্য এখানেও মিলছে। এটিও যাচাই করা নমুনা তথ্য।\n\nকমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা: এখানে আপনি সেবা পাবেন বলে হিসাব বলছে। গ্রামের হাঁটা দূরত্বে বিনামূল্যে চিকিৎসা, ৩০টিরও বেশি ঔষধ, গর্ভকালীন পরীক্ষা ও শিশু টিকা পাওয়া যায়। কোনো কাগজ বা অ্যাপয়েন্টমেন্ট লাগে না।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ বা সিটি কর্পোরেশনের ওয়ার্ড কাউন্সিলর অফিস থেকে বিনামূল্যে বয়স্ক ভাতার আবেদন ফরম নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1442,
+   "tokensOut": 403
+  },
+  "latencyMs": 2509,
+  "measuredAt": "2026-09-30T06:50:33.374Z"
+ },
+ "ddbc49e42d3e9ab3bf4e61e540fc87858a39983566743ee463552ad50acebf9b": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\",\"nearby_services\",\"general_information\"],\"lifeEvents\":[\"disability_onset\"],\"facts\":[{\"field\":\"hasDisability\",\"value\":true,\"confidence\":0.99,\"evidence\":\"একটি পা হারিয়েছি\"},{\"field\":\"disabilityType\",\"value\":\"amputation\",\"confidence\":0.95,\"evidence\":\"একটি পা হারিয়েছি\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"hasNid\",\"maritalStatus\",\"householdSize\"],\"normalizedQuery\":\"disability support services wheelchair user amputation Bangladesh\",\"candidateProgrammeHints\":[\"disability allowance\",\"rehabilitation services\",\"assistive device support\",\"healthcare services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 423,
+   "tokensOut": 164
+  },
+  "latencyMs": 1133,
+  "measuredAt": "2026-09-30T06:40:41.154Z"
+ },
+ "e0cd250094553d4635af435fed0380a90eadba8e2e1bb7c8304ab1753dff3b02": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widow\",\"confidence\":0.95,\"evidence\":\"a widow\"},{\"field\":\"dependents\",\"value\":4,\"confidence\":0.95,\"evidence\":\"four children\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"hasNid\",\"hasBankAccount\",\"householdSize\",\"children ages\",\"education\"],\"normalizedQuery\":\"widow with four children support services\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net\",\"child support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 409,
+   "tokensOut": 134
+  },
+  "latencyMs": 1137,
+  "measuredAt": "2026-09-30T06:40:32.604Z"
+ },
+ "e0e1d3dfeeaa432f42ba7945e28219301def617b4d89f167d024a620245ed12d": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\",\"general_information\"],\"lifeEvents\":[\"divorce\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"divorced\",\"confidence\":0.99,\"evidence\":\"divorced me\"},{\"field\":\"dependents\",\"value\":2,\"confidence\":0.95,\"evidence\":\"two kids\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"education\",\"hasNid\",\"hasBankAccount\",\"householdSize\"],\"normalizedQuery\":\"support services for divorced women with children\",\"candidateProgrammeHints\":[\"women and children support services\",\"social safety net programmes\",\"legal aid services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 407,
+   "tokensOut": 141
+  },
+  "latencyMs": 1131,
+  "measuredAt": "2026-09-30T06:40:35.735Z"
+ },
+ "e487d0a6b7fdd00d75e76394b97e805432a64f8a0ae79dd9586aa2543feb1fcb": {
+  "value": {
+   "text": "আপনার ধান নষ্ট হওয়ার কথা শুনে খারাপ লাগল। আপনার ৪০ শতাংশ জমি আছে — এটা মাথায় রেখে নিচের তথ্যগুলো দিচ্ছি।\n\nখাদ্যবান্ধব কর্মসূচি (ভর্তুকি মূল্যে চাল) — সমাজসেবা অধিদফতরের এই কর্মসূচিতে মঙ্গা মৌসুমে মাসে ৩০ কেজি পর্যন্ত চাল অনেক কম দামে কেনা যায়। আপনার জমি ৫০ শতাংশের কম, তাই এই শর্তটি পূরণ হয়েছে। তবে আপনার পরিবারের মাসিক আয় কত, সেটি এখনো জানা নেই — এই তথ্য ছাড়া চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (ভিজিডি) — মহিলা বিষয়ক অধিদফতরের দুই বছরের কর্মসূচি, মাসিক বিনামূল্যে খাদ্যশস্য, সঞ্চয় ও প্রশিক্ষণ। আপনি বাংলাদেশের নাগরিক, তবে আপনি মহিলা কি না, বয়স কত, পরিবারের আয় কত — এসব এখনো জানা নেই। তাই এখানেও সিদ্ধান্ত হয়নি।\n\nব্র্যাক অতিদরিদ্র উন্নয়ন কর্মসূচি — এতে আপনি এখন সুপারিশ পাচ্ছেন না, কারণ এটি ১০ শতাংশ বা কম জমির মালিকদের জন্য, আর আপনার জমি ৪০ শতাংশ।\n\nমনে রাখবেন, উপরের তিনটি কর্মসূচির তথ্যই যাচাই করা নমুনা তথ্য, সরকারি চূড়ান্ত তথ্য নয়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদের নোটিশ বোর্ডে খাদ্যবান্ধব কর্মসূচির সুবিধাভোগী তালিকা দেখুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1485,
+   "tokensOut": 431
+  },
+  "latencyMs": 2885,
+  "measuredAt": "2026-09-30T06:50:37.321Z"
+ },
+ "e4a480be4bb71b755aef15d3f9bf3257cc0ae622e965220a4c106317a4e006fd": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\",\"document_requirements\",\"general_information\"],\"lifeEvents\":[\"disability_onset\"],\"facts\":[{\"field\":\"hasDisability\",\"value\":true,\"confidence\":0.95,\"evidence\":\"আমার ছেলে প্রতিবন্ধী\"}],\"uncertainFacts\":[\"ছেলের বয়স\",\"প্রতিবন্ধিতার ধরন\",\"জেলা\",\"পরিবারের আয়\",\"এনআইডি আছে কি না\"],\"normalizedQuery\":\"প্রতিবন্ধী সন্তানের জন্য ভাতা প্রতিবন্ধী ভাতা আবেদন\",\"candidateProgrammeHints\":[\"প্রতিবন্ধী ভাতা\",\"সমাজসেবা প্রতিবন্ধী সহায়তা\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 414,
+   "tokensOut": 160
+  },
+  "latencyMs": 1184,
+  "measuredAt": "2026-09-30T06:40:41.701Z"
+ },
+ "e634cc7ec643043d766ccb60b72f848ec01e3b5ed1bc5d6305ec3919f4740a15": {
+  "value": {
+   "text": "{\"intents\":[\"check_eligibility\",\"general_information\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"hasDisability\",\"maritalStatus\",\"lifeEvents\"],\"normalizedQuery\":\"government eligibility verification and allowance information\",\"candidateProgrammeHints\":[\"social safety net allowance programmes\",\"eligibility verification services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 425,
+   "tokensOut": 90
+  },
+  "latencyMs": 910,
+  "measuredAt": "2026-09-30T06:40:52.813Z"
+ },
+ "e814ebacb9c3f994da0171f4630569f253aec480dbfdcd56242104753f0f733b": {
+  "value": {
+   "text": "আপনি ৫ মাসের গর্ভবতী, আর স্বামী দিনমজুর — এই তথ্য দিয়ে আপনার জন্য তিনটি সরকারি সেবার কথা বলা যায়। তবে মনে রাখবেন, নিচের সব তথ্য এখনো যাচাই করা হয়নি, এগুলো নমুনা তথ্য।\n\nপ্রথমে, কমিউনিটি ক্লিনিক প্রাথমিক স্বাস্থ্যসেবা। নিয়ম অনুযায়ী আপনি এর জন্য ঠিক আছেন, কারণ আপনি বাংলাদেশের নাগরিক। এখানে বিনামূল্যে গর্ভকালীন পরীক্ষা, ৩০টিরও বেশি ঔষধ ও শিশু টিকা পাওয়া যায়। কোনো অ্যাপয়েন্টমেন্ট বা কাগজ লাগে না।\n\nদ্বিতীয়, মাতৃস্বাস্থ্য ভাউচার স্কিম (ডিএসএফ)। এতে বিনামূল্যে গর্ভকালীন পরীক্ষা, সিজারসহ নিরাপদ প্রসব, এবং প্রসবের পর ৳2,000.00 নগদ প্রণোদনা মেলে। আপনি গর্ভবতী ও নারী — তাই সম্ভাবনা আছে, কিন্তু আপনার পরিবারের মাসিক আয় এখনো জানা নেই, তাই চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nতৃতীয়, দরিদ্র মা'র জন্য মাতৃত্বকাল ভাতা। প্রথম বা দ্বিতীয় সন্তানের জন্য ৩৬ মাস ধরে মাসিক ৳800.00। এখানেও আয় ও বয়স জানা নেই, তাই সিদ্ধান্ত হয়নি।\n\nএখনই নিকটস্থ কমিউনিটি ক্লিনিক বা ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্রে গিয়ে আপনার গর্ভধারণ নিবন্ধন করুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1462,
+   "tokensOut": 405
+  },
+  "latencyMs": 2261,
+  "measuredAt": "2026-09-30T06:45:44.978Z"
+ },
+ "e8751c87087e318e71ad847c85fb3ebc09d04ad85e66ad438a5ff858991d4cb9": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"check_eligibility\",\"general_information\"],\"lifeEvents\":[\"widowhood\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"widowed\",\"confidence\":0.99,\"evidence\":\"I am a widow\"},{\"field\":\"monthlyIncome\",\"value\":0,\"confidence\":0.95,\"evidence\":\"no income\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"division\",\"occupation\",\"education\",\"householdSize\",\"dependents\",\"hasDisability\",\"hasNid\",\"hasBankAccount\",\"isFreedomFighterFamily\"],\"normalizedQuery\":\"widow no income social assistance support Bangladesh\",\"candidateProgrammeHints\":[\"widow allowance\",\"social safety net assistance\",\"vulnerable women benefit programmes\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 414,
+   "tokensOut": 163
+  },
+  "latencyMs": 1498,
+  "measuredAt": "2026-09-30T06:40:53.488Z"
+ },
+ "e925d04c3ba1501685a3581a174cc051e64781d8b6538363c500b2f8fcbec8ea": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\",\"ngo_assistance\"],\"lifeEvents\":[\"serious_medical_need\",\"child_education\"],\"facts\":[{\"field\":\"medicalConditions\",\"value\":\"child has cancer\",\"confidence\":0.95,\"evidence\":\"My child has cancer\"}],\"uncertainFacts\":[\"district\",\"monthlyIncome\",\"householdSize\",\"hasNid\",\"hasBankAccount\",\"child's age\"],\"normalizedQuery\":\"child cancer treatment financial assistance Bangladesh\",\"candidateProgrammeHints\":[\"cancer treatment support\",\"healthcare financial aid\",\"NGO medical assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 407,
+   "tokensOut": 122
+  },
+  "latencyMs": 929,
+  "measuredAt": "2026-09-30T06:40:48.430Z"
+ },
+ "e94c919ce38cfc0ec9f713b424f95ad3f3b1939a63cdc4e71f015f3ccd52b8ad": {
+  "value": {
+   "text": "{\"intents\":[],\"lifeEvents\":[\"old_age\"],\"facts\":[{\"field\":\"gender\",\"value\":\"male\",\"confidence\":0.99,\"evidence\":\"আমি একজন পুরুষ\"},{\"field\":\"age\",\"value\":67,\"confidence\":0.99,\"evidence\":\"বয়স ৬৭\"},{\"field\":\"monthlyIncome\",\"value\":800,\"confidence\":0.99,\"evidence\":\"মাসিক আয় ৮০০ টাকা\"}],\"uncertainFacts\":[\"district\",\"occupation\",\"maritalStatus\",\"householdSize\",\"hasDisability\",\"hasNid\"],\"normalizedQuery\":\"বয়স্ক ভাতা ও সামাজিক নিরাপত্তা সেবা অনুসন্ধান\",\"candidateProgrammeHints\":[\"old age allowance\",\"social safety net\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 421,
+   "tokensOut": 167
+  },
+  "latencyMs": 1277,
+  "measuredAt": "2026-09-30T06:40:39.075Z"
+ },
+ "ea066ae9f49b3e311f9a2bea9d96080fe640232c2952cece5cdd089b3dd87389": {
+  "value": {
+   "text": "{\"intents\":[\"general_information\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[],\"normalizedQuery\":\"general information\",\"candidateProgrammeHints\":[]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 402,
+   "tokensOut": 42
+  },
+  "latencyMs": 631,
+  "measuredAt": "2026-09-30T06:40:54.165Z"
+ },
+ "ec001236721ab9eee33cd0671a9be672e45338ca213d00548ed5a7de4e3f8f98": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\",\"ask_question\"],\"lifeEvents\":[\"pregnancy\"],\"facts\":[{\"field\":\"isPregnant\",\"value\":true,\"confidence\":0.99,\"evidence\":\"ami 5 mash er pregnant\"},{\"field\":\"occupation\",\"value\":\"daily wage laborer\",\"confidence\":0.95,\"evidence\":\"amar husband dinmojur\"}],\"uncertainFacts\":[\"district\",\"division\",\"age\",\"monthlyIncome\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"pregnancy healthcare support for daily wage family\",\"candidateProgrammeHints\":[\"maternal health services\",\"pregnancy allowance\",\"healthcare support for low-income families\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 408,
+   "tokensOut": 146
+  },
+  "latencyMs": 1285,
+  "measuredAt": "2026-09-30T06:40:42.757Z"
+ },
+ "ecea8cdb7f88cb329040445c72dfeec4ef46df378b0bda59ed1303af441e73ca": {
+  "value": {
+   "text": "আপনার বয়স ৬৮ বছর এবং আয় নেই — এই তথ্য অনুযায়ী তিনটি সরকারি সেবার কথা জানানো যাচ্ছে। তবে মনে রাখবেন, এই তিনটি কার্যক্রমের তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\nপ্রথম, **Old Age Allowance** — মাসে ৳600.00 টাকা ভাতা। কিন্তু এখানে সিদ্ধান্ত এখনো হয়নি। আপনার লিঙ্গ এবং পেশা জানা নেই। এছাড়া আপনার মাসিক আয় ৳1,000.00 টাকার নিচে কি না, তা নিশ্চিত করতে হবে।\n\nদ্বিতীয়, **Food Friendly Programme (subsidised rice)** — চাল কেনার সুবিধা। এখানেও সিদ্ধান্ত হয়নি।\n\nতৃতীয়, **Community Clinic Primary Healthcare** — এই সেবার জন্য আপনি যোগ্য বলে সিদ্ধান্ত হয়েছে। এটি বিনামূল্যে চিকিৎসা ও ওষুধ দেয়।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদ থেকে বিনামূল্যে Old Age Allowance-এর আবেদন ফরম নিন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1188,
+   "tokensOut": 263
+  },
+  "latencyMs": 2003,
+  "measuredAt": "2026-09-30T06:45:42.133Z"
+ },
+ "edb3769205feaca58308658ad4822cecd37bb7a81424b8fbfe3df8de960c15fe": {
+  "value": {
+   "text": "{\"intents\":[\"find_opportunities\",\"check_eligibility\"],\"lifeEvents\":[\"job_loss\"],\"facts\":[],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"education\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"garments worker job loss support and employment opportunities\",\"candidateProgrammeHints\":[\"unemployment support\",\"skills training\",\"job placement services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 414,
+   "tokensOut": 92
+  },
+  "latencyMs": 1092,
+  "measuredAt": "2026-09-30T06:40:43.727Z"
+ },
+ "ee79c8723a90b53984adcc4512885ba0e74c2c8c5f17556adbbbd92a3fe9ee97": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[\"husband's medical condition\",\"household income\",\"district\",\"marital status\"],\"normalizedQuery\":\"hospital care support for husband\",\"candidateProgrammeHints\":[\"healthcare assistance\",\"hospital support services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 410,
+   "tokensOut": 69
+  },
+  "latencyMs": 859,
+  "measuredAt": "2026-09-30T06:40:31.163Z"
+ },
+ "f07982135f389a739c22c7dcaf075fa928163ead53151842fc8593145a6b1518": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\",\"general_information\"],\"lifeEvents\":[\"divorce\"],\"facts\":[{\"field\":\"maritalStatus\",\"value\":\"divorced\",\"confidence\":0.95,\"evidence\":\"তালাক দিয়েছে\"},{\"field\":\"dependents\",\"value\":2,\"confidence\":0.9,\"evidence\":\"দুইটা বাচ্চা আছে\"}],\"uncertainFacts\":[\"age\",\"district\",\"monthlyIncome\",\"occupation\",\"householdSize\",\"hasNid\"],\"normalizedQuery\":\"divorced woman with two children support services\",\"candidateProgrammeHints\":[\"single mother allowance\",\"divorced women welfare\",\"child support services\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 416,
+   "tokensOut": 145
+  },
+  "latencyMs": 1021,
+  "measuredAt": "2026-09-30T06:40:35.894Z"
+ },
+ "f5c48a03ddfc53b31b53eb1efa0bf1a97bf4b83381d74b0cba45886fce418392": {
+  "value": {
+   "text": "আপনার ফসল নষ্ট হওয়ার কথা শুনে দুঃখিত। আপনার ৪০ ডেসিমল জমি আছে, এই তথ্য দিয়ে কয়েকটি সরকারি সহায়তার কথা বলা যায়।\n\nভালনারেবল গ্রুপ ডেভেলপমেন্ট (VGD) — এটি নারী বিষয়ক অধিদপ্তরের একটি কার্যক্রম। দুই বছর ধরে প্রতি মাসে খাদ্যশস্য, কিছু সঞ্চয় এবং সেলাই-জাতীয় আয়ের দক্ষতার প্রশিক্ষণ দেওয়া হয়। এটি মূলত গ্রামের সবচেয়ে দরিদ্র নারীদের জন্য। আপনি নারী কি না, আপনার বয়স কত, বা মাসিক আয় কত — এসব এখনো জানা নেই, তাই এই কার্যক্রমে আপনি যোগ্য কি না তা এখনো ঠিক হয়নি।\n\nফুড ফ্রেন্ডলি প্রোগ্রাম (ভর্তুকি চাল) — সমাজসেবা অধিদপ্তরের আওতায়, মৌসুমে মাসে ৩০ কেজি পর্যন্ত চাল কম দামে কেনা যায়। আপনার ৪০ ডেসিমল জমি আছে, যা এই কার্যক্রমের শর্ত পূরণ করে। তবে মাসিক আয় জানা না থাকায় চূড়ান্ত সিদ্ধান্ত হয়নি।\n\nব্র্যাক আল্ট্রা-পুওর গ্র্যাজুয়েশন প্রোগ্রামে আপনি এখন যোগ্য নন, কারণ এটি ১০ ডেসিমল বা কম জমির পরিবারের জন্য।\n\nমনে রাখবেন, এই তিনটি কার্যক্রমের তথ্য এখনো যাচাই করা হয়নি, এটি নমুনা তথ্য।\n\nপরের কাজ: আপনার ইউনিয়ন পরিষদে গিয়ে VGD ও চালের তালিকা দেখুন এবং আপনার নাম আছে কি না জিজ্ঞেস করুন।",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1213,
+   "tokensOut": 410
+  },
+  "latencyMs": 2877,
+  "measuredAt": "2026-09-30T06:45:45.974Z"
+ },
+ "f8837a46a1a6007e91b2550454fc4fda30a162e7d8b4322c8d322cb76563d920": {
+  "value": {
+   "text": "I'm sorry about your crop. Let me explain what the checks show so far.\n\nTwo programmes are still open questions, not yes or no:\n\nVulnerable Group Development (VGD) gives monthly free food grain, plus savings and skills training, for two years. It is for the poorest rural women. The check shows you are a Bangladeshi citizen, and that this programme is for households with 15 decimals of land or less. But it is not known whether you are a woman, what your monthly household income is, or how old you are. So no decision has been made yet.\n\nFood Friendly Programme (subsidised rice) lets you buy up to 30 kg of rice a month at a low price in the lean season. The check shows you are a Bangladeshi citizen and own 50 decimals of land or less, which fits your 40 decimals. Your monthly household income is still not known, so this is also undecided.\n\nBRAC Ultra-Poor Graduation Programme was checked and did not match. It is for households with 10 decimals of land or less, and you have 40.\n\nPlease note: all three are unverified sample data, so treat them as leads, not confirmed facts.\n\nNext step: go to your Union Parishad and ask to see the VGD and Food Friendly beneficiary lists.",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 1259,
+   "tokensOut": 270
+  },
+  "latencyMs": 1925,
+  "measuredAt": "2026-09-30T06:50:36.119Z"
+ },
+ "fa2c8817506d2432b63c61f2f2c08c12002a25ee1636371e7729e2ef939f1608": {
+  "value": {
+   "text": "{\"intents\":[\"healthcare_search\",\"ask_question\"],\"lifeEvents\":[\"pregnancy\"],\"facts\":[{\"field\":\"isPregnant\",\"value\":true,\"confidence\":0.99,\"evidence\":\"আমি ৫ মাসের গর্ভবতী\"},{\"field\":\"occupation\",\"value\":\"দিনমজুর\",\"confidence\":0.8,\"evidence\":\"আমার স্বামী দিনমজুর\"}],\"uncertainFacts\":[\"district\",\"division\",\"age\",\"monthlyIncome\",\"householdSize\",\"hasNid\",\"medicalConditions\"],\"normalizedQuery\":\"pregnant woman healthcare support low income daily wage family\",\"candidateProgrammeHints\":[\"maternal health services\",\"pregnancy healthcare support\",\"low-income family assistance\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 419,
+   "tokensOut": 157
+  },
+  "latencyMs": 1131,
+  "measuredAt": "2026-09-30T06:40:42.319Z"
+ },
+ "fd834fa8794e8c0a0d398a7559c89a1db53bbb24dd2a7860e0f81db292c27c8c": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[\"disability_onset\"],\"facts\":[{\"field\":\"hasDisability\",\"value\":true,\"confidence\":0.99,\"evidence\":\"আমি দৃষ্টিপ্রতিবন্ধী\"},{\"field\":\"disabilityType\",\"value\":\"visual\",\"confidence\":0.99,\"evidence\":\"দৃষ্টিপ্রতিবন্ধী\"}],\"uncertainFacts\":[\"age\",\"gender\",\"district\",\"monthlyIncome\",\"occupation\",\"maritalStatus\",\"householdSize\",\"hasNid\",\"hasBankAccount\"],\"normalizedQuery\":\"visual disability support services Bangladesh\",\"candidateProgrammeHints\":[\"disability allowance\",\"assistive device support\",\"livelihood support for persons with disabilities\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 414,
+   "tokensOut": 155
+  },
+  "latencyMs": 1221,
+  "measuredAt": "2026-09-30T06:40:40.683Z"
+ },
+ "fee195040d5e355138a7e881b4ca838252c225ce2b2bf405f05d7a0b799ebfb3": {
+  "value": {
+   "text": "{\"intents\":[\"agriculture_support\",\"disaster_recovery\"],\"lifeEvents\":[\"crop_loss\",\"disaster_recovery\"],\"facts\":[{\"field\":\"occupation\",\"value\":\"কৃষক\",\"confidence\":0.99,\"evidence\":\"আমি কৃষক\"},{\"field\":\"landOwnershipDecimals\",\"value\":40,\"confidence\":0.99,\"evidence\":\"৪০ শতাংশ জমি আছে\"},{\"field\":\"crops\",\"value\":\"ধান\",\"confidence\":0.99,\"evidence\":\"আমার ধান নষ্ট হয়ে গেছে\"}],\"uncertainFacts\":[\"district\",\"division\",\"monthlyIncome\",\"householdSize\",\"hasNid\",\"hasBankAccount\",\"farmSizeDecimals\"],\"normalizedQuery\":\"বন্যা ধান ক্ষতি কৃষক সহায়তা ক্ষতিপূরণ\",\"candidateProgrammeHints\":[\"কৃষি সহায়তা\",\"বন্যা ক্ষতিপূরণ\",\"কৃষি ঋণ পুনর্বাসন\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 423,
+   "tokensOut": 212
+  },
+  "latencyMs": 1285,
+  "measuredAt": "2026-09-30T06:40:45.610Z"
+ },
+ "ff72f52dcec8cd3664b49d4a46ac4c8dc4983d92d8cfa8fb678326d8fedf9e5b": {
+  "value": {
+   "text": "{\"intents\":[\"ask_question\"],\"lifeEvents\":[],\"facts\":[],\"uncertainFacts\":[],\"normalizedQuery\":\"আজকের আবহাওয়া\",\"candidateProgrammeHints\":[]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 408,
+   "tokensOut": 47
+  },
+  "latencyMs": 665,
+  "measuredAt": "2026-09-30T06:40:54.978Z"
+ },
+ "ffe6a53aab711c03115e68658568f207fa3489f46ac0125091e29f6bb60532aa": {
+  "value": {
+   "text": "{\"intents\":[\"sme_support\",\"ask_question\"],\"lifeEvents\":[\"entrepreneurship\"],\"facts\":[{\"field\":\"hasBusiness\",\"value\":true,\"confidence\":0.98,\"evidence\":\"I run a small tea shop\"},{\"field\":\"businessType\",\"value\":\"tea shop\",\"confidence\":0.98,\"evidence\":\"a small tea shop\"}],\"uncertainFacts\":[\"district\",\"division\",\"monthlyIncome\",\"annualIncome\",\"age\",\"gender\",\"hasNid\",\"hasBankAccount\",\"employees\",\"business registration status\",\"loan amount needed\"],\"normalizedQuery\":\"small business loan for tea shop expansion\",\"candidateProgrammeHints\":[\"SME loan\",\"small business expansion finance\",\"cottage and micro enterprise support\"]}",
+   "engine": "deepseek",
+   "model": "deepseek-v4-flash",
+   "tokensIn": 410,
+   "tokensOut": 154
+  },
+  "latencyMs": 1440,
+  "measuredAt": "2026-09-30T06:40:47.812Z"
+ }
+}
