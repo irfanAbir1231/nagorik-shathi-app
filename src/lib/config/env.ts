@@ -196,6 +196,14 @@ const schema = z.object({
    */
   VOICE_MODE: z.enum(['auto', 'server', 'browser']).default('auto'),
 
+  /**
+   * Which speech-to-text API `STT_API_KEY` belongs to.
+   *
+   *   openai-compatible  OpenAI, Groq, a self-hosted whisper.cpp (the default)
+   *   elevenlabs         ElevenLabs Scribe: a different API (key in `xi-api-key`,
+   *                      `/speech-to-text`, `model_id`), so it has its own adapter
+   */
+  STT_PROVIDER: z.enum(['openai-compatible', 'elevenlabs']).default('openai-compatible'),
   STT_API_KEY: optionalStr,
   STT_BASE_URL: nonEmpty.default('https://api.openai.com/v1'),
   STT_MODEL: nonEmpty.default('whisper-1'),

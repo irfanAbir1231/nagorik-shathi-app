@@ -23,7 +23,7 @@ import { env } from '@/lib/config/env';
  * a vendor or at your own GPU box without touching this file.
  */
 
-export type SttEngine = 'openai-compatible' | 'unavailable';
+export type SttEngine = 'openai-compatible' | 'elevenlabs' | 'unavailable';
 
 export interface TranscriptionResult {
   readonly text: string;
@@ -134,13 +134,107 @@ class OpenAiCompatibleStt implements SttProvider {
   }
 }
 
+/* ----------------------------------------------------------- ElevenLabs */
+
+const OPENAI_DEFAULT_BASE_URL = 'https://api.openai.com/v1';
+const ELEVENLABS_BASE_URL = 'https://api.elevenlabs.io/v1';
+/** `STT_MODEL` defaults to Whisper's name, which means nothing to ElevenLabs. */
+const ELEVENLABS_DEFAULT_MODEL = 'scribe_v1';
+/** ISO 639-3, the form ElevenLabs documents for `language_code`. */
+const ELEVENLABS_LANGUAGE = { bn: 'ben', en: 'eng' } as const;
+
+/** The base URL actually used: an explicit `STT_BASE_URL` wins (a proxy, or a test double). */
+function sttBaseUrl(): string {
+  const configured = env.STT_BASE_URL.replace(/\/+$/, '');
+  if (env.STT_PROVIDER === 'elevenlabs' && configured === OPENAI_DEFAULT_BASE_URL) return ELEVENLABS_BASE_URL;
+  return configured;
+}
+
+/**
+ * ElevenLabs Scribe. Not OpenAI-compatible, so it cannot share the adapter above:
+ *
+ *   POST {base}/speech-to-text      multipart: file, model_id, language_code, ...
+ *   header  xi-api-key: <key>       (not `Authorization: Bearer`)
+ *   reply   { text, language_code, ... }
+ *
+ * Scribe has no free-text vocabulary prompt, so `input.prompt` is not used.
+ * `tag_audio_events=false` stops it inserting "(laughter)"-style markers, which the
+ * command matcher would otherwise see as words.
+ */
+class ElevenLabsStt implements SttProvider {
+  readonly engine = 'elevenlabs' as const;
+  readonly model = env.STT_MODEL === 'whisper-1' ? ELEVENLABS_DEFAULT_MODEL : env.STT_MODEL;
+  readonly isLive = true;
+
+  async transcribe(input: {
+    audio: Blob;
+    filename: string;
+    language?: 'bn' | 'en';
+    prompt?: string;
+    signal?: AbortSignal;
+  }): Promise<TranscriptionResult> {
+    const started = Date.now();
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 45_000);
+    const onAbort = () => controller.abort();
+    input.signal?.addEventListener('abort', onAbort);
+
+    const send = (full: boolean) => {
+      const form = new FormData();
+      form.append('file', input.audio, input.filename);
+      form.append('model_id', this.model);
+      if (full) {
+        if (input.language) form.append('language_code', ELEVENLABS_LANGUAGE[input.language]);
+        form.append('tag_audio_events', 'false');
+        form.append('timestamps_granularity', 'none');
+      }
+      return fetch(`${sttBaseUrl()}/speech-to-text`, {
+        method: 'POST',
+        headers: { 'xi-api-key': env.STT_API_KEY ?? '' },
+        body: form,
+        signal: controller.signal,
+      });
+    };
+
+    try {
+      let response = await send(true);
+      // A 400/422 means the service did not accept one of the OPTIONAL fields (a
+      // language code it does not know, a parameter renamed in a newer API). Retry
+      // once with only the audio and model, so a hint can never be the reason
+      // someone's voice is not heard. Auth and quota errors are not retried.
+      if (response.status === 400 || response.status === 422) response = await send(false);
+
+      if (!response.ok) {
+        const body = await response.text().catch(() => '');
+        throw new SttError(
+          `Transcription provider responded ${response.status}: ${body.slice(0, 200)}`,
+          response.status,
+          response.status === 429 || response.status >= 500,
+        );
+      }
+
+      const payload = (await response.json()) as { text?: string; language_code?: string };
+      return {
+        text: (payload.text ?? '').trim(),
+        engine: this.engine,
+        model: this.model,
+        ...(payload.language_code ? { detectedLanguage: payload.language_code } : {}),
+        durationMs: Date.now() - started,
+      };
+    } finally {
+      clearTimeout(timer);
+      input.signal?.removeEventListener('abort', onAbort);
+    }
+  }
+}
+
 let cached: SttProvider | null = null;
 
 /** Null when no provider is configured — never a pretend transcriber. */
 export function getSttProvider(): SttProvider | null {
   if (cached) return cached;
   if (!env.STT_API_KEY) return null;
-  cached = new OpenAiCompatibleStt();
+  cached = env.STT_PROVIDER === 'elevenlabs' ? new ElevenLabsStt() : new OpenAiCompatibleStt();
   return cached;
 }
 
@@ -178,7 +272,7 @@ export function describeVoiceCapabilities(): VoiceCapabilities {
     mode: env.VOICE_MODE === 'server' && !env.STT_API_KEY ? 'auto' : env.VOICE_MODE,
     serverStt: stt !== null,
     sttModel: stt?.model ?? null,
-    sttBaseUrl: stt ? env.STT_BASE_URL : null,
+    sttBaseUrl: stt ? sttBaseUrl() : null,
     serverTts: Boolean(env.TTS_API_KEY),
     ttsModel: env.TTS_API_KEY ? env.TTS_MODEL : null,
     navigation: true,
