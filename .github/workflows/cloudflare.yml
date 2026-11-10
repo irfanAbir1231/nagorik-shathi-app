@@ -1,10 +1,19 @@
 name: Cloudflare deployment
 
+# PAUSED: this no longer runs on push or pull request.
+#
+# It failed on every push because the Cloudflare build tool (OpenNext) refuses
+# Next.js 15, whose 2-year support window ended in Oct 2026, and there is no
+# hosting target or CLOUDFLARE_API_TOKEN secret in this repository yet.
+#
+# To bring it back: upgrade Next.js to a supported version, add the secret and
+# the `production` environment, then restore these triggers:
+#   pull_request:
+#   push:
+#     branches: [main]
+# Until then it can still be started by hand (Actions > Cloudflare deployment > Run workflow).
 on:
-  pull_request:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -44,7 +53,7 @@ jobs:
   deploy:
     name: Deploy production
     needs: verify
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production
     steps:
