@@ -84,3 +84,7 @@ export async function GET() {
 }
 
 export const dynamic = 'force-dynamic';
+// A turn is normally a few seconds, but the handler allows a slow model up to 45 s.
+// Serverless hosts cut a function off at their own default (10 s on some plans), so
+// say how long this one may run. Ignored by `next start`.
+export const maxDuration = 30;

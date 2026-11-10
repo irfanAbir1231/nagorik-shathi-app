@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/config.dart';
 import '../../../core/i18n/error_text.dart';
 import '../../../core/network/api_result.dart';
 import '../domain/auth_user.dart';
@@ -20,12 +20,13 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  // Debug builds only: prefill the seeded demo citizen (Rahima Begum). `kDebugMode`
-  // is a compile-time constant, so release builds contain neither value.
-  final _phone = TextEditingController(text: kDebugMode ? '01712345678' : null);
-  final _pin = TextEditingController(text: kDebugMode ? '1234' : null);
+  // Debug builds (or a release built with DEMO_ACCOUNTS=true) prefill the seeded demo
+  // citizen. The flag is a compile-time constant, so an ordinary release build
+  // contains neither value.
+  final _phone = TextEditingController(text: AppConfig.showDemoAccounts ? '01712345678' : null);
+  final _pin = TextEditingController(text: AppConfig.showDemoAccounts ? '1234' : null);
   // Debug builds only: which seeded demo role is currently filled in.
-  DemoAccount? _demo = kDebugMode ? demoAccounts.first : null;
+  DemoAccount? _demo = AppConfig.showDemoAccounts ? demoAccounts.first : null;
   bool _busy = false;
   String? _error;
   String? _requestId;
@@ -76,7 +77,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineMedium),
                     const SizedBox(height: 8),
                     Text(l.signInTitle, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium),
-                    if (kDebugMode) ...[
+                    if (AppConfig.showDemoAccounts) ...[
                       const SizedBox(height: 20),
                       _RolePicker(
                         selected: _demo,
@@ -129,10 +130,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     // A locked account cannot use its PIN, so offer the code route right where it hurts.
-                    if (_errorCode == 'ACCOUNT_LOCKED')
-                      TextButton(onPressed: () => context.push('/otp-login'), child: Text(l.signInWithCode)),
-                    TextButton(onPressed: () => context.push('/forgot-pin'), child: Text(l.forgotPin)),
-                    TextButton(onPressed: () => context.push('/register'), child: Text(l.createAccount)),
+                    // These all need an SMS code; hidden when the backend cannot send one.
+                    if (AppConfig.otpFlows) ...[
+                      if (_errorCode == 'ACCOUNT_LOCKED')
+                        TextButton(onPressed: () => context.push('/otp-login'), child: Text(l.signInWithCode)),
+                      TextButton(onPressed: () => context.push('/forgot-pin'), child: Text(l.forgotPin)),
+                      TextButton(onPressed: () => context.push('/register'), child: Text(l.createAccount)),
+                    ],
                   ],
                 ),
               ),
