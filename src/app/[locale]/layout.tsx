@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Inter, Noto_Sans_Bengali, JetBrains_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import { routing, LOCALE_TAGS, type AppLocale } from '@/i18n/routing';
 import { QueryProvider } from '@/components/providers/QueryProvider';
 import { PreferencesProvider } from '@/components/providers/PreferencesProvider';
@@ -14,38 +14,43 @@ import '../globals.css';
 /**
  * Fonts — BDS §4.1 and §4.7.
  *
- * Self-hosted and subset by `next/font`, so no external font origin is needed
- * (the CSP in next.config.ts blocks one anyway). Only weights 400 and 600 are in
- * the critical path, per §4.7's budget.
+ * Bundled in `src/app/fonts/` and loaded with `next/font/local`, so the build needs
+ * no network and no external font origin (the CSP in next.config.ts blocks one
+ * anyway). They are the same Inter, Noto Sans Bengali and JetBrains Mono that
+ * `next/font/google` used to download, subset to latin / bengali (SIL Open Font
+ * License; see src/app/fonts/README.md). Only weights 400, 600 and 700 (500 for
+ * the monospace) are used, per §4.7's budget.
  *
- * `adjustFontFallback` is left on so the metric-compensated fallback keeps the
- * swap under the 0.02 CLS budget §4.7 sets.
+ * Why not `next/font/google`: it downloads the fonts during `next build` and parses
+ * Google's response, which broke the Vercel build (`Cannot read properties of null
+ * (reading '1')`) when Google answered the build server with font URLs that have no
+ * file extension.
  *
- * NOTE: the first build fetches and caches these font files, so it needs
- * network access once. See docs/SETUP.md.
+ * `adjustFontFallback` keeps the swap under the 0.02 CLS budget §4.7 sets for the
+ * Latin fonts. It is off for Bengali, where an Arial-based correction would be wrong.
  */
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
+const inter = localFont({
+  src: [{ path: '../fonts/inter-latin.woff2', weight: '400 700', style: 'normal' }],
   variable: '--font-inter',
   display: 'swap',
   preload: true,
+  adjustFontFallback: 'Arial',
 });
 
-const bengali = Noto_Sans_Bengali({
-  subsets: ['bengali'],
-  weight: ['400', '600', '700'],
+const bengali = localFont({
+  src: [{ path: '../fonts/noto-sans-bengali-bengali.woff2', weight: '400 700', style: 'normal' }],
   variable: '--font-bengali',
   display: 'swap',
   preload: true,
+  adjustFontFallback: false,
 });
 
-const mono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['500'],
+const mono = localFont({
+  src: [{ path: '../fonts/jetbrains-mono-latin.woff2', weight: '500', style: 'normal' }],
   variable: '--font-mono',
   display: 'swap',
   preload: false,
+  adjustFontFallback: 'Arial',
 });
 
 export function generateStaticParams() {
