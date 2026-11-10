@@ -277,4 +277,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String districtValue(String district) {
     return 'District: $district';
   }
+
+  @override
+  String get navAsk => 'Ask';
+
+  @override
+  String get chatTitle => 'Ask';
+
+  @override
+  String get chatHint => 'Type your question';
+
+  @override
+  String get chatSend => 'Send';
+
+  @override
+  String get chatNew => 'New chat';
+
+  @override
+  String get chatHistory => 'Past chats';
+
+  @override
+  String get chatNoHistory => 'No past chats yet.';
+
+  @override
+  String get chatEmptyTitle => 'How can we help?';
+
+  @override
+  String get chatEmptyBody =>
+      'Ask in Bangla or English about benefits, allowances, scholarships and services.';
+
+  @override
+  String get chatSuggestion1 => 'My husband passed away. What help can I get?';
+
+  @override
+  String get chatSuggestion2 => 'I am a farmer. What support is there?';
+
+  @override
+  String get chatSuggestion3 => 'Are there scholarships for students?';
+
+  @override
+  String get chatNotSent => 'Not sent. Tap to try again.';
+
+  @override
+  String get chatSending => 'Sending…';
+
+  @override
+  String get chatThinking => 'Looking for programmes…';
+
+  @override
+  String get chatSimulatedNote =>
+      'Simulated AI. Eligibility decisions are the same as with live AI.';
+
+  @override
+  String get chatNextStep => 'Next step';
+
+  @override
+  String get chatViewProgramme => 'View programme';
+
+  @override
+  String get errAiUnavailable =>
+      'The assistant is busy or took too long. Your message was kept. Please try again.';
 }

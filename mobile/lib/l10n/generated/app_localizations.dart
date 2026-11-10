@@ -589,6 +589,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'District: {district}'**
   String districtValue(String district);
+
+  /// No description provided for @navAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask'**
+  String get navAsk;
+
+  /// No description provided for @chatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask'**
+  String get chatTitle;
+
+  /// No description provided for @chatHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type your question'**
+  String get chatHint;
+
+  /// No description provided for @chatSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get chatSend;
+
+  /// No description provided for @chatNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New chat'**
+  String get chatNew;
+
+  /// No description provided for @chatHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Past chats'**
+  String get chatHistory;
+
+  /// No description provided for @chatNoHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'No past chats yet.'**
+  String get chatNoHistory;
+
+  /// No description provided for @chatEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How can we help?'**
+  String get chatEmptyTitle;
+
+  /// No description provided for @chatEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask in Bangla or English about benefits, allowances, scholarships and services.'**
+  String get chatEmptyBody;
+
+  /// No description provided for @chatSuggestion1.
+  ///
+  /// In en, this message translates to:
+  /// **'My husband passed away. What help can I get?'**
+  String get chatSuggestion1;
+
+  /// No description provided for @chatSuggestion2.
+  ///
+  /// In en, this message translates to:
+  /// **'I am a farmer. What support is there?'**
+  String get chatSuggestion2;
+
+  /// No description provided for @chatSuggestion3.
+  ///
+  /// In en, this message translates to:
+  /// **'Are there scholarships for students?'**
+  String get chatSuggestion3;
+
+  /// No description provided for @chatNotSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sent. Tap to try again.'**
+  String get chatNotSent;
+
+  /// No description provided for @chatSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending…'**
+  String get chatSending;
+
+  /// No description provided for @chatThinking.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking for programmes…'**
+  String get chatThinking;
+
+  /// No description provided for @chatSimulatedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Simulated AI. Eligibility decisions are the same as with live AI.'**
+  String get chatSimulatedNote;
+
+  /// No description provided for @chatNextStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Next step'**
+  String get chatNextStep;
+
+  /// No description provided for @chatViewProgramme.
+  ///
+  /// In en, this message translates to:
+  /// **'View programme'**
+  String get chatViewProgramme;
+
+  /// No description provided for @errAiUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The assistant is busy or took too long. Your message was kept. Please try again.'**
+  String get errAiUnavailable;
 }
 
 class _AppLocalizationsDelegate

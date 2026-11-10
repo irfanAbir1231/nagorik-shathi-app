@@ -277,4 +277,65 @@ class AppLocalizationsBn extends AppLocalizations {
   String districtValue(String district) {
     return 'জেলা: $district';
   }
+
+  @override
+  String get navAsk => 'জিজ্ঞাসা';
+
+  @override
+  String get chatTitle => 'জিজ্ঞাসা';
+
+  @override
+  String get chatHint => 'আপনার প্রশ্ন লিখুন';
+
+  @override
+  String get chatSend => 'পাঠান';
+
+  @override
+  String get chatNew => 'নতুন চ্যাট';
+
+  @override
+  String get chatHistory => 'আগের চ্যাট';
+
+  @override
+  String get chatNoHistory => 'এখনো কোনো আগের চ্যাট নেই।';
+
+  @override
+  String get chatEmptyTitle => 'কীভাবে সাহায্য করতে পারি?';
+
+  @override
+  String get chatEmptyBody =>
+      'ভাতা, বৃত্তি, সহায়তা ও সেবা সম্পর্কে বাংলা বা ইংরেজিতে জিজ্ঞাসা করুন।';
+
+  @override
+  String get chatSuggestion1 =>
+      'আমার স্বামী মারা গেছেন, আমি কী সহায়তা পেতে পারি?';
+
+  @override
+  String get chatSuggestion2 => 'আমি একজন কৃষক, কী কী সুবিধা আছে?';
+
+  @override
+  String get chatSuggestion3 => 'ছাত্রদের জন্য বৃত্তি আছে?';
+
+  @override
+  String get chatNotSent => 'পাঠানো যায়নি। আবার চেষ্টা করতে ট্যাপ করুন।';
+
+  @override
+  String get chatSending => 'পাঠানো হচ্ছে…';
+
+  @override
+  String get chatThinking => 'কর্মসূচি খোঁজা হচ্ছে…';
+
+  @override
+  String get chatSimulatedNote =>
+      'সিমুলেটেড এআই। যোগ্যতার সিদ্ধান্ত লাইভ এআই-এর মতোই।';
+
+  @override
+  String get chatNextStep => 'পরবর্তী ধাপ';
+
+  @override
+  String get chatViewProgramme => 'কর্মসূচি দেখুন';
+
+  @override
+  String get errAiUnavailable =>
+      'সহকারী ব্যস্ত ছিল বা সময় বেশি লেগেছে। আপনার বার্তা রাখা আছে। আবার চেষ্টা করুন।';
 }

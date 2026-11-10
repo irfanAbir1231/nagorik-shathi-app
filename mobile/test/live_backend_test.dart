@@ -8,6 +8,7 @@ import 'package:shebar_janala_app/core/network/api_client.dart';
 import 'package:shebar_janala_app/core/network/api_result.dart';
 import 'package:shebar_janala_app/core/storage/token_store.dart';
 import 'package:shebar_janala_app/features/auth/data/auth_repository.dart';
+import 'package:shebar_janala_app/features/chat/data/chat_repository.dart';
 import 'package:shebar_janala_app/features/opportunities/data/opportunity_repository.dart';
 
 /// Runs against a real backend with the demo seed loaded (`npm run setup`).
@@ -51,6 +52,19 @@ void main() {
     expect(searched.items.every((i) => i.category == 'social_welfare'), isTrue);
     final missing = await opps.detail('no-such-programme');
     expect((missing as Err).code, ErrorCodes.notFound);
+
+    // A real Bangla chat turn (UTF-8 end to end), then the transcript round-trips.
+    final chat = ChatRepository(api);
+    final turn = (await chat.send(
+      message: 'আমার স্বামী মারা গেছেন, আমার তিনটি সন্তান আছে। আমি কী সহায়তা পেতে পারি?',
+      locale: 'bn',
+    ) as Ok)
+        .data;
+    expect(turn.assistant.text, isNotEmpty);
+    expect(turn.assistant.opportunities, isNotEmpty);
+    final transcript = (await chat.transcript(turn.conversationId) as Ok).data;
+    expect(transcript.length, greaterThanOrEqualTo(2));
+    expect((await chat.conversations() as Ok).data.any((c) => c.id == turn.conversationId), isTrue);
 
     await repo.logout();
     expect(await store.readRefreshToken(), isNull);

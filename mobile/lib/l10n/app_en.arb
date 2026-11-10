@@ -151,5 +151,24 @@
         "type": "String"
       }
     }
-  }
+  },
+  "navAsk": "Ask",
+  "chatTitle": "Ask",
+  "chatHint": "Type your question",
+  "chatSend": "Send",
+  "chatNew": "New chat",
+  "chatHistory": "Past chats",
+  "chatNoHistory": "No past chats yet.",
+  "chatEmptyTitle": "How can we help?",
+  "chatEmptyBody": "Ask in Bangla or English about benefits, allowances, scholarships and services.",
+  "chatSuggestion1": "My husband passed away. What help can I get?",
+  "chatSuggestion2": "I am a farmer. What support is there?",
+  "chatSuggestion3": "Are there scholarships for students?",
+  "chatNotSent": "Not sent. Tap to try again.",
+  "chatSending": "Sending…",
+  "chatThinking": "Looking for programmes…",
+  "chatSimulatedNote": "Simulated AI. Eligibility decisions are the same as with live AI.",
+  "chatNextStep": "Next step",
+  "chatViewProgramme": "View programme",
+  "errAiUnavailable": "The assistant is busy or took too long. Your message was kept. Please try again."
 }

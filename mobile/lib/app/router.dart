@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/application/auth_controller.dart';
 import '../features/auth/presentation/login_screen.dart';
+import '../features/chat/presentation/chat_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/opportunities/presentation/opportunities_screen.dart';
 import '../features/opportunities/presentation/opportunity_detail_screen.dart';
@@ -13,6 +14,7 @@ import '../l10n/generated/app_localizations.dart';
 abstract final class Routes {
   static const home = '/';
   static const opportunities = '/opportunities';
+  static const chat = '/chat';
   static const profile = '/profile';
   static const login = '/login';
   static String opportunity(String slug) => '/opportunity/$slug';
@@ -44,6 +46,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [GoRoute(path: Routes.opportunities, builder: (_, _) => const OpportunitiesScreen())],
           ),
+          StatefulShellBranch(routes: [GoRoute(path: Routes.chat, builder: (_, _) => const ChatScreen())]),
           StatefulShellBranch(routes: [GoRoute(path: Routes.profile, builder: (_, _) => const ProfileScreen())]),
         ],
       ),
@@ -74,6 +77,8 @@ class _Shell extends StatelessWidget {
           NavigationDestination(icon: const Icon(Icons.home_outlined), selectedIcon: const Icon(Icons.home), label: l.navHome),
           NavigationDestination(
               icon: const Icon(Icons.search), selectedIcon: const Icon(Icons.manage_search), label: l.navOpportunities),
+          NavigationDestination(
+              icon: const Icon(Icons.chat_bubble_outline), selectedIcon: const Icon(Icons.chat_bubble), label: l.navAsk),
           NavigationDestination(
               icon: const Icon(Icons.person_outline), selectedIcon: const Icon(Icons.person), label: l.navProfile),
         ],

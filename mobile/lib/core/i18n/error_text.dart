@@ -11,6 +11,7 @@ String errorText(AppLocalizations l, Err<dynamic> e) {
     ErrorCodes.accountLocked => l.errAccountLocked,
     ErrorCodes.phoneNotRegistered => l.errPhoneNotRegistered,
     ErrorCodes.rateLimited => l.errRateLimited,
+    ErrorCodes.aiUnavailable => l.errAiUnavailable,
     ErrorCodes.unauthenticated => l.errUnauthenticated,
     _ => l.errGeneric,
   };
