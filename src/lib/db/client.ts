@@ -14,7 +14,6 @@ import type { LibSQLDatabase } from 'drizzle-orm/libsql/driver-core';
 // below rather than trusted as `any`.
 // @ts-expect-error — not part of driver-core's published type surface; see above.
 import { construct as constructUntyped } from 'drizzle-orm/libsql/driver-core';
-import { createRequire } from 'node:module';
 import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import * as schema from './schema';
@@ -46,7 +45,13 @@ import { env } from '../config/env';
  * even though this branch is never reached there (`DATABASE_URL` is never
  * `file:` in production).
  */
-const nodeRequire = createRequire(import.meta.url);
+// Webpack statically recognises `createRequire(...)(expr)` and replaces it with
+// an empty context ("Cannot find module '@libsql/client'" at runtime). Fetching
+// `createRequire` through process.getBuiltinModule keeps it opaque, and anchoring
+// at cwd makes resolution independent of the bundled file's location.
+const nodeRequire = (
+  process.getBuiltinModule('node:module') as typeof import('node:module')
+).createRequire(`${process.cwd().replaceAll('\\', '/')}/package.json`);
 const LIBSQL_NODE_PACKAGE = ['@libsql', 'client'].join('/');
 
 export type Database = LibSQLDatabase<typeof schema>;

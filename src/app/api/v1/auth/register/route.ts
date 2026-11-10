@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server';
 import { ok, readJson, handle } from '@/lib/http/response';
 import { guardRateLimit, clientIp } from '@/lib/http/rate-limit';
 import { rethrowUnlessAuth } from '@/lib/http/auth-errors';
-import { setAuthCookies } from '@/lib/http/cookies';
+import { mobileTokens, setAuthCookiesUnlessMobile } from '@/lib/http/mobile';
 import { registerSchema } from '@/lib/validation/schemas';
 import { register, verifyOtp } from '@/modules/auth/auth.service';
 
@@ -33,8 +33,8 @@ export async function POST(request: NextRequest) {
         ip: clientIp(request),
       });
 
-      const response = ok({ user: result.user }, { status: 201 });
-      setAuthCookies(response, result);
+      const response = ok({ user: result.user, ...mobileTokens(request, result) }, { status: 201 });
+      setAuthCookiesUnlessMobile(response, request, result);
       return response;
     } catch (error) {
       return rethrowUnlessAuth(error);

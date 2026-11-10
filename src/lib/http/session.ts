@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { eq } from 'drizzle-orm';
 import { db } from '@/lib/db/client';
 import { users, userProfiles, userSettings, type DecryptedUserProfile } from '@/lib/db/schema';
@@ -6,6 +6,7 @@ import { verifyAccessToken, COOKIE_NAMES } from '@/lib/security/tokens';
 import { ROLE_RANK, STAFF_ROLES, type UserRole } from '@/lib/domain/enums';
 import { decryptStringArray } from '@/lib/security/field-encryption';
 import { fail, ERROR_CODES } from './response';
+import { parseBearer } from './mobile';
 import type { NextResponse } from 'next/server';
 
 /**
@@ -27,8 +28,11 @@ export interface Session {
 }
 
 export async function getSession(): Promise<Session | null> {
-  const store = await cookies();
-  const token = store.get(COOKIE_NAMES.access)?.value;
+  // Native clients send a bearer token; browsers send the httpOnly cookie.
+  // A bearer header wins when present, and an invalid one is NOT silently
+  // replaced by the cookie: a client that sent credentials gets judged on them.
+  const bearer = parseBearer((await headers()).get('authorization'));
+  const token = bearer ?? (await cookies()).get(COOKIE_NAMES.access)?.value;
   if (!token) return null;
 
   const claims = await verifyAccessToken(token);

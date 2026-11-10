@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server';
 import { ok, readJson, handle } from '@/lib/http/response';
 import { guardRateLimit, clientIp } from '@/lib/http/rate-limit';
 import { rethrowUnlessAuth } from '@/lib/http/auth-errors';
-import { setAuthCookies } from '@/lib/http/cookies';
+import { mobileTokens, setAuthCookiesUnlessMobile } from '@/lib/http/mobile';
 import { setPinSchema } from '@/lib/validation/schemas';
 import { verifyOtp, setPin, loginWithOtp } from '@/modules/auth/auth.service';
 
@@ -29,8 +29,8 @@ export async function POST(request: NextRequest) {
       });
       await setPin(result.user.id, body.pin);
 
-      const response = ok({ user: { ...result.user, hasPin: true }, pinUpdated: true });
-      setAuthCookies(response, result);
+      const response = ok({ user: { ...result.user, hasPin: true }, pinUpdated: true, ...mobileTokens(request, result) });
+      setAuthCookiesUnlessMobile(response, request, result);
       return response;
     } catch (error) {
       return rethrowUnlessAuth(error);
