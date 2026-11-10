@@ -142,6 +142,22 @@ Install on your phone: `adb install -r mobile\build\app\outputs\flutter-apk\app-
 (this is the same adb path as before). To give it to others, upload the APK as a **GitHub Release**
 on the repository, or share it from Google Drive. Testers must allow "install unknown apps".
 
+## Optional: free Bangla voice that works on every phone
+
+By default the app uses the phone's own speech recogniser. That only works for Bangla if the
+phone has the Bangla speech pack installed, and otherwise the app shows "no Bangla speech
+pack". To make voice work on **any** phone, let the server transcribe instead, using Groq's free
+tier (Whisper large-v3, which handles Bangla):
+
+1. Create a free account at https://console.groq.com and make an API key.
+2. In `.env.deploy.local`, remove the `# ` from the three `STT_` lines and paste the key.
+3. Add the same three variables in Vercel (**Settings -> Environment Variables**) and **Redeploy**.
+4. Close and reopen the app. It checks what the server supports on start-up, so no new APK is needed.
+
+Notes: audio is sent to Groq to be transcribed (this server does not store it); the free tier has
+rate limits, so check Groq's current limits; if the key is wrong or the limit is hit, the app shows
+"could not turn your voice into text" and the person can type instead.
+
 ## Day-to-day
 
 - **Update the backend:** push to `main`; Vercel redeploys on its own.
