@@ -8,7 +8,13 @@
   "signInButton": "সাইন ইন করুন",
   "signOut": "সাইন আউট",
   "welcomeUser": "স্বাগতম, {name}",
-  "@welcomeUser": { "placeholders": { "name": { "type": "String" } } },
+  "@welcomeUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "language": "ভাষা",
   "errRequired": "এই ঘরটি পূরণ করতে হবে।",
   "errPin": "পিন ৪ থেকে ৬ সংখ্যার হতে হবে।",
@@ -21,7 +27,129 @@
   "errUnauthenticated": "আপনার সেশনের মেয়াদ শেষ। আবার সাইন ইন করুন।",
   "errGeneric": "কিছু একটা ভুল হয়েছে। আবার চেষ্টা করুন।",
   "errReference": "রেফারেন্স: {id}",
-  "@errReference": { "placeholders": { "id": { "type": "String" } } },
+  "@errReference": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
   "aiSimulated": "সিমুলেটেড এআই",
-  "aiLive": "লাইভ এআই"
+  "aiLive": "লাইভ এআই",
+  "navHome": "হোম",
+  "navOpportunities": "কর্মসূচি",
+  "navProfile": "প্রোফাইল",
+  "searchHint": "কর্মসূচি খুঁজুন",
+  "allCategories": "সব",
+  "catScholarship": "বৃত্তি",
+  "catHealthcare": "স্বাস্থ্যসেবা",
+  "catAgriculture": "কৃষি",
+  "catBusiness": "ব্যবসা",
+  "catLegalAid": "আইনি সহায়তা",
+  "catEmployment": "কর্মসংস্থান",
+  "catFinancial": "আর্থিক",
+  "catSocialWelfare": "সমাজকল্যাণ",
+  "catTraining": "প্রশিক্ষণ",
+  "catDisaster": "দুর্যোগ ত্রাণ",
+  "catResearch": "গবেষণা",
+  "eligEligible": "আপনি যোগ্য হতে পারেন",
+  "eligPartial": "আংশিক মিলেছে",
+  "eligNotEligible": "মিলছে না",
+  "eligUnknown": "আরও তথ্য দরকার",
+  "eligScore": "{score}% মিল",
+  "@eligScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "retry": "আবার চেষ্টা করুন",
+  "noResults": "কোনো কর্মসূচি পাওয়া যায়নি।",
+  "loadMoreFailed": "আরও লোড করা যায়নি।",
+  "perMonth": "{amount} / মাস",
+  "@perMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "perQuarter": "{amount} / ত্রৈমাসিক",
+  "@perQuarter": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "oneTime": "{amount} এককালীন",
+  "@oneTime": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "amountOnly": "{amount}",
+  "@amountOnly": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlineOn": "শেষ তারিখ: {date}",
+  "@deadlineOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "secDescription": "এই কর্মসূচি সম্পর্কে",
+  "secBenefits": "আপনি যা পাবেন",
+  "secHowToApply": "কীভাবে আবেদন করবেন",
+  "secDocuments": "যেসব কাগজ লাগবে",
+  "secWhyEligible": "এই ফলাফলের কারণ",
+  "secProvider": "প্রদানকারী",
+  "secTrust": "তথ্য কতটা নির্ভরযোগ্য",
+  "requiredDoc": "আবশ্যক",
+  "optionalDoc": "ঐচ্ছিক",
+  "tipLabel": "পরামর্শ",
+  "commonMistakeLabel": "সাধারণ ভুল",
+  "verifUnverified": "নমুনা তথ্য, এখনো যাচাই হয়নি",
+  "verifPending": "সরকারি যাচাইয়ের অপেক্ষায়",
+  "verifVerified": "যাচাইকৃত",
+  "verifOutdated": "তথ্য পুরনো হতে পারে",
+  "verifDisputed": "উৎস নিয়ে প্রশ্ন আছে — অফিসে জেনে নিন",
+  "confHigh": "উচ্চ নির্ভরযোগ্যতা",
+  "confMedium": "মাঝারি নির্ভরযোগ্যতা",
+  "confLow": "কম নির্ভরযোগ্যতা",
+  "ruleMet": "মিলেছে",
+  "ruleFailed": "মিলছে না",
+  "ruleUnknown": "জানা নেই",
+  "recommendedForYou": "আপনার জন্য কর্মসূচি",
+  "noRecommendations": "এখনো কোনো মিল নেই। ভালো ফলাফলের জন্য প্রোফাইল সম্পূর্ণ করুন।",
+  "browseAll": "সব কর্মসূচি দেখুন",
+  "officeHours": "অফিস সময়",
+  "phoneLabelShort": "ফোন",
+  "processingTime": "প্রক্রিয়াকরণের সময়",
+  "profileTitle": "আপনার অ্যাকাউন্ট",
+  "phoneValue": "ফোন: {phone}",
+  "@phoneValue": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "districtValue": "জেলা: {district}",
+  "@districtValue": {
+    "placeholders": {
+      "district": {
+        "type": "String"
+      }
+    }
+  }
 }

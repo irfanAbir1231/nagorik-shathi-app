@@ -8,6 +8,7 @@ import 'package:shebar_janala_app/core/network/api_client.dart';
 import 'package:shebar_janala_app/core/network/api_result.dart';
 import 'package:shebar_janala_app/core/storage/token_store.dart';
 import 'package:shebar_janala_app/features/auth/data/auth_repository.dart';
+import 'package:shebar_janala_app/features/opportunities/data/opportunity_repository.dart';
 
 /// Runs against a real backend with the demo seed loaded (`npm run setup`).
 ///
@@ -37,6 +38,19 @@ void main() {
     expect(await api.refreshSession(), isTrue);
     final again = await repo.restore();
     expect((again as Ok).data?.id, user.id);
+
+    // Real list + detail payloads must parse into the Dart models.
+    final opps = OpportunityRepository(api);
+    final page = (await opps.list(limit: 5) as Ok).data;
+    expect(page.items, isNotEmpty);
+    expect(page.items.first.eligibility, isNotNull); // personalised when signed in
+    final detail = (await opps.detail(page.items.first.slug) as Ok).data;
+    expect(detail.summary.slug, page.items.first.slug);
+    expect(detail.rules, isNotEmpty);
+    final searched = (await opps.list(query: 'widow', category: 'social_welfare') as Ok).data;
+    expect(searched.items.every((i) => i.category == 'social_welfare'), isTrue);
+    final missing = await opps.detail('no-such-programme');
+    expect((missing as Err).code, ErrorCodes.notFound);
 
     await repo.logout();
     expect(await store.readRefreshToken(), isNull);

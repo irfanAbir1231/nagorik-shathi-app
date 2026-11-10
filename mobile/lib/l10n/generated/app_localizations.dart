@@ -229,6 +229,366 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Live AI'**
   String get aiLive;
+
+  /// No description provided for @navHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
+
+  /// No description provided for @navOpportunities.
+  ///
+  /// In en, this message translates to:
+  /// **'Programmes'**
+  String get navOpportunities;
+
+  /// No description provided for @navProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get navProfile;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search programmes'**
+  String get searchHint;
+
+  /// No description provided for @allCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get allCategories;
+
+  /// No description provided for @catScholarship.
+  ///
+  /// In en, this message translates to:
+  /// **'Scholarship'**
+  String get catScholarship;
+
+  /// No description provided for @catHealthcare.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthcare'**
+  String get catHealthcare;
+
+  /// No description provided for @catAgriculture.
+  ///
+  /// In en, this message translates to:
+  /// **'Agriculture'**
+  String get catAgriculture;
+
+  /// No description provided for @catBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get catBusiness;
+
+  /// No description provided for @catLegalAid.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal aid'**
+  String get catLegalAid;
+
+  /// No description provided for @catEmployment.
+  ///
+  /// In en, this message translates to:
+  /// **'Employment'**
+  String get catEmployment;
+
+  /// No description provided for @catFinancial.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial'**
+  String get catFinancial;
+
+  /// No description provided for @catSocialWelfare.
+  ///
+  /// In en, this message translates to:
+  /// **'Social welfare'**
+  String get catSocialWelfare;
+
+  /// No description provided for @catTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Training'**
+  String get catTraining;
+
+  /// No description provided for @catDisaster.
+  ///
+  /// In en, this message translates to:
+  /// **'Disaster relief'**
+  String get catDisaster;
+
+  /// No description provided for @catResearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Research'**
+  String get catResearch;
+
+  /// No description provided for @eligEligible.
+  ///
+  /// In en, this message translates to:
+  /// **'You may qualify'**
+  String get eligEligible;
+
+  /// No description provided for @eligPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Partly matches'**
+  String get eligPartial;
+
+  /// No description provided for @eligNotEligible.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a match'**
+  String get eligNotEligible;
+
+  /// No description provided for @eligUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Need more info'**
+  String get eligUnknown;
+
+  /// No description provided for @eligScore.
+  ///
+  /// In en, this message translates to:
+  /// **'{score}% match'**
+  String eligScore(int score);
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get retry;
+
+  /// No description provided for @noResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No programmes found.'**
+  String get noResults;
+
+  /// No description provided for @loadMoreFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load more.'**
+  String get loadMoreFailed;
+
+  /// No description provided for @perMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} / month'**
+  String perMonth(String amount);
+
+  /// No description provided for @perQuarter.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} / quarter'**
+  String perQuarter(String amount);
+
+  /// No description provided for @oneTime.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} one-time'**
+  String oneTime(String amount);
+
+  /// No description provided for @amountOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount}'**
+  String amountOnly(String amount);
+
+  /// No description provided for @deadlineOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline: {date}'**
+  String deadlineOn(String date);
+
+  /// No description provided for @secDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'About this programme'**
+  String get secDescription;
+
+  /// No description provided for @secBenefits.
+  ///
+  /// In en, this message translates to:
+  /// **'What you get'**
+  String get secBenefits;
+
+  /// No description provided for @secHowToApply.
+  ///
+  /// In en, this message translates to:
+  /// **'How to apply'**
+  String get secHowToApply;
+
+  /// No description provided for @secDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents you need'**
+  String get secDocuments;
+
+  /// No description provided for @secWhyEligible.
+  ///
+  /// In en, this message translates to:
+  /// **'Why this result'**
+  String get secWhyEligible;
+
+  /// No description provided for @secProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Provided by'**
+  String get secProvider;
+
+  /// No description provided for @secTrust.
+  ///
+  /// In en, this message translates to:
+  /// **'How sure are we'**
+  String get secTrust;
+
+  /// No description provided for @requiredDoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get requiredDoc;
+
+  /// No description provided for @optionalDoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optionalDoc;
+
+  /// No description provided for @tipLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip'**
+  String get tipLabel;
+
+  /// No description provided for @commonMistakeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Common mistake'**
+  String get commonMistakeLabel;
+
+  /// No description provided for @verifUnverified.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample data, not yet verified'**
+  String get verifUnverified;
+
+  /// No description provided for @verifPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting official check'**
+  String get verifPending;
+
+  /// No description provided for @verifVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get verifVerified;
+
+  /// No description provided for @verifOutdated.
+  ///
+  /// In en, this message translates to:
+  /// **'May be out of date'**
+  String get verifOutdated;
+
+  /// No description provided for @verifDisputed.
+  ///
+  /// In en, this message translates to:
+  /// **'Source disputed — check the office'**
+  String get verifDisputed;
+
+  /// No description provided for @confHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High confidence'**
+  String get confHigh;
+
+  /// No description provided for @confMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium confidence'**
+  String get confMedium;
+
+  /// No description provided for @confLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low confidence'**
+  String get confLow;
+
+  /// No description provided for @ruleMet.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches'**
+  String get ruleMet;
+
+  /// No description provided for @ruleFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Does not match'**
+  String get ruleFailed;
+
+  /// No description provided for @ruleUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get ruleUnknown;
+
+  /// No description provided for @recommendedForYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Programmes for you'**
+  String get recommendedForYou;
+
+  /// No description provided for @noRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches yet. Complete your profile to get better results.'**
+  String get noRecommendations;
+
+  /// No description provided for @browseAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse all programmes'**
+  String get browseAll;
+
+  /// No description provided for @officeHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Office hours'**
+  String get officeHours;
+
+  /// No description provided for @phoneLabelShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phoneLabelShort;
+
+  /// No description provided for @processingTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing time'**
+  String get processingTime;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account'**
+  String get profileTitle;
+
+  /// No description provided for @phoneValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone: {phone}'**
+  String phoneValue(String phone);
+
+  /// No description provided for @districtValue.
+  ///
+  /// In en, this message translates to:
+  /// **'District: {district}'**
+  String districtValue(String district);
 }
 
 class _AppLocalizationsDelegate

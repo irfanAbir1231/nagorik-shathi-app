@@ -57,3 +57,21 @@ class ErrorCodes {
   static const timeout = 'TIMEOUT';
   static const unknown = 'UNKNOWN';
 }
+
+/// Thrown by providers that unwrap an [Err] so Riverpod's `AsyncError` carries
+/// the structured error to the UI (see `errorText`).
+class ApiFailure implements Exception {
+  const ApiFailure(this.err);
+  final Err<dynamic> err;
+
+  @override
+  String toString() => 'ApiFailure(${err.code})';
+}
+
+extension ApiResultUnwrap<T> on ApiResult<T> {
+  /// The data, or throws [ApiFailure].
+  T unwrap() => switch (this) {
+        Ok<T>(:final data) => data,
+        final Err<T> e => throw ApiFailure(e),
+      };
+}

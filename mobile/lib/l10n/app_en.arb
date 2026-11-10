@@ -8,7 +8,13 @@
   "signInButton": "Sign in",
   "signOut": "Sign out",
   "welcomeUser": "Welcome, {name}",
-  "@welcomeUser": { "placeholders": { "name": { "type": "String" } } },
+  "@welcomeUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "language": "Language",
   "errRequired": "This field is required.",
   "errPin": "Your PIN must be 4 to 6 digits.",
@@ -21,7 +27,129 @@
   "errUnauthenticated": "Your session has expired. Please sign in again.",
   "errGeneric": "Something went wrong. Please try again.",
   "errReference": "Reference: {id}",
-  "@errReference": { "placeholders": { "id": { "type": "String" } } },
+  "@errReference": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
   "aiSimulated": "Simulated AI",
-  "aiLive": "Live AI"
+  "aiLive": "Live AI",
+  "navHome": "Home",
+  "navOpportunities": "Programmes",
+  "navProfile": "Profile",
+  "searchHint": "Search programmes",
+  "allCategories": "All",
+  "catScholarship": "Scholarship",
+  "catHealthcare": "Healthcare",
+  "catAgriculture": "Agriculture",
+  "catBusiness": "Business",
+  "catLegalAid": "Legal aid",
+  "catEmployment": "Employment",
+  "catFinancial": "Financial",
+  "catSocialWelfare": "Social welfare",
+  "catTraining": "Training",
+  "catDisaster": "Disaster relief",
+  "catResearch": "Research",
+  "eligEligible": "You may qualify",
+  "eligPartial": "Partly matches",
+  "eligNotEligible": "Not a match",
+  "eligUnknown": "Need more info",
+  "eligScore": "{score}% match",
+  "@eligScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "retry": "Try again",
+  "noResults": "No programmes found.",
+  "loadMoreFailed": "Could not load more.",
+  "perMonth": "{amount} / month",
+  "@perMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "perQuarter": "{amount} / quarter",
+  "@perQuarter": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "oneTime": "{amount} one-time",
+  "@oneTime": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "amountOnly": "{amount}",
+  "@amountOnly": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlineOn": "Deadline: {date}",
+  "@deadlineOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "secDescription": "About this programme",
+  "secBenefits": "What you get",
+  "secHowToApply": "How to apply",
+  "secDocuments": "Documents you need",
+  "secWhyEligible": "Why this result",
+  "secProvider": "Provided by",
+  "secTrust": "How sure are we",
+  "requiredDoc": "Required",
+  "optionalDoc": "Optional",
+  "tipLabel": "Tip",
+  "commonMistakeLabel": "Common mistake",
+  "verifUnverified": "Sample data, not yet verified",
+  "verifPending": "Awaiting official check",
+  "verifVerified": "Verified",
+  "verifOutdated": "May be out of date",
+  "verifDisputed": "Source disputed — check the office",
+  "confHigh": "High confidence",
+  "confMedium": "Medium confidence",
+  "confLow": "Low confidence",
+  "ruleMet": "Matches",
+  "ruleFailed": "Does not match",
+  "ruleUnknown": "Unknown",
+  "recommendedForYou": "Programmes for you",
+  "noRecommendations": "No matches yet. Complete your profile to get better results.",
+  "browseAll": "Browse all programmes",
+  "officeHours": "Office hours",
+  "phoneLabelShort": "Phone",
+  "processingTime": "Processing time",
+  "profileTitle": "Your account",
+  "phoneValue": "Phone: {phone}",
+  "@phoneValue": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "districtValue": "District: {district}",
+  "@districtValue": {
+    "placeholders": {
+      "district": {
+        "type": "String"
+      }
+    }
+  }
 }
