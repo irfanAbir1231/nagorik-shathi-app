@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/i18n/error_text.dart';
 import '../../../core/network/api_result.dart';
@@ -25,6 +26,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _busy = false;
   String? _error;
   String? _requestId;
+  String? _errorCode;
 
   @override
   void dispose() {
@@ -47,6 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _busy = false;
         _error = errorText(l, result);
         _requestId = result.requestId;
+        _errorCode = result.code;
       });
     }
   }
@@ -108,6 +111,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
                           : Text(l.signInButton),
                     ),
+                    const SizedBox(height: 8),
+                    // A locked account cannot use its PIN, so offer the code route right where it hurts.
+                    if (_errorCode == 'ACCOUNT_LOCKED')
+                      TextButton(onPressed: () => context.push('/otp-login'), child: Text(l.signInWithCode)),
+                    TextButton(onPressed: () => context.push('/forgot-pin'), child: Text(l.forgotPin)),
+                    TextButton(onPressed: () => context.push('/register'), child: Text(l.createAccount)),
                   ],
                 ),
               ),

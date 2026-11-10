@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/application/auth_controller.dart';
 import '../features/auth/presentation/login_screen.dart';
+import '../features/auth/presentation/otp_flow_screen.dart';
 import '../features/chat/presentation/chat_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/opportunities/presentation/opportunities_screen.dart';
@@ -20,6 +21,10 @@ abstract final class Routes {
   static const myList = '/my-list';
   static const profile = '/profile';
   static const login = '/login';
+  static const register = '/register';
+  static const forgotPin = '/forgot-pin';
+  static const otpLogin = '/otp-login';
+  static const signedOutRoutes = {login, register, forgotPin, otpLogin};
   static String opportunity(String slug) => '/opportunity/$slug';
 }
 
@@ -36,9 +41,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       final auth = ref.read(authControllerProvider);
       if (auth.isLoading) return null; // splash is shown by the app builder
       final signedIn = auth.value != null;
-      final onLogin = state.matchedLocation == Routes.login;
-      if (!signedIn && !onLogin) return Routes.login;
-      if (signedIn && onLogin) return Routes.home;
+      final onAuthRoute = Routes.signedOutRoutes.contains(state.matchedLocation);
+      if (!signedIn && !onAuthRoute) return Routes.login;
+      if (signedIn && onAuthRoute) return Routes.home;
       return null;
     },
     routes: [
@@ -63,6 +68,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/plan/:id',
         builder: (_, state) => PlanDetailScreen(planId: state.pathParameters['id']!),
       ),
+      GoRoute(path: Routes.register, builder: (_, _) => const OtpFlowScreen(flow: OtpFlow.register)),
+      GoRoute(path: Routes.forgotPin, builder: (_, _) => const OtpFlowScreen(flow: OtpFlow.resetPin)),
+      GoRoute(path: Routes.otpLogin, builder: (_, _) => const OtpFlowScreen(flow: OtpFlow.otpLogin)),
       GoRoute(path: Routes.login, builder: (_, _) => const LoginScreen()),
     ],
   );

@@ -480,4 +480,108 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get markNotDone => 'Mark not done';
+
+  @override
+  String get createAccount => 'Create an account';
+
+  @override
+  String get forgotPin => 'Forgot your PIN?';
+
+  @override
+  String get signInWithCode => 'Sign in with a code instead';
+
+  @override
+  String get haveAccount => 'Already have an account? Sign in';
+
+  @override
+  String get registerTitle => 'Create your account';
+
+  @override
+  String get resetPinTitle => 'Set a new PIN';
+
+  @override
+  String get otpLoginTitle => 'Sign in with a code';
+
+  @override
+  String get sendCode => 'Send code';
+
+  @override
+  String codeSentTo(String phone) {
+    return 'We sent a 6-digit code to $phone.';
+  }
+
+  @override
+  String get codeLabel => '6-digit code';
+
+  @override
+  String get nameLabel => 'Your name';
+
+  @override
+  String get nameHelp => 'As it appears on your National ID';
+
+  @override
+  String get newPinLabel => 'Choose a PIN (4 to 6 digits)';
+
+  @override
+  String get confirmPinLabel => 'Type the PIN again';
+
+  @override
+  String get pinMismatch => 'The two PINs are not the same.';
+
+  @override
+  String get errPhone => 'Enter an 11-digit number starting with 01.';
+
+  @override
+  String get errName => 'Enter your name (at least 2 letters).';
+
+  @override
+  String get errCode => 'Enter the 6-digit code.';
+
+  @override
+  String resendIn(int seconds) {
+    return 'Send again in ${seconds}s';
+  }
+
+  @override
+  String get resendCode => 'Send the code again';
+
+  @override
+  String devCodeLabel(String code) {
+    return 'Development only. Code: $code';
+  }
+
+  @override
+  String get chooseLanguage => 'Language';
+
+  @override
+  String get finishRegister => 'Create account';
+
+  @override
+  String get finishResetPin => 'Save PIN and sign in';
+
+  @override
+  String get finishOtpLogin => 'Sign in';
+
+  @override
+  String get changeNumber => 'Use a different number';
+
+  @override
+  String get errValidation => 'Please check what you entered.';
+
+  @override
+  String get errOtpInvalid => 'That code is not right. Check it and try again.';
+
+  @override
+  String get errOtpExpired => 'That code has expired. Ask for a new one.';
+
+  @override
+  String get errOtpAttempts => 'Too many wrong codes. Ask for a new one.';
+
+  @override
+  String get errPhoneExists =>
+      'This number already has an account. Sign in instead.';
+
+  @override
+  String get errPinWeak =>
+      'That PIN is too easy to guess. Avoid 1234 or repeated digits like 1111.';
 }

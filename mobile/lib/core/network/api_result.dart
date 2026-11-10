@@ -49,6 +49,7 @@ class ErrorCodes {
   static const pinInvalid = 'PIN_INVALID';
   static const accountLocked = 'ACCOUNT_LOCKED';
   static const phoneNotRegistered = 'PHONE_NOT_REGISTERED';
+  static const phoneAlreadyRegistered = 'PHONE_ALREADY_REGISTERED';
   static const aiUnavailable = 'AI_UNAVAILABLE';
   static const internal = 'INTERNAL';
 

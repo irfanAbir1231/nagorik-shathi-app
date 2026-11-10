@@ -961,6 +961,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mark not done'**
   String get markNotDone;
+
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account'**
+  String get createAccount;
+
+  /// No description provided for @forgotPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your PIN?'**
+  String get forgotPin;
+
+  /// No description provided for @signInWithCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with a code instead'**
+  String get signInWithCode;
+
+  /// No description provided for @haveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get haveAccount;
+
+  /// No description provided for @registerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account'**
+  String get registerTitle;
+
+  /// No description provided for @resetPinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a new PIN'**
+  String get resetPinTitle;
+
+  /// No description provided for @otpLoginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with a code'**
+  String get otpLoginTitle;
+
+  /// No description provided for @sendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get sendCode;
+
+  /// No description provided for @codeSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a 6-digit code to {phone}.'**
+  String codeSentTo(String phone);
+
+  /// No description provided for @codeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'6-digit code'**
+  String get codeLabel;
+
+  /// No description provided for @nameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get nameLabel;
+
+  /// No description provided for @nameHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'As it appears on your National ID'**
+  String get nameHelp;
+
+  /// No description provided for @newPinLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a PIN (4 to 6 digits)'**
+  String get newPinLabel;
+
+  /// No description provided for @confirmPinLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the PIN again'**
+  String get confirmPinLabel;
+
+  /// No description provided for @pinMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The two PINs are not the same.'**
+  String get pinMismatch;
+
+  /// No description provided for @errPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an 11-digit number starting with 01.'**
+  String get errPhone;
+
+  /// No description provided for @errName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name (at least 2 letters).'**
+  String get errName;
+
+  /// No description provided for @errCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code.'**
+  String get errCode;
+
+  /// No description provided for @resendIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Send again in {seconds}s'**
+  String resendIn(int seconds);
+
+  /// No description provided for @resendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the code again'**
+  String get resendCode;
+
+  /// No description provided for @devCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Development only. Code: {code}'**
+  String devCodeLabel(String code);
+
+  /// No description provided for @chooseLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get chooseLanguage;
+
+  /// No description provided for @finishRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get finishRegister;
+
+  /// No description provided for @finishResetPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Save PIN and sign in'**
+  String get finishResetPin;
+
+  /// No description provided for @finishOtpLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get finishOtpLogin;
+
+  /// No description provided for @changeNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a different number'**
+  String get changeNumber;
+
+  /// No description provided for @errValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check what you entered.'**
+  String get errValidation;
+
+  /// No description provided for @errOtpInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'That code is not right. Check it and try again.'**
+  String get errOtpInvalid;
+
+  /// No description provided for @errOtpExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'That code has expired. Ask for a new one.'**
+  String get errOtpExpired;
+
+  /// No description provided for @errOtpAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many wrong codes. Ask for a new one.'**
+  String get errOtpAttempts;
+
+  /// No description provided for @errPhoneExists.
+  ///
+  /// In en, this message translates to:
+  /// **'This number already has an account. Sign in instead.'**
+  String get errPhoneExists;
+
+  /// No description provided for @errPinWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'That PIN is too easy to guess. Avoid 1234 or repeated digits like 1111.'**
+  String get errPinWeak;
 }
 
 class _AppLocalizationsDelegate

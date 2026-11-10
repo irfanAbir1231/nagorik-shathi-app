@@ -237,5 +237,58 @@
   "taskUpdateFailed": "এই ধাপটি হালনাগাদ করা যায়নি। আবার চেষ্টা করুন।",
   "planTitle": "আপনার পরিকল্পনা",
   "markDone": "সম্পন্ন করুন",
-  "markNotDone": "সম্পন্ন নয়"
+  "markNotDone": "সম্পন্ন নয়",
+  "createAccount": "নতুন অ্যাকাউন্ট খুলুন",
+  "forgotPin": "পিন ভুলে গেছেন?",
+  "signInWithCode": "কোড দিয়ে সাইন ইন করুন",
+  "haveAccount": "আগে থেকেই অ্যাকাউন্ট আছে? সাইন ইন করুন",
+  "registerTitle": "আপনার অ্যাকাউন্ট খুলুন",
+  "resetPinTitle": "নতুন পিন দিন",
+  "otpLoginTitle": "কোড দিয়ে সাইন ইন",
+  "sendCode": "কোড পাঠান",
+  "codeSentTo": "{phone} নম্বরে ৬ সংখ্যার একটি কোড পাঠানো হয়েছে।",
+  "@codeSentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "codeLabel": "৬ সংখ্যার কোড",
+  "nameLabel": "আপনার নাম",
+  "nameHelp": "জাতীয় পরিচয়পত্রে যেভাবে আছে",
+  "newPinLabel": "একটি পিন দিন (৪ থেকে ৬ সংখ্যা)",
+  "confirmPinLabel": "পিনটি আবার লিখুন",
+  "pinMismatch": "দুটি পিন একই নয়।",
+  "errPhone": "01 দিয়ে শুরু ১১ সংখ্যার নম্বর দিন।",
+  "errName": "আপনার নাম লিখুন (অন্তত ২ অক্ষর)।",
+  "errCode": "৬ সংখ্যার কোডটি লিখুন।",
+  "resendIn": "{seconds} সেকেন্ড পরে আবার পাঠান",
+  "@resendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "resendCode": "আবার কোড পাঠান",
+  "devCodeLabel": "শুধু ডেভেলপমেন্টের জন্য। কোড: {code}",
+  "@devCodeLabel": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "chooseLanguage": "ভাষা",
+  "finishRegister": "অ্যাকাউন্ট খুলুন",
+  "finishResetPin": "পিন সংরক্ষণ করে সাইন ইন করুন",
+  "finishOtpLogin": "সাইন ইন করুন",
+  "changeNumber": "অন্য নম্বর ব্যবহার করুন",
+  "errValidation": "আপনি যা লিখেছেন তা আবার দেখুন।",
+  "errOtpInvalid": "কোডটি সঠিক নয়। দেখে আবার চেষ্টা করুন।",
+  "errOtpExpired": "কোডটির মেয়াদ শেষ। নতুন কোড চান।",
+  "errOtpAttempts": "অনেকবার ভুল কোড দেওয়া হয়েছে। নতুন কোড চান।",
+  "errPhoneExists": "এই নম্বরে আগেই অ্যাকাউন্ট আছে। সাইন ইন করুন।",
+  "errPinWeak": "এই পিনটি সহজেই অনুমান করা যায়। 1234 বা 1111-এর মতো পিন দেবেন না।"
 }

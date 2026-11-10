@@ -481,4 +481,107 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get markNotDone => 'সম্পন্ন নয়';
+
+  @override
+  String get createAccount => 'নতুন অ্যাকাউন্ট খুলুন';
+
+  @override
+  String get forgotPin => 'পিন ভুলে গেছেন?';
+
+  @override
+  String get signInWithCode => 'কোড দিয়ে সাইন ইন করুন';
+
+  @override
+  String get haveAccount => 'আগে থেকেই অ্যাকাউন্ট আছে? সাইন ইন করুন';
+
+  @override
+  String get registerTitle => 'আপনার অ্যাকাউন্ট খুলুন';
+
+  @override
+  String get resetPinTitle => 'নতুন পিন দিন';
+
+  @override
+  String get otpLoginTitle => 'কোড দিয়ে সাইন ইন';
+
+  @override
+  String get sendCode => 'কোড পাঠান';
+
+  @override
+  String codeSentTo(String phone) {
+    return '$phone নম্বরে ৬ সংখ্যার একটি কোড পাঠানো হয়েছে।';
+  }
+
+  @override
+  String get codeLabel => '৬ সংখ্যার কোড';
+
+  @override
+  String get nameLabel => 'আপনার নাম';
+
+  @override
+  String get nameHelp => 'জাতীয় পরিচয়পত্রে যেভাবে আছে';
+
+  @override
+  String get newPinLabel => 'একটি পিন দিন (৪ থেকে ৬ সংখ্যা)';
+
+  @override
+  String get confirmPinLabel => 'পিনটি আবার লিখুন';
+
+  @override
+  String get pinMismatch => 'দুটি পিন একই নয়।';
+
+  @override
+  String get errPhone => '01 দিয়ে শুরু ১১ সংখ্যার নম্বর দিন।';
+
+  @override
+  String get errName => 'আপনার নাম লিখুন (অন্তত ২ অক্ষর)।';
+
+  @override
+  String get errCode => '৬ সংখ্যার কোডটি লিখুন।';
+
+  @override
+  String resendIn(int seconds) {
+    return '$seconds সেকেন্ড পরে আবার পাঠান';
+  }
+
+  @override
+  String get resendCode => 'আবার কোড পাঠান';
+
+  @override
+  String devCodeLabel(String code) {
+    return 'শুধু ডেভেলপমেন্টের জন্য। কোড: $code';
+  }
+
+  @override
+  String get chooseLanguage => 'ভাষা';
+
+  @override
+  String get finishRegister => 'অ্যাকাউন্ট খুলুন';
+
+  @override
+  String get finishResetPin => 'পিন সংরক্ষণ করে সাইন ইন করুন';
+
+  @override
+  String get finishOtpLogin => 'সাইন ইন করুন';
+
+  @override
+  String get changeNumber => 'অন্য নম্বর ব্যবহার করুন';
+
+  @override
+  String get errValidation => 'আপনি যা লিখেছেন তা আবার দেখুন।';
+
+  @override
+  String get errOtpInvalid => 'কোডটি সঠিক নয়। দেখে আবার চেষ্টা করুন।';
+
+  @override
+  String get errOtpExpired => 'কোডটির মেয়াদ শেষ। নতুন কোড চান।';
+
+  @override
+  String get errOtpAttempts => 'অনেকবার ভুল কোড দেওয়া হয়েছে। নতুন কোড চান।';
+
+  @override
+  String get errPhoneExists => 'এই নম্বরে আগেই অ্যাকাউন্ট আছে। সাইন ইন করুন।';
+
+  @override
+  String get errPinWeak =>
+      'এই পিনটি সহজেই অনুমান করা যায়। 1234 বা 1111-এর মতো পিন দেবেন না।';
 }

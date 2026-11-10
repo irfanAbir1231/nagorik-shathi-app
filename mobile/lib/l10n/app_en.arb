@@ -237,5 +237,58 @@
   "taskUpdateFailed": "Could not update that step. Please try again.",
   "planTitle": "Your plan",
   "markDone": "Mark done",
-  "markNotDone": "Mark not done"
+  "markNotDone": "Mark not done",
+  "createAccount": "Create an account",
+  "forgotPin": "Forgot your PIN?",
+  "signInWithCode": "Sign in with a code instead",
+  "haveAccount": "Already have an account? Sign in",
+  "registerTitle": "Create your account",
+  "resetPinTitle": "Set a new PIN",
+  "otpLoginTitle": "Sign in with a code",
+  "sendCode": "Send code",
+  "codeSentTo": "We sent a 6-digit code to {phone}.",
+  "@codeSentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "codeLabel": "6-digit code",
+  "nameLabel": "Your name",
+  "nameHelp": "As it appears on your National ID",
+  "newPinLabel": "Choose a PIN (4 to 6 digits)",
+  "confirmPinLabel": "Type the PIN again",
+  "pinMismatch": "The two PINs are not the same.",
+  "errPhone": "Enter an 11-digit number starting with 01.",
+  "errName": "Enter your name (at least 2 letters).",
+  "errCode": "Enter the 6-digit code.",
+  "resendIn": "Send again in {seconds}s",
+  "@resendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "resendCode": "Send the code again",
+  "devCodeLabel": "Development only. Code: {code}",
+  "@devCodeLabel": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "chooseLanguage": "Language",
+  "finishRegister": "Create account",
+  "finishResetPin": "Save PIN and sign in",
+  "finishOtpLogin": "Sign in",
+  "changeNumber": "Use a different number",
+  "errValidation": "Please check what you entered.",
+  "errOtpInvalid": "That code is not right. Check it and try again.",
+  "errOtpExpired": "That code has expired. Ask for a new one.",
+  "errOtpAttempts": "Too many wrong codes. Ask for a new one.",
+  "errPhoneExists": "This number already has an account. Sign in instead.",
+  "errPinWeak": "That PIN is too easy to guess. Avoid 1234 or repeated digits like 1111."
 }

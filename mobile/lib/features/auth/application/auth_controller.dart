@@ -16,11 +16,33 @@ class AuthController extends AsyncNotifier<AuthUser?> {
     return result.when(ok: (user) => user, err: (_) => null);
   }
 
-  Future<ApiResult<AuthUser>> login({required String phone, required String pin}) async {
-    final result = await ref.read(authRepositoryProvider).login(phone: phone, pin: pin);
+  /// Every sign-in path ends the same way: on success the user becomes the
+  /// session, and the router moves off the sign-in screens by itself.
+  Future<ApiResult<AuthUser>> _adopt(Future<ApiResult<AuthUser>> attempt) async {
+    final result = await attempt;
     if (result is Ok<AuthUser>) state = AsyncData(result.data);
     return result;
   }
+
+  Future<ApiResult<AuthUser>> login({required String phone, required String pin}) =>
+      _adopt(ref.read(authRepositoryProvider).login(phone: phone, pin: pin));
+
+  Future<ApiResult<AuthUser>> register({
+    required String phone,
+    required String code,
+    required String name,
+    required String pin,
+    required String language,
+  }) =>
+      _adopt(ref
+          .read(authRepositoryProvider)
+          .register(phone: phone, code: code, name: name, pin: pin, language: language));
+
+  Future<ApiResult<AuthUser>> resetPin({required String phone, required String code, required String pin}) =>
+      _adopt(ref.read(authRepositoryProvider).resetPin(phone: phone, code: code, pin: pin));
+
+  Future<ApiResult<AuthUser>> loginWithCode({required String phone, required String code}) =>
+      _adopt(ref.read(authRepositoryProvider).loginWithCode(phone: phone, code: code));
 
   Future<void> logout() async {
     await ref.read(authRepositoryProvider).logout();
