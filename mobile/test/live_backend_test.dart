@@ -9,6 +9,10 @@ import 'package:shebar_janala_app/core/network/api_result.dart';
 import 'package:shebar_janala_app/core/storage/token_store.dart';
 import 'package:shebar_janala_app/features/auth/data/auth_repository.dart';
 import 'package:shebar_janala_app/features/chat/data/chat_repository.dart';
+import 'package:shebar_janala_app/features/plans/data/plan_repository.dart';
+import 'package:shebar_janala_app/features/plans/domain/plan.dart';
+import 'package:shebar_janala_app/features/saved/data/saved_repository.dart';
+import 'package:shebar_janala_app/features/saved/domain/saved.dart';
 import 'package:shebar_janala_app/features/opportunities/data/opportunity_repository.dart';
 
 /// Runs against a real backend with the demo seed loaded (`npm run setup`).
@@ -65,6 +69,26 @@ void main() {
     final transcript = (await chat.transcript(turn.conversationId) as Ok).data;
     expect(transcript.length, greaterThanOrEqualTo(2));
     expect((await chat.conversations() as Ok).data.any((c) => c.id == turn.conversationId), isTrue);
+
+    // Save, move along the tracker, remove; then a plan and a task tick.
+    final savedRepo = SavedRepository(api);
+    final oppId = page.items.first.id;
+    final savedId = (await savedRepo.save(oppId) as Ok<String>).data;
+    expect((await savedRepo.list() as Ok<List<SavedItem>>).data.any((i) => i.id == savedId), isTrue);
+    expect(await savedRepo.setStatus(savedId, SavedStatus.preparing), isA<Ok<void>>());
+    final after = (await savedRepo.list() as Ok<List<SavedItem>>).data.firstWhere((i) => i.id == savedId);
+    expect(after.status, SavedStatus.preparing);
+    expect(await savedRepo.remove(savedId), isA<Ok<void>>());
+    expect((await savedRepo.list() as Ok<List<SavedItem>>).data.any((i) => i.id == savedId), isFalse);
+
+    final planRepo = PlanRepository(api);
+    final plan = (await planRepo.create(oppId) as Ok<ActionPlan>).data;
+    expect(plan.tasks, isNotEmpty);
+    final task = plan.tasks.first;
+    expect(await planRepo.setTaskStatus(task.id, TaskStatus.done), isA<Ok<void>>());
+    final listed = (await planRepo.list() as Ok<List<ActionPlan>>).data.firstWhere((p) => p.id == plan.id);
+    expect(listed.tasks.firstWhere((t) => t.id == task.id).status, TaskStatus.done);
+    await planRepo.setTaskStatus(task.id, TaskStatus.pending); // leave the demo data as found
 
     await repo.logout();
     expect(await store.readRefreshToken(), isNull);

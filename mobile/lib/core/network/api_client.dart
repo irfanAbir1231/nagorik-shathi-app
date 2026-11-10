@@ -61,6 +61,9 @@ class ApiClient {
   Future<ApiResult<T>> put<T>(String path, {Object? body, required T Function(dynamic data) parse}) =>
       _send('PUT', path, body: body, parse: parse);
 
+  Future<ApiResult<T>> patch<T>(String path, {Object? body, required T Function(dynamic data) parse}) =>
+      _send('PATCH', path, body: body, parse: parse);
+
   Future<ApiResult<T>> delete<T>(String path, {Object? body, required T Function(dynamic data) parse}) =>
       _send('DELETE', path, body: body, parse: parse);
 

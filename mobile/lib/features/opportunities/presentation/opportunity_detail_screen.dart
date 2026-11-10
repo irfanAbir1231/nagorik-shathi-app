@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../core/i18n/error_text.dart';
 
 import '../../../l10n/generated/app_localizations.dart';
+import '../../plans/application/plan_controller.dart';
+import '../../saved/application/saved_controller.dart';
 import '../application/opportunity_providers.dart';
 import '../domain/opportunity.dart';
 import 'labels.dart';
@@ -15,8 +20,10 @@ class OpportunityDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(opportunityDetailProvider(slug));
+    final detail = async.value;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(actions: [if (detail != null) _SaveButton(opportunityId: detail.summary.id)]),
+      bottomNavigationBar: detail == null ? null : _PlanBar(opportunityId: detail.summary.id, slug: slug),
       body: async.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => ErrorRetry(error: e, onRetry: () => ref.invalidate(opportunityDetailProvider(slug))),
@@ -205,6 +212,96 @@ class _DocumentTile extends StatelessWidget {
       title: Text(doc.name.of(locale)),
       subtitle: extra.isEmpty ? null : Text(extra.join('\n')),
       trailing: Text(doc.required ? l.requiredDoc : l.optionalDoc, style: Theme.of(context).textTheme.labelSmall),
+    );
+  }
+}
+
+/// Bookmark toggle. Removing offers Undo instead of a confirmation prompt.
+class _SaveButton extends ConsumerWidget {
+  const _SaveButton({required this.opportunityId});
+  final String opportunityId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
+    final saved = ref.watch(savedForOpportunityProvider(opportunityId));
+    final controller = ref.read(savedControllerProvider.notifier);
+
+    return IconButton(
+      tooltip: saved == null ? l.saveProgramme : l.unsaveProgramme,
+      icon: Icon(saved == null ? Icons.bookmark_border : Icons.bookmark),
+      onPressed: () async {
+        final messenger = ScaffoldMessenger.of(context);
+        if (saved == null) {
+          final error = await controller.save(opportunityId);
+          messenger
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text(error == null ? l.savedToast : errorText(l, error))));
+          return;
+        }
+        final result = await controller.remove(saved.id);
+        messenger.hideCurrentSnackBar();
+        if (result.error != null) {
+          messenger.showSnackBar(SnackBar(content: Text(errorText(l, result.error!))));
+        } else if (result.removed != null) {
+          messenger.showSnackBar(SnackBar(
+            content: Text(l.removedToast),
+            action: SnackBarAction(label: l.undo, onPressed: () => controller.undoRemove(result.removed!)),
+          ));
+        }
+      },
+    );
+  }
+}
+
+/// "Make a plan" turns the programme's steps and documents into a checklist; if
+/// one already exists the same button opens it instead of creating a duplicate.
+class _PlanBar extends ConsumerStatefulWidget {
+  const _PlanBar({required this.opportunityId, required this.slug});
+  final String opportunityId;
+  final String slug;
+
+  @override
+  ConsumerState<_PlanBar> createState() => _PlanBarState();
+}
+
+class _PlanBarState extends ConsumerState<_PlanBar> {
+  bool _busy = false;
+
+  Future<void> _onPressed() async {
+    final l = AppLocalizations.of(context);
+    final router = GoRouter.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final existing = ref.read(planForOpportunityProvider(widget.slug));
+    if (existing != null) {
+      router.push('/plan/${existing.id}');
+      return;
+    }
+    setState(() => _busy = true);
+    final result = await ref.read(planControllerProvider.notifier).createFor(widget.opportunityId);
+    if (!mounted) return;
+    setState(() => _busy = false);
+    result.when(
+      ok: (plan) => router.push('/plan/${plan.id}'),
+      err: (e) => messenger.showSnackBar(SnackBar(content: Text(errorText(l, e)))),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final hasPlan = ref.watch(planForOpportunityProvider(widget.slug)) != null;
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+        child: FilledButton.icon(
+          onPressed: _busy ? null : _onPressed,
+          icon: _busy
+              ? const SizedBox(height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2))
+              : const Icon(Icons.checklist),
+          label: Text(hasPlan ? l.openPlan : l.makePlan),
+        ),
+      ),
     );
   }
 }

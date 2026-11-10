@@ -181,5 +181,61 @@
   "voiceErrNoSpeech": "কিছু শুনতে পাইনি। মাইক্রোফোনে ট্যাপ করে আবার চেষ্টা করুন।",
   "voiceErrServer": "আপনার কণ্ঠ লেখায় রূপান্তর করা যায়নি। আবার চেষ্টা করুন, অথবা লিখুন।",
   "readAloud": "পড়ে শোনান",
-  "stopReading": "পড়া থামান"
+  "stopReading": "পড়া থামান",
+  "navSaved": "আমার তালিকা",
+  "savedTab": "সংরক্ষিত",
+  "plansTab": "পরিকল্পনা",
+  "savedEmpty": "এখনো কিছু সংরক্ষণ করা হয়নি। কোনো কর্মসূচির বুকমার্কে ট্যাপ করলে এখানে থাকবে।",
+  "plansEmpty": "এখনো কোনো পরিকল্পনা নেই। কর্মসূচি খুলে \"পরিকল্পনা করুন\" চাপলে ধাপে ধাপে তালিকা পাবেন।",
+  "saveProgramme": "সংরক্ষণ করুন",
+  "unsaveProgramme": "সংরক্ষণ থেকে সরান",
+  "savedToast": "সংরক্ষিত হয়েছে",
+  "removedToast": "সংরক্ষণ থেকে সরানো হয়েছে",
+  "undo": "ফিরিয়ে আনুন",
+  "makePlan": "পরিকল্পনা করুন",
+  "openPlan": "আমার পরিকল্পনা খুলুন",
+  "changeStatus": "এই বিষয়ে আপনি কোথায় আছেন?",
+  "allStatuses": "সব",
+  "statusInterested": "আগ্রহী",
+  "statusPreparing": "প্রস্তুতি চলছে",
+  "statusDocsReady": "কাগজপত্র তৈরি",
+  "statusApplied": "আবেদন করেছি",
+  "statusUnderReview": "যাচাই চলছে",
+  "statusApproved": "অনুমোদিত",
+  "statusRejected": "অনুমোদিত হয়নি",
+  "statusCompleted": "সম্পন্ন",
+  "progressOf": "{total}টির মধ্যে {done}টি সম্পন্ন",
+  "@progressOf": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "priorityHigh": "জরুরি",
+  "priorityMedium": "মাঝারি গুরুত্ব",
+  "priorityLow": "কম গুরুত্ব",
+  "dueOn": "শেষ তারিখ {date}",
+  "@dueOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "minutesShort": "{n} মিনিট",
+  "@minutesShort": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "taskUpdateFailed": "এই ধাপটি হালনাগাদ করা যায়নি। আবার চেষ্টা করুন।",
+  "planTitle": "আপনার পরিকল্পনা",
+  "markDone": "সম্পন্ন করুন",
+  "markNotDone": "সম্পন্ন নয়"
 }

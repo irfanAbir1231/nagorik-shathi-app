@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../features/auth/application/auth_controller.dart';
 import '../features/auth/data/auth_repository.dart';
 import '../features/chat/data/chat_repository.dart';
+import '../features/plans/data/plan_repository.dart';
+import '../features/saved/data/saved_repository.dart';
 import '../features/opportunities/data/opportunity_repository.dart';
 import 'network/api_client.dart';
 import 'storage/token_store.dart';
@@ -26,3 +28,6 @@ final opportunityRepositoryProvider = Provider<OpportunityRepository>((ref) {
 });
 
 final chatRepositoryProvider = Provider<ChatRepository>((ref) => ChatRepository(ref.watch(apiClientProvider)));
+
+final savedRepositoryProvider = Provider<SavedRepository>((ref) => SavedRepository(ref.watch(apiClientProvider)));
+final planRepositoryProvider = Provider<PlanRepository>((ref) => PlanRepository(ref.watch(apiClientProvider)));

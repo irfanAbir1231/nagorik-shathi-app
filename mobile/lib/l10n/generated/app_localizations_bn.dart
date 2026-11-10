@@ -376,4 +376,109 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get stopReading => 'পড়া থামান';
+
+  @override
+  String get navSaved => 'আমার তালিকা';
+
+  @override
+  String get savedTab => 'সংরক্ষিত';
+
+  @override
+  String get plansTab => 'পরিকল্পনা';
+
+  @override
+  String get savedEmpty =>
+      'এখনো কিছু সংরক্ষণ করা হয়নি। কোনো কর্মসূচির বুকমার্কে ট্যাপ করলে এখানে থাকবে।';
+
+  @override
+  String get plansEmpty =>
+      'এখনো কোনো পরিকল্পনা নেই। কর্মসূচি খুলে \"পরিকল্পনা করুন\" চাপলে ধাপে ধাপে তালিকা পাবেন।';
+
+  @override
+  String get saveProgramme => 'সংরক্ষণ করুন';
+
+  @override
+  String get unsaveProgramme => 'সংরক্ষণ থেকে সরান';
+
+  @override
+  String get savedToast => 'সংরক্ষিত হয়েছে';
+
+  @override
+  String get removedToast => 'সংরক্ষণ থেকে সরানো হয়েছে';
+
+  @override
+  String get undo => 'ফিরিয়ে আনুন';
+
+  @override
+  String get makePlan => 'পরিকল্পনা করুন';
+
+  @override
+  String get openPlan => 'আমার পরিকল্পনা খুলুন';
+
+  @override
+  String get changeStatus => 'এই বিষয়ে আপনি কোথায় আছেন?';
+
+  @override
+  String get allStatuses => 'সব';
+
+  @override
+  String get statusInterested => 'আগ্রহী';
+
+  @override
+  String get statusPreparing => 'প্রস্তুতি চলছে';
+
+  @override
+  String get statusDocsReady => 'কাগজপত্র তৈরি';
+
+  @override
+  String get statusApplied => 'আবেদন করেছি';
+
+  @override
+  String get statusUnderReview => 'যাচাই চলছে';
+
+  @override
+  String get statusApproved => 'অনুমোদিত';
+
+  @override
+  String get statusRejected => 'অনুমোদিত হয়নি';
+
+  @override
+  String get statusCompleted => 'সম্পন্ন';
+
+  @override
+  String progressOf(int done, int total) {
+    return '$totalটির মধ্যে $doneটি সম্পন্ন';
+  }
+
+  @override
+  String get priorityHigh => 'জরুরি';
+
+  @override
+  String get priorityMedium => 'মাঝারি গুরুত্ব';
+
+  @override
+  String get priorityLow => 'কম গুরুত্ব';
+
+  @override
+  String dueOn(String date) {
+    return 'শেষ তারিখ $date';
+  }
+
+  @override
+  String minutesShort(int n) {
+    return '$n মিনিট';
+  }
+
+  @override
+  String get taskUpdateFailed =>
+      'এই ধাপটি হালনাগাদ করা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String get planTitle => 'আপনার পরিকল্পনা';
+
+  @override
+  String get markDone => 'সম্পন্ন করুন';
+
+  @override
+  String get markNotDone => 'সম্পন্ন নয়';
 }

@@ -8,13 +8,16 @@ import '../features/chat/presentation/chat_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/opportunities/presentation/opportunities_screen.dart';
 import '../features/opportunities/presentation/opportunity_detail_screen.dart';
+import '../features/plans/presentation/plan_detail_screen.dart';
 import '../features/profile/profile_screen.dart';
+import '../features/saved/presentation/my_list_screen.dart';
 import '../l10n/generated/app_localizations.dart';
 
 abstract final class Routes {
   static const home = '/';
   static const opportunities = '/opportunities';
   static const chat = '/chat';
+  static const myList = '/my-list';
   static const profile = '/profile';
   static const login = '/login';
   static String opportunity(String slug) => '/opportunity/$slug';
@@ -47,6 +50,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [GoRoute(path: Routes.opportunities, builder: (_, _) => const OpportunitiesScreen())],
           ),
           StatefulShellBranch(routes: [GoRoute(path: Routes.chat, builder: (_, _) => const ChatScreen())]),
+          StatefulShellBranch(routes: [GoRoute(path: Routes.myList, builder: (_, _) => const MyListScreen())]),
           StatefulShellBranch(routes: [GoRoute(path: Routes.profile, builder: (_, _) => const ProfileScreen())]),
         ],
       ),
@@ -54,6 +58,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/opportunity/:slug',
         builder: (_, state) => OpportunityDetailScreen(slug: state.pathParameters['slug']!),
+      ),
+      GoRoute(
+        path: '/plan/:id',
+        builder: (_, state) => PlanDetailScreen(planId: state.pathParameters['id']!),
       ),
       GoRoute(path: Routes.login, builder: (_, _) => const LoginScreen()),
     ],
@@ -79,6 +87,8 @@ class _Shell extends StatelessWidget {
               icon: const Icon(Icons.search), selectedIcon: const Icon(Icons.manage_search), label: l.navOpportunities),
           NavigationDestination(
               icon: const Icon(Icons.chat_bubble_outline), selectedIcon: const Icon(Icons.chat_bubble), label: l.navAsk),
+          NavigationDestination(
+              icon: const Icon(Icons.bookmark_border), selectedIcon: const Icon(Icons.bookmark), label: l.navSaved),
           NavigationDestination(
               icon: const Icon(Icons.person_outline), selectedIcon: const Icon(Icons.person), label: l.navProfile),
         ],

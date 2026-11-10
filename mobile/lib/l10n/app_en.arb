@@ -181,5 +181,61 @@
   "voiceErrNoSpeech": "We did not hear anything. Tap the microphone and try again.",
   "voiceErrServer": "Could not turn your voice into text. Please try again, or type.",
   "readAloud": "Read aloud",
-  "stopReading": "Stop reading"
+  "stopReading": "Stop reading",
+  "navSaved": "My list",
+  "savedTab": "Saved",
+  "plansTab": "Plans",
+  "savedEmpty": "Nothing saved yet. Tap the bookmark on a programme to keep it here.",
+  "plansEmpty": "No plans yet. Open a programme and tap \"Make a plan\" to get a step-by-step checklist.",
+  "saveProgramme": "Save",
+  "unsaveProgramme": "Remove from saved",
+  "savedToast": "Saved",
+  "removedToast": "Removed from saved",
+  "undo": "Undo",
+  "makePlan": "Make a plan",
+  "openPlan": "Open my plan",
+  "changeStatus": "Where are you with this?",
+  "allStatuses": "All",
+  "statusInterested": "Interested",
+  "statusPreparing": "Preparing",
+  "statusDocsReady": "Documents ready",
+  "statusApplied": "Applied",
+  "statusUnderReview": "Under review",
+  "statusApproved": "Approved",
+  "statusRejected": "Not approved",
+  "statusCompleted": "Completed",
+  "progressOf": "{done} of {total} done",
+  "@progressOf": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "priorityHigh": "High priority",
+  "priorityMedium": "Medium priority",
+  "priorityLow": "Low priority",
+  "dueOn": "Due {date}",
+  "@dueOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "minutesShort": "{n} min",
+  "@minutesShort": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "taskUpdateFailed": "Could not update that step. Please try again.",
+  "planTitle": "Your plan",
+  "markDone": "Mark done",
+  "markNotDone": "Mark not done"
 }

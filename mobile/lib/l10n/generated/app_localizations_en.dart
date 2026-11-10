@@ -375,4 +375,109 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stopReading => 'Stop reading';
+
+  @override
+  String get navSaved => 'My list';
+
+  @override
+  String get savedTab => 'Saved';
+
+  @override
+  String get plansTab => 'Plans';
+
+  @override
+  String get savedEmpty =>
+      'Nothing saved yet. Tap the bookmark on a programme to keep it here.';
+
+  @override
+  String get plansEmpty =>
+      'No plans yet. Open a programme and tap \"Make a plan\" to get a step-by-step checklist.';
+
+  @override
+  String get saveProgramme => 'Save';
+
+  @override
+  String get unsaveProgramme => 'Remove from saved';
+
+  @override
+  String get savedToast => 'Saved';
+
+  @override
+  String get removedToast => 'Removed from saved';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get makePlan => 'Make a plan';
+
+  @override
+  String get openPlan => 'Open my plan';
+
+  @override
+  String get changeStatus => 'Where are you with this?';
+
+  @override
+  String get allStatuses => 'All';
+
+  @override
+  String get statusInterested => 'Interested';
+
+  @override
+  String get statusPreparing => 'Preparing';
+
+  @override
+  String get statusDocsReady => 'Documents ready';
+
+  @override
+  String get statusApplied => 'Applied';
+
+  @override
+  String get statusUnderReview => 'Under review';
+
+  @override
+  String get statusApproved => 'Approved';
+
+  @override
+  String get statusRejected => 'Not approved';
+
+  @override
+  String get statusCompleted => 'Completed';
+
+  @override
+  String progressOf(int done, int total) {
+    return '$done of $total done';
+  }
+
+  @override
+  String get priorityHigh => 'High priority';
+
+  @override
+  String get priorityMedium => 'Medium priority';
+
+  @override
+  String get priorityLow => 'Low priority';
+
+  @override
+  String dueOn(String date) {
+    return 'Due $date';
+  }
+
+  @override
+  String minutesShort(int n) {
+    return '$n min';
+  }
+
+  @override
+  String get taskUpdateFailed =>
+      'Could not update that step. Please try again.';
+
+  @override
+  String get planTitle => 'Your plan';
+
+  @override
+  String get markDone => 'Mark done';
+
+  @override
+  String get markNotDone => 'Mark not done';
 }

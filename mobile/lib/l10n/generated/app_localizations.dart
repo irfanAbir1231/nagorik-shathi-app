@@ -769,6 +769,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stop reading'**
   String get stopReading;
+
+  /// No description provided for @navSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'My list'**
+  String get navSaved;
+
+  /// No description provided for @savedTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get savedTab;
+
+  /// No description provided for @plansTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans'**
+  String get plansTab;
+
+  /// No description provided for @savedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing saved yet. Tap the bookmark on a programme to keep it here.'**
+  String get savedEmpty;
+
+  /// No description provided for @plansEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No plans yet. Open a programme and tap \"Make a plan\" to get a step-by-step checklist.'**
+  String get plansEmpty;
+
+  /// No description provided for @saveProgramme.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveProgramme;
+
+  /// No description provided for @unsaveProgramme.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from saved'**
+  String get unsaveProgramme;
+
+  /// No description provided for @savedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get savedToast;
+
+  /// No description provided for @removedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from saved'**
+  String get removedToast;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @makePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a plan'**
+  String get makePlan;
+
+  /// No description provided for @openPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Open my plan'**
+  String get openPlan;
+
+  /// No description provided for @changeStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Where are you with this?'**
+  String get changeStatus;
+
+  /// No description provided for @allStatuses.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get allStatuses;
+
+  /// No description provided for @statusInterested.
+  ///
+  /// In en, this message translates to:
+  /// **'Interested'**
+  String get statusInterested;
+
+  /// No description provided for @statusPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing'**
+  String get statusPreparing;
+
+  /// No description provided for @statusDocsReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents ready'**
+  String get statusDocsReady;
+
+  /// No description provided for @statusApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied'**
+  String get statusApplied;
+
+  /// No description provided for @statusUnderReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Under review'**
+  String get statusUnderReview;
+
+  /// No description provided for @statusApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get statusApproved;
+
+  /// No description provided for @statusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not approved'**
+  String get statusRejected;
+
+  /// No description provided for @statusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get statusCompleted;
+
+  /// No description provided for @progressOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} done'**
+  String progressOf(int done, int total);
+
+  /// No description provided for @priorityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High priority'**
+  String get priorityHigh;
+
+  /// No description provided for @priorityMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium priority'**
+  String get priorityMedium;
+
+  /// No description provided for @priorityLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low priority'**
+  String get priorityLow;
+
+  /// No description provided for @dueOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {date}'**
+  String dueOn(String date);
+
+  /// No description provided for @minutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} min'**
+  String minutesShort(int n);
+
+  /// No description provided for @taskUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update that step. Please try again.'**
+  String get taskUpdateFailed;
+
+  /// No description provided for @planTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan'**
+  String get planTitle;
+
+  /// No description provided for @markDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark done'**
+  String get markDone;
+
+  /// No description provided for @markNotDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark not done'**
+  String get markNotDone;
 }
 
 class _AppLocalizationsDelegate
