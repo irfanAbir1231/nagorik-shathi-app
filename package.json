@@ -32,7 +32,10 @@
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "deploy:secrets": "node scripts/deploy-env.mjs secrets",
+    "deploy:check": "node scripts/deploy-env.mjs check",
+    "deploy:db": "node scripts/deploy-env.mjs db"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1114.0",

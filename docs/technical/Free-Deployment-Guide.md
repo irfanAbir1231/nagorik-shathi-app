@@ -48,36 +48,36 @@ Use the website; the Turso command-line tool does not run natively on Windows.
 > turso db tokens create shebar-janala     # the token
 > ```
 
-## Step 2: put the tables and the programme data into Turso
+## Step 2: fill in `.env.deploy.local`
 
-Run this from your PC, once. PowerShell, in the backend folder:
+All the values you paste live in one file in the backend folder: **`.env.deploy.local`**
+(it is git-ignored, so it can never be committed). Open it and paste:
 
-```powershell
-cd D:\nagorik-shathi\ShebarJanala
+- `DATABASE_URL`: the `libsql://...` URL from step 1
+- `DATABASE_AUTH_TOKEN`: the Turso token from step 1
+- `JEV_API_KEY`: your Jev key (delete that line if you have none)
 
-# These apply to this PowerShell window only. They override .env.local.
-$env:DATABASE_URL        = "libsql://shebar-janala-yourname.turso.io"
-$env:DATABASE_AUTH_TOKEN = "PASTE_THE_TOKEN_HERE"
-
-npx drizzle-kit push --force     # creates the tables
-npm run db:seed                  # loads programmes, organisations and the demo accounts
-```
-
-The seed sends about 1,400 rows over the internet, so allow a few minutes. It ends by printing the
-demo sign-ins. Then **close that PowerShell window** so the token does not linger.
-
-If `db:push` complains about the token, check there are no spaces or quotes inside it.
-
-## Step 3: generate the secrets
+Then, in PowerShell:
 
 ```powershell
 cd D:\nagorik-shathi\ShebarJanala
-node scripts/gen-secrets.mjs
+
+npm run deploy:secrets   # fills JWT_SECRET, JWT_REFRESH_SECRET and FIELD_ENCRYPTION_KEY for you
+npm run deploy:check     # lists anything still missing; run it until it says everything is filled in
+npm run deploy:db        # creates the tables and loads programmes + demo accounts into Turso
 ```
 
-It prints `JWT_SECRET`, `JWT_REFRESH_SECRET` and `FIELD_ENCRYPTION_KEY`. Keep the output private.
-Generate once and keep them: changing the JWT secrets signs everyone out, and changing
-`FIELD_ENCRYPTION_KEY` makes already-encrypted health data unreadable.
+`deploy:db` sends about 1,400 rows over the internet, so allow a few minutes. It only ever uses
+the values in `.env.deploy.local`, never your local `.env.local`, so it cannot touch your local
+development database.
+
+The three secrets are filled once and never overwritten: changing the JWT secrets signs everyone
+out, and changing `FIELD_ENCRYPTION_KEY` makes encrypted health data unreadable. Keep a private
+copy of the file.
+
+## Step 3: (nothing to do)
+
+Secrets were generated in step 2. This step number is kept so the later steps match.
 
 ## Step 4: deploy to Vercel
 
@@ -85,7 +85,9 @@ Generate once and keep them: changing the JWT secrets signs everyone out, and ch
 2. **Add New → Project** → import `irfanAbir1231/nagorik-shathi-app`. Leave the Root Directory as
    the repository root. The framework is detected as Next.js. (`vercel.json` already sets the
    Singapore region and skips builds for pushes that only touch `mobile/` or `docs/`.)
-3. Before pressing Deploy, open **Environment Variables** and add these (Production):
+3. Before pressing Deploy, open **Environment Variables**. The easy way: open `.env.deploy.local`,
+   copy everything, click in the first **Key** box in Vercel and paste; Vercel splits it into
+   one variable per line. The values it needs (Production) are:
 
 | Name | Value |
 |---|---|
