@@ -1153,6 +1153,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'That PIN is too easy to guess. Avoid 1234 or repeated digits like 1111.'**
   String get errPinWeak;
+
+  /// No description provided for @demoHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo accounts (development builds only)'**
+  String get demoHeader;
+
+  /// No description provided for @demoPickHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a role to fill in the phone number and PIN'**
+  String get demoPickHint;
+
+  /// No description provided for @demoChooseRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a role'**
+  String get demoChooseRole;
+
+  /// No description provided for @demoRoleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo role: {role}'**
+  String demoRoleLabel(String role);
 }
 
 class _AppLocalizationsDelegate

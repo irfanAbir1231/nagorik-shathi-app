@@ -584,4 +584,19 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get errPinWeak =>
       'এই পিনটি সহজেই অনুমান করা যায়। 1234 বা 1111-এর মতো পিন দেবেন না।';
+
+  @override
+  String get demoHeader => 'ডেমো অ্যাকাউন্ট (শুধু ডেভেলপমেন্ট বিল্ডে)';
+
+  @override
+  String get demoPickHint =>
+      'ভূমিকা বেছে নিলে ফোন নম্বর ও পিন নিজে থেকে ভরে যাবে';
+
+  @override
+  String get demoChooseRole => 'ভূমিকা বেছে নিন';
+
+  @override
+  String demoRoleLabel(String role) {
+    return 'ডেমো ভূমিকা: $role';
+  }
 }

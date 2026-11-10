@@ -584,4 +584,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errPinWeak =>
       'That PIN is too easy to guess. Avoid 1234 or repeated digits like 1111.';
+
+  @override
+  String get demoHeader => 'Demo accounts (development builds only)';
+
+  @override
+  String get demoPickHint => 'Pick a role to fill in the phone number and PIN';
+
+  @override
+  String get demoChooseRole => 'Choose a role';
+
+  @override
+  String demoRoleLabel(String role) {
+    return 'Demo role: $role';
+  }
 }

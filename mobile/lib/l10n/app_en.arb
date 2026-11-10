@@ -290,5 +290,16 @@
   "errOtpExpired": "That code has expired. Ask for a new one.",
   "errOtpAttempts": "Too many wrong codes. Ask for a new one.",
   "errPhoneExists": "This number already has an account. Sign in instead.",
-  "errPinWeak": "That PIN is too easy to guess. Avoid 1234 or repeated digits like 1111."
+  "errPinWeak": "That PIN is too easy to guess. Avoid 1234 or repeated digits like 1111.",
+  "demoHeader": "Demo accounts (development builds only)",
+  "demoPickHint": "Pick a role to fill in the phone number and PIN",
+  "demoChooseRole": "Choose a role",
+  "demoRoleLabel": "Demo role: {role}",
+  "@demoRoleLabel": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  }
 }

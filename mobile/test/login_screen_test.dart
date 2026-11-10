@@ -54,6 +54,47 @@ void main() {
     expect(find.text('Reference: abc-123'), findsOneWidget);
   });
 
+  testWidgets('picking a demo role fills in that account\'s phone number and PIN', (tester) async {
+    await tester.pumpWidget(host(const Err('X', 'x'), const Locale('en')));
+
+    String text(int field) => tester.widget<TextFormField>(find.byType(TextFormField).at(field)).controller!.text;
+    expect(text(0), '01712345678'); // starts on the first demo role
+
+    // The list scrolls inside a bottom sheet, so scroll to each role as a person would.
+    Future<void> openPicker() async {
+      await tester.tap(find.byIcon(Icons.badge_outlined));
+      await tester.pumpAndSettle();
+    }
+
+    Future<void> pick(String role) async {
+      await tester.scrollUntilVisible(
+        find.text(role),
+        120,
+        scrollable: find.descendant(of: find.byType(BottomSheet), matching: find.byType(Scrollable)),
+      );
+      await tester.tap(find.text(role));
+      await tester.pumpAndSettle();
+    }
+
+    await openPicker();
+    await pick('Moderator');
+    expect(text(0), '01612345678');
+    expect(text(1), '4321'); // staff accounts use a different PIN to the citizens
+
+    await openPicker();
+    await pick('Administrator');
+    expect(text(0), '01512345678');
+
+    await openPicker();
+    await pick('Donor representative');
+    expect(text(0), '01511112222');
+
+    await openPicker();
+    await pick('Union chairman');
+    expect(text(0), '01911112222');
+    expect(text(1), '1234');
+  });
+
   testWidgets('the PIN field is obscured', (tester) async {
     await tester.pumpWidget(host(const Err('X', 'x'), const Locale('en')));
     final pin = tester.widget<TextField>(find.byType(TextField).at(1));
