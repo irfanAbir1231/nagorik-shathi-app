@@ -337,4 +337,42 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errAiUnavailable =>
       'The assistant is busy or took too long. Your message was kept. Please try again.';
+
+  @override
+  String get voiceStart => 'Speak';
+
+  @override
+  String get voiceStop => 'Stop and use what I said';
+
+  @override
+  String get voiceListening => 'Listening… tap to finish';
+
+  @override
+  String get voiceTranscribing => 'Working out what you said…';
+
+  @override
+  String get voiceErrPermission =>
+      'Microphone access is off. Turn it on in your phone\'s settings, or type instead.';
+
+  @override
+  String get voiceErrUnavailable =>
+      'Voice typing is not available on this phone or server. Please type instead.';
+
+  @override
+  String get voiceErrLocale =>
+      'This phone has no Bangla speech pack installed. Install it in Google settings, or type instead.';
+
+  @override
+  String get voiceErrNoSpeech =>
+      'We did not hear anything. Tap the microphone and try again.';
+
+  @override
+  String get voiceErrServer =>
+      'Could not turn your voice into text. Please try again, or type.';
+
+  @override
+  String get readAloud => 'Read aloud';
+
+  @override
+  String get stopReading => 'Stop reading';
 }

@@ -338,4 +338,42 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get errAiUnavailable =>
       'সহকারী ব্যস্ত ছিল বা সময় বেশি লেগেছে। আপনার বার্তা রাখা আছে। আবার চেষ্টা করুন।';
+
+  @override
+  String get voiceStart => 'বলুন';
+
+  @override
+  String get voiceStop => 'থামুন ও যা বলেছি তা ব্যবহার করুন';
+
+  @override
+  String get voiceListening => 'শুনছি… শেষ হলে ট্যাপ করুন';
+
+  @override
+  String get voiceTranscribing => 'আপনি কী বলেছেন বুঝছি…';
+
+  @override
+  String get voiceErrPermission =>
+      'মাইক্রোফোনের অনুমতি বন্ধ আছে। ফোনের সেটিংসে চালু করুন, অথবা লিখুন।';
+
+  @override
+  String get voiceErrUnavailable =>
+      'এই ফোনে বা সার্ভারে ভয়েস টাইপিং চালু নেই। অনুগ্রহ করে লিখুন।';
+
+  @override
+  String get voiceErrLocale =>
+      'এই ফোনে বাংলা বক্তৃতা প্যাক নেই। গুগল সেটিংসে ইনস্টল করুন, অথবা লিখুন।';
+
+  @override
+  String get voiceErrNoSpeech =>
+      'কিছু শুনতে পাইনি। মাইক্রোফোনে ট্যাপ করে আবার চেষ্টা করুন।';
+
+  @override
+  String get voiceErrServer =>
+      'আপনার কণ্ঠ লেখায় রূপান্তর করা যায়নি। আবার চেষ্টা করুন, অথবা লিখুন।';
+
+  @override
+  String get readAloud => 'পড়ে শোনান';
+
+  @override
+  String get stopReading => 'পড়া থামান';
 }

@@ -66,5 +66,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Shebar Janala uses the microphone so you can ask questions by speaking.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Shebar Janala turns your speech into text so you can ask questions by speaking.</string>
 </dict>
 </plist>

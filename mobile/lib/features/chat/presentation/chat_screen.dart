@@ -7,6 +7,9 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../../opportunities/presentation/labels.dart';
 import '../../opportunities/presentation/opportunities_screen.dart' show ErrorRetry;
 import '../../opportunities/presentation/opportunity_card.dart' show OutcomeChip;
+import '../../voice/application/voice_controller.dart';
+import '../../voice/application/voice_providers.dart';
+import '../../voice/domain/speech_input.dart';
 import '../application/chat_controller.dart';
 import '../domain/chat.dart';
 
@@ -33,8 +36,18 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void _send([String? preset]) {
     final text = preset ?? _input.text;
     if (text.trim().isEmpty) return;
+    ref.read(voiceControllerProvider.notifier).cancel();
     ref.read(chatControllerProvider.notifier).send(text, locale: _locale);
     _input.clear();
+  }
+
+  /// Puts a transcript into the box for the person to read and fix before
+  /// sending. Speech recognition is wrong often enough, especially in Bangla,
+  /// that sending it straight to the assistant would be a mistake.
+  void _insertTranscript(String text) {
+    final existing = _input.text.trimRight();
+    final joined = existing.isEmpty ? text : '$existing $text';
+    _input.value = TextEditingValue(text: joined, selection: TextSelection.collapsed(offset: joined.length));
   }
 
   void _scrollToEnd() {
@@ -63,6 +76,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final l = AppLocalizations.of(context);
     final chat = ref.watch(chatControllerProvider);
     ref.listen(chatControllerProvider.select((s) => s.messages.length), (_, _) => _scrollToEnd());
+    final voice = ref.watch(voiceControllerProvider);
+    ref.listen(voiceControllerProvider.select((s) => s.resultSeq), (_, _) {
+      final text = ref.read(voiceControllerProvider).result;
+      if (text != null && text.isNotEmpty) _insertTranscript(text);
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -89,7 +107,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
             ),
           ),
-        _Composer(controller: _input, sending: chat.sending, onSend: _send),
+        _VoiceStatus(state: voice),
+        _Composer(
+          controller: _input,
+          sending: chat.sending,
+          voice: voice,
+          onSend: _send,
+          onMic: () => ref.read(voiceControllerProvider.notifier).toggle(_locale),
+        ),
       ]),
     );
   }
@@ -157,10 +182,18 @@ class _EmptyState extends StatelessWidget {
 }
 
 class _Composer extends StatelessWidget {
-  const _Composer({required this.controller, required this.sending, required this.onSend});
+  const _Composer({
+    required this.controller,
+    required this.sending,
+    required this.voice,
+    required this.onSend,
+    required this.onMic,
+  });
   final TextEditingController controller;
   final bool sending;
+  final VoiceState voice;
   final VoidCallback onSend;
+  final VoidCallback onMic;
 
   @override
   Widget build(BuildContext context) {
@@ -186,6 +219,8 @@ class _Composer extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
+          _MicButton(state: voice, onPressed: onMic),
+          const SizedBox(width: 4),
           IconButton.filled(
             tooltip: l.chatSend,
             onPressed: sending ? null : onSend,
@@ -193,6 +228,100 @@ class _Composer extends StatelessWidget {
           ),
         ]),
       ),
+    );
+  }
+}
+
+class _MicButton extends StatelessWidget {
+  const _MicButton({required this.state, required this.onPressed});
+  final VoiceState state;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    return switch (state.status) {
+      VoiceStatus.transcribing => const SizedBox(
+          width: 48,
+          height: 48,
+          child: Padding(padding: EdgeInsets.all(14), child: CircularProgressIndicator(strokeWidth: 2)),
+        ),
+      VoiceStatus.listening => IconButton.filled(
+          tooltip: l.voiceStop,
+          style: IconButton.styleFrom(backgroundColor: scheme.error, foregroundColor: scheme.onError),
+          onPressed: onPressed,
+          icon: const Icon(Icons.stop),
+        ),
+      VoiceStatus.idle => IconButton.outlined(tooltip: l.voiceStart, onPressed: onPressed, icon: const Icon(Icons.mic)),
+    };
+  }
+}
+
+/// One line above the box: what the microphone is doing, or why it could not.
+class _VoiceStatus extends StatelessWidget {
+  const _VoiceStatus({required this.state});
+  final VoiceState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final failure = state.failure;
+
+    final String? text;
+    var isError = false;
+    if (state.status == VoiceStatus.listening) {
+      text = state.partial.isEmpty ? l.voiceListening : state.partial;
+    } else if (state.status == VoiceStatus.transcribing) {
+      text = l.voiceTranscribing;
+    } else if (failure != null) {
+      isError = true;
+      text = switch (failure.kind) {
+        VoiceFailureKind.permissionDenied => l.voiceErrPermission,
+        VoiceFailureKind.unavailable => l.voiceErrUnavailable,
+        VoiceFailureKind.localeUnavailable => l.voiceErrLocale,
+        VoiceFailureKind.noSpeech => l.voiceErrNoSpeech,
+        VoiceFailureKind.server => l.voiceErrServer,
+      };
+    } else {
+      text = null;
+    }
+    if (text == null) return const SizedBox.shrink();
+
+    return Semantics(
+      liveRegion: true,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+        child: Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: Text(text, style: TextStyle(color: isError ? theme.colorScheme.error : theme.colorScheme.primary)),
+        ),
+      ),
+    );
+  }
+}
+
+class _ReadAloudButton extends ConsumerWidget {
+  const _ReadAloudButton({required this.message});
+  final ChatMessage message;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final language = Localizations.localeOf(context).languageCode;
+    // No button where the phone has no proper voice: Bangla read by an English
+    // voice is worse than silence because it sounds like it works.
+    if (ref.watch(canSpeakProvider(language)).value != true) return const SizedBox.shrink();
+
+    final l = AppLocalizations.of(context);
+    final speaking = ref.watch(speakingProvider) == message.id;
+    return IconButton(
+      visualDensity: VisualDensity.compact,
+      tooltip: speaking ? l.stopReading : l.readAloud,
+      icon: Icon(speaking ? Icons.stop_circle_outlined : Icons.volume_up_outlined),
+      onPressed: () => ref
+          .read(speakingProvider.notifier)
+          .toggle(messageId: message.id, text: message.text, language: language),
     );
   }
 }
@@ -262,6 +391,7 @@ class _MessageView extends StatelessWidget {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       _Bubble(mine: false, child: SelectableText(message.text)),
+      _ReadAloudButton(message: message),
       for (final o in message.opportunities) _ProgrammeCard(item: o),
       if (message.isSimulated)
         Padding(

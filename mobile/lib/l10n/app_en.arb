@@ -170,5 +170,16 @@
   "chatSimulatedNote": "Simulated AI. Eligibility decisions are the same as with live AI.",
   "chatNextStep": "Next step",
   "chatViewProgramme": "View programme",
-  "errAiUnavailable": "The assistant is busy or took too long. Your message was kept. Please try again."
+  "errAiUnavailable": "The assistant is busy or took too long. Your message was kept. Please try again.",
+  "voiceStart": "Speak",
+  "voiceStop": "Stop and use what I said",
+  "voiceListening": "Listening… tap to finish",
+  "voiceTranscribing": "Working out what you said…",
+  "voiceErrPermission": "Microphone access is off. Turn it on in your phone's settings, or type instead.",
+  "voiceErrUnavailable": "Voice typing is not available on this phone or server. Please type instead.",
+  "voiceErrLocale": "This phone has no Bangla speech pack installed. Install it in Google settings, or type instead.",
+  "voiceErrNoSpeech": "We did not hear anything. Tap the microphone and try again.",
+  "voiceErrServer": "Could not turn your voice into text. Please try again, or type.",
+  "readAloud": "Read aloud",
+  "stopReading": "Stop reading"
 }

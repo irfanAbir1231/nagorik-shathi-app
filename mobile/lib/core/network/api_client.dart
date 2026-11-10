@@ -48,9 +48,15 @@ class ApiClient {
   Future<ApiResult<T>> post<T>(String path,
           {Object? body,
           required T Function(dynamic data) parse,
+          Object Function()? bodyBuilder,
           Duration? receiveTimeout,
           bool authRetry = true}) =>
-      _send('POST', path, body: body, parse: parse, receiveTimeout: receiveTimeout, authRetry: authRetry);
+      _send('POST', path,
+          body: body,
+          bodyBuilder: bodyBuilder,
+          parse: parse,
+          receiveTimeout: receiveTimeout,
+          authRetry: authRetry);
 
   Future<ApiResult<T>> put<T>(String path, {Object? body, required T Function(dynamic data) parse}) =>
       _send('PUT', path, body: body, parse: parse);
@@ -62,6 +68,7 @@ class ApiClient {
     String method,
     String path, {
     Object? body,
+    Object Function()? bodyBuilder,
     Map<String, dynamic>? query,
     required T Function(dynamic data) parse,
     Duration? receiveTimeout,
@@ -72,7 +79,9 @@ class ApiClient {
         final token = tokens.accessToken;
         final response = await _dio.request<dynamic>(
           path,
-          data: body,
+          // A multipart FormData can be sent only once; [bodyBuilder] makes a
+          // fresh one for the retry that follows a token refresh.
+          data: bodyBuilder != null ? bodyBuilder() : body,
           queryParameters: query,
           options: Options(
             method: method,

@@ -703,6 +703,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The assistant is busy or took too long. Your message was kept. Please try again.'**
   String get errAiUnavailable;
+
+  /// No description provided for @voiceStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Speak'**
+  String get voiceStart;
+
+  /// No description provided for @voiceStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop and use what I said'**
+  String get voiceStop;
+
+  /// No description provided for @voiceListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening… tap to finish'**
+  String get voiceListening;
+
+  /// No description provided for @voiceTranscribing.
+  ///
+  /// In en, this message translates to:
+  /// **'Working out what you said…'**
+  String get voiceTranscribing;
+
+  /// No description provided for @voiceErrPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone access is off. Turn it on in your phone\'s settings, or type instead.'**
+  String get voiceErrPermission;
+
+  /// No description provided for @voiceErrUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice typing is not available on this phone or server. Please type instead.'**
+  String get voiceErrUnavailable;
+
+  /// No description provided for @voiceErrLocale.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone has no Bangla speech pack installed. Install it in Google settings, or type instead.'**
+  String get voiceErrLocale;
+
+  /// No description provided for @voiceErrNoSpeech.
+  ///
+  /// In en, this message translates to:
+  /// **'We did not hear anything. Tap the microphone and try again.'**
+  String get voiceErrNoSpeech;
+
+  /// No description provided for @voiceErrServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not turn your voice into text. Please try again, or type.'**
+  String get voiceErrServer;
+
+  /// No description provided for @readAloud.
+  ///
+  /// In en, this message translates to:
+  /// **'Read aloud'**
+  String get readAloud;
+
+  /// No description provided for @stopReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop reading'**
+  String get stopReading;
 }
 
 class _AppLocalizationsDelegate
