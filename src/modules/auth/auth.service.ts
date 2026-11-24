@@ -1,4 +1,4 @@
-import { and, eq, gt, isNull, desc, sql } from 'drizzle-orm';
+import { and, eq, gt, isNull, isNotNull, desc, sql } from 'drizzle-orm';
 import { db } from '@/lib/db/client';
 import { users, sessions, otpChallenges, userSettings, userProfiles, auditLog } from '@/lib/db/schema';
 import { hashSecret, verifySecret, fastHash, randomToken, randomNumericCode } from '@/lib/security/hash';
@@ -94,6 +94,28 @@ export async function requestOtp(rawPhone: string, purpose: OtpPurpose): Promise
     throw new AuthError('PHONE_ALREADY_REGISTERED', 'This number already has an account. Sign in instead.');
   }
   // For login and reset we do NOT reveal whether the number exists.
+
+  // An administrator issued a reset code to read to this person (there is no
+  // SMS gateway). Reuse it: creating a new challenge would replace it, and
+  // sending one would fail. The answer has the ordinary shape, so it reveals
+  // nothing the normal path would not.
+  if (purpose === 'reset_pin') {
+    const [issued] = await db
+      .select({ expiresAt: otpChallenges.expiresAt })
+      .from(otpChallenges)
+      .where(
+        and(
+          eq(otpChallenges.phone, phone),
+          eq(otpChallenges.purpose, 'reset_pin'),
+          isNotNull(otpChallenges.issuedBy),
+          isNull(otpChallenges.consumedAt),
+          gt(otpChallenges.expiresAt, new Date()),
+        ),
+      )
+      .orderBy(desc(otpChallenges.createdAt))
+      .limit(1);
+    if (issued) return { sent: true, expiresAt: issued.expiresAt, resendAfterMs: OTP_RESEND_COOLDOWN_MS };
+  }
 
   // Cooldown: prevents an accidental double-tap from sending two codes and
   // invalidating the first one the citizen already received.
@@ -589,4 +611,44 @@ export async function pruneOtpChallenges(): Promise<number> {
     .where(sql`${otpChallenges.expiresAt} < ${Date.now() - 86_400_000}`)
     .returning({ id: otpChallenges.id });
   return removed.length;
+}
+
+/* ------------------------------------------------- admin-issued reset */
+
+/** How long a reset code an administrator reads out stays valid. */
+export const ADMIN_RESET_TTL_MS = 15 * 60 * 1000;
+
+/**
+ * Issues a one-time PIN reset code for an administrator to read to the person
+ * (by phone call-back or in person, after checking who they are). There is no
+ * SMS gateway, so this replaces "we texted you a code".
+ *
+ * The person then uses the ordinary forgot-PIN screen: `requestOtp` sees this
+ * live code and reuses it, and `verifyOtp` checks it like any other. The code
+ * is stored hashed, used once, and expires in 15 minutes. Earlier unused
+ * reset codes for the number are invalidated so only one is ever live.
+ */
+export async function issueAdminResetCode(
+  rawPhone: string,
+  issuedBy: string,
+): Promise<{ code: string; expiresAt: Date }> {
+  const phone = normalisePhone(rawPhone);
+  if (!phone) throw new AuthError('VALIDATION_FAILED', 'This account has no valid phone number.');
+
+  await db
+    .update(otpChallenges)
+    .set({ consumedAt: new Date() })
+    .where(and(eq(otpChallenges.phone, phone), eq(otpChallenges.purpose, 'reset_pin'), isNull(otpChallenges.consumedAt)));
+
+  const code = randomNumericCode(6);
+  const expiresAt = new Date(Date.now() + ADMIN_RESET_TTL_MS);
+  await db.insert(otpChallenges).values({
+    phone,
+    codeHash: fastHash(`${phone}:reset_pin:${code}`),
+    purpose: 'reset_pin',
+    attempts: 0,
+    expiresAt,
+    issuedBy,
+  });
+  return { code, expiresAt };
 }

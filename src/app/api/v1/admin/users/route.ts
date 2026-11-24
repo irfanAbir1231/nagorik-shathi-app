@@ -1,5 +1,5 @@
 import type { NextRequest } from 'next/server';
-import { desc, eq, sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { db } from '@/lib/db/client';
 import { users } from '@/lib/db/schema';
@@ -8,6 +8,8 @@ import { requireStaff, canManageUsers } from '@/lib/http/session';
 import { recordAudit } from '@/modules/admin/admin.service';
 import { ROLE_RANK, USER_ROLES, CIVIC_ROLES } from '@/lib/domain/enums';
 import { logoutEverywhere } from '@/modules/auth/auth.service';
+import { listUsers, userListSchema } from '@/modules/admin/users.service';
+import { parseQuery } from '@/lib/validation/schemas';
 
 const patchSchema = z.object({
   userId: z.string().uuid(),
@@ -41,43 +43,18 @@ export async function GET(request: NextRequest) {
     const guard = await requireStaff();
     if (!guard.ok) return guard.response;
 
-    const url = new URL(request.url);
-    const search = url.searchParams.get('q');
+    // Paginated and filtered (role, status, platform, district, activity…).
+    // Phone numbers are masked here; the full number is an audited reveal.
+    const result = await listUsers(parseQuery(userListSchema, new URL(request.url)));
 
-    const rows = await db
-      .select({
-        id: users.id,
-        name: users.name,
-        phone: users.phone,
-        email: users.email,
-        role: users.role,
-        status: users.status,
-        district: users.district,
-        language: users.language,
-        lastLoginAt: users.lastLoginAt,
-        createdAt: users.createdAt,
-        civicRole: users.civicRole,
-        civicUnionId: users.civicUnionId,
-        civicUpazila: users.civicUpazila,
-        civicDistrict: users.civicDistrict,
-        donorOrgId: users.donorOrgId,
-      })
-      .from(users)
-      .where(
-        search
-          ? sql`(lower(${users.name}) LIKE ${`%${search.toLowerCase()}%`} OR ${users.phone} LIKE ${`%${search}%`})`
-          : undefined,
-      )
-      .orderBy(desc(users.createdAt))
-      .limit(100);
-
-    const counts = await db.select({ role: users.role, n: sql<number>`count(*)` }).from(users).groupBy(users.role);
-
-    return ok({
-      items: rows,
-      counts: Object.fromEntries(counts.map((c) => [c.role, Number(c.n)])),
-      canManage: canManageUsers(guard.session.role),
-    });
+    return ok(
+      {
+        items: result.items,
+        counts: result.roleCounts,
+        canManage: canManageUsers(guard.session.role),
+      },
+      { meta: { total: result.total, page: result.page, pageSize: result.pageSize } },
+    );
   }, 'admin/users:get');
 }
 

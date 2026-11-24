@@ -471,3 +471,22 @@ export const VISION_MODERATION_STATUSES = [
   'not_applicable', 'unavailable', 'passed', 'flagged', 'demo_passed', 'demo_flagged',
 ] as const;
 export type VisionModerationStatus = (typeof VISION_MODERATION_STATUSES)[number];
+
+/* ------------------------------------------- service discovery (admin) */
+// How a watched government source lists its pages. `manual` sources exist only
+// so links an admin pastes have a home; the discovery job never crawls them.
+export const SOURCE_KINDS = ['dss_portal', 'single_page', 'manual'] as const;
+export type SourceKind = (typeof SOURCE_KINDS)[number];
+
+// A candidate is either a programme we do not list yet, or a change to one we do.
+export const CANDIDATE_KINDS = ['new', 'change'] as const;
+export type CandidateKind = (typeof CANDIDATE_KINDS)[number];
+
+// `pending` is the only state an admin acts on; the rest are decisions.
+export const CANDIDATE_STATUSES = ['pending', 'approved', 'rejected', 'snoozed', 'duplicate'] as const;
+export type CandidateStatus = (typeof CANDIDATE_STATUSES)[number];
+
+// Which extractor filled the draft. `manual` means nothing could be read
+// automatically (or the source forbids AI use) and an admin types the fields.
+export const CANDIDATE_EXTRACTORS = ['rules', 'ai', 'manual'] as const;
+export type CandidateExtractor = (typeof CANDIDATE_EXTRACTORS)[number];

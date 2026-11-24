@@ -273,7 +273,7 @@ export async function getSystemHealth() {
 
 /* --------------------------------------------------------- background jobs */
 
-async function runJob<T>(name: string, fn: () => Promise<{ processed: number; failed?: number; detail?: Record<string, unknown> }>) {
+export async function runJob<T>(name: string, fn: () => Promise<{ processed: number; failed?: number; detail?: Record<string, unknown> }>) {
   const [run] = await db.insert(jobRuns).values({ job: name, status: 'running' }).returning();
   try {
     const result = await fn();

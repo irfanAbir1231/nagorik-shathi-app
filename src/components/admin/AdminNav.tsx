@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { LayoutDashboard, Database, Building2, Scale, MessageSquareWarning, Cpu, Users, Landmark, ShieldCheck, MessageSquare } from 'lucide-react';
+import { LayoutDashboard, Database, Building2, Scale, MessageSquareWarning, Cpu, Users, Landmark, ShieldCheck, MessageSquare, Inbox, Globe } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 
@@ -14,19 +14,22 @@ import { cn } from '@/lib/utils/cn';
  */
 const ITEMS = [
   { href: '/admin', key: 'overview', icon: LayoutDashboard },
+  { href: '/admin/candidates', key: 'navCandidates', icon: Inbox, portal: true },
+  { href: '/admin/users', key: 'users', icon: Users },
   { href: '/admin/programmes', key: 'programmes', icon: Database },
   { href: '/admin/organisations', key: 'organizations', icon: Building2 },
   { href: '/admin/rules', key: 'rules', icon: Scale },
   { href: '/admin/moderation', key: 'moderation', icon: MessageSquareWarning },
   { href: '/admin/ai-logs', key: 'aiLogs', icon: Cpu },
-  { href: '/admin/users', key: 'users', icon: Users },
   { href: '/admin/civic-roles', key: 'civicRoles', icon: Landmark },
   { href: '/admin/ledger', key: 'ledgerIntegrity', icon: ShieldCheck },
+  { href: '/admin/sources', key: 'navSources', icon: Globe, portal: true },
   { href: '/admin/sms-outbox', key: 'smsOutbox', icon: MessageSquare },
 ] as const;
 
 export function AdminNav() {
   const t = useTranslations('admin');
+  const tp = useTranslations('adminPortal');
   const pathname = usePathname();
 
   return (
@@ -50,7 +53,7 @@ export function AdminNav() {
                 )}
               >
                 <Icon size={18} className="icon shrink-0" aria-hidden="true" />
-                {t(item.key)}
+                {'portal' in item ? tp(item.key) : t(item.key)}
               </Link>
             </li>
           );
