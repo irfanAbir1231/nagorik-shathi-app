@@ -6,11 +6,12 @@ import { jobRuns } from '@/lib/db/schema';
 import { ok, readJson, handle, fail, ERROR_CODES } from '@/lib/http/response';
 import { requireStaff } from '@/lib/http/session';
 import { JOBS, recordAudit, type JobName } from '@/modules/admin/admin.service';
+import { discoverSources } from '@/modules/discovery/discovery.service';
 
 const runSchema = z.object({
   job: z.enum([
     'reindex_search', 'rebuild_embeddings', 'detect_staleness', 'scheduled_notifications',
-    'aggregate_analytics', 'enforce_data_retention',
+    'aggregate_analytics', 'enforce_data_retention', 'discover_sources',
   ]),
 });
 
@@ -31,10 +32,13 @@ export async function GET() {
     const runs = await db.select().from(jobRuns).orderBy(desc(jobRuns.startedAt)).limit(50);
     return ok({
       runs,
-      available: Object.keys(JOBS).map((name) => ({
-        name,
-        description: JOB_DESCRIPTIONS[name as JobName],
-      })),
+      available: [
+        ...Object.keys(JOBS).map((name) => ({
+          name,
+          description: JOB_DESCRIPTIONS[name as JobName],
+        })),
+        { name: 'discover_sources', description: DISCOVER_DESCRIPTION },
+      ],
     });
   }, 'admin/jobs:get');
 }
@@ -45,7 +49,9 @@ export async function POST(request: NextRequest) {
     if (!guard.ok) return guard.response;
 
     const body = runSchema.parse(await readJson(request));
-    const job = JOBS[body.job];
+    // discover_sources lives in modules/discovery, which itself uses the
+    // admin job runner, so it is wired here rather than in JOBS (no cycle).
+    const job = body.job === 'discover_sources' ? () => discoverSources() : JOBS[body.job];
     if (!job) return fail(ERROR_CODES.VALIDATION_FAILED, 'Unknown job.');
 
     const result = await job();
@@ -62,6 +68,9 @@ export async function POST(request: NextRequest) {
     return ok({ job: body.job, result });
   }, 'admin/jobs:post');
 }
+
+const DISCOVER_DESCRIPTION =
+  'Reads the watched government sites in small batches and queues new programmes and changed facts for review. Never publishes anything.';
 
 const JOB_DESCRIPTIONS: Record<JobName, string> = {
   reindex_search:

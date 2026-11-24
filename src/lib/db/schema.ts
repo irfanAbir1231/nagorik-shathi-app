@@ -10,7 +10,7 @@ import {
   SERVICE_LOCATION_TYPES, NID_VERIFICATION_STATUSES, RESIDENCY_VERIFICATION_METHODS,
   ISSUE_CATEGORIES, ISSUE_STATUSES, CIVIC_ROLES, LEDGER_ENTITY_TYPES, ESCALATION_STATUSES,
   BENEFICIARY_STATUSES, ENTITLEMENT_STATUSES, ENTITLEMENT_PERIODS, DISBURSEMENT_STATUSES,
-  VISION_MODERATION_STATUSES,
+  VISION_MODERATION_STATUSES, SOURCE_KINDS, CANDIDATE_KINDS, CANDIDATE_STATUSES, CANDIDATE_EXTRACTORS,
 } from '../domain/enums';
 import type { RuleSet } from '../domain/rules';
 
@@ -215,6 +215,12 @@ export const otpChallenges = sqliteTable(
     consumedAt: integer('consumed_at', { mode: 'timestamp_ms' }),
     /** Dev-only echo so the flow is completable without an SMS provider. */
     devCode: text('dev_code'),
+    /**
+     * Set when an administrator issued this code to read to the citizen
+     * (there is no SMS gateway). `requestOtp` then reuses it instead of
+     * creating a new one, so the ordinary forgot-PIN screens work unchanged.
+     */
+    issuedBy: text('issued_by'),
     createdAt: createdAt(),
   },
   (t) => [index('otp_phone_idx').on(t.phone, t.purpose)],
@@ -1355,6 +1361,102 @@ export type DemoSmsOutboxEntry = typeof demoSmsOutbox.$inferSelect;
  * database column (ciphertext), which is exactly why those three sites are
  * the only ones allowed to hand back a raw row.
  */
+/* ======================================================================
+   SERVICE DISCOVERY — new government services, reviewed before publishing
+   ====================================================================== */
+
+/**
+ * A government site the discovery job watches (or the home of links an admin
+ * pastes). Only hosts in `allowedHosts` are ever fetched.
+ */
+export const serviceSources = sqliteTable(
+  'service_sources',
+  {
+    id: id(),
+    name: text('name').notNull(),
+    organizationId: text('organization_id').references(() => organizations.id, { onDelete: 'set null' }),
+    baseUrl: text('base_url').notNull(),
+    kind: text('kind', { enum: SOURCE_KINDS }).notNull(),
+    allowedHosts: text('allowed_hosts', { mode: 'json' }).$type<string[]>().notNull(),
+    /** Pages to read for links, relative to baseUrl (adapter specific). */
+    listPaths: text('list_paths', { mode: 'json' }).$type<string[]>().notNull(),
+    /** Max pages fetched per run, so a run fits in one request's time limit. */
+    pagesPerRun: integer('pages_per_run').notNull().default(8),
+    enabled: integer('enabled', { mode: 'boolean' }).notNull().default(true),
+    /** Set from the site's robots.txt content signals: no AI extraction when true. */
+    aiRestricted: integer('ai_restricted', { mode: 'boolean' }).notNull().default(false),
+    lastRunAt: integer('last_run_at', { mode: 'timestamp_ms' }),
+    lastStatus: text('last_status'),
+    lastError: text('last_error'),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [uniqueIndex('service_sources_base_uq').on(t.baseUrl)],
+);
+
+/** What a page looked like the last time it was read; a new hash is a change. */
+export const sourceSnapshots = sqliteTable(
+  'source_snapshots',
+  {
+    id: id(),
+    sourceId: text('source_id').references(() => serviceSources.id, { onDelete: 'cascade' }),
+    url: text('url').notNull(),
+    contentHash: text('content_hash').notNull(),
+    httpStatus: integer('http_status').notNull(),
+    title: text('title'),
+    /** Plain text of the page, capped, for the reviewer's side-by-side view. */
+    text: text('text'),
+    fetchedAt: createdAt(),
+  },
+  (t) => [index('source_snapshots_url_idx').on(t.url, t.fetchedAt)],
+);
+
+/**
+ * A service found on a government site, waiting for an administrator.
+ *
+ * Deliberately NOT a row in `opportunities`: no citizen-facing query can show
+ * a candidate, whatever filter it forgets. Approval copies the frozen draft
+ * into `opportunities` (modules/discovery/candidates.service.ts).
+ */
+export const serviceCandidates = sqliteTable(
+  'service_candidates',
+  {
+    id: id(),
+    sourceId: text('source_id').references(() => serviceSources.id, { onDelete: 'set null' }),
+    sourceUrl: text('source_url').notNull(),
+    kind: text('kind', { enum: CANDIDATE_KINDS }).notNull(),
+    /** For `change`: the programme the change applies to. */
+    targetOpportunityId: text('target_opportunity_id').references(() => opportunities.id, { onDelete: 'cascade' }),
+    status: text('status', { enum: CANDIDATE_STATUSES }).notNull().default('pending'),
+    /** Opportunity-shaped fields; partial until the reviewer completes it. */
+    draft: text('draft', { mode: 'json' }).$type<Record<string, unknown>>().notNull(),
+    /** Field name → the source sentence it was read from. */
+    evidence: text('evidence', { mode: 'json' }).$type<Record<string, string>>().notNull(),
+    extractor: text('extractor', { enum: CANDIDATE_EXTRACTORS }).notNull(),
+    /** 0–1: share of required fields the extractor could fill. */
+    confidence: real('confidence').notNull().default(0),
+    contentHash: text('content_hash').notNull(),
+    duplicateOfId: text('duplicate_of_id').references(() => opportunities.id, { onDelete: 'set null' }),
+    submittedBy: text('submitted_by'),
+    reviewerId: text('reviewer_id'),
+    decisionNote: text('decision_note'),
+    decidedAt: integer('decided_at', { mode: 'timestamp_ms' }),
+    publishedOpportunityId: text('published_opportunity_id').references(() => opportunities.id, { onDelete: 'set null' }),
+    notifiedCount: integer('notified_count'),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    index('service_candidates_status_idx').on(t.status, t.createdAt),
+    index('service_candidates_url_idx').on(t.sourceUrl),
+    uniqueIndex('service_candidates_published_uq').on(t.publishedOpportunityId),
+  ],
+);
+
+export type ServiceSource = typeof serviceSources.$inferSelect;
+export type SourceSnapshot = typeof sourceSnapshots.$inferSelect;
+export type ServiceCandidate = typeof serviceCandidates.$inferSelect;
+
 export type DecryptedUserProfile = Omit<UserProfile, 'medicalConditions'> & {
   readonly medicalConditions: string[] | null;
 };

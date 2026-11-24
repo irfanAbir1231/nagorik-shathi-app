@@ -12,6 +12,7 @@ import { chunkText, termFrequencies, estimateTokens } from '../src/modules/knowl
 import { addDays } from '../src/lib/format/dates';
 import { createAllocation, flagAllocation } from '../src/modules/budget/budget.service';
 import { enrollBeneficiary, recordDisbursement } from '../src/modules/entitlements/entitlement.service';
+import { seedSources } from './seed-sources';
 
 /**
  * Seeds the knowledge base, the retrieval index, and demo accounts.
@@ -839,6 +840,9 @@ async function main() {
   console.log('  01511112222 / 1234  — Nasreen Chowdhury, UNDP donor representative (en)');
   console.log('  01612345678 / 4321  — Moderator');
   console.log('  01512345678 / 4321  — Administrator');
+  const sourcesAdded = await seedSources();
+  console.log(`
+Government sources for discovery: ${sourcesAdded} added (existing ones kept).`);
   const checked = SEED_OPPORTUNITIES.filter((o) => o.sourceCheck);
   console.log(`\nNo programme is marked "verified". ${checked.length} carry a source check (${checked.map((o) => `${o.slug}: ${o.sourceCheck!.status}`).join(', ')}); the rest are "unverified_sample". See src/lib/db/seed/VERIFICATION.md.\n`);
 }
